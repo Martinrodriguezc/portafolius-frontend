@@ -14,7 +14,8 @@ export const validateName = (name: string): boolean => validateRequiredField(nam
  * @param name - The name to validate
  * @returns Error message or empty string if name is valid
  */
-export const getNameErrorMessage = (name: string): string => getRequiredFieldError('nombre');
+export const getNameErrorMessage = (name: string): string => 
+  getRequiredFieldError('nombre', name);
 
 /**
  * Validates if a last name is not empty
@@ -28,7 +29,8 @@ export const validateLastName = (lastName: string): boolean => validateRequiredF
  * @param lastName - The last name to validate
  * @returns Error message or empty string if last name is valid
  */
-export const getLastNameErrorMessage = (lastName: string): string => getRequiredFieldError('apellido');
+export const getLastNameErrorMessage = (lastName: string): string => 
+  getRequiredFieldError('apellido', lastName);
 
 /**
  * Validates if a user type is selected
