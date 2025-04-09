@@ -6,7 +6,6 @@ export default function LoginPage() {
 
   // Handler for successful login
   const handleLoginSuccess = () => {
-    // Aquí iría la lógica para redirigir al usuario después del login
     console.log('Login exitoso, redirigiendo...');
     // navigate('/dashboard');
   };

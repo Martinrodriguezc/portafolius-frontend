@@ -1,7 +1,7 @@
 // Export only the necessary validation functions for external use
 
-// Export form validation functions
-export { validateRegisterForm, validateLoginForm } from './formValidation';
+// Export form validations
+export { validateLoginForm } from './forms/loginFormValidation';
+export { validateRegisterForm } from './forms/registerFormValidation';
 
-// We don't export the individual validation functions from the other files
-// as they should only be used internally by formValidation.ts 
+// No need to export the individual validation functions as they are internal 
