@@ -1,4 +1,4 @@
-import { useRegisterForm } from '../../hooks/useAuthForms';
+import { useRegisterForm } from '../../hooks/useRegisterForm';
 
 interface RegisterFormProps {
   onRegisterSuccess?: () => void;

@@ -1,4 +1,4 @@
-import { useLoginForm } from '../../hooks/useAuthForms';
+import { useLoginForm } from '../../hooks/useLoginForm';
 
 interface LoginFormProps {
   onLoginSuccess?: () => void;
