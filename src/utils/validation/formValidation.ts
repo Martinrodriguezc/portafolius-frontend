@@ -1,14 +1,11 @@
 // Form validation integration
 
 import { FormData, FormErrors, ValidationResult } from '../../types/auth';
-import { validateEmail, getEmailErrorMessage } from './emailValidation';
-import { validatePassword, getPasswordErrorMessage } from './passwordValidation';
+import { getEmailErrorMessage } from './emailValidation';
+import { getPasswordErrorMessage } from './passwordValidation';
 import { 
-  validateName, 
   getNameErrorMessage,
-  validateLastName,
   getLastNameErrorMessage,
-  validateUserType,
   getUserTypeErrorMessage
 } from './personalDataValidation';
 
