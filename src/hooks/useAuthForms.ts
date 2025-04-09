@@ -7,6 +7,8 @@ import {
 } from '../types/auth';
 import { validateRegisterForm, validateLoginForm } from '../utils/validation';
 
+// Rest of the file remains the same...
+
 // Hook for the registration form
 export const useRegisterForm = (onSuccess?: () => void) => {
   const [state, setState] = useState<RegisterFormState>(initialRegisterFormState);

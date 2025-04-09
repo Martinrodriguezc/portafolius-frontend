@@ -1,7 +1,11 @@
 import { useRegisterForm } from '../../hooks/useAuthForms';
-import { RegisterFormProps } from '../../types/auth';
 
-export default function RegisterForm({ onRegisterSuccess }: RegisterFormProps = {}) {
+interface RegisterFormProps {
+  onRegisterSuccess?: () => void;
+  onNavigateToLogin?: () => void;
+}
+
+export default function RegisterForm({ onRegisterSuccess, onNavigateToLogin }: RegisterFormProps = {}) {
   const {
     formData,
     formErrors,
@@ -121,6 +125,22 @@ export default function RegisterForm({ onRegisterSuccess }: RegisterFormProps = 
         >
           Registrarse
         </button>
+
+        {onNavigateToLogin && (
+          <div className="text-center mt-4">
+            <span className="text-[13px] text-[#333333]">¿Ya tienes una cuenta? </span>
+            <a 
+              href="#" 
+              className="text-[13px] font-bold text-[#4E81BD]"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigateToLogin();
+              }}
+            >
+              Inicia sesión
+            </a>
+          </div>
+        )}
       </form>
     </div>
   );

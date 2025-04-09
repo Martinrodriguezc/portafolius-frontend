@@ -59,11 +59,6 @@ export interface RegisterFormProps {
 }
 
 // LoginForm component specific types
-export interface LoginFormProps {
-  onSwitchTab: () => void;
-  onLoginSuccess?: () => void;
-}
-
 export interface LoginFormState {
   email: string;
   password: string;

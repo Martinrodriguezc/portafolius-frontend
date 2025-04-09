@@ -1,7 +1,11 @@
 import { useLoginForm } from '../../hooks/useAuthForms';
-import { LoginFormProps } from '../../types/auth';
 
-export default function LoginForm({ onSwitchTab, onLoginSuccess }: LoginFormProps) {
+interface LoginFormProps {
+  onLoginSuccess?: () => void;
+  onNavigateToRegister: () => void;
+}
+
+export default function LoginForm({ onLoginSuccess, onNavigateToRegister }: LoginFormProps) {
   const {
     email,
     password,
@@ -100,7 +104,7 @@ export default function LoginForm({ onSwitchTab, onLoginSuccess }: LoginFormProp
             className="text-[13px] font-bold text-[#4E81BD]"
             onClick={(e) => {
               e.preventDefault();
-              onSwitchTab();
+              onNavigateToRegister();
             }}
           >
             Regístrate
