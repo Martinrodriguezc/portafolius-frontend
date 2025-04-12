@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import TeacherSidebar from "../../components/teacher/TeacherSidebar"
+import TeacherSidebar from "../../components/teacher/TeacherSideBar/TeacherSidebar"
 
 
 interface TeacherLayoutProps {

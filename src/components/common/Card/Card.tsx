@@ -8,10 +8,14 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, description, amount }) => {
   return (
-    <div className="rounded-lg border bg-white shadow p-4">
-      <h3 className="text-lg font-bold">{title}</h3>
-      <h5 className="text-lg text-gray-400">{description}</h5>
-      <p className="text-lg font-bold">{amount}</p>
+    <div className="rounded-lg border border-gray-200 bg-white shadow-lg p-6 hover:shadow-xl transition-all duration-300">
+      <div className="flex flex-col space-y-2">
+        <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
+        <p className="text-sm text-gray-500">{description}</p>
+        <div className="mt-4">
+          <span className="block text-2xl font-bold text-blue-600">{amount}</span>
+        </div>
+      </div>
     </div>
   );
 };

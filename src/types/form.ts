@@ -10,4 +10,4 @@ export interface BaseFormState<T, E> {
 export interface ValidationResult<E> {
   isValid: boolean;
   errors: E;
-} 
+}
