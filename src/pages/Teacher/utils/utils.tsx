@@ -7,7 +7,7 @@ export const filterVideosByStatus = (
   return pendingVideos.filter((video) => video.status === status);
 };
 
-//Remove when fetched data from database
+//TODO: REMOVE WHEN FETCHED DATA FROM DATABASE
 export const sampleVideoData: Video[] = [
   {
     id: 1,

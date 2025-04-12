@@ -12,7 +12,6 @@ const TabsContainer: React.FC<TabsProps> = ({ defaultValue, children }) => {
     <div className="tabs">
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
-          // Inyecta las props a los hijos directos
           return React.cloneElement(
             child as ReactElement<{
               selectedTab?: string;

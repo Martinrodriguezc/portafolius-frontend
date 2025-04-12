@@ -7,7 +7,6 @@ interface TabsListProps {
   setSelectedTab?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-// Tipo auxiliar para indicar que el hijo acepta las props de estado
 interface WithTabStateProps {
   selectedTab?: string;
   setSelectedTab?: React.Dispatch<React.SetStateAction<string>>;
@@ -21,7 +20,6 @@ const TabsList: React.FC<TabsListProps> = ({
 }) => {
   const clonedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
-      // Se asume que el componente hijo acepta las props selectedTab y setSelectedTab
       return React.cloneElement(child as ReactElement<WithTabStateProps>, { selectedTab, setSelectedTab });
     }
     return child;

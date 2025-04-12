@@ -8,7 +8,6 @@ export default function TeacherSidebar() {
   const location = useLocation();
   const pathname = location.pathname;
 
-  // Función para determinar si la ruta está activa
   const isActive = (path: string): boolean => {
     return pathname === path || pathname.startsWith(`${path}/`);
   };

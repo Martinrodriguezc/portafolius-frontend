@@ -19,6 +19,7 @@ export default function HomePage() {
     navigate("/teacher");
   };
 
+  //TODO: FIX BUTTONS AND REUSE COMPONENT
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 text-center px-4">
       <header className="mb-10">

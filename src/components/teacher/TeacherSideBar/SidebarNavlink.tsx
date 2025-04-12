@@ -7,7 +7,6 @@ interface SidebarNavLinkProps {
   isActive: boolean;
 }
 
-// Componente para un enlace de navegación
 export const SidebarNavLink: React.FC<SidebarNavLinkProps> = ({
   to,
   icon,

@@ -7,6 +7,7 @@ import VideoCard from "../../components/teacher/VideoCard";
 import TeacherLayout from "../layout/TeacherLayout";
 import { filterVideosByStatus, sampleVideoData } from "./utils/utils";
 
+//TODO: MAKE CODE ADAPTABLE BY REMOVING DIRECT INPUTS GIVEN
 export default function TeacherDashboardLayout() {
   return (
     <div className="p-6">
