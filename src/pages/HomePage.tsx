@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Button from "../components/common/Button/Button";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -19,7 +20,6 @@ export default function HomePage() {
     navigate("/teacher");
   };
 
-  //TODO: FIX BUTTONS AND REUSE COMPONENT
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 text-center px-4">
       <header className="mb-10">
@@ -27,38 +27,25 @@ export default function HomePage() {
           PortafoliUS
         </h1>
         <p className="text-xl text-gray-700 max-w-2xl mx-auto">
-          Plataforma educativa para el aprendizaje y la retroalimentación efectiva en Ultrasonido Clínico.
+          Plataforma educativa para el aprendizaje y la retroalimentación
+          efectiva en Ultrasonido Clínico.
         </p>
       </header>
 
       <div className="flex flex-col md:flex-row gap-4 mb-8">
-        <button
-          onClick={handleLogin}
-          className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all shadow-lg"
-        >
+        <Button variant="primary" onClick={handleLogin} fixedWidth={true}>
           Login
-        </button>
-        <button
-          onClick={handleSignup}
-          className="bg-green-600 text-white px-8 py-3 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all shadow-lg"
-        >
+        </Button>
+        <Button variant="primary" onClick={handleSignup} fixedWidth={true}>
           Sign Up
-        </button>
+        </Button>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
-        <button
-          onClick={handleStudentDashboard}
-          className="bg-indigo-600 text-white px-8 py-3 rounded-full hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all shadow-lg"
-        >
+        <Button onClick={handleStudentDashboard} fixedWidth={true}>
           Student Dashboard
-        </button>
-        <button
-          onClick={handleTeacherDashboard}
-          className="bg-purple-600 text-white px-8 py-3 rounded-full hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all shadow-lg"
-        >
-          Teacher Dashboard
-        </button>
+        </Button>
+        <Button onClick={handleTeacherDashboard} fixedWidth={true}>Teacher Dashboard</Button>
       </div>
     </main>
   );

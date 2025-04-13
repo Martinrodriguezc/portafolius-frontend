@@ -1,5 +1,6 @@
 import { Video } from "../../types/video";
 import React from "react";
+import Button from "../common/Button/Button";
 
 interface VideoProps {
   video: Video;
@@ -19,14 +20,14 @@ export const VideoCard: React.FC<VideoProps> = ({ video }) => {
         <span className="font-semibold">Diagnóstico:</span> {video.diagnosis}
       </p>
       {video.status === "pendiente" && (
-        <button
+        <Button
           onClick={() => {
             console.log(`Evaluar video con id: ${video.id}`);
           }}
-          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+          className="mt-4 text-white px-4 py-2 rounded-md transition"
         >
           Evaluar video
-        </button>
+        </Button>
       )}
     </div>
   );

@@ -1,33 +1,44 @@
 import React from "react";
 
-//TODO: REVISAR
+const baseStyle =
+  "text-[14px] font-medium py-[12px] rounded-[8px] transition-colors duration-300 cursor-pointer hover:bg-blue-700";
+
 const variantStyles = {
-  primary:
-    "w-full bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white text-[14px] font-medium py-[12px] rounded-[8px] mt-4",
+  primary: "bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white flex items-center justify-center",
   secondary: "border border-[#A0A0A0] text-[#333333]",
-  google: "w-full border border-[#A0A0A0] flex items-center justify-center",
+  google: "border border-[#A0A0A0] flex items-center justify-center",
 };
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "google";
   className?: string;
+  fixedWidth?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
   children,
   variant = "primary",
   className = "",
+  fixedWidth = true,
+  ...props
 }) => {
-  const classes = [
+  const widthClass = "w-64";
+
+  const combinedClasses = [
+    fixedWidth ? widthClass : "w-full",
+    baseStyle,
     variantStyles[variant],
-    "text-[14px] font-medium py-[12px] rounded-[8px]",
     className,
   ]
     .filter(Boolean)
     .join(" ");
 
-  return <button className={classes}>{children}</button>;
+  return (
+    <button className={combinedClasses} {...props}>
+      {children}
+    </button>
+  );
 };
 
 export default Button;

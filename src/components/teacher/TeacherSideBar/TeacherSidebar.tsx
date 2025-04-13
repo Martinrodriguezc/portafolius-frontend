@@ -8,7 +8,10 @@ export default function TeacherSidebar() {
   const location = useLocation();
   const pathname = location.pathname;
 
-  const isActive = (path: string): boolean => {
+  const isActive = (path: string, exact: boolean = false): boolean => {
+    if (exact) {
+      return pathname === path;
+    }
     return pathname === path || pathname.startsWith(`${path}/`);
   };
 
@@ -21,29 +24,25 @@ export default function TeacherSidebar() {
             to="/teacher"
             icon={<Home className="h-5 w-5" />}
             label="Dashboard"
-            isActive={
-              isActive("/teacher") &&
-              !isActive("/teacher/students") &&
-              !isActive("/teacher/settings")
-            }
+            isActive={isActive("/teacher", true)}
           />
           <SidebarNavLink
             to="/teacher/evaluations"
             icon={<CheckSquare className="h-5 w-5" />}
             label="Evaluaciones"
-            isActive={isActive("/teacher/evaluations")}
+            isActive={isActive("/teacher/evaluations", true)}
           />
           <SidebarNavLink
             to="/teacher/students"
             icon={<Users className="h-5 w-5" />}
             label="Estudiantes"
-            isActive={isActive("/teacher/students")}
+            isActive={isActive("/teacher/students", true)}
           />
           <SidebarNavLink
             to="/teacher/settings"
             icon={<Settings className="h-5 w-5" />}
             label="Configuración"
-            isActive={isActive("/teacher/settings")}
+            isActive={isActive("/teacher/settings", true)}
           />
         </ul>
       </nav>

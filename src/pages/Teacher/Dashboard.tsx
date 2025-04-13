@@ -10,7 +10,7 @@ import { filterVideosByStatus, sampleVideoData } from "./utils/utils";
 //TODO: MAKE CODE ADAPTABLE BY REMOVING DIRECT INPUTS GIVEN
 export default function TeacherDashboardLayout() {
   return (
-    <div className="p-6">
+    <div className="p-8">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">
           Dashboard de Profesor
@@ -19,13 +19,27 @@ export default function TeacherDashboardLayout() {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card title="Pendientes" description="Videos por evaluar" amount={8} />
-        <Card title="Evaluados" description="Videos evaluados hoy" amount={5} />
-        <Card
-          title="Estudiantes"
-          description="Total de estudiantes"
-          amount={24}
-        />
+        <Card>
+          <div className="flex flex-col space-y-2">
+            <h3 className="text-xl font-bold text-gray-800">Pendientes</h3>
+            <p className="text-sm text-gray-500">Videos por evaluar</p>
+            <span className="text-[24px] font-bold text-[#333333] mt-2">8</span>
+          </div>
+        </Card>
+        <Card>
+          <div className="flex flex-col space-y-2">
+            <h3 className="text-xl font-bold text-gray-800">Evaluados</h3>
+            <p className="text-sm text-gray-500">Videos evaluados hoy</p>
+            <span className="text-[24px] font-bold text-[#333333] mt-2">5</span>
+          </div>
+        </Card>
+        <Card>
+          <div className="flex flex-col space-y-2">
+            <h3 className="text-xl font-bold text-gray-800">Estudiantes</h3>
+            <p className="text-sm text-gray-500">Total de estudiantes</p>
+            <span className="text-[24px] font-bold text-[#333333] mt-2">24</span>
+          </div>
+        </Card>
       </div>
 
       <div className="mb-6">
@@ -56,7 +70,7 @@ export default function TeacherDashboardLayout() {
   );
 }
 
-export const TeacherDashboard = () => {
+export const TeacherDashboardPage = () => {
   return (
     <TeacherLayout>
       <TeacherDashboardLayout />

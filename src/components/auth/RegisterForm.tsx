@@ -1,5 +1,6 @@
 import { useRegisterForm } from "../../hooks/form/useRegisterForm";
 import { RegisterFormProps } from "../../types/register";
+import Button from "../common/Button/Button";
 import Input from "../common/Input/BaseInput";
 
 export default function RegisterForm({
@@ -92,12 +93,12 @@ export default function RegisterForm({
           onFocus={handlePasswordFocus}
         />
 
-        <button
+        <Button
           type="submit"
-          className="w-full bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white text-sm font-medium py-3 rounded-md mt-4 transition-colors"
+          fixedWidth={false}
         >
           Registrarse
-        </button>
+        </Button>
 
         {onNavigateToLogin && (
           <div className="text-center mt-4">
