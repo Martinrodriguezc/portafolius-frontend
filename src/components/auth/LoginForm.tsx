@@ -46,7 +46,7 @@ export default function LoginForm({
           error={passwordError}
         />
 
-        <Button>Iniciar Sesión</Button>
+        <Button fixedWidth={false}>Iniciar Sesión</Button>
 
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
@@ -57,7 +57,7 @@ export default function LoginForm({
           </div>
         </div>
 
-        <Button variant="google">
+        <Button variant="google" fixedWidth={false}>
           <svg
             className="mr-2 h-4 w-4"
             aria-hidden="true"

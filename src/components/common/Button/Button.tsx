@@ -6,7 +6,7 @@ const baseStyle =
 const variantStyles = {
   primary: "bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white flex items-center justify-center",
   secondary: "border border-[#A0A0A0] text-[#333333]",
-  google: "border border-[#A0A0A0] flex items-center justify-center",
+  google: "border border-[#A0A0A0] flex items-center justify-center hover:bg-gray-200",
 };
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
