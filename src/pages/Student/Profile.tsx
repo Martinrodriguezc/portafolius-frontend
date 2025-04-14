@@ -1,14 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import Button from "../../components/common/Button/Button";
-import { Card, CardContent }  from "../../components/common/Card/Card";
+import Button from "../../components/common/Button/Button"
+import { Card, CardContent } from "../../components/common/Card/Card";
 import BaseInput from "../../components/common/Input/BaseInput";
-import label from "../../components/common/Label/Label";
-import TabsList from "../../components/common/Tabs/TabsList";
-import TabsButton from "../../components/common/Tabs/TabsButton";
-import TabsPanel from "../../components/common/Tabs/TabsPanel";
-import Switch from "../../components/common/Switch/Switch"
+import { Label } from "../../components/common/Label/Label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/common/Tabs/Tabs";
+import { Switch } from "../../components/common/Switch/Switch";
 import { User, Bell, Shield, LogOut } from "lucide-react"
 
 export default function ProfilePage() {
@@ -84,7 +82,7 @@ export default function ProfilePage() {
                       <Label htmlFor="firstName" className="text-[14px] text-[#333333]">
                         Nombre
                       </Label>
-                      <Input
+                      <BaseInput
                         id="firstName"
                         value={profile.firstName}
                         onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
@@ -95,7 +93,7 @@ export default function ProfilePage() {
                       <Label htmlFor="lastName" className="text-[14px] text-[#333333]">
                         Apellido
                       </Label>
-                      <Input
+                      <BaseInput
                         id="lastName"
                         value={profile.lastName}
                         onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
@@ -108,7 +106,7 @@ export default function ProfilePage() {
                     <Label htmlFor="email" className="text-[14px] text-[#333333]">
                       Correo electrónico
                     </Label>
-                    <Input
+                    <BaseInput
                       id="email"
                       type="email"
                       value={profile.email}
@@ -121,7 +119,7 @@ export default function ProfilePage() {
                     <Label htmlFor="institution" className="text-[14px] text-[#333333]">
                       Institución
                     </Label>
-                    <Input
+                    <BaseInput
                       id="institution"
                       value={profile.institution}
                       onChange={(e) => setProfile({ ...profile, institution: e.target.value })}
@@ -134,7 +132,7 @@ export default function ProfilePage() {
                       <Label htmlFor="specialty" className="text-[14px] text-[#333333]">
                         Especialidad
                       </Label>
-                      <Input
+                      <BaseInput
                         id="specialty"
                         value={profile.specialty}
                         onChange={(e) => setProfile({ ...profile, specialty: e.target.value })}
@@ -145,7 +143,7 @@ export default function ProfilePage() {
                       <Label htmlFor="year" className="text-[14px] text-[#333333]">
                         Año académico
                       </Label>
-                      <Input
+                      <BaseInput
                         id="year"
                         value={profile.year}
                         onChange={(e) => setProfile({ ...profile, year: e.target.value })}
@@ -236,7 +234,7 @@ export default function ProfilePage() {
                   <Label htmlFor="currentPassword" className="text-[14px] text-[#333333]">
                     Contraseña actual
                   </Label>
-                  <Input
+                  <BaseInput
                     id="currentPassword"
                     type="password"
                     className="h-[42px] text-[14px] border-[#A0A0A0] rounded-[8px]"
@@ -247,7 +245,7 @@ export default function ProfilePage() {
                   <Label htmlFor="newPassword" className="text-[14px] text-[#333333]">
                     Nueva contraseña
                   </Label>
-                  <Input
+                  <BaseInput
                     id="newPassword"
                     type="password"
                     className="h-[42px] text-[14px] border-[#A0A0A0] rounded-[8px]"
@@ -258,7 +256,7 @@ export default function ProfilePage() {
                   <Label htmlFor="confirmPassword" className="text-[14px] text-[#333333]">
                     Confirmar nueva contraseña
                   </Label>
-                  <Input
+                  <BaseInput
                     id="confirmPassword"
                     type="password"
                     className="h-[42px] text-[14px] border-[#A0A0A0] rounded-[8px]"

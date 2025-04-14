@@ -1,7 +1,7 @@
 import { Card, CardContent }  from "../../components/common/Card/Card";
-import TabsContainer from "../../components/common/Tabs/TabsContainer";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/common/Tabs/Tabs";
 import Button from "../../components/common/Button/Button";
-import { FileText, Video, Download, ExternalLink } from "lucide-react"
+import { FileText, Video, Download, ExternalLink } from "lucide-react";
 
 export default function MaterialsPage() {
   // Datos de ejemplo para los materiales de estudio

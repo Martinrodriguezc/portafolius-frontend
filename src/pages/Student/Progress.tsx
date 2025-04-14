@@ -1,8 +1,5 @@
 import { Card, CardContent }  from "../../components/common/Card/Card";
-import TabsButton from "../../components/common/Tabs/TabsButton";
-import TabsContainer from "../../components/common/Tabs/TabsContainer";
-import TabsList from "../../components/common/Tabs/TabsList";
-import TabsPanel from "../../components/common/Tabs/TabsPanel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/common/Tabs/Tabs";
 import { BarChart, LineChart, PieChart, ArrowUp } from "lucide-react"
 
 export default function ProgressPage() {

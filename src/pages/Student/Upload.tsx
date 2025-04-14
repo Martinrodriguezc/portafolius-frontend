@@ -6,7 +6,7 @@ import { useState } from "react"
 import Button from "../../components/common/Button/Button"
 import { Card, CardContent }  from "../../components/common/Card/Card";
 import Input from "../../components/common/Input/BaseInput";
-import Label from "../../components/common/Label/Label";
+import { Label } from "../../components/common/Label/Label";
 import { Progress } from "../../components/common/Progress/Progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/common/Select/Select"
 import { Textarea } from "../../components/common/Textarea/Textarea"

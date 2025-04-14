@@ -3,22 +3,16 @@
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 
-interface LabelProps extends React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> {
-  children: React.ReactNode
-}
-
-const Label: React.FC<LabelProps> = ({ children, className = "", ...props }) => {
+function Label({ className = "", ...props }: React.ComponentProps<typeof LabelPrimitive.Root>) {
   const baseClasses =
-    "flex items-center gap-2 text-sm leading-none font-medium select-none"
+    "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
   return (
     <LabelPrimitive.Root
       data-slot="label"
       className={`${baseClasses} ${className}`}
       {...props}
-    >
-      {children}
-    </LabelPrimitive.Root>
+    />
   )
 }
 
-export default Label
+export { Label }

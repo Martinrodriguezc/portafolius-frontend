@@ -1,13 +1,12 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import HomePage from "./pages/HomePage";
-import  StudentDashboardPage  from "./pages/Student/Dashboard";
+
+// Importación del layout y páginas de student
+import StudentLayout from "./pages/layout/StudentLayout";
+import StudentDashboardPage from "./pages/Student/Dashboard";
 import StudentMaterialsPage from "./pages/Student/Materials";
 import StudentProfilePage from "./pages/Student/Profile";
 import StudentProgressPage from "./pages/Student/Progress";
@@ -22,12 +21,16 @@ function App() {
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/student" element={<StudentDashboardPage />} />
-        <Route path="/student/materials" element={<StudentMaterialsPage/>}/>
-        <Route path="/student/profile" element={<StudentProfilePage/>}/>
-        <Route path="/student/progress" element={<StudentProgressPage/>}/>
-        <Route path="/student/upload" element={<StudentUploadPage/>}/>
-        <Route path="/student/video" element={<StudentVideoPage/>}/>
+
+        {/* Encapsula todas las rutas de student con StudentLayout */}
+        <Route path="/student" element={<StudentLayout />}>
+          <Route index element={<StudentDashboardPage />} />
+          <Route path="materials" element={<StudentMaterialsPage />} />
+          <Route path="profile" element={<StudentProfilePage />} />
+          <Route path="progress" element={<StudentProgressPage />} />
+          <Route path="upload" element={<StudentUploadPage />} />
+          <Route path="video" element={<StudentVideoPage />} />
+        </Route>
       </Routes>
     </Router>
   );
