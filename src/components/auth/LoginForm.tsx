@@ -1,45 +1,52 @@
-import { useLoginForm } from '../../hooks/useLoginForm';
-import { LoginFormProps } from '../../types/login';
-import { Button } from '../common';
-import { EmailInput, PasswordInput } from '../common/Input';
+import { useLoginForm } from "../../hooks/form/useLoginForm";
+import { LoginFormProps } from "../../types/login";
+import Button from "../common/Button/Button";
+import Input from "../common/Input/BaseInput";
 
-export default function LoginForm({ onLoginSuccess, onNavigateToRegister }: LoginFormProps) {
+export default function LoginForm({
+  onLoginSuccess,
+  onNavigateToRegister,
+}: LoginFormProps) {
   const {
     email,
     password,
     emailError,
     passwordError,
     handleInputChange,
-    handleSubmit
+    handleSubmit,
   } = useLoginForm(onLoginSuccess);
 
   return (
     <div>
       <div className="flex flex-col items-center mb-6">
         <h1 className="text-[32px] font-bold text-[#4E81BD]">PortafoliUS</h1>
-        <h2 className="text-[20px] font-bold text-[#333333] mt-4">Iniciar sesión</h2>
+        <h2 className="text-[20px] font-bold text-[#333333] mt-4">
+          Iniciar sesión
+        </h2>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <EmailInput
+        <Input
           id="email"
           label="Correo electrónico"
+          type="email"
+          required
           value={email}
           onChange={handleInputChange}
           error={emailError}
         />
 
-        <PasswordInput
+        <Input
           id="password"
           label="Contraseña"
+          type="password"
+          required
           value={password}
           onChange={handleInputChange}
           error={passwordError}
         />
 
-        <Button type="submit" fullWidth>
-          Iniciar Sesión
-        </Button>
+        <Button fixedWidth={false}>Iniciar Sesión</Button>
 
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
@@ -50,7 +57,7 @@ export default function LoginForm({ onLoginSuccess, onNavigateToRegister }: Logi
           </div>
         </div>
 
-        <Button variant="google" fullWidth>
+        <Button variant="google" fixedWidth={false}>
           <svg
             className="mr-2 h-4 w-4"
             aria-hidden="true"
@@ -69,21 +76,24 @@ export default function LoginForm({ onLoginSuccess, onNavigateToRegister }: Logi
           Iniciar sesión con Google
         </Button>
 
-
-        <div className="text-center mt-4">
-          <span className="text-[13px] text-[#333333]">¿No tienes una cuenta? </span>
-          <a 
-            href="#" 
-            className="text-[13px] font-bold text-[#4E81BD]"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigateToRegister?.();
-            }}
-          >
-            Regístrate
-          </a>
-        </div>
+        {onNavigateToRegister && (
+          <div className="text-center mt-4">
+            <span className="text-[13px] text-[#333333]">
+              ¿No tienes una cuenta?{" "}
+            </span>
+            <a
+              href="#"
+              className="text-[13px] font-bold text-[#4E81BD]"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigateToRegister();
+              }}
+            >
+              Regístrate
+            </a>
+          </div>
+        )}
       </form>
     </div>
   );
-} 
+}
