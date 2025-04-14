@@ -1,41 +1,43 @@
-import { useRegisterForm } from '../../hooks/useRegisterForm';
-import { TextInput, EmailInput, PasswordInput } from '../common/Input';
+import { useRegisterForm } from "../../hooks/form/useRegisterForm";
+import { RegisterFormProps } from "../../types/register";
+import Button from "../common/Button/Button";
+import Input from "../common/Input/BaseInput";
 
-interface RegisterFormProps {
-  onRegisterSuccess?: () => void;
-  onNavigateToLogin?: () => void;
-}
-
-export default function RegisterForm({ onRegisterSuccess, onNavigateToLogin }: RegisterFormProps = {}) {
+export default function RegisterForm({
+  onRegisterSuccess,
+  onNavigateToLogin,
+}: RegisterFormProps) {
   const {
     formData,
     formErrors,
     showPasswordRequirements,
     handleInputChange,
     handlePasswordFocus,
-    handleSubmit
+    handleSubmit,
   } = useRegisterForm(onRegisterSuccess);
 
   return (
-    <div>
-      <div className="flex flex-col items-center mb-6">
-        <h1 className="text-[32px] font-bold text-[#4E81BD]">PortafoliUS</h1>
-        <h2 className="text-[20px] font-bold text-[#333333] mt-4">Registrarse</h2>
-      </div>
+    <div className="max-w-lg mx-auto p-6">
+      <header className="flex flex-col items-center mb-8">
+        <h1 className="text-3xl font-bold text-[#4E81BD]">PortafoliUS</h1>
+        <h2 className="text-xl font-bold text-[#333333] mt-4">Registrarse</h2>
+      </header>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
-          <TextInput
+          <Input
             id="firstName"
             label="Nombre"
+            type="text"
             required
             value={formData.firstName}
             onChange={handleInputChange}
             error={formErrors.firstName}
           />
-          <TextInput
+          <Input
             id="lastName"
             label="Apellido"
+            type="text"
             required
             value={formData.lastName}
             onChange={handleInputChange}
@@ -43,9 +45,10 @@ export default function RegisterForm({ onRegisterSuccess, onNavigateToLogin }: R
           />
         </div>
 
-        <EmailInput
+        <Input
           id="email"
           label="Correo electrónico"
+          type="email"
           required
           value={formData.email}
           onChange={handleInputChange}
@@ -53,48 +56,58 @@ export default function RegisterForm({ onRegisterSuccess, onNavigateToLogin }: R
         />
 
         <div className="space-y-2">
-          <label htmlFor="userType" className="block text-[14px] text-[#333333]">
+          <label
+            htmlFor="userType"
+            className="block text-sm text-[#333333] font-medium"
+          >
             Tipo de usuario <span className="text-red-500">*</span>
           </label>
           <select
             id="userType"
-            className={`w-full h-[42px] text-[14px] border ${formErrors.userType ? 'border-red-500' : 'border-[#A0A0A0]'} rounded-[8px] px-3`}
+            className={`w-full h-10 text-sm border ${
+              formErrors.userType ? "border-red-500" : "border-[#A0A0A0]"
+            } rounded-md px-3 focus:outline-none focus:ring focus:border-blue-300`}
             value={formData.userType}
             onChange={handleInputChange}
           >
-            <option value="" disabled>Selecciona tu rol</option>
+            <option value="" disabled>
+              Selecciona tu rol
+            </option>
             <option value="student">Estudiante</option>
             <option value="teacher">Profesor</option>
           </select>
           {formErrors.userType && (
-            <p className="text-red-500 text-[12px] mt-1">{formErrors.userType}</p>
+            <p className="text-red-500 text-xs mt-1">{formErrors.userType}</p>
           )}
         </div>
 
-        <PasswordInput
+        <Input
           id="password"
           label="Contraseña"
+          type="password"
           required
           value={formData.password}
           onChange={handleInputChange}
           error={formErrors.password}
           showPasswordRequirements={showPasswordRequirements}
-          onPasswordFocus={handlePasswordFocus}
+          onFocus={handlePasswordFocus}
         />
 
-        <button 
+        <Button
           type="submit"
-          className="w-full bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white text-[14px] font-medium py-[12px] rounded-[8px] mt-4"
+          fixedWidth={false}
         >
           Registrarse
-        </button>
+        </Button>
 
         {onNavigateToLogin && (
           <div className="text-center mt-4">
-            <span className="text-[13px] text-[#333333]">¿Ya tienes una cuenta? </span>
-            <a 
-              href="#" 
-              className="text-[13px] font-bold text-[#4E81BD]"
+            <span className="text-xs text-[#333333]">
+              ¿Ya tienes una cuenta?{" "}
+            </span>
+            <a
+              href="#"
+              className="text-xs font-bold text-[#4E81BD] hover:underline"
               onClick={(e) => {
                 e.preventDefault();
                 onNavigateToLogin();
@@ -107,4 +120,4 @@ export default function RegisterForm({ onRegisterSuccess, onNavigateToLogin }: R
       </form>
     </div>
   );
-} 
+}
