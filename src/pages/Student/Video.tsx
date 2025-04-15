@@ -4,13 +4,12 @@ import Button from "../../components/common/Button/Button";
 import Card from "../../components/common/Card/Card";
 import { Textarea } from "../../components/common/Textarea/Textarea";
 import { useVideoPage } from "../../hooks/video/useVideoPage";
-import { VIDEO_DATA_EXAMPLE } from "../../utils/videoConstants";
+import { VIDEO_DATA_EXAMPLE } from "../../utils/uploadConstants";
 
 export default function VideoPage() {
   const { id } = useParams() as { id: string };
 
   const { isPlaying, setIsPlaying, comment, setComment, handleSubmitComment } = useVideoPage();
-
   const videoData = {
     ...VIDEO_DATA_EXAMPLE,
     id,
@@ -30,7 +29,11 @@ export default function VideoPage() {
                   className="h-12 w-12 rounded-full bg-white/20 text-white hover:bg-white/30"
                   onClick={() => setIsPlaying(!isPlaying)}
                 >
-                  {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-1" />}
+                  {isPlaying ? (
+                    <Pause className="h-6 w-6" />
+                  ) : (
+                    <Play className="h-6 w-6 ml-1" />
+                  )}
                 </Button>
               </div>
             </div>

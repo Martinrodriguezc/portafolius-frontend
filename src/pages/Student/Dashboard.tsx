@@ -1,4 +1,3 @@
-import React from "react";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
 import { dashboardConstants } from "../../utils/dashboardConstants";

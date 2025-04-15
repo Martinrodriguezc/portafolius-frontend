@@ -1,4 +1,3 @@
-import React from "react";
 import { progressData } from "../../utils/progressConstants";
 import { StatsGrid } from "../../components/student/progress/StatsGrid";
 import { LineChart, BarChart, PieChart } from "lucide-react";

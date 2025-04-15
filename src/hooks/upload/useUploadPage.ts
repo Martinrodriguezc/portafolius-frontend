@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 
 export function useUploadPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -7,12 +7,12 @@ export function useUploadPage() {
   const [protocol, setProtocol] = useState("");
   const [comment, setComment] = useState("");
   const [tags, setTags] = useState<{ id: number; text: string }[]>([]);
-
   const [selectedOrgan, setSelectedOrgan] = useState("");
   const [selectedStructure, setSelectedStructure] = useState("");
   const [selectedCondition, setSelectedCondition] = useState("");
+  const [tagInput, setTagInput] = useState("");
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files);
       setFiles((prev) => [...prev, ...newFiles]);
@@ -26,7 +26,7 @@ export function useUploadPage() {
   const addTag = () => {
     if (selectedOrgan && selectedStructure && selectedCondition) {
       const tagText = `${selectedOrgan} → ${selectedStructure} → ${selectedCondition}`;
-      setTags([...tags, { id: Date.now(), text: tagText }]);
+      setTags((prev) => [...prev, { id: Date.now(), text: tagText }]);
       setSelectedOrgan("");
       setSelectedStructure("");
       setSelectedCondition("");
@@ -34,7 +34,13 @@ export function useUploadPage() {
   };
 
   const removeTag = (id: number) => {
-    setTags(tags.filter((tag) => tag.id !== id));
+    setTags((prev) => prev.filter((tag) => tag.id !== id));
+  };
+
+  const addCustomTag = () => {
+    if (!tagInput.trim()) return;
+    setTags((prev) => [...prev, { id: Date.now(), text: tagInput.trim() }]);
+    setTagInput("");
   };
 
   const handleSubmit = () => {
@@ -79,5 +85,8 @@ export function useUploadPage() {
     setSelectedCondition,
     addTag,
     removeTag,
+    tagInput,
+    setTagInput,
+    addCustomTag,
   };
 }

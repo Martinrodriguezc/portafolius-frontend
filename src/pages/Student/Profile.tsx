@@ -1,4 +1,3 @@
-import React from "react";
 import { useProfilePage } from "../../hooks/profile/useProfilePage";
 import { User, Bell, Shield } from "lucide-react";
 import { PersonalTab } from "../../components/student/profile/PersonalTab";

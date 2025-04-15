@@ -1,4 +1,3 @@
-import React from "react";
 import { materialsData } from "../../utils/materialsConstants";
 import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";

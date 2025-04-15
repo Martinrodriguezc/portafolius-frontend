@@ -1,46 +1,34 @@
-import React from "react";
-import Button from "../../common/Button/Button";
+import { Plus, X } from "lucide-react";
 import { Label } from "../../common/Label/Label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../common/Select/Select";
+import Button from "../../common/Button/Button";
 import { Badge } from "../../common/Badge/Badge";
-import { Plus, X } from "lucide-react";
+import { TagSectionProps } from "../../../types/TagTypes";
 
-interface TagSectionProps {
-  selectedOrgan: string;
-  setSelectedOrgan: (val: string) => void;
-  selectedStructure: string;
-  setSelectedStructure: (val: string) => void;
-  selectedCondition: string;
-  setSelectedCondition: (val: string) => void;
-  organOptions: string[];
-  structureOptions: Record<string, string[]>;
-  conditionOptions: Record<string, string[]>;
-  addTag: () => void;
-  removeTag: (id: number) => void;
-  tags: { id: number; text: string }[];
+interface TagSectionWrapperProps {
+  section: TagSectionProps;
 }
 
-export function TagSection({
-  selectedOrgan,
-  setSelectedOrgan,
-  selectedStructure,
-  setSelectedStructure,
-  selectedCondition,
-  setSelectedCondition,
-  organOptions,
-  structureOptions,
-  conditionOptions,
-  addTag,
-  removeTag,
-  tags,
-}: TagSectionProps) {
+export function TagSection({ section }: TagSectionWrapperProps) {
+  const {
+    selectedOrgan,
+    setSelectedOrgan,
+    selectedStructure,
+    setSelectedStructure,
+    selectedCondition,
+    setSelectedCondition,
+    organOptions,
+    structureOptions,
+    conditionOptions,
+    addTag,
+    removeTag,
+    tags,
+  } = section;
+
   return (
     <div className="space-y-4 border border-[#A0A0A0]/30 rounded-[16px] p-6">
       <h3 className="text-[16px] font-medium text-[#333333]">Etiquetas de diagnóstico</h3>
-      <p className="text-[14px] text-[#A0A0A0]">
-        Añade etiquetas para indicar qué estructuras y condiciones se muestran en tus videos
-      </p>
-
+      <p className="text-[14px] text-[#A0A0A0]">Añade etiquetas para indicar qué estructuras y condiciones se muestran en tus videos</p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label htmlFor="organ" className="text-[14px] text-[#333333]">
@@ -59,7 +47,6 @@ export function TagSection({
             </SelectContent>
           </Select>
         </div>
-
         <div className="space-y-2">
           <Label htmlFor="structure" className="text-[14px] text-[#333333]">
             Estructura
@@ -78,7 +65,6 @@ export function TagSection({
             </SelectContent>
           </Select>
         </div>
-
         <div className="space-y-2">
           <Label htmlFor="condition" className="text-[14px] text-[#333333]">
             Condición
@@ -98,7 +84,6 @@ export function TagSection({
           </Select>
         </div>
       </div>
-
       <Button
         type="button"
         onClick={addTag}
@@ -109,16 +94,22 @@ export function TagSection({
         <Plus className="mr-2 h-4 w-4" />
         Añadir etiqueta
       </Button>
-
       {tags.length > 0 && (
         <div className="mt-4">
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <Badge key={tag.id} className="bg-[#4E81BD]/10 text-[#4E81BD] hover:bg-[#4E81BD]/20 px-3 py-1">
                 {tag.text}
-                <button onClick={() => removeTag(tag.id)} className="ml-2 text-[#4E81BD] hover:text-[#333333]">
+                <Button
+                  type="button"
+                  onClick={() => removeTag(tag.id)}
+                  variant="ghost"
+                  size="icon"
+                  className="ml-2 text-[#4E81BD] hover:text-[#333333]"
+                  aria-label="Remove tag"
+                >
                   <X size={14} />
-                </button>
+                </Button>
               </Badge>
             ))}
           </div>

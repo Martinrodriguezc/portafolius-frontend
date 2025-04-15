@@ -1,7 +1,6 @@
-import React from "react";
 import Button from "../../common/Button/Button";
 import Card from "../../common/Card/Card";
-import BaseInput from "../../common/Input/Input";
+import Input from "../../common/Input/Input";
 import { Label } from "../../common/Label/Label";
 
 interface ProfileData {
@@ -36,7 +35,7 @@ export function PersonalTab({ profile, setProfile }: PersonalTabProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="firstName" className="text-[14px] text-[#333333]">Nombre</Label>
-              <BaseInput
+              <Input
                 id="firstName"
                 value={profile.firstName}
                 onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
@@ -45,7 +44,7 @@ export function PersonalTab({ profile, setProfile }: PersonalTabProps) {
             </div>
             <div className="space-y-2">
               <Label htmlFor="lastName" className="text-[14px] text-[#333333]">Apellido</Label>
-              <BaseInput
+              <Input
                 id="lastName"
                 value={profile.lastName}
                 onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
@@ -56,7 +55,7 @@ export function PersonalTab({ profile, setProfile }: PersonalTabProps) {
 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-[14px] text-[#333333]">Correo electrónico</Label>
-            <BaseInput
+            <Input
               id="email"
               type="email"
               value={profile.email}
@@ -67,7 +66,7 @@ export function PersonalTab({ profile, setProfile }: PersonalTabProps) {
 
           <div className="space-y-2">
             <Label htmlFor="institution" className="text-[14px] text-[#333333]">Institución</Label>
-            <BaseInput
+            <Input
               id="institution"
               value={profile.institution}
               onChange={(e) => setProfile({ ...profile, institution: e.target.value })}
@@ -78,7 +77,7 @@ export function PersonalTab({ profile, setProfile }: PersonalTabProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="specialty" className="text-[14px] text-[#333333]">Especialidad</Label>
-              <BaseInput
+              <Input
                 id="specialty"
                 value={profile.specialty}
                 onChange={(e) => setProfile({ ...profile, specialty: e.target.value })}
@@ -87,7 +86,7 @@ export function PersonalTab({ profile, setProfile }: PersonalTabProps) {
             </div>
             <div className="space-y-2">
               <Label htmlFor="year" className="text-[14px] text-[#333333]">Año académico</Label>
-              <BaseInput
+              <Input
                 id="year"
                 value={profile.year}
                 onChange={(e) => setProfile({ ...profile, year: e.target.value })}
