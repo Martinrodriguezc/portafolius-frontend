@@ -1,20 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Upload, BarChart, BookOpen, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
+import { studentMenuItems, isActivePath } from "../../../utils/sidebarUtils";
 
 export default function StudentSidebar() {
   const location = useLocation();
-
-  const isActive = (path: string): boolean => {
-    return location.pathname === path || location.pathname.startsWith(`${path}/`);
-  };
-
-  const menuItems = [
-    { path: "/student", icon: Home, label: "Inicio" },
-    { path: "/student/upload", icon: Upload, label: "Subir examen" },
-    { path: "/student/progress", icon: BarChart, label: "Mi progreso" },
-    { path: "/student/materials", icon: BookOpen, label: "Material de estudio" },
-  ];
 
   return (
     <div className="w-64 bg-[#F4F4F4] h-screen flex flex-col">
@@ -24,12 +14,12 @@ export default function StudentSidebar() {
 
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
-          {menuItems.map((item) => (
+          {studentMenuItems.map((item) => (
             <li key={item.path}>
               <Link
                 to={item.path}
                 className={`flex items-center px-4 py-2 rounded-md transition-colors duration-200 ${
-                  isActive(item.path)
+                  isActivePath(location.pathname, item.path)
                     ? "bg-white text-[#4E81BD]"
                     : "text-[#333333] hover:bg-white/50"
                 }`}
