@@ -36,7 +36,11 @@ export default function UploadPage() {
       <Card className="w-full max-w-3xl rounded-[16px]">
         <h1 className="text-[20px] font-bold text-[#333333] mb-6">Subir estudio</h1>
 
-        <UploadSection files={files} handleFileChange={handleFileChange} removeFile={removeFile} />
+        <UploadSection
+          files={files}
+          handleFileChange={handleFileChange}
+          removeFile={removeFile}
+        />
 
         <TagSection
           selectedOrgan={selectedOrgan}

@@ -32,7 +32,6 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const Comp = asChild ? Slot : "span";
-
   return (
     <Comp
       data-slot="badge"

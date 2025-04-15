@@ -64,10 +64,7 @@ function SelectContent(props: React.ComponentProps<typeof SelectPrimitive.Conten
 function SelectLabel(props: React.ComponentProps<typeof SelectPrimitive.Label>) {
   const { className = "", ...rest } = props;
   return (
-    <SelectPrimitive.Label
-      className={`px-2 py-1.5 text-xs font-semibold text-gray-500 ${className}`}
-      {...rest}
-    />
+    <SelectPrimitive.Label className={`px-2 py-1.5 text-xs font-semibold text-gray-500 ${className}`} {...rest} />
   );
 }
 
@@ -92,10 +89,7 @@ function SelectItem(props: React.ComponentProps<typeof SelectPrimitive.Item>) {
 function SelectSeparator(props: React.ComponentProps<typeof SelectPrimitive.Separator>) {
   const { className = "", ...rest } = props;
   return (
-    <SelectPrimitive.Separator
-      className={`bg-gray-200 pointer-events-none -mx-1 my-1 h-px ${className}`}
-      {...rest}
-    />
+    <SelectPrimitive.Separator className={`bg-gray-200 pointer-events-none -mx-1 my-1 h-px ${className}`} {...rest} />
   );
 }
 

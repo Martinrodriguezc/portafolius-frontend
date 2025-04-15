@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { studentMenuItems, isActivePath } from "../../../utils/sidebarUtils";
