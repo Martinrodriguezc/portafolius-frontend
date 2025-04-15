@@ -1,7 +1,5 @@
-import React from "react";
 import Card from "../../common/Card/Card";
 import { Switch } from "../../common/Switch/Switch";
-import { Bell, CheckSquare, MessageSquare, BookOpen } from "lucide-react";
 import Button from "../../common/Button/Button";
 
 interface NotificationsData {

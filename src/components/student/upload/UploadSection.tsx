@@ -28,7 +28,10 @@ export function UploadSection({ files, handleFileChange, removeFile }: UploadSec
         multiple
         onChange={handleFileChange}
       />
-      <Button asChild className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[12px] rounded-[8px]">
+      <Button
+        asChild
+        className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[12px] rounded-[8px] mx-auto block"
+      >
         <label htmlFor="video-upload" className="cursor-pointer">
           Seleccionar Archivos
         </label>

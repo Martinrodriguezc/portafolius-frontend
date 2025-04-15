@@ -1,4 +1,3 @@
-import React from "react";
 import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
 import { Label } from "../../common/Label/Label";
