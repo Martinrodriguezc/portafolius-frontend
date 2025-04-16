@@ -2,6 +2,7 @@ export const validateRequiredField = (
   value: string,
   fieldName: string
 ): string => {
+
   if (!value || value.trim() === "") {
     return `El ${fieldName} es obligatorio`;
   }
@@ -22,6 +23,7 @@ export const validateEmail = (email: string): string => {
 const hasMinLength = (password: string): boolean => password.length >= 8;
 const hasSpecialChar = (password: string): boolean =>
   /[!@#$%^&*]/.test(password);
+
 const hasUpperCase = (password: string): boolean => /[A-Z]/.test(password);
 
 export const validatePassword = (password: string): string => {

@@ -11,6 +11,7 @@ const TabsContainer: React.FC<TabsProps> = ({ defaultValue, children, className 
 
   return (
     <div className={`tabs ${className || ""}`}>
+
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
           return React.cloneElement(

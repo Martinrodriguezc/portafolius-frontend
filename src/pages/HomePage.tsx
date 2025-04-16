@@ -9,6 +9,7 @@ export default function HomePage() {
   const handleStudentDashboard = () => navigate("/student");
   const handleTeacherDashboard = () => navigate("/teacher");
 
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 text-center px-4">
       <header className="mb-10">
