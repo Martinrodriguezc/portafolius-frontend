@@ -43,4 +43,4 @@ export const initialRegisterFormState: RegisterFormState = {
 export interface RegisterFormProps {
   onRegisterSuccess?: () => void;
   onNavigateToLogin?: () => void;
-} 
+}

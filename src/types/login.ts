@@ -1,4 +1,4 @@
-import { BaseFormState } from './form';
+import { BaseFormState } from "./form";
 
 export interface LoginFormData {
   email: string;
@@ -14,16 +14,16 @@ export type LoginFormState = BaseFormState<LoginFormData, LoginFormErrors>;
 
 export const initialLoginFormState: LoginFormState = {
   formData: {
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   },
   formErrors: {
-    email: '',
-    password: ''
-  }
+    email: "",
+    password: "",
+  },
 };
 
 export interface LoginFormProps {
   onLoginSuccess?: () => void;
   onNavigateToRegister: () => void;
-} 
+}
