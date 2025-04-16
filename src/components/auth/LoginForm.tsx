@@ -1,7 +1,8 @@
 import { useLoginForm } from "../../hooks/form/useLoginForm";
 import { LoginFormProps } from "../../types/login";
 import Button from "../common/Button/Button";
-import Input from "../common/Input/BaseInput";
+import Input from "../common/Input/Input";
+
 
 export default function LoginForm({
   onLoginSuccess,

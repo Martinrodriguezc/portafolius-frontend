@@ -4,21 +4,10 @@ import Button from "../components/common/Button/Button";
 export default function HomePage() {
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    navigate("/login");
-  };
-
-  const handleSignup = () => {
-    navigate("/register");
-  };
-
-  const handleStudentDashboard = () => {
-    navigate("/student");
-  };
-
-  const handleTeacherDashboard = () => {
-    navigate("/teacher");
-  };
+  const handleLogin = () => navigate("/login");
+  const handleSignup = () => navigate("/register");
+  const handleStudentDashboard = () => navigate("/student");
+  const handleTeacherDashboard = () => navigate("/teacher");
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 text-center px-4">
@@ -45,7 +34,9 @@ export default function HomePage() {
         <Button onClick={handleStudentDashboard} fixedWidth={true}>
           Student Dashboard
         </Button>
-        <Button onClick={handleTeacherDashboard} fixedWidth={true}>Teacher Dashboard</Button>
+        <Button onClick={handleTeacherDashboard} fixedWidth={true}>
+          Teacher Dashboard
+        </Button>
       </div>
     </main>
   );
