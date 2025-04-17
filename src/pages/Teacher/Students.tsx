@@ -1,7 +1,6 @@
 import { Search, UserPlus, Filter, ArrowUpDown } from "lucide-react";
 import Button from "../../components/common/Button/Button";
 import Card from "../../components/common/Card/Card";
-import Input from "../../components/common/Input/BaseInput";
 import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";
 import TabsButton from "../../components/common/Tabs/TabsButton";
@@ -10,6 +9,7 @@ import TeacherLayout from "../layout/TeacherLayout";
 import StudentsPreviewInfo from "../../components/teacher/StudentsPreviewInfo";
 import { sampleStudentsData } from "./utils/utils";
 import { useStudentFilter } from "../../hooks/teacher/useStudentFilter";
+import Input from "../../components/common/Input/Input";
 
 export default function TeacherStudentsLayout() {
   const { searchTerm, filteredStudents, handleSearch } =

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { generateUploadUrl, uploadVideo } from "./utils/requests";
 
 export function useUploadPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -43,7 +44,44 @@ export function useUploadPage() {
     setTagInput("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (files.length === 0) {
+      alert("Debes seleccionar un archivo para subir");
+      return;
+    }
+
+    if (!protocol) {
+      alert("Debes seleccionar un protocolo");
+      return;
+    }
+
+    setIsUploading(true);
+
+    try {
+      const file = files[0];
+
+      const { uploadUrl } = await generateUploadUrl(file);
+
+      const uploadVideoResult = await uploadVideo(uploadUrl, file);
+      setUploadProgress(50)
+
+      if (uploadVideoResult.success) {
+        console.log("Archivo subido exitosamente");
+        alert("Archivo subido exitosamente");
+      } else {
+        console.error("Error al subir el archivo:", uploadVideoResult.message);
+        alert(`Error: ${uploadVideoResult.message}`);
+      }
+    } catch (err) {
+      console.error("Error en la solicitud:", err);
+      //alert("Hubo un error al subir el video");
+      alert(err)
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  /*const handleSubmit = () => {
     if (files.length < 4 || files.length > 8) {
       alert("Debes subir entre 4 y 8 videos");
       return;
@@ -63,7 +101,7 @@ export function useUploadPage() {
         alert("Estudio enviado con éxito");
       }
     }, 200);
-  };
+  };*/
 
   return {
     files,

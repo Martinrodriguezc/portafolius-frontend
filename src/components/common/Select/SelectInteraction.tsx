@@ -1,9 +1,10 @@
-import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 export function SelectTrigger(
-  props: React.ComponentProps<typeof SelectPrimitive.Trigger> & { size?: "sm" | "default" }
+  props: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
+    size?: "sm" | "default";
+  }
 ) {
   const { className = "", size = "default", children, ...rest } = props;
   const triggerClasses = [
@@ -14,7 +15,10 @@ export function SelectTrigger(
     "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:w-4 [&_svg]:h-4",
   ].join(" ");
   return (
-    <SelectPrimitive.Trigger className={`${triggerClasses} ${className}`} {...rest}>
+    <SelectPrimitive.Trigger
+      className={`${triggerClasses} ${className}`}
+      {...rest}
+    >
       {children}
       <SelectPrimitive.Icon asChild>
         <ChevronDownIcon className="opacity-50" />
@@ -28,7 +32,10 @@ export function SelectScrollUpButton(
 ) {
   const { className = "", ...rest } = props;
   return (
-    <SelectPrimitive.ScrollUpButton className={`flex items-center justify-center py-1 cursor-default ${className}`} {...rest}>
+    <SelectPrimitive.ScrollUpButton
+      className={`flex items-center justify-center py-1 cursor-default ${className}`}
+      {...rest}
+    >
       <ChevronUpIcon className="w-4 h-4" />
     </SelectPrimitive.ScrollUpButton>
   );
@@ -39,13 +46,18 @@ export function SelectScrollDownButton(
 ) {
   const { className = "", ...rest } = props;
   return (
-    <SelectPrimitive.ScrollDownButton className={`flex items-center justify-center py-1 cursor-default ${className}`} {...rest}>
+    <SelectPrimitive.ScrollDownButton
+      className={`flex items-center justify-center py-1 cursor-default ${className}`}
+      {...rest}
+    >
       <ChevronDownIcon className="w-4 h-4" />
     </SelectPrimitive.ScrollDownButton>
   );
 }
 
-export function SelectContent(props: React.ComponentProps<typeof SelectPrimitive.Content>) {
+export function SelectContent(
+  props: React.ComponentProps<typeof SelectPrimitive.Content>
+) {
   const { className = "", children, position = "popper", ...rest } = props;
   const contentClasses = [
     "relative z-50 min-w-[8rem] overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg",
@@ -54,7 +66,11 @@ export function SelectContent(props: React.ComponentProps<typeof SelectPrimitive
   const positionClasses = position === "popper" ? "translate-y-1" : "";
   return (
     <SelectPrimitive.Portal>
-      <SelectPrimitive.Content className={`${contentClasses} ${positionClasses} ${className}`} position={position} {...rest}>
+      <SelectPrimitive.Content
+        className={`${contentClasses} ${positionClasses} ${className}`}
+        position={position}
+        {...rest}
+      >
         <SelectScrollUpButton />
         <SelectPrimitive.Viewport
           className={`p-1 ${

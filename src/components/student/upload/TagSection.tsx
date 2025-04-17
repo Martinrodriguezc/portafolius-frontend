@@ -1,9 +1,14 @@
 import { Plus, X } from "lucide-react";
 import { Label } from "../../common/Label/Label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../common/Select/Select";
 import Button from "../../common/Button/Button";
 import { Badge } from "../../common/Badge/Badge";
 import { TagSectionProps } from "../../../types/TagTypes";
+import { Select, SelectValue } from "../../common/Select/SelectBase";
+import {
+  SelectContent,
+  SelectTrigger,
+} from "../../common/Select/SelectInteraction";
+import { SelectItem } from "../../common/Select/SelectItems";
 
 interface TagSectionWrapperProps {
   section: TagSectionProps;
@@ -27,15 +32,23 @@ export function TagSection({ section }: TagSectionWrapperProps) {
 
   return (
     <div className="space-y-4 border border-[#A0A0A0]/30 rounded-[16px] p-6">
-      <h3 className="text-[16px] font-medium text-[#333333]">Etiquetas de diagnóstico</h3>
-      <p className="text-[14px] text-[#A0A0A0]">Añade etiquetas para indicar qué estructuras y condiciones se muestran en tus videos</p>
+      <h3 className="text-[16px] font-medium text-[#333333]">
+        Etiquetas de diagnóstico
+      </h3>
+      <p className="text-[14px] text-[#A0A0A0]">
+        Añade etiquetas para indicar qué estructuras y condiciones se muestran
+        en tus videos
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label htmlFor="organ" className="text-[14px] text-[#333333]">
             Órgano
           </Label>
           <Select value={selectedOrgan} onValueChange={setSelectedOrgan}>
-            <SelectTrigger id="organ" className="h-[42px] text-[14px] border-[#A0A0A0] rounded-[8px]">
+            <SelectTrigger
+              id="organ"
+              className="h-[42px] text-[14px] border-[#A0A0A0] rounded-[8px]"
+            >
               <SelectValue placeholder="Selecciona órgano" />
             </SelectTrigger>
             <SelectContent>
@@ -51,8 +64,15 @@ export function TagSection({ section }: TagSectionWrapperProps) {
           <Label htmlFor="structure" className="text-[14px] text-[#333333]">
             Estructura
           </Label>
-          <Select value={selectedStructure} onValueChange={setSelectedStructure} disabled={!selectedOrgan}>
-            <SelectTrigger id="structure" className="h-[42px] text-[14px] border-[#A0A0A0] rounded-[8px]">
+          <Select
+            value={selectedStructure}
+            onValueChange={setSelectedStructure}
+            disabled={!selectedOrgan}
+          >
+            <SelectTrigger
+              id="structure"
+              className="h-[42px] text-[14px] border-[#A0A0A0] rounded-[8px]"
+            >
               <SelectValue placeholder="Selecciona estructura" />
             </SelectTrigger>
             <SelectContent>
@@ -69,8 +89,15 @@ export function TagSection({ section }: TagSectionWrapperProps) {
           <Label htmlFor="condition" className="text-[14px] text-[#333333]">
             Condición
           </Label>
-          <Select value={selectedCondition} onValueChange={setSelectedCondition} disabled={!selectedStructure}>
-            <SelectTrigger id="condition" className="h-[42px] text-[14px] border-[#A0A0A0] rounded-[8px]">
+          <Select
+            value={selectedCondition}
+            onValueChange={setSelectedCondition}
+            disabled={!selectedStructure}
+          >
+            <SelectTrigger
+              id="condition"
+              className="h-[42px] text-[14px] border-[#A0A0A0] rounded-[8px]"
+            >
               <SelectValue placeholder="Selecciona condición" />
             </SelectTrigger>
             <SelectContent>
@@ -98,7 +125,10 @@ export function TagSection({ section }: TagSectionWrapperProps) {
         <div className="mt-4">
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
-              <Badge key={tag.id} className="bg-[#4E81BD]/10 text-[#4E81BD] hover:bg-[#4E81BD]/20 px-3 py-1">
+              <Badge
+                key={tag.id}
+                className="bg-[#4E81BD]/10 text-[#4E81BD] hover:bg-[#4E81BD]/20 px-3 py-1"
+              >
                 {tag.text}
                 <Button
                   type="button"

@@ -8,17 +8,26 @@ export default function StudentDashboard() {
   return (
     <div className="p-8">
       <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">¡Bienvenido, Carlos!</h1>
+        <h1 className="text-[20px] font-bold text-[#333333]">
+          ¡Bienvenido, Carlos!
+        </h1>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
-          <h2 className="text-[18px] font-semibold text-[#333333] mb-4">Últimos comentarios</h2>
+          <h2 className="text-[18px] font-semibold text-[#333333] mb-4">
+            Últimos comentarios
+          </h2>
           <div className="space-y-4">
             {recentComments.map((comment) => (
-              <Card key={comment.id} className="bg-[#F4F4F4] border-none rounded-[16px]">
+              <Card
+                key={comment.id}
+                className="bg-[#F4F4F4] border-none rounded-[16px]"
+              >
                 <div className="p-6">
-                  <p className="text-[14px] text-[#333333] mb-3">{comment.text}</p>
+                  <p className="text-[14px] text-[#333333] mb-3">
+                    {comment.text}
+                  </p>
                   <div className="flex justify-between items-center">
                     <span className="text-[13px] font-medium text-[#333333]">
                       {comment.author}
