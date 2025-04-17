@@ -1,14 +1,16 @@
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
 import { dashboardConstants } from "../../utils/dashboardConstants";
+import { authService } from "../../hooks/authServices";
+
 
 export default function StudentDashboard() {
   const { recentComments } = dashboardConstants;
-
+  const user = authService.getCurrentUser();
   return (
     <div className="p-8">
       <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">¡Bienvenido, Carlos!</h1>
+        <h1 className="text-[20px] font-bold text-[#333333]">¡Bienvenido, {user?.firstName}!</h1>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

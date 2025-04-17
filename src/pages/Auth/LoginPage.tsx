@@ -1,12 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../../components/auth/LoginForm";
+import { authService } from "../../hooks/authServices";
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
   const handleLoginSuccess = () => {
+    const user = authService.getCurrentUser();
     console.log("Login exitoso, redirigiendo...");
-    // navigate('/dashboard');
+    if (user && user.role === 'teacher') {
+      navigate('/teacher');
+    } else {
+      navigate('/student');
+    }
   };
 
   const handleNavigateToRegister = () => {
