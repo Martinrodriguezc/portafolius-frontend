@@ -30,8 +30,8 @@ export const useRegisterForm = (onSuccess?: () => void) => {
         if (onSuccess) {
           onSuccess();
         }
-      } catch (error: any) {
-        setToastMessage(error.msg || 'Error al registrarse');
+      } catch (error: unknown) {
+        setToastMessage((error as { msg: string }).msg || 'Error al registrarse');
       }
     } else {      const firstError = Object.values(errors).find(error => error !== '');
       if (firstError) {

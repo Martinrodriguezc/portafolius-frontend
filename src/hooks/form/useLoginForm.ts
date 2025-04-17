@@ -18,9 +18,8 @@ export const useLoginForm = (onSuccess?: () => void) => {
       try {
         await authService.login(formData);
         if (onSuccess) onSuccess();
-      } catch (error: any) {
-        // Manejar errores de la API
-        console.error('Error de login:', error);
+      } catch (error: unknown) {
+        throw { msg: (error as Error).message };
       }
     }
   };

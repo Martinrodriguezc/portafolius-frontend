@@ -10,7 +10,7 @@ export default function StudentDashboard() {
   return (
     <div className="p-8">
       <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">¡Bienvenido, {user?.firstName}!</h1>
+        <h1 className="text-[20px] font-bold text-[#333333]">¡Bienvenido, {user?.first_name}!</h1>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
