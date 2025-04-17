@@ -5,7 +5,6 @@ import { authService } from "../../../hooks/authServices";
 
 export const StudentSidebarFooter: React.FC = () => {
   const handleLogout = () => {
-    // Llamar a la función de logout desde auth services
     authService.logout();
   };
 
