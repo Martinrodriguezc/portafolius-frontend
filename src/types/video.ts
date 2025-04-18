@@ -1,8 +1,9 @@
 export interface Video {
-    id: number,
-    title: string,
-    date: string,
-    student: string,
-    diagnosis: string,
-    status: string
-}
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    duration: string;
+    tags: { id: number; text: string; author: "student" | "teacher" }[];
+    comments: { id: number; text: string; author: string; date: string }[];
+  }

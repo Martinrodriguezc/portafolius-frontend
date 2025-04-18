@@ -20,7 +20,7 @@ import { TeacherDashboardPage } from "./pages/Teacher/Dashboard";
 import { TeacherEvaluationsPage } from "./pages/Teacher/Evaluations";
 import { TeacherStudentsPage } from "./pages/Teacher/Students";
 import { TeacherSettingsPage } from "./pages/Teacher/Settings";
-import VideoViewer from "./pages/VIEWVIDEO";
+import StudentMultipleVideosPage from "./pages/Student/VideosPage";
 
 function App() {
   return (
@@ -37,14 +37,14 @@ function App() {
           <Route path="profile" element={<StudentProfilePage />} />
           <Route path="progress" element={<StudentProgressPage />} />
           <Route path="upload" element={<StudentUploadPage />} />
-          <Route path="video" element={<StudentVideoPage />} />
+          <Route path="videos/:id" element={<StudentVideoPage />} />
+          <Route path="videos/" element={<StudentMultipleVideosPage />} />
         </Route>
         <Route path="/teacher" element={<TeacherDashboardPage />} />
         <Route
           path="/teacher/evaluations"
           element={<TeacherEvaluationsPage />}
         />
-        <Route path="/video/:clipId" element={<VideoViewer />} />
 
         <Route path="/teacher/students" element={<TeacherStudentsPage />} />
         <Route path="/teacher/settings" element={<TeacherSettingsPage />} />

@@ -22,7 +22,7 @@ export default function VideoViewer() {
 
     (async () => {
       try {
-        const resp = await fetch(`${config.SERVER_URL}/video/generate_download_url/3`);
+        const resp = await fetch(`${config.SERVER_URL}/video/generate_download_url/${clipId}`);
         if (!resp.ok) throw new Error(`Error ${resp.status}`);
         const data: DownloadResponse = await resp.json();
         setVideoUrl(data.downloadUrl);
