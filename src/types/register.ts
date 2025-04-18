@@ -4,7 +4,7 @@ export interface RegisterFormData {
   firstName: string;
   lastName: string;
   email: string;
-  userType: string;
+  role: string;
   password: string;
 }
 
@@ -12,11 +12,11 @@ export interface RegisterFormErrors {
   firstName: string;
   lastName: string;
   email: string;
-  userType: string;
+  role: string;
   password: string;
 }
 
-export type UserType = 'student' | 'teacher';
+export type role = 'estudiante' | 'profesor';
 
 export type RegisterFormState = BaseFormState<RegisterFormData, RegisterFormErrors> & {
   showPasswordRequirements: boolean;
@@ -27,14 +27,14 @@ export const initialRegisterFormState: RegisterFormState = {
     firstName: '',
     lastName: '',
     email: '',
-    userType: '',
+    role: '',
     password: ''
   },
   formErrors: {
     firstName: '',
     lastName: '',
     email: '',
-    userType: '',
+    role: '',
     password: ''
   },
   showPasswordRequirements: false

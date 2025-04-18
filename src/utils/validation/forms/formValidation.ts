@@ -27,10 +27,9 @@ export const validateRegisterForm = (
     firstName: validateName(data.firstName),
     lastName: validateLastName(data.lastName),
     email: validateEmail(data.email),
-    userType: validateUserType(data.userType),
+    role: validateUserType(data.role),
     password: validatePassword(data.password),
   };
-
   const isValid = Object.values(errors).every((error) => error === "");
   return { isValid, errors };
 };
