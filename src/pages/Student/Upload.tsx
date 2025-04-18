@@ -120,7 +120,6 @@ export default function UploadPage() {
 
           <Button
             onClick={handleSubmit}
-            disabled={isUploading || files.length !== 1 || !protocol}
             className="w-full bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[12px] rounded-[8px] mt-6"
           >
             Enviar estudio

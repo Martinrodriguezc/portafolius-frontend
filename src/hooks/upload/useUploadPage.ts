@@ -1,4 +1,5 @@
 import { useState } from "react";
+import logger from "../../config/logger";
 import { generateUploadUrl, uploadVideo } from "./utils/requests";
 
 export function useUploadPage() {
@@ -16,92 +17,131 @@ export function useUploadPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files);
-      setFiles((prev) => [...prev, ...newFiles]);
+      setFiles((prev) => {
+        const updated = [...prev, ...newFiles];
+        logger.debug(
+          "Archivos seleccionados:",
+          updated.map((f) => f.name)
+        );
+        return updated;
+      });
     }
   };
 
   const removeFile = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setFiles((prev) => {
+      const updated = prev.filter((_, i) => i !== index);
+      logger.debug(
+        `Archivo en índice ${index} removido. Quedan:`,
+        updated.map((f) => f.name)
+      );
+      return updated;
+    });
   };
 
   const addTag = () => {
     if (selectedOrgan && selectedStructure && selectedCondition) {
       const tagText = `${selectedOrgan} → ${selectedStructure} → ${selectedCondition}`;
-      setTags((prev) => [...prev, { id: Date.now(), text: tagText }]);
+      setTags((prev) => {
+        const updated = [...prev, { id: Date.now(), text: tagText }];
+        logger.info("Tag agregado:", tagText);
+        return updated;
+      });
       setSelectedOrgan("");
       setSelectedStructure("");
       setSelectedCondition("");
+    } else {
+      logger.warn("Faltan datos para agregar tag:", {
+        selectedOrgan,
+        selectedStructure,
+        selectedCondition,
+      });
     }
   };
 
   const removeTag = (id: number) => {
-    setTags((prev) => prev.filter((tag) => tag.id !== id));
+    setTags((prev) => {
+      const updated = prev.filter((tag) => tag.id !== id);
+      logger.debug("Tag removido, id:", id);
+      return updated;
+    });
   };
 
   const addCustomTag = () => {
-    if (!tagInput.trim()) return;
-    setTags((prev) => [...prev, { id: Date.now(), text: tagInput.trim() }]);
+    if (!tagInput.trim()) {
+      logger.warn("Intento de agregar tag vacío");
+      return;
+    }
+    setTags((prev) => {
+      const updated = [...prev, { id: Date.now(), text: tagInput.trim() }];
+      logger.info("Custom tag agregado:", tagInput.trim());
+      return updated;
+    });
     setTagInput("");
   };
 
   const handleSubmit = async () => {
     if (files.length === 0) {
+      logger.warn("Submit fallido: no hay archivos seleccionados");
       alert("Debes seleccionar un archivo para subir");
       return;
     }
 
     if (!protocol) {
+      logger.warn("Submit fallido: no se seleccionó protocolo");
       alert("Debes seleccionar un protocolo");
       return;
     }
 
+    if (selectedOrgan == "" || selectedStructure == "" /*|| selectedCondition == ""*/) {
+      logger.warn("Submit fallido: tag incompleto", {
+        selectedOrgan,
+        selectedStructure,
+        selectedCondition,
+      });
+      alert(
+        "Tienes etiquetas de diagnóstico sin agregar. Por favor completa y presiona 'Agregar tag' o limpia los campos."
+      );
+      return;
+    }
+
+    /*if (tags.length === 0) {
+      logger.warn("Submit fallido: no hay tags agregados");
+      alert("Debes agregar al menos un tag antes de enviar");
+      return;
+    }*/
+
+
     setIsUploading(true);
+    logger.info("Inicio de subida de vídeo", { file: files[0].name, protocol });
 
     try {
       const file = files[0];
+      const uploadUrl = await generateUploadUrl(file);
+      logger.debug("URL prefirmada recibida:", uploadUrl);
 
-      const { uploadUrl } = await generateUploadUrl(file);
+      setUploadProgress(50);
+      logger.debug("Progreso actualizado a 50%");
 
-      const uploadVideoResult = await uploadVideo(uploadUrl, file);
-      setUploadProgress(50)
-
-      if (uploadVideoResult.success) {
-        console.log("Archivo subido exitosamente");
+      const result = await uploadVideo(uploadUrl, file);
+      if (result.success) {
+        logger.info("Vídeo subido exitosamente");
         alert("Archivo subido exitosamente");
+        setUploadProgress(100);
       } else {
-        console.error("Error al subir el archivo:", uploadVideoResult.message);
-        alert(`Error: ${uploadVideoResult.message}`);
+        logger.error("Error en uploadVideo:", result.message);
+        alert(`Error: ${result.message}`);
       }
-    } catch (err) {
-      console.error("Error en la solicitud:", err);
-      //alert("Hubo un error al subir el video");
-      alert(err)
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+
+      logger.error("Error en handleSubmit:", err);
+      alert(message);
     } finally {
       setIsUploading(false);
+      logger.debug("isUploading set a false");
     }
   };
-
-  /*const handleSubmit = () => {
-    if (files.length < 4 || files.length > 8) {
-      alert("Debes subir entre 4 y 8 videos");
-      return;
-    }
-    if (!protocol) {
-      alert("Debes seleccionar un protocolo");
-      return;
-    }
-    setIsUploading(true);
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 5;
-      setUploadProgress(progress);
-      if (progress >= 100) {
-        clearInterval(interval);
-        setIsUploading(false);
-        alert("Estudio enviado con éxito");
-      }
-    }, 200);
-  };*/
 
   return {
     files,

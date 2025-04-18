@@ -7,6 +7,9 @@ export const studentMenuItems = [
   { path: "/student/materials", icon: BookOpen, label: "Material de estudio" },
 ];
 
-export const isActivePath = (currentPath: string, itemPath: string): boolean => {
-  return currentPath === itemPath || currentPath.startsWith(`${itemPath}/`);
+export const isActivePath = (
+  currentPath: string,
+  itemPath: string
+): boolean => {
+  return currentPath === itemPath;
 };

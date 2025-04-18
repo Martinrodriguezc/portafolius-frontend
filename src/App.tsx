@@ -30,7 +30,6 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* Encapsula todas las rutas de student con StudentLayout */}
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<StudentDashboardPage />} />
           <Route path="materials" element={<StudentMaterialsPage />} />
