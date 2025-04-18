@@ -20,6 +20,7 @@ import { TeacherDashboardPage } from "./pages/Teacher/Dashboard";
 import { TeacherEvaluationsPage } from "./pages/Teacher/Evaluations";
 import { TeacherStudentsPage } from "./pages/Teacher/Students";
 import { TeacherSettingsPage } from "./pages/Teacher/Settings";
+import CommentsPage from "./pages/Student/Comments";
 
 function App() {
   return (
@@ -29,8 +30,6 @@ function App() {
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-
-        {/* Encapsula todas las rutas de student con StudentLayout */}
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<StudentDashboardPage />} />
           <Route path="materials" element={<StudentMaterialsPage />} />
@@ -38,6 +37,11 @@ function App() {
           <Route path="progress" element={<StudentProgressPage />} />
           <Route path="upload" element={<StudentUploadPage />} />
           <Route path="video" element={<StudentVideoPage />} />
+
+          <Route path="comments" element={<CommentsPage />} />
+
+
+          
         </Route>
         <Route path="/teacher" element={<TeacherDashboardPage />} />
         <Route
