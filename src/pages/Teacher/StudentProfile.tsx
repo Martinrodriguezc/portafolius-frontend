@@ -15,10 +15,11 @@ export default function StudentProfileTeacherPage({
     handleChange,
     handleSubmit,
     navigate,
-    existing,
+    notFound,
+    existingStudent,
   } = useStudentForm(mode);
 
-  if (mode === "view" && !existing) {
+  if (notFound) {
     return <div className="p-8">Estudiante no encontrado</div>;
   }
 
@@ -27,7 +28,7 @@ export default function StudentProfileTeacherPage({
       <h1 className="text-[20px] font-bold text-[#333333] mb-6">
         {mode === "create"
           ? "Añadir nuevo estudiante"
-          : `Perfil de ${existing!.name}`}
+          : `Perfil de ${existingStudent!.name}`}
       </h1>
 
       <Card className="p-6 space-y-6">
@@ -38,7 +39,10 @@ export default function StudentProfileTeacherPage({
         />
 
         <div className="flex justify-end space-x-4">
-          <Button variant="outline" onClick={() => navigate("/teacher/students")}>
+          <Button
+            variant="outline"
+            onClick={() => navigate("/teacher/students")}
+          >
             Volver
           </Button>
           {mode === "create" && (
