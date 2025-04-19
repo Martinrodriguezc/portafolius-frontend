@@ -21,6 +21,7 @@ import { TeacherDashboardPage } from "./pages/Teacher/Dashboard";
 import { TeacherEvaluationsPage } from "./pages/Teacher/Evaluations";
 import { TeacherStudentsPage } from "./pages/Teacher/Students";
 import { TeacherSettingsPage } from "./pages/Teacher/Settings";
+import CommentsPage from "./pages/Student/Comments";
 
 function App() {
   return (
@@ -36,6 +37,10 @@ function App() {
           <Route path="profile" element={<StudentProfilePage />} />
           <Route path="progress" element={<StudentProgressPage />} />
           <Route path="upload" element={<StudentUploadPage />} />
+          <Route path="comments" element={<CommentsPage />} />
+
+
+          
           <Route path="videos" element={<StudentVideosPage />} />
           <Route path="videos/:id" element={<StudentVideoPage />} />
         </Route>

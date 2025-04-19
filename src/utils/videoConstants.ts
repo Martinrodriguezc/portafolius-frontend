@@ -36,7 +36,12 @@ export const evaluatedVideos: Video[] = [
       { id: 5, text: "Dilatación", author: "teacher" },
     ],
     comments: [
-      { id: 3, text: "Buen barrido, ojo al ángulo de insonación.", author: "Dr. Pérez", date: "16 marzo, 2023, 10:15" },
+      {
+        id: 3,
+        text: "Buen barrido, ojo al ángulo de insonación.",
+        author: "Dr. Pérez",
+        date: "16 marzo, 2023, 10:15",
+      },
     ],
   },
 ];
