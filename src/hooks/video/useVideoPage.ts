@@ -1,23 +1,21 @@
-// src/hooks/video/useVideoPage.ts
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchVideoUrl, postComment } from "./utils/requests";
+import { fetchVideoUrl, postComment, fetchVideoMeta } from "./utils/requests";
+import { Video } from "../../types/video";
 
 export function useVideoPage() {
   const { id } = useParams<{ id: string }>();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [videoUrl, setVideoUrl] = useState<string>("");
+  const [meta, setMeta] = useState<Video | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-
   const [comment, setComment] = useState<string>("");
 
-  // Load video URL
   useEffect(() => {
     if (!id) {
       setError("No se proporcionó ID de vídeo");
@@ -26,8 +24,13 @@ export function useVideoPage() {
     }
     (async () => {
       try {
-        const url = await fetchVideoUrl(id);
+        const [url, videoMeta] = await Promise.all([
+          fetchVideoUrl(id),
+          fetchVideoMeta(id),
+        ]);
+        console.log(fetchVideoMeta(id))
         setVideoUrl(url);
+        setMeta(videoMeta);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : String(err));
       } finally {
@@ -36,22 +39,15 @@ export function useVideoPage() {
     })();
   }, [id]);
 
-  // Update progress on timeupdate
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
-    const onTime = () => {
-      if (vid.duration) {
-        setProgress((vid.currentTime / vid.duration) * 100);
-      }
-    };
+    const onTime = () =>
+      vid.duration && setProgress((vid.currentTime / vid.duration) * 100);
     vid.addEventListener("timeupdate", onTime);
-    return () => {
-      vid.removeEventListener("timeupdate", onTime);
-    };
-  }, [videoRef]);
+    return () => vid.removeEventListener("timeupdate", onTime);
+  }, []);
 
-  // Toggle play/pause
   const togglePlay = () => {
     const vid = videoRef.current;
     if (!vid) return;
@@ -64,7 +60,6 @@ export function useVideoPage() {
     }
   };
 
-  // Seek to a new time
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const vid = videoRef.current;
     if (!vid || !vid.duration) return;
@@ -72,7 +67,6 @@ export function useVideoPage() {
     setProgress(Number(e.target.value));
   };
 
-  // Toggle fullscreen on container
   const toggleFullscreen = () => {
     const container = videoRef.current?.parentElement;
     if (!container) return;
@@ -85,20 +79,22 @@ export function useVideoPage() {
     }
   };
 
-  // Submit comment
   const handleSubmitComment = async () => {
     if (!id || !comment.trim()) return;
     try {
       await postComment(id, comment.trim());
       setComment("");
+      const updated = await fetchVideoMeta(id);
+      setMeta(updated);
     } catch (err) {
-      console.error("Error enviando comentario:", err);
+      console.error("Error comentando:", err);
     }
   };
 
   return {
     videoRef,
     videoUrl,
+    meta,
     loading,
     error,
     isPlaying,

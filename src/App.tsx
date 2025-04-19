@@ -38,7 +38,10 @@ function App() {
           <Route path="profile" element={<StudentProfilePage />} />
           <Route path="progress" element={<StudentProgressPage />} />
           <Route path="upload" element={<StudentUploadPage />} />
-          <Route path="videos/:id" element={<StudentVideoPage />} />
+          <Route
+            path="/student/:studyId/videos/:id"
+            element={<StudentVideoPage />}
+          />
           <Route path="/student/studies" element={<StudentStudiesPage />} />
           <Route
             path="/student/studies/:id/videos"

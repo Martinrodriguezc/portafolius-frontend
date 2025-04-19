@@ -10,14 +10,14 @@ interface FetchResponse {
 
 export function useStudyVideos(studyId?: string) {
   const params = useParams<{ id: string }>();
-  const sid = studyId ?? params.id;
+  const study_id = studyId ?? params.id;
 
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
-    if (!sid) {
+    if (!study_id) {
       setError('No se proporcionó ID de estudio');
       setLoading(false);
       return;
@@ -26,7 +26,7 @@ export function useStudyVideos(studyId?: string) {
     (async () => {
       try {
         const resp = await fetch(
-          `${config.SERVER_URL}/study/${sid}/videos`
+          `${config.SERVER_URL}/study/${study_id}/videos`
         );
         if (!resp.ok) {
           throw new Error(`Error ${resp.status} al obtener vídeos`);
@@ -39,7 +39,7 @@ export function useStudyVideos(studyId?: string) {
         setLoading(false);
       }
     })();
-  }, [sid]);
+  }, [study_id]);
 
-  return { videos, loading, error };
+  return { videos, loading, error, study_id };
 }

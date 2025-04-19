@@ -6,8 +6,7 @@ import { Video } from "../../../types/video";
 import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
 
 export const EvaluatedVideosTab: React.FC = () => {
-  const { videos, loading, error } = useStudyVideos();
-  console.log(videos)
+  const { videos, loading, error, study_id } = useStudyVideos();
 
   if (loading) {
     return <p className="p-4 text-center">Cargando videos…</p>;
@@ -29,10 +28,10 @@ export const EvaluatedVideosTab: React.FC = () => {
             </h3>
             <p className="text-sm text-[#A0A0A0]">{video.mime_type}</p>
             <div className="text-xs text-[#A0A0A0] mt-1">
-              {video.upload_date} &bull; {video.duration}
+              {video.upload_date} &bull; {video.duration_seconds}
             </div>
           </div>
-          <Link to={`/student/videos/${video.id}`}>
+          <Link to={`/student/${study_id}/videos/${video.id}`}>
             <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[8px] px-[12px] rounded-[8px]">
               Ver Video
             </Button>

@@ -1,4 +1,3 @@
-import { pendingVideos } from "../../../utils/videoConstants";
 import TabsContainer from "../../../components/common/Tabs/TabsContainer";
 import TabsList from "../../../components/common/Tabs/TabsList";
 import TabsButton from "../../../components/common/Tabs/TabsButton";
@@ -33,7 +32,7 @@ export default function StudentMultipleVideosPage() {
           <EvaluatedVideosTab />
         </TabsPanel>
         <TabsPanel value="pending">
-          <PendingVideosTab videos={pendingVideos} />
+          <PendingVideosTab />
         </TabsPanel>
       </TabsContainer>
     </div>

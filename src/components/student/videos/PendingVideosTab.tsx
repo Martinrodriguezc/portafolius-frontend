@@ -1,30 +1,45 @@
+// src/components/student/videos/PendingVideosTab.tsx
 import React from "react";
+import { useParams, Link } from "react-router-dom";
 import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
-import { Link } from "react-router-dom";
+import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
 import { Video } from "../../../types/video";
 
-interface Props {
-  videos: Video[];
-}
+export const PendingVideosTab: React.FC = () => {
+  const { studyId } = useParams<{ studyId: string }>();
+  const { videos, loading, error } = useStudyVideos(studyId);
 
-export const PendingVideosTab: React.FC<Props> = ({ videos }) => (
-  <div className="space-y-4">
-    {videos.map((video) => (
-      <Card key={video.id} className="rounded-[8px] p-4 flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-medium text-[#333333]">{video.title}</h3>
-          <p className="text-sm text-[#A0A0A0]">{video.description}</p>
-          <div className="text-xs text-[#A0A0A0] mt-1">
-            {video.date} &bull; {video.duration}
+  if (loading) {
+    return <p className="p-4 text-center">Cargando videos…</p>;
+  }
+  if (error) {
+    return <p className="p-4 text-center text-red-500">Error: {error}</p>;
+  }
+
+  return (
+    <div className="space-y-4">
+      {videos.map((video: Video) => (
+        <Card
+          key={video.id}
+          className="rounded-[8px] p-4 flex items-center justify-between"
+        >
+          <div className="flex-1 mr-4">
+            <h3 className="text-lg font-medium text-[#333333]">
+              {video.original_filename}
+            </h3>
+            <p className="text-sm text-[#A0A0A0]">{video.mime_type}</p>
+            <div className="text-xs text-[#A0A0A0] mt-1">
+              {video.upload_date} &bull; {video.duration_seconds}s
+            </div>
           </div>
-        </div>
-        <Link to={`/student/videos/${video.id}`}>
-          <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[8px] px-[12px] rounded-[8px]">
-            Ver Video
-          </Button>
-        </Link>
-      </Card>
-    ))}
-  </div>
-);
+          <Link to={`/student/studies/${studyId}/videos/${video.id}`}>
+            <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[8px] px-[12px] rounded-[8px]">
+              Ver Video
+            </Button>
+          </Link>
+        </Card>
+      ))}
+    </div>
+  );
+};

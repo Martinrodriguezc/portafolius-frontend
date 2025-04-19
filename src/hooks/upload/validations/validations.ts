@@ -1,5 +1,5 @@
 const ALLOWED_EXTENSIONS = ["mov", "avi", "mp4"];
-const MAX_DURATION_SECONDS = 20;
+const MAX_DURATION_SECONDS = 35;
 
 export function validateVideo(file: File): Promise<void> {
   return new Promise((resolve, reject) => {
