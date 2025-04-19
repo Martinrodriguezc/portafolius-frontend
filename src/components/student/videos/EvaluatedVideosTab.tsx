@@ -7,6 +7,7 @@ import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
 
 export const EvaluatedVideosTab: React.FC = () => {
   const { videos, loading, error } = useStudyVideos();
+  console.log(videos)
 
   if (loading) {
     return <p className="p-4 text-center">Cargando videos…</p>;
@@ -24,11 +25,11 @@ export const EvaluatedVideosTab: React.FC = () => {
         >
           <div className="flex-1 mr-4">
             <h3 className="text-lg font-medium text-[#333333]">
-              {video.title}
+              {video.original_filename}
             </h3>
-            <p className="text-sm text-[#A0A0A0]">{video.description}</p>
+            <p className="text-sm text-[#A0A0A0]">{video.mime_type}</p>
             <div className="text-xs text-[#A0A0A0] mt-1">
-              {video.date} &bull; {video.duration}
+              {video.upload_date} &bull; {video.duration}
             </div>
           </div>
           <Link to={`/student/videos/${video.id}`}>
