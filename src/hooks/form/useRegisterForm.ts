@@ -6,16 +6,39 @@ import {
   RegisterFormData,
   RegisterFormErrors,
 } from "../../types/register";
+import { authService } from "../authServices";
 
 export const useRegisterForm = (onSuccess?: () => void) => {
-  const { formData, formErrors, handleInputChange, handleSubmit } = useFormHook<
+  const { formData, formErrors, handleInputChange } = useFormHook<
     RegisterFormData,
     RegisterFormErrors
   >(initialRegisterFormState, validateRegisterForm, onSuccess);
 
   const [showPasswordRequirements, setShowPasswordRequirements] =
     useState(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
+  
   const handlePasswordFocus = () => setShowPasswordRequirements(true);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { isValid, errors } = validateRegisterForm(formData);
+
+    if (isValid) {
+      try {
+        await authService.register(formData);
+        if (onSuccess) {
+          onSuccess();
+        }
+      } catch (error: unknown) {
+        setToastMessage((error as { msg: string }).msg || 'Error al registrarse');
+      }
+    } else {      const firstError = Object.values(errors).find(error => error !== '');
+      if (firstError) {
+        setToastMessage(firstError);
+      }
+    }
+  };
 
   return {
     formData,
@@ -24,5 +47,7 @@ export const useRegisterForm = (onSuccess?: () => void) => {
     handleSubmit,
     showPasswordRequirements,
     handlePasswordFocus,
+    toastMessage,
+    clearToast: () => setToastMessage(""),
   };
 };

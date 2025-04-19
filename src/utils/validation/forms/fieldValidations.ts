@@ -45,5 +45,5 @@ export const validateName = (name: string): string =>
 export const validateLastName = (lastName: string): string =>
   validateRequiredField(lastName, "apellido");
 
-export const validateUserType = (userType: string): string =>
-  validateRequiredField(userType, "tipo de usuario");
+export const validateUserType = (role: string): string =>
+  validateRequiredField(role, "tipo de usuario");
