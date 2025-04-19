@@ -1,14 +1,11 @@
 import { useParams } from "react-router-dom";
 import { Play, Pause } from "lucide-react";
-import Button from "../../components/common/Button/Button";
-import Card from "../../components/common/Card/Card";
-import { Textarea } from "../../components/common/Textarea/Textarea";
-import { useVideoPage } from "../../hooks/video/useVideoPage";
-import {
-  evaluatedVideos,
-  pendingVideos,
-} from "../../utils/videoConstants";
-import { Video } from "../../types/video";
+import Button from "../../../components/common/Button/Button";
+import Card from "../../../components/common/Card/Card";
+import { Textarea } from "../../../components/common/Textarea/Textarea";
+import { useVideoPage } from "../../../hooks/video/useVideoPage";
+import { evaluatedVideos, pendingVideos } from "../../../utils/videoConstants";
+import { Video } from "../../../types/video";
 
 export default function StudentVideoPage() {
   const { id } = useParams() as { id: string };
@@ -25,6 +22,7 @@ export default function StudentVideoPage() {
 
   const allVideos: Video[] = [...evaluatedVideos, ...pendingVideos];
   const videoData = allVideos.find((v) => v.id === id);
+  console.log(videoData)
   if (!videoData) {
     return <div className="p-8">Video no encontrado</div>;
   }

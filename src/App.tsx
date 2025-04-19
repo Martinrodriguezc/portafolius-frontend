@@ -11,7 +11,7 @@ import StudentMaterialsPage from "./pages/Student/Materials";
 import StudentProfilePage from "./pages/Student/Profile";
 import StudentProgressPage from "./pages/Student/Progress";
 import StudentUploadPage from "./pages/Student/Upload";
-import StudentVideoPage from "./pages/Student/Video";
+import StudentVideoPage from "./pages/Student/Study/Video";
 
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
@@ -20,7 +20,8 @@ import { TeacherDashboardPage } from "./pages/Teacher/Dashboard";
 import { TeacherEvaluationsPage } from "./pages/Teacher/Evaluations";
 import { TeacherStudentsPage } from "./pages/Teacher/Students";
 import { TeacherSettingsPage } from "./pages/Teacher/Settings";
-import StudentMultipleVideosPage from "./pages/Student/VideosPage";
+import StudentMultipleVideosPage from "./pages/Student/Study/VideosPage";
+import StudentStudiesPage from "./pages/Student/Study/StudyPage";
 
 function App() {
   return (
@@ -38,7 +39,11 @@ function App() {
           <Route path="progress" element={<StudentProgressPage />} />
           <Route path="upload" element={<StudentUploadPage />} />
           <Route path="videos/:id" element={<StudentVideoPage />} />
-          <Route path="videos/" element={<StudentMultipleVideosPage />} />
+          <Route path="/student/studies" element={<StudentStudiesPage />} />
+          <Route
+            path="/student/studies/:id/videos"
+            element={<StudentMultipleVideosPage />}
+          />
         </Route>
         <Route path="/teacher" element={<TeacherDashboardPage />} />
         <Route
