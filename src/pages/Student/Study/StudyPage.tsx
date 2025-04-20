@@ -4,7 +4,7 @@ import Button from '../../../components/common/Button/Button';
 import { useStudentStudies, Study } from '../../../hooks/student/useStudentStudies';
 
 export default function StudentStudiesPage() {
-  const { studies, loading, error } = useStudentStudies("1");
+  const { studies, loading, error } = useStudentStudies();
 
   if (loading) return <p className="p-8">Cargando estudios…</p>;
   if (error) return <p className="p-8 text-red-500">Error: {error}</p>;

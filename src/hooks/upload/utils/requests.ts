@@ -2,7 +2,10 @@ import { config } from "../../../config/config";
 import { validateVideo } from "../validations/validations";
 import logger from "../../../config/logger";
 
-export const generateUploadUrl = async (file: File): Promise<string> => {
+export const generateUploadUrl = async (
+  file: File,
+  studyId: string
+): Promise<string> => {
   logger.debug("Iniciando generateUploadUrl para:", file.name);
 
   logger.debug("Validando vídeo…");
@@ -23,7 +26,8 @@ export const generateUploadUrl = async (file: File): Promise<string> => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         fileName: file.name,
-        contentType: file.type
+        contentType: file.type,
+        studyId: studyId
       }),
     });
     logger.debug("Respuesta recibida de generate_upload_url:", response);
@@ -80,4 +84,46 @@ export const uploadVideo = async (
     size: file.size,
   });
   return { success: true, message: "Archivo subido correctamente" };
+};
+
+export const createNewStudy = async (
+  userId: string,
+  title: string,
+  protocol: string
+): Promise<string> => {
+  logger.debug("Creando nuevo estudio para subir los archivos");
+
+
+  const endpoint = `${config.SERVER_URL}/study/${userId}/studies`;
+  logger.debug("Solicitando URL prefirmada a:", endpoint);
+
+  let response: Response;
+  try {
+    response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: title,
+        protocol: protocol,
+      }),
+    });
+    logger.debug("Respuesta recibida en POST study:", response);
+  } catch (networkError) {
+    logger.error("Error en la creación del estudio:", networkError);
+    throw networkError;
+  }
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    logger.error("Backend devolvió error:", {
+      status: response.status,
+      body: errorData,
+    });
+    throw new Error(errorData.message || "Error al crear el estudio");
+  }
+
+  const data = await response.json();
+  const { study } = data;
+  logger.info("Estudio creado con éxito:", study);
+  return study.id;
 };

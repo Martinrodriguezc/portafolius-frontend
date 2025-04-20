@@ -9,22 +9,20 @@ export interface Study {
   created_at: string;
 }
 
-export function useStudentStudies(userId?: string) {
+export function useStudentStudies() {
   const [studies, setStudies] = useState<Study[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
+  const userId = localStorage.getItem("userId");
+
+  if (!userId) {
+    throw new Error("No hay userId en localStorage. Debes iniciar sesión.");
+  }
 
   useEffect(() => {
-    const id = "1";
-    if (!id) {
-      setError("No se encontró userId. Por favor inicia sesión.");
-      setLoading(false);
-      return;
-    }
-
     (async () => {
       try {
-        const resp = await fetch(`${config.SERVER_URL}/study/${id}`);
+        const resp = await fetch(`${config.SERVER_URL}/study/${userId}`);
         if (!resp.ok)
           throw new Error(`Error ${resp.status} al obtener estudios`);
         const data = await resp.json();

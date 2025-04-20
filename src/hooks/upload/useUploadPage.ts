@@ -1,6 +1,10 @@
 import { useState } from "react";
 import logger from "../../config/logger";
-import { generateUploadUrl, uploadVideo } from "./utils/requests";
+import {
+  createNewStudy,
+  generateUploadUrl,
+  uploadVideo,
+} from "./utils/requests";
 
 export function useUploadPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -13,6 +17,12 @@ export function useUploadPage() {
   const [selectedStructure, setSelectedStructure] = useState("");
   const [selectedCondition, setSelectedCondition] = useState("");
   const [tagInput, setTagInput] = useState("");
+  const [title, setTitle] = useState("");
+  const userId = localStorage.getItem("userId");
+
+  if (!userId) {
+    throw new Error("No hay userId en localStorage. Debes iniciar sesión.");
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -81,9 +91,9 @@ export function useUploadPage() {
   };
 
   const handleSubmit = async () => {
-    if (files.length === 0) {
-      logger.warn("Submit fallido: no hay archivos seleccionados");
-      alert("Debes seleccionar al menos un archivo para subir");
+    if (files.length < 4 && files.length > 8) {
+      logger.warn("Submit fallido: Cantidad de archivos no es correcta");
+      alert("Debes seleccionar entre 4 y 8 archivos para subir a tu estudio");
       return;
     }
 
@@ -106,22 +116,31 @@ export function useUploadPage() {
 
     setIsUploading(true);
     try {
+      const studyId = await createNewStudy(userId, title, protocol);
+      logger.info("Estudio creado con ID:", studyId);
+
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         logger.info("Inicio de subida de vídeo", { file: file.name, protocol });
 
-        const uploadUrl = await generateUploadUrl(file);
+        const uploadUrl = await generateUploadUrl(file, studyId);
         logger.debug("URL prefirmada recibida:", uploadUrl);
 
         const progressBefore = Math.round((i / files.length) * 100);
         setUploadProgress(progressBefore);
-        logger.debug(`Progreso actualizado a ${progressBefore}% para ${file.name}`);
+        logger.debug(
+          `Progreso actualizado a ${progressBefore}% para ${file.name}`
+        );
 
         const result = await uploadVideo(uploadUrl, file);
         if (result.success) {
           logger.info("Vídeo subido exitosamente", { file: file.name });
         } else {
-          logger.error("Error en uploadVideo para archivo:", file.name, result.message);
+          logger.error(
+            "Error en uploadVideo para archivo:",
+            file.name,
+            result.message
+          );
           alert(`Error al subir ${file.name}: ${result.message}`);
         }
       }
@@ -138,7 +157,6 @@ export function useUploadPage() {
       logger.debug("isUploading seteado a false");
     }
   };
-
 
   return {
     files,
@@ -163,5 +181,7 @@ export function useUploadPage() {
     tagInput,
     setTagInput,
     addCustomTag,
+    title,
+    setTitle,
   };
 }

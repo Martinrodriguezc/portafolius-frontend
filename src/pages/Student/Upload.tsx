@@ -39,6 +39,8 @@ export default function UploadPage() {
     setSelectedCondition,
     addTag,
     removeTag,
+    title,
+    setTitle,
   } = useUploadPage();
 
   return (
@@ -66,6 +68,18 @@ export default function UploadPage() {
                 <SelectItem value="rush">RUSH</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div>
+            <Label htmlFor="protocol" className="text-[14px] text-[#333333]">
+              Título del estudio
+            </Label>
+            <Textarea
+              id="title"
+              placeholder="Define el título de tu estudio..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="min-h-[50px] text-[14px] border-[#A0A0A0] rounded-[8px] placeholder:text-[#A0A0A0] mt-4 mb-4"
+            ></Textarea>
           </div>
 
           <UploadSection

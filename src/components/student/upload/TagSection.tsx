@@ -31,7 +31,7 @@ export function TagSection({ section }: TagSectionWrapperProps) {
   } = section;
 
   return (
-    <div className="space-y-4 border border-[#A0A0A0]/30 rounded-[16px] p-6">
+    <div className="space-y-4 border border-[#A0A0A0]/30 rounded-[16px] p-6 mt-4">
       <h3 className="text-[16px] font-medium text-[#333333]">
         Etiquetas de diagnóstico
       </h3>
