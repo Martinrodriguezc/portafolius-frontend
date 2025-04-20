@@ -83,7 +83,7 @@ export function useUploadPage() {
   const handleSubmit = async () => {
     if (files.length === 0) {
       logger.warn("Submit fallido: no hay archivos seleccionados");
-      alert("Debes seleccionar un archivo para subir");
+      alert("Debes seleccionar al menos un archivo para subir");
       return;
     }
 
@@ -93,11 +93,10 @@ export function useUploadPage() {
       return;
     }
 
-    if (selectedOrgan == "" || selectedStructure == "" /*|| selectedCondition == ""*/) {
+    if (selectedOrgan === "" || selectedStructure === "") {
       logger.warn("Submit fallido: tag incompleto", {
         selectedOrgan,
         selectedStructure,
-        selectedCondition,
       });
       alert(
         "Tienes etiquetas de diagnóstico sin agregar. Por favor completa y presiona 'Agregar tag' o limpia los campos."
@@ -105,43 +104,41 @@ export function useUploadPage() {
       return;
     }
 
-    /*if (tags.length === 0) {
-      logger.warn("Submit fallido: no hay tags agregados");
-      alert("Debes agregar al menos un tag antes de enviar");
-      return;
-    }*/
-
-
     setIsUploading(true);
-    logger.info("Inicio de subida de vídeo", { file: files[0].name, protocol });
-
     try {
-      const file = files[0];
-      const uploadUrl = await generateUploadUrl(file);
-      logger.debug("URL prefirmada recibida:", uploadUrl);
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        logger.info("Inicio de subida de vídeo", { file: file.name, protocol });
 
-      setUploadProgress(50);
-      logger.debug("Progreso actualizado a 50%");
+        const uploadUrl = await generateUploadUrl(file);
+        logger.debug("URL prefirmada recibida:", uploadUrl);
 
-      const result = await uploadVideo(uploadUrl, file);
-      if (result.success) {
-        logger.info("Vídeo subido exitosamente");
-        alert("Archivo subido exitosamente");
-        setUploadProgress(100);
-      } else {
-        logger.error("Error en uploadVideo:", result.message);
-        alert(`Error: ${result.message}`);
+        const progressBefore = Math.round((i / files.length) * 100);
+        setUploadProgress(progressBefore);
+        logger.debug(`Progreso actualizado a ${progressBefore}% para ${file.name}`);
+
+        const result = await uploadVideo(uploadUrl, file);
+        if (result.success) {
+          logger.info("Vídeo subido exitosamente", { file: file.name });
+        } else {
+          logger.error("Error en uploadVideo para archivo:", file.name, result.message);
+          alert(`Error al subir ${file.name}: ${result.message}`);
+        }
       }
+
+      setUploadProgress(100);
+      alert("Todos los archivos se subieron exitosamente");
+      setFiles([]);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-
-      logger.error("Error en handleSubmit:", err);
-      alert(message);
+      logger.error("Error en handleSubmit global:", err);
+      alert(`Error inesperado: ${message}`);
     } finally {
       setIsUploading(false);
-      logger.debug("isUploading set a false");
+      logger.debug("isUploading seteado a false");
     }
   };
+
 
   return {
     files,

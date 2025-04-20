@@ -23,8 +23,7 @@ export const generateUploadUrl = async (file: File): Promise<string> => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         fileName: file.name,
-        contentType: file.type,
-        studyId: 1
+        contentType: file.type
       }),
     });
     logger.debug("Respuesta recibida de generate_upload_url:", response);
