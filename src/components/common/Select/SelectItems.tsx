@@ -1,15 +1,21 @@
-import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon } from "lucide-react";
 
-export function SelectLabel(props: React.ComponentProps<typeof SelectPrimitive.Label>) {
+export function SelectLabel(
+  props: React.ComponentProps<typeof SelectPrimitive.Label>
+) {
   const { className = "", ...rest } = props;
   return (
-    <SelectPrimitive.Label className={`px-2 py-1.5 text-xs font-semibold text-gray-500 ${className}`} {...rest} />
+    <SelectPrimitive.Label
+      className={`px-2 py-1.5 text-xs font-semibold text-gray-500 ${className}`}
+      {...rest}
+    />
   );
 }
 
-export function SelectItem(props: React.ComponentProps<typeof SelectPrimitive.Item>) {
+export function SelectItem(
+  props: React.ComponentProps<typeof SelectPrimitive.Item>
+) {
   const { className = "", children, ...rest } = props;
   const itemClasses = [
     "relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm",
@@ -27,9 +33,14 @@ export function SelectItem(props: React.ComponentProps<typeof SelectPrimitive.It
   );
 }
 
-export function SelectSeparator(props: React.ComponentProps<typeof SelectPrimitive.Separator>) {
+export function SelectSeparator(
+  props: React.ComponentProps<typeof SelectPrimitive.Separator>
+) {
   const { className = "", ...rest } = props;
   return (
-    <SelectPrimitive.Separator className={`bg-gray-200 pointer-events-none -mx-1 my-1 h-px ${className}`} {...rest} />
+    <SelectPrimitive.Separator
+      className={`bg-gray-200 pointer-events-none -mx-1 my-1 h-px ${className}`}
+      {...rest}
+    />
   );
 }

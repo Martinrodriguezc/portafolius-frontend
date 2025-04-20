@@ -2,10 +2,7 @@ import Card from "../../components/common/Card/Card";
 import TabsButton from "../../components/common/Tabs/TabsButton";
 import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";
-import TabsPanel from "../../components/common/Tabs/TabsPanel";
-import VideoCard from "../../components/teacher/VideoCard";
 import TeacherLayout from "../layout/TeacherLayout";
-import { filterVideosByStatus, sampleVideoData } from "./utils/utils";
 
 //TODO: MAKE CODE ADAPTABLE BY REMOVING DIRECT INPUTS GIVEN
 export default function TeacherDashboardLayout() {
@@ -37,7 +34,9 @@ export default function TeacherDashboardLayout() {
           <div className="flex flex-col space-y-2">
             <h3 className="text-xl font-bold text-gray-800">Estudiantes</h3>
             <p className="text-sm text-gray-500">Total de estudiantes</p>
-            <span className="text-[24px] font-bold text-[#333333] mt-2">24</span>
+            <span className="text-[24px] font-bold text-[#333333] mt-2">
+              24
+            </span>
           </div>
         </Card>
       </div>
@@ -53,8 +52,12 @@ export default function TeacherDashboardLayout() {
           <TabsButton value="pendiente">Pendiente</TabsButton>
           <TabsButton value="evaluado">Evaluado</TabsButton>
         </TabsList>
+      </TabsContainer>
+    </div>
+  );
+}
 
-        <TabsPanel value="pendiente" className="space-y-4">
+/*         <TabsPanel value="pendiente" className="space-y-4">
           {filterVideosByStatus("pendiente", sampleVideoData).map((video) => (
             <VideoCard video={video} />
           ))}
@@ -64,11 +67,7 @@ export default function TeacherDashboardLayout() {
           {filterVideosByStatus("evaluado", sampleVideoData).map((video) => (
             <VideoCard video={video} />
           ))}
-        </TabsPanel>
-      </TabsContainer>
-    </div>
-  );
-}
+        </TabsPanel> */
 
 export const TeacherDashboardPage = () => {
   return (

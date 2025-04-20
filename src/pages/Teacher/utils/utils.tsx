@@ -1,5 +1,13 @@
+interface Video {
+  status: string;
+  id: number;
+  title: string;
+  date: string;
+  student: string;
+  diagnosis: string;
+}
+
 import type {
-  Video,
   Student,
   Evaluation,
   PendingEvaluation,

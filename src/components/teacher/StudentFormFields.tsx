@@ -1,5 +1,5 @@
 import React from "react"
-import Input from "../common/Input/BaseInput"
+import Input from "../common/Input/Input"
 import type { Student } from "../../types/teacherData"
 import type { FieldDescriptor } from "../../types/fieldDescriptor"
 import { studentFormFields } from "../../utils/studentFormFields"
