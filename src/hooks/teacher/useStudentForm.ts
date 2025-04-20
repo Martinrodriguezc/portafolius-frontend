@@ -1,32 +1,60 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { sampleStudentsData, Student } from "../../pages/Teacher/utils/utils";
+import { sampleStudentsData } from "../../pages/Teacher/utils/utils";
+import type { Student } from "../../types/teacherData";
 
 export function useStudentForm(mode: "view" | "create") {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id?: string }>();
   const studentId = id ? Number(id) : undefined;
-  const existingStudent =
-    mode === "view"
+
+  const existingStudent = useMemo<Student | undefined>(() => {
+    return mode === "view" && studentId != null
       ? sampleStudentsData.find((s) => s.id === studentId)
       : undefined;
+  }, [mode, studentId]);
 
-  // Estado inicial siempre definido en top‑level
-  const initialState: Student = {
-    id: mode === "create" ? Date.now() : existingStudent!.id,
-    name: mode === "create" ? "" : existingStudent!.name,
-    email: mode === "create" ? "" : existingStudent!.email,
-    institution: mode === "create" ? "" : existingStudent!.institution,
-    specialty: mode === "create" ? "" : existingStudent!.specialty,
-    year: mode === "create" ? "" : existingStudent!.year,
-    studies: mode === "create" ? 0 : existingStudent!.studies,
-    averageScore: mode === "create" ? 0 : existingStudent!.averageScore,
-    lastActivity: mode === "create" ? "" : existingStudent!.lastActivity,
-    status: mode === "create" ? "active" : existingStudent!.status,
-  };
-
-  const [formState, setFormState] = useState<Student>(initialState);
   const notFound = mode === "view" && !existingStudent;
+
+  const [formState, setFormState] = useState<Student>(() => ({
+    id: mode === "create" ? Date.now() : existingStudent!.id,
+    name:
+      mode === "create"
+        ? ""
+        : existingStudent!.name,
+    email:
+      mode === "create"
+        ? ""
+        : existingStudent!.email,
+    institution:
+      mode === "create"
+        ? ""
+        : existingStudent!.institution,
+    specialty:
+      mode === "create"
+        ? ""
+        : existingStudent!.specialty,
+    year:
+      mode === "create"
+        ? ""
+        : existingStudent!.year,
+    studies:
+      mode === "create"
+        ? 0
+        : existingStudent!.studies,
+    averageScore:
+      mode === "create"
+        ? 0
+        : existingStudent!.averageScore,
+    lastActivity:
+      mode === "create"
+        ? ""
+        : existingStudent!.lastActivity,
+    status:
+      mode === "create"
+        ? "active"
+        : existingStudent!.status,
+  }));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

@@ -1,10 +1,6 @@
-import { ReactNode } from "react";
 import { Outlet } from "react-router-dom";
 import TeacherSidebar from "../../components/teacher/TeacherSideBar/TeacherSidebar";
-
-interface TeacherLayoutProps {
-  children?: ReactNode;
-}
+import type { TeacherLayoutProps } from "../../types/layout";
 
 export default function TeacherLayout({ children }: TeacherLayoutProps) {
   return (

@@ -1,6 +1,7 @@
 import { StudentInfo } from "../../types/student";
 import Button from "../common/Button/Button";
 import { Link } from "react-router-dom";
+import Field from "../common/Field/Field";
 
 const StudentsPreviewInfo = ({ student }: StudentInfo) => (
   <div className="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -31,20 +32,9 @@ const StudentsPreviewInfo = ({ student }: StudentInfo) => (
       </div>
     </div>
     <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-      <div className="text-center">
-        <p className="text-[13px] text-[#A0A0A0]">Estudios</p>
-        <p className="text-[16px] font-medium text-[#333333]">{student.studies}</p>
-      </div>
-      <div className="text-center">
-        <p className="text-[13px] text-[#A0A0A0]">Promedio</p>
-        <p className="text-[16px] font-medium text-[#333333]">
-          {student.averageScore}/10
-        </p>
-      </div>
-      <div className="text-center">
-        <p className="text-[13px] text-[#A0A0A0]">Última actividad</p>
-        <p className="text-[16px] font-medium text-[#333333]">{student.lastActivity}</p>
-      </div>
+      <Field label="Estudios">{student.studies}</Field>
+      <Field label="Promedio">{student.averageScore}/10</Field>
+      <Field label="Última actividad">{student.lastActivity}</Field>
       <Link to={`/teacher/students/${student.id}`}>
         <Button>Ver perfil</Button>
       </Link>
