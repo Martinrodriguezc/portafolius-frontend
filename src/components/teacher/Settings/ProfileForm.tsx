@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from "react";
 import Button from "../../common/Button/Button";
 import Card from "../../common/Card/Card";
-import Input from "../../common/Input/BaseInput";
+import Input from "../../common/Input/Input";
 
 interface ProfileFormProps {
   profile: {

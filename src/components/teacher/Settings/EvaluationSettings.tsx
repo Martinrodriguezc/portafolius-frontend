@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from "react";
 import Card from "../../common/Card/Card";
-import Input from "../../common/Input/BaseInput";
+import Input from "../../common/Input/Input";
 import Button from "../../common/Button/Button";
 
 export interface EvaluationSettingsProps {

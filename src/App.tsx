@@ -11,8 +11,6 @@ import StudentMaterialsPage from "./pages/Student/Materials";
 import StudentProfilePage from "./pages/Student/Profile";
 import StudentProgressPage from "./pages/Student/Progress";
 import StudentUploadPage from "./pages/Student/Upload";
-import StudentVideosPage from "./pages/Student/VideosPage";
-import StudentVideoPage from "./pages/Student/Video";
 
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
@@ -22,6 +20,9 @@ import { TeacherEvaluationsPage } from "./pages/Teacher/Evaluations";
 import { TeacherStudentsPage } from "./pages/Teacher/Students";
 import { TeacherSettingsPage } from "./pages/Teacher/Settings";
 import CommentsPage from "./pages/Student/Comments";
+import StudentMultipleVideosPage from "./pages/Student/Study/VideosPage";
+import StudentStudiesPage from "./pages/Student/Study/StudyPage";
+import StudentVideoPage from "./pages/Student/Study/Video";
 
 function App() {
   return (
@@ -39,11 +40,24 @@ function App() {
           <Route path="upload" element={<StudentUploadPage />} />
           <Route path="comments" element={<CommentsPage />} />
 
-
-          
-          <Route path="videos" element={<StudentVideosPage />} />
-          <Route path="videos/:id" element={<StudentVideoPage />} />
+          <Route
+            path="/student/:studyId/videos/:id"
+            element={<StudentVideoPage />}
+          />
+          <Route path="/student/studies" element={<StudentStudiesPage />} />
+          <Route
+            path="/student/studies/:id/videos"
+            element={<StudentMultipleVideosPage />}
+          />
         </Route>
+        <Route path="/teacher" element={<TeacherDashboardPage />} />
+        <Route
+          path="/teacher/evaluations"
+          element={<TeacherEvaluationsPage />}
+        />
+
+        <Route path="/teacher/students" element={<TeacherStudentsPage />} />
+        <Route path="/teacher/settings" element={<TeacherSettingsPage />} />
         <Route path="/teacher" element={<TeacherDashboardPage />} />
         <Route
           path="/teacher/evaluations"
@@ -51,10 +65,6 @@ function App() {
         />
         <Route path="/teacher/students" element={<TeacherStudentsPage />} />
         <Route path="/teacher/settings" element={<TeacherSettingsPage />} />
-        <Route path="/teacher" element={<TeacherDashboardPage />} />
-        <Route path="/teacher/evaluations" element={<TeacherEvaluationsPage/>}/>
-        <Route path="/teacher/students" element={<TeacherStudentsPage/>}/>
-        <Route path="/teacher/settings" element={<TeacherSettingsPage/>}/>
       </Routes>
     </Router>
   );
