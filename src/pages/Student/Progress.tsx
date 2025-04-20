@@ -14,15 +14,12 @@ export default function ProgressPage() {
     <div className="p-8">
       <header className="mb-8">
         <h1 className="text-[20px] font-bold text-[#333333]">Mi Progreso</h1>
-        <p className="text-[#A0A0A0]">Seguimiento de tu desempeño y evolución en la plataforma</p>
+        <p className="text-[#A0A0A0]">
+          Seguimiento de tu desempeño y evolución en la plataforma
+        </p>
       </header>
 
-      <StatsGrid
-        totalStudies={progressData.totalStudies}
-        evaluatedStudies={progressData.evaluatedStudies}
-        pendingStudies={progressData.pendingStudies}
-        averageScore={progressData.averageScore}
-      />
+      <StatsGrid />
 
       <TabsContainer defaultValue="overview" className="w-full">
         <TabsList className="mb-6">
@@ -47,7 +44,9 @@ export default function ProgressPage() {
           />
         </TabsPanel>
         <TabsPanel value="protocols">
-          <ProtocolsTab protocolPerformance={progressData.protocolPerformance} />
+          <ProtocolsTab
+            protocolPerformance={progressData.protocolPerformance}
+          />
         </TabsPanel>
         <TabsPanel value="feedback">
           <FeedbackTab recentFeedback={progressData.recentFeedback} />

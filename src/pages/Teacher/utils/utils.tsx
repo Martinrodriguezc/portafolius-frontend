@@ -1,4 +1,11 @@
-import { Video } from "../../../types/video";
+interface Video {
+  status: string;
+  id: number;
+  title: string;
+  date: string;
+  student: string;
+  diagnosis: string;
+}
 
 export const filterVideosByStatus = (
   status: string,
