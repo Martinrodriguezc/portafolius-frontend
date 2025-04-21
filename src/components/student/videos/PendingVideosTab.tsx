@@ -1,13 +1,13 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
 import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
 import { Video } from "../../../types/video";
 
 export const PendingVideosTab: React.FC = () => {
-  const { studyId } = useParams<{ studyId: string }>();
-  const { videos, loading, error } = useStudyVideos(studyId);
+  const { videos, loading, error, study_id } = useStudyVideos();
+  const pendingVideos = videos.filter((video) => video.status == "pendiente");
 
   if (loading) {
     return <p className="p-4 text-center">Cargando videos…</p>;
@@ -18,7 +18,7 @@ export const PendingVideosTab: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      {videos.map((video: Video) => (
+      {pendingVideos.map((video: Video) => (
         <Card
           key={video.id}
           className="rounded-[8px] p-4 flex items-center justify-between"
@@ -32,7 +32,7 @@ export const PendingVideosTab: React.FC = () => {
               {video.upload_date} &bull; {video.duration_seconds}s
             </div>
           </div>
-          <Link to={`/student/studies/${studyId}/videos/${video.id}`}>
+          <Link to={`/student/${study_id}/videos/${video.id}`}>
             <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[8px] px-[12px] rounded-[8px]">
               Ver Video
             </Button>

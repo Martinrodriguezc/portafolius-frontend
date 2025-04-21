@@ -1,5 +1,4 @@
 import { config } from "../../../config/config";
-import { validateVideo } from "../validations/validations";
 import logger from "../../../config/logger";
 
 export const generateUploadUrl = async (
@@ -7,14 +6,6 @@ export const generateUploadUrl = async (
   studyId: string
 ): Promise<string> => {
   logger.debug("Iniciando generateUploadUrl para:", file.name);
-
-  logger.debug("Validando vídeo…");
-  await validateVideo(file);
-  logger.info("Validación de vídeo OK:", {
-    name: file.name,
-    size: file.size,
-    type: file.type,
-  });
 
   const endpoint = `${config.SERVER_URL}/video/generate_upload_url`;
   logger.debug("Solicitando URL prefirmada a:", endpoint);
@@ -27,7 +18,8 @@ export const generateUploadUrl = async (
       body: JSON.stringify({
         fileName: file.name,
         contentType: file.type,
-        studyId: studyId
+        studyId: studyId,
+        sizeBytes: file.size
       }),
     });
     logger.debug("Respuesta recibida de generate_upload_url:", response);

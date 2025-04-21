@@ -7,6 +7,7 @@ import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
 
 export const EvaluatedVideosTab: React.FC = () => {
   const { videos, loading, error, study_id } = useStudyVideos();
+  const evaluatedVideos = videos.filter((video) => video.status == "evaluado")
 
   if (loading) {
     return <p className="p-4 text-center">Cargando videos…</p>;
@@ -17,7 +18,7 @@ export const EvaluatedVideosTab: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      {videos.map((video: Video) => (
+      {evaluatedVideos.map((video: Video) => (
         <Card
           key={video.id}
           className="rounded-[8px] p-4 flex items-center justify-between"

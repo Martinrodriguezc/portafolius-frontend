@@ -28,6 +28,7 @@ export function useStudyVideos(studyId?: string) {
         const resp = await fetch(
           `${config.SERVER_URL}/study/${study_id}/videos`
         );
+        console.log(resp)
         if (!resp.ok) {
           throw new Error(`Error ${resp.status} al obtener vídeos`);
         }

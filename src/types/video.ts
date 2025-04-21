@@ -21,4 +21,5 @@ export interface Video {
   duration_seconds: number;
   upload_date: string;
   order_index: number;
+  status: string;
 }

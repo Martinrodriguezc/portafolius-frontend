@@ -5,6 +5,8 @@ import {
   generateUploadUrl,
   uploadVideo,
 } from "./utils/requests";
+import { validateVideo } from "./validations/validations";
+import { authService } from "../authServices";
 
 export function useUploadPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -18,7 +20,7 @@ export function useUploadPage() {
   const [selectedCondition, setSelectedCondition] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [title, setTitle] = useState("");
-  const userId = localStorage.getItem("userId") || "1"  //REMOVE AFTER FULL INTEGRATION ;
+  const userId = authService.getCurrentUser().id;
 
   if (!userId) {
     throw new Error("No hay userId en localStorage. Debes iniciar sesión.");
@@ -102,8 +104,7 @@ export function useUploadPage() {
       alert("Debes seleccionar un protocolo");
       return;
     }
-
-    if (selectedOrgan === "" || selectedStructure === "") {
+    if (tags.length == 0) {
       logger.warn("Submit fallido: tag incompleto", {
         selectedOrgan,
         selectedStructure,
@@ -116,6 +117,11 @@ export function useUploadPage() {
 
     setIsUploading(true);
     try {
+      logger.debug("Validando vídeo…");
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        await validateVideo(file);
+      }
       const studyId = await createNewStudy(userId, title, protocol);
       logger.info("Estudio creado con ID:", studyId);
 
