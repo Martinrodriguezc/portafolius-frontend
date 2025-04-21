@@ -24,10 +24,7 @@ import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import HomePage from "./pages/HomePage";
 
-import { TeacherDashboardPage } from "./pages/Teacher/Dashboard";
-import { TeacherEvaluationsPage } from "./pages/Teacher/Evaluations";
-import { TeacherStudentsPage } from "./pages/Teacher/Students";
-import { TeacherSettingsPage } from "./pages/Teacher/Settings";
+
 import GoogleCallbackPage from './pages/Auth/GoogleCallbackPage';
 import RoleSelectionForm from './components/auth/RoleSelectionForm';
 
