@@ -11,7 +11,7 @@ const USER_KEY = 'user_data';
 export const authService = {
   async login(credentials: LoginFormData) {
     try {
-      const response = await axios.post(`${API_URL}/users/login`, credentials);
+      const response = await axios.post(`${API_URL}/auth/login`, credentials);
       
       if (response.data.token) {
         localStorage.setItem(TOKEN_KEY, response.data.token);
@@ -29,7 +29,7 @@ export const authService = {
   
   async register(userData: RegisterFormData) {
     try {
-      const response = await axios.post(`${API_URL}/users/register`, userData);
+      const response = await axios.post(`${API_URL}/auth/register`, userData);
       return response.data;
     } catch (error: unknown) {
       throw { msg: (error as Error).message };
