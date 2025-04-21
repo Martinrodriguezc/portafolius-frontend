@@ -27,6 +27,8 @@ import CommentsPage from "./pages/Student/Comments";
 import StudentMultipleVideosPage from "./pages/Student/Study/VideosPage";
 import StudentStudiesPage from "./pages/Student/Study/StudyPage";
 import StudentVideoPage from "./pages/Student/Study/Video";
+import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
+import TeacherVideoPage from "./pages/Teacher/Study/Video";
 
 function App() {
   return (
@@ -69,6 +71,11 @@ function App() {
             element={<StudentProfileTeacherPage mode="view" />}
           />
           <Route path="settings" element={<TeacherSettingsPage />} />
+          <Route path="evaluations/:id/videos" element={<TeacherMultipleVideosPage/>}/>
+          <Route
+            path="/teacher/evaluations/:studyId/videos/:id"
+            element={<TeacherVideoPage />}
+          />
         </Route>
       </Routes>
     </Router>
