@@ -1,7 +1,6 @@
 import { Search, UserPlus, Filter, ArrowUpDown } from "lucide-react";
 import Button from "../../components/common/Button/Button";
 import Card from "../../components/common/Card/Card";
-import Input from "../../components/common/Input/BaseInput";
 import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";
 import TabsButton from "../../components/common/Tabs/TabsButton";
@@ -10,35 +9,36 @@ import TeacherLayout from "../layout/TeacherLayout";
 import StudentsPreviewInfo from "../../components/teacher/StudentsPreviewInfo";
 import { sampleStudentsData } from "./utils/utils";
 import { useStudentFilter } from "../../hooks/teacher/useStudentFilter";
+import Input from "../../components/common/Input/Input";
+import { Link } from "react-router-dom";
 
 export default function TeacherStudentsLayout() {
-  const { searchTerm, filteredStudents, handleSearch } =
-    useStudentFilter(sampleStudentsData);
+  const { searchTerm, filteredStudents, handleSearch } = useStudentFilter(
+    sampleStudentsData
+  );
 
   return (
     <div className="p-8">
-      <header className="mb-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-[20px] font-bold text-[#333333]">
-              Estudiantes
-            </h1>
-            <p className="text-[#A0A0A0]">
-              Gestiona y supervisa el progreso de tus estudiantes
-            </p>
-          </div>
+      <header className="mb-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-[20px] font-bold text-[#333333]">Estudiantes</h1>
+          <p className="text-[#A0A0A0]">
+            Gestiona y supervisa el progreso de tus estudiantes
+          </p>
+        </div>
+        <Link to="/teacher/students/new">
           <Button>
             <UserPlus />
             Añadir Estudiante
           </Button>
-        </div>
+        </Link>
       </header>
 
-      <Card className="border-none shadow-sm rounded-[16px] mb-6">
-        <div className="flex flex-col md:flex-row gap-4">
+      <Card className="border-none shadow-sm rounded-[16px] mb-6 p-4">
+        <div className="flex flex-col md:flex-row gap-4 items-center">
           <div className="relative flex-1">
             <Search
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#A0A0A0]"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A0A0A0]"
               size={18}
             />
             <Input
@@ -80,7 +80,7 @@ export default function TeacherStudentsLayout() {
 
         <TabsPanel value="active" className="space-y-4">
           {filteredStudents
-            .filter((student) => student.status.toLowerCase() === "active")
+            .filter((s) => s.status === "active")
             .map((student) => (
               <Card
                 key={student.id}
@@ -93,7 +93,7 @@ export default function TeacherStudentsLayout() {
 
         <TabsPanel value="inactive" className="space-y-4">
           {filteredStudents
-            .filter((student) => student.status.toLowerCase() !== "active")
+            .filter((s) => s.status !== "active")
             .map((student) => (
               <Card
                 key={student.id}

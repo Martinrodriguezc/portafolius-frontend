@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
 import { dashboardConstants } from "../../utils/dashboardConstants";
@@ -15,12 +16,19 @@ export default function StudentDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
-          <h2 className="text-[18px] font-semibold text-[#333333] mb-4">Últimos comentarios</h2>
+          <h2 className="text-[18px] font-semibold text-[#333333] mb-4">
+            Últimos comentarios
+          </h2>
           <div className="space-y-4">
             {recentComments.map((comment) => (
-              <Card key={comment.id} className="bg-[#F4F4F4] border-none rounded-[16px]">
+              <Card
+                key={comment.id}
+                className="bg-[#F4F4F4] border-none rounded-[16px]"
+              >
                 <div className="p-6">
-                  <p className="text-[14px] text-[#333333] mb-3">{comment.text}</p>
+                  <p className="text-[14px] text-[#333333] mb-3">
+                    {comment.text}
+                  </p>
                   <div className="flex justify-between items-center">
                     <span className="text-[13px] font-medium text-[#333333]">
                       {comment.author}
@@ -35,9 +43,11 @@ export default function StudentDashboard() {
           </div>
 
           <div className="mt-6">
-            <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[12px] rounded-[8px]">
-              Ver todos los comentarios
-            </Button>
+            <Link to="/student/comments">
+              <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[12px] rounded-[8px]">
+                Ver todos los comentarios
+              </Button>
+            </Link>
           </div>
         </div>
 

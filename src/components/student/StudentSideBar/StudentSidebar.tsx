@@ -1,7 +1,7 @@
 import { StudentSidebarHeader } from "./StudentSidebarHeader";
 import { StudentSidebarNavLink } from "./StudentSidebarNavLink";
 import { StudentSidebarFooter } from "./StudentSidebarFooter";
-import { studentMenuItems } from "../../../utils/sidebarUtils";
+import { studentMenuItems } from "./utils/studentSidebarUtils";
 
 export default function StudentSidebar() {
   return (

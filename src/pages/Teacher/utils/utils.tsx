@@ -1,13 +1,25 @@
-import { Video } from "../../../types/video";
+interface Video {
+  status: string;
+  id: number;
+  title: string;
+  date: string;
+  student: string;
+  diagnosis: string;
+}
 
-export const filterVideosByStatus = (
+import type {
+  Student,
+  Evaluation,
+  PendingEvaluation,
+} from "../../../types/teacherData";
+
+export function filterVideosByStatus(
   status: string,
-  pendingVideos: Video[]
-) => {
-  return pendingVideos.filter((video) => video.status === status);
-};
+  videos: Video[]
+): Video[] {
+  return videos.filter((v) => v.status === status);
+}
 
-//TODO: REMOVE WHEN FETCHED DATA FROM DATABASE
 export const sampleVideoData: Video[] = [
   {
     id: 1,
@@ -35,79 +47,7 @@ export const sampleVideoData: Video[] = [
   },
 ];
 
-export const sampleEvaluationData = [
-  {
-    id: 1,
-    student: "Carlos Rodríguez",
-    protocol: "FATE",
-    date: "15 junio, 2023",
-    score: 8.5,
-    status: "completed",
-    videos: 6,
-    tags: ["Corazón", "Vena aorta", "Normal"],
-  },
-  {
-    id: 2,
-    student: "Ana Martínez",
-    protocol: "FAST",
-    date: "12 junio, 2023",
-    score: 7.2,
-    status: "completed",
-    videos: 5,
-    tags: ["Hígado", "Vesícula", "Quiste"],
-  },
-  {
-    id: 3,
-    student: "Miguel Sánchez",
-    protocol: "RUSH",
-    date: "10 junio, 2023",
-    score: 6.8,
-    status: "completed",
-    videos: 8,
-    tags: ["Corazón", "Pulmón", "Derrame"],
-  },
-  {
-    id: 4,
-    student: "Laura González",
-    protocol: "FATE",
-    date: "8 junio, 2023",
-    score: 9.0,
-    status: "completed",
-    videos: 4,
-    tags: ["Corazón", "Válvula mitral", "Prolapso"],
-  },
-  {
-    id: 5,
-    student: "Javier López",
-    protocol: "FAST",
-    date: "5 junio, 2023",
-    score: 7.5,
-    status: "completed",
-    videos: 6,
-    tags: ["Riñón", "Corteza", "Hidronefrosis"],
-  },
-];
-
-export const samplePendingEvaluationsData = [
-  {
-    id: 101,
-    student: "Elena Pérez",
-    protocol: "FATE",
-    date: "18 junio, 2023",
-    videos: 5,
-    tags: ["Corazón", "Ventrículo izquierdo"],
-  },
-  {
-    id: 102,
-    student: "Roberto Díaz",
-    protocol: "RUSH",
-    date: "17 junio, 2023",
-    videos: 7,
-    tags: ["Pulmón", "Pleura"],
-  },
-];
-
-export const sampleStudentsData = [
+export const sampleStudentsData: Student[] = [
   {
     id: 1,
     name: "Carlos Rodríguez",
@@ -167,5 +107,77 @@ export const sampleStudentsData = [
     averageScore: 6.9,
     lastActivity: "Hace 10 días",
     status: "inactive",
+  },
+];
+
+export const sampleEvaluationData: Evaluation[] = [
+  {
+    id: 1,
+    student: "Carlos Rodríguez",
+    protocol: "FATE",
+    date: "15 junio, 2023",
+    score: 8.5,
+    status: "completed",
+    videos: 6,
+    tags: ["Corazón", "Vena aorta", "Normal"],
+  },
+  {
+    id: 2,
+    student: "Ana Martínez",
+    protocol: "FAST",
+    date: "12 junio, 2023",
+    score: 7.2,
+    status: "completed",
+    videos: 5,
+    tags: ["Hígado", "Vesícula", "Quiste"],
+  },
+  {
+    id: 3,
+    student: "Miguel Sánchez",
+    protocol: "RUSH",
+    date: "10 junio, 2023",
+    score: 6.8,
+    status: "completed",
+    videos: 8,
+    tags: ["Corazón", "Pulmón", "Derrame"],
+  },
+  {
+    id: 4,
+    student: "Laura González",
+    protocol: "FATE",
+    date: "8 junio, 2023",
+    score: 9.0,
+    status: "completed",
+    videos: 4,
+    tags: ["Corazón", "Válvula mitral", "Prolapso"],
+  },
+  {
+    id: 5,
+    student: "Javier López",
+    protocol: "FAST",
+    date: "5 junio, 2023",
+    score: 7.5,
+    status: "completed",
+    videos: 6,
+    tags: ["Riñón", "Corteza", "Hidronefrosis"],
+  },
+];
+
+export const samplePendingEvaluationsData: PendingEvaluation[] = [
+  {
+    id: 101,
+    student: "Elena Pérez",
+    protocol: "FATE",
+    date: "18 junio, 2023",
+    videos: 5,
+    tags: ["Corazón", "Ventrículo izquierdo"],
+  },
+  {
+    id: 102,
+    student: "Roberto Díaz",
+    protocol: "RUSH",
+    date: "17 junio, 2023",
+    videos: 7,
+    tags: ["Pulmón", "Pleura"],
   },
 ];
