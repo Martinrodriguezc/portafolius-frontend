@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+interface GoogleAuthError {
+  message: string;
+  code?: string;
+}
+
 export default function GoogleCallbackPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,15 +30,12 @@ export default function GoogleCallbackPage() {
           throw new Error('No se recibieron los datos de autenticación');
         }
 
-        // Decodificar y guardar datos del usuario
         const userData = JSON.parse(atob(userDataBase64));
         const user = userData.user;
         localStorage.setItem('auth_token', token);
         localStorage.setItem('user_data', JSON.stringify(user));
 
         
-        // Redirigir según el rol
-        console.log('Rol del usuario:', user.role);
         if (user.role === 'google_login') {
           navigate('/select-role');
         } else if (user.role === 'profesor') {
@@ -41,9 +43,9 @@ export default function GoogleCallbackPage() {
         } else if (user.role === 'estudiante') {
           navigate('/student');
         }
-      } catch (err: any) {
-        console.error('Error completo:', err);
-        setError('Error al procesar la autenticación con Google');
+      } catch (err: unknown) {
+        const error = err as GoogleAuthError;
+        setError(error.message || 'Error al procesar la autenticación con Google');
       } finally {
         setLoading(false);
       }
