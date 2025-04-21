@@ -20,6 +20,8 @@ import { TeacherDashboardPage } from "./pages/Teacher/Dashboard";
 import { TeacherEvaluationsPage } from "./pages/Teacher/Evaluations";
 import { TeacherStudentsPage } from "./pages/Teacher/Students";
 import { TeacherSettingsPage } from "./pages/Teacher/Settings";
+import GoogleCallbackPage from './pages/Auth/GoogleCallbackPage';
+import RoleSelectionForm from './components/auth/RoleSelectionForm';
 
 function App() {
   return (
@@ -29,7 +31,8 @@ function App() {
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-
+        <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
+        <Route path="/select-role" element={<RoleSelectionForm />} />
         {/* Encapsula todas las rutas de student con StudentLayout */}
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<StudentDashboardPage />} />
@@ -50,6 +53,7 @@ function App() {
         <Route path="/teacher/evaluations" element={<TeacherEvaluationsPage/>}/>
         <Route path="/teacher/students" element={<TeacherStudentsPage/>}/>
         <Route path="/teacher/settings" element={<TeacherSettingsPage/>}/>
+        
       </Routes>
     </Router>
   );
