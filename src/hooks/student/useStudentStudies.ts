@@ -13,7 +13,7 @@ export function useStudentStudies() {
   const [studies, setStudies] = useState<Study[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
-  const userId = localStorage.getItem("userId") || "1" //REMOVE AFTER FULL INTEGRATION;
+  const userId = localStorage.getItem("userId") || "1"
 
   if (!userId) {
     throw new Error("No hay userId en localStorage. Debes iniciar sesión.");
