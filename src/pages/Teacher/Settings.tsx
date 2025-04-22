@@ -1,31 +1,39 @@
-import { User, Settings, FileText } from "lucide-react";
-import TabsContainer from "../../components/common/Tabs/TabsContainer";
-import TabsList from "../../components/common/Tabs/TabsList";
-import TabsButton from "../../components/common/Tabs/TabsButton";
-import TabsPanel from "../../components/common/Tabs/TabsPanel";
-import TeacherLayout from "../layout/TeacherLayout";
-import ProfileForm from "../../components/teacher/Settings/ProfileForm";
-import PlatformSettings from "../../components/teacher/Settings/PlatformSettings";
-import EvaluationSettings from "../../components/teacher/Settings/EvaluationSettings";
-import { useTeacherSettings } from "../../hooks/teacher/useTeacherSettings";
+import { User, Settings, FileText } from 'lucide-react'
+import TabsContainer from '../../components/common/Tabs/TabsContainer'
+import TabsList from '../../components/common/Tabs/TabsList'
+import TabsButton from '../../components/common/Tabs/TabsButton'
+import TabsPanel from '../../components/common/Tabs/TabsPanel'
+import TeacherLayout from '../layout/TeacherLayout'
+import ProfileForm from '../../components/teacher/Settings/ProfileForm'
+import PlatformSettings from '../../components/teacher/Settings/PlatformSettings'
+import EvaluationSettings from '../../components/teacher/Settings/EvaluationSettings'
+import { useTeacherSettings } from '../../hooks/teacher/useTeacherSettings'
+import { useUserProfile } from '../../hooks/user/useUserProfile'
 
 export default function TeacherSettingsLayout() {
   const {
-    profile,
     platformSettings,
     evaluationSettings,
-    handleProfileChange,
     handlePlatformSettingsChange,
-    handleEvaluationSettingsChange,
-  } = useTeacherSettings();
+    handleEvaluationSettingsChange 
+  } = useTeacherSettings()
+
+  const {
+    profile: user,
+    loading: userLoading,
+    error: userError,
+    updateProfile
+  } = useUserProfile()
+
+  if (userLoading) return <p className="p-8">Cargando perfil…</p>
+  if (userError)   return <p className="p-8 text-red-500">Error: {userError}</p>
+  if (!user)      return <p className="p-8 text-red-500">Usuario no encontrado</p>
 
   return (
     <div className="p-8">
       <header className="mb-8">
         <h1 className="text-[20px] font-bold text-[#333333]">Configuración</h1>
-        <p className="text-[#A0A0A0]">
-          Gestiona tu perfil y preferencias de la plataforma
-        </p>
+        <p className="text-[#A0A0A0]">Gestiona tu perfil y preferencias</p>
       </header>
 
       <TabsContainer defaultValue="profile">
@@ -43,8 +51,8 @@ export default function TeacherSettingsLayout() {
 
         <TabsPanel value="profile">
           <ProfileForm
-            profile={profile}
-            onProfileChange={handleProfileChange}
+            profile={user}
+            onSave={updateProfile}
           />
         </TabsPanel>
 
@@ -63,11 +71,11 @@ export default function TeacherSettingsLayout() {
         </TabsPanel>
       </TabsContainer>
     </div>
-  );
+  )
 }
 
 export const TeacherSettingsPage = () => (
   <TeacherLayout>
     <TeacherSettingsLayout />
   </TeacherLayout>
-);
+)
