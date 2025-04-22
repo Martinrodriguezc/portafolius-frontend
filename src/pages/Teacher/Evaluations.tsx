@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import TeacherLayout from '../layout/TeacherLayout'
 import Card from '../../components/common/Card/Card'
 import TabsContainer from '../../components/common/Tabs/TabsContainer'
 import TabsList from '../../components/common/Tabs/TabsList'

@@ -1,7 +1,7 @@
-import type { Student } from "./teacherData"
+export type FieldType = "text" | "number" | "email";
 
 export interface FieldDescriptor {
-  label: string
-  name: keyof Student
-  type: "text" | "number"
+  label: string;
+  name: string;
+  type: FieldType;
 }

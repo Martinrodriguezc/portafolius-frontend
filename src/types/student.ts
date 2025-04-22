@@ -1,16 +1,9 @@
 export interface Student {
   id: number;
-  name: string;
-  status: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  specialty: string;
-  institution: string;
-  year: string;
   studies: number;
-  averageScore: number;
-  lastActivity: string;
-}
-
-export interface StudentInfo {
-  student: Student;
+  average_score: number;
+  last_activity: string;
 }

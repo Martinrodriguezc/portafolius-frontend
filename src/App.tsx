@@ -27,7 +27,7 @@ import StudentVideoPage from "./pages/Student/Study/Video";
 import TeacherDashboardPage from "./pages/Teacher/Dashboard";
 import TeacherEvaluationsPage from "./pages/Teacher/Evaluations";
 import TeacherStudentsPage from "./pages/Teacher/Students";
-import StudentProfileTeacherPage from "./pages/Teacher/StudentProfile";
+import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import TeacherSettingsPage from "./pages/Teacher/Settings";
 
 function App() {
@@ -58,14 +58,8 @@ function App() {
           <Route index element={<TeacherDashboardPage />} />
           <Route path="evaluations" element={<TeacherEvaluationsPage />} />
           <Route path="students" element={<TeacherStudentsPage />} />
-          <Route
-            path="students/new"
-            element={<StudentProfileTeacherPage mode="create" />}
-          />
-          <Route
-            path="students/:id"
-            element={<StudentProfileTeacherPage mode="view" />}
-          />
+          <Route path="students/new" element={<StudentProfileTeacherPage mode="create" />} />
+          <Route path="students/:id" element={<StudentProfileTeacherPage mode="view" />} />
           <Route path="settings" element={<TeacherSettingsPage />} />
         </Route>
       </Routes>
