@@ -16,7 +16,7 @@ export interface RegisterFormErrors {
   password: string;
 }
 
-export type role = 'estudiante' | 'profesor';
+export type role = 'estudiante' | 'profesor' | 'google_login' | 'admin';
 
 export type RegisterFormState = BaseFormState<RegisterFormData, RegisterFormErrors> & {
   showPasswordRequirements: boolean;

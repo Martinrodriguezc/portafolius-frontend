@@ -3,6 +3,7 @@ import { validateLoginForm } from "../../utils/validation/forms/formValidation";
 import { initialLoginFormState, LoginFormData, LoginFormErrors } from "../../types/login";
 import { authService } from "../authServices";
 
+
 export const useLoginForm = (onSuccess?: () => void) => {
   const { formData, formErrors, handleInputChange } = useFormHook<LoginFormData, LoginFormErrors>(
     initialLoginFormState,
@@ -23,6 +24,12 @@ export const useLoginForm = (onSuccess?: () => void) => {
       }
     }
   };
+  
+  const handleGoogleLogin = () => {
+    authService.initiateGoogleLogin();
+    console.log('Iniciando Google Login');
+    
+  };
 
   return {
     email: formData.email,
@@ -31,5 +38,6 @@ export const useLoginForm = (onSuccess?: () => void) => {
     passwordError: formErrors.password,
     handleInputChange,
     handleSubmit,
+    handleGoogleLogin,
   };
 };

@@ -15,6 +15,7 @@ export default function LoginForm({
     passwordError,
     handleInputChange,
     handleSubmit,
+    handleGoogleLogin,
   } = useLoginForm(onLoginSuccess);
 
   return (
@@ -58,7 +59,12 @@ export default function LoginForm({
           </div>
         </div>
 
-        <Button variant="google" fixedWidth={false}>
+        <Button 
+          variant="google" 
+          fixedWidth={false} 
+          onClick={handleGoogleLogin}
+          type="button"
+        >
           <svg
             className="mr-2 h-4 w-4"
             aria-hidden="true"
