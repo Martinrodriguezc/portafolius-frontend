@@ -23,12 +23,18 @@ import StudentProfileTeacherPage from "./pages/Teacher/StudentProfile";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import HomePage from "./pages/HomePage";
+
+
+import GoogleCallbackPage from './pages/Auth/GoogleCallbackPage';
+import RoleSelectionForm from './components/auth/RoleSelectionForm';
+
 import CommentsPage from "./pages/Student/Comments";
 import StudentMultipleVideosPage from "./pages/Student/Study/VideosPage";
 import StudentStudiesPage from "./pages/Student/Study/StudyPage";
 import StudentVideoPage from "./pages/Student/Study/Video";
 import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
 import TeacherVideoPage from "./pages/Teacher/Study/Video";
+
 
 function App() {
   return (
@@ -38,6 +44,11 @@ function App() {
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
+        <Route path="/select-role" element={<RoleSelectionForm />} />
+        {/* Encapsula todas las rutas de student con StudentLayout */}
+
+
 
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<StudentDashboardPage />} />
@@ -77,6 +88,20 @@ function App() {
             element={<TeacherVideoPage />}
           />
         </Route>
+
+        <Route path="/teacher" element={<TeacherDashboardPage />} />
+        <Route
+          path="/teacher/evaluations"
+          element={<TeacherEvaluationsPage />}
+        />
+        <Route path="/teacher/students" element={<TeacherStudentsPage />} />
+        <Route path="/teacher/settings" element={<TeacherSettingsPage />} />
+        <Route path="/teacher" element={<TeacherDashboardPage />} />
+        <Route path="/teacher/evaluations" element={<TeacherEvaluationsPage/>}/>
+        <Route path="/teacher/students" element={<TeacherStudentsPage/>}/>
+        <Route path="/teacher/settings" element={<TeacherSettingsPage/>}/>
+        
+
       </Routes>
     </Router>
   );
