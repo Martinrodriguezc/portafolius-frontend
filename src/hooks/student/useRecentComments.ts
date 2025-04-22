@@ -6,6 +6,7 @@ export interface RecentComment {
   text: string;
   author: string;
   date: string;
+  studyId: string;
   videoId: string;
 }
 
