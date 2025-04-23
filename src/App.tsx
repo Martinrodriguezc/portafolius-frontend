@@ -27,8 +27,14 @@ import StudentVideoPage from "./pages/Student/Study/Video";
 import TeacherDashboardPage from "./pages/Teacher/Dashboard";
 import TeacherEvaluationsPage from "./pages/Teacher/Evaluations";
 import TeacherStudentsPage from "./pages/Teacher/Students";
-import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import TeacherSettingsPage from "./pages/Teacher/Settings";
+
+import StudentProfileTeacherPage from "./pages/Teacher/StudentProfile";
+
+import CommentsPage from "./pages/Student/Comments";
+import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
+import TeacherVideoPage from "./pages/Teacher/Study/Video";
+
 
 function App() {
   return (
@@ -61,6 +67,11 @@ function App() {
           <Route path="students/new" element={<StudentProfileTeacherPage mode="create" />} />
           <Route path="students/:id" element={<StudentProfileTeacherPage mode="view" />} />
           <Route path="settings" element={<TeacherSettingsPage />} />
+          <Route path="evaluations/:id/videos" element={<TeacherMultipleVideosPage/>}/>
+          <Route
+            path="/teacher/evaluations/:studyId/videos/:id"
+            element={<TeacherVideoPage />}
+          />
         </Route>
       </Routes>
     </Router>

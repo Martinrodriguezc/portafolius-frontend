@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { config } from "../../config/config";
+import { authService } from "../authServices";
 
 export interface Study {
   id: string;
@@ -13,7 +14,7 @@ export function useStudentStudies() {
   const [studies, setStudies] = useState<Study[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
-  const userId = localStorage.getItem("userId") || "1"
+  const userId = authService.getCurrentUser().id
 
   if (!userId) {
     throw new Error("No hay userId en localStorage. Debes iniciar sesión.");

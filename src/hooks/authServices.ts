@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { LoginFormData }  from '../types/login'
 import { RegisterFormData } from '../types/register'
+import { config } from "../config/config";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 const TOKEN_KEY   = 'auth_token'
@@ -84,3 +85,4 @@ export const authService = {
     return resp.data.user
   },
 }
+

@@ -23,9 +23,9 @@ export default function StudentStudiesPage() {
           <Card className="rounded-[16px] mb-6" key={study.id}>
             <h2 className="text-lg font-medium mb-2">{study.title}</h2>
             <p className="text-sm text-gray-600">
-              Protocolo: {study.protocol}
+              Protocolo: {study.protocol.toUpperCase()}
             </p>
-            <p className="text-sm text-gray-600">Estado: {study.status}</p>
+            <p className="text-sm text-gray-600">Estado: {study.status.toUpperCase()}</p>
             <p className="text-sm text-gray-600">
               Creado: {new Date(study.created_at).toLocaleDateString()}
             </p>

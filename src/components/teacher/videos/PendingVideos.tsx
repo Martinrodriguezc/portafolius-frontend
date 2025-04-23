@@ -7,7 +7,7 @@ import { Video } from "../../../types/video";
 
 export const PendingVideosTab: React.FC = () => {
   const { videos, loading, error, study_id } = useStudyVideos();
-  const pendingVideos = videos.filter((video) => video.status == "pendiente");
+  console.log(videos)
 
   if (loading) {
     return <p className="p-4 text-center">Cargando videos…</p>;
@@ -18,7 +18,7 @@ export const PendingVideosTab: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      {pendingVideos.map((video: Video) => (
+      {videos.map((video: Video) => (
         <Card
           key={video.id}
           className="rounded-[8px] p-4 flex items-center justify-between"
@@ -32,9 +32,9 @@ export const PendingVideosTab: React.FC = () => {
               {video.upload_date} &bull; {video.duration_seconds}s
             </div>
           </div>
-          <Link to={`/student/${study_id}/videos/${video.id}`}>
+          <Link to={`/teacher/evaluations/${study_id}/videos/${video.id}`}>
             <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[8px] px-[12px] rounded-[8px]">
-              Ver Video
+              Ver Video y evaluar
             </Button>
           </Link>
         </Card>
