@@ -28,11 +28,10 @@ import TeacherEvaluationsPage from "./pages/Teacher/Evaluations";
 import TeacherStudentsPage from "./pages/Teacher/Students";
 import TeacherSettingsPage from "./pages/Teacher/Settings";
 
-import StudentProfileTeacherPage from "./pages/Teacher/StudentProfile";
-
 import CommentsPage from "./pages/Student/Comments";
 import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
 import TeacherVideoPage from "./pages/Teacher/Study/Video";
+import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 
 
 function App() {

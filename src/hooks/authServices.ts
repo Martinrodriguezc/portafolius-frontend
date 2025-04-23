@@ -1,15 +1,14 @@
 import axios from 'axios'
-import { LoginFormData }  from '../types/login'
+import { LoginFormData } from '../types/login'
 import { RegisterFormData } from '../types/register'
 import { config } from "../config/config";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
-const TOKEN_KEY   = 'auth_token'
-const USER_KEY    = 'user_data'
+const TOKEN_KEY = 'auth_token'
+const USER_KEY = 'user_data'
 
 export const authService = {
   async login(credentials: LoginFormData) {
-    const { data } = await axios.post(`${BACKEND_URL}/auth/login`, credentials)
+    const { data } = await axios.post(`${config.SERVER_URL}/auth/login`, credentials)
     if (data.token) {
       localStorage.setItem(TOKEN_KEY, data.token)
       const userData = { ...data }
@@ -21,7 +20,7 @@ export const authService = {
   },
 
   async register(userData: RegisterFormData) {
-    const { data } = await axios.post(`${BACKEND_URL}/auth/register`, userData)
+    const { data } = await axios.post(`${config.SERVER_URL}/auth/register`, userData)
     return data
   },
 
@@ -40,11 +39,11 @@ export const authService = {
   },
 
   initiateGoogleLogin() {
-    window.location.href = `${BACKEND_URL}/auth/google`
+    window.location.href = `${config.SERVER_URL}/auth/google`
   },
 
   async handleGoogleCallback(code: string) {
-    const { data } = await axios.get(`${BACKEND_URL}/auth/google/callback?code=${code}`)
+    const { data } = await axios.get(`${config.SERVER_URL}/auth/google/callback?code=${code}`)
     if (data.token) {
       localStorage.setItem(TOKEN_KEY, data.token)
       localStorage.setItem(USER_KEY, JSON.stringify(data.user))
@@ -58,7 +57,7 @@ export const authService = {
     const current = stored.user ?? stored
 
     const { data } = await axios.put(
-      `${BACKEND_URL}/users/${current.id}`,
+      `${config.SERVER_URL}/users/${current.id}`,
       { firstName: current.first_name, lastName: current.last_name, role: role.toLowerCase() },
       { headers: { Authorization: `Bearer ${this.getToken()}` } }
     )
@@ -68,12 +67,12 @@ export const authService = {
   },
 
   async updateUserProfile(data: { firstName?: string; lastName?: string; email?: string }) {
-    const stored  = this.getCurrentUser()
+    const stored = this.getCurrentUser()
     if (!stored) throw new Error('Sesión vencida')
     const current = stored.user ?? stored
 
     const resp = await axios.put(
-      `${BACKEND_URL}/users/${current.id}`,
+      `${config.SERVER_URL}/users/${current.id}`,
       data,
       { headers: { Authorization: `Bearer ${this.getToken()}` } }
     )
