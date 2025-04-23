@@ -8,7 +8,7 @@ export default function LoginPage() {
   const handleLoginSuccess = () => {
     const user = authService.getCurrentUser();
     console.log("Login exitoso, redirigiendo...");
-    if (user && user.role === 'teacher') {
+    if (user && user.role === 'profesor') {
       navigate('/teacher');
     } else {
       navigate('/student');
