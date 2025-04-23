@@ -4,6 +4,7 @@ import Button from "../../common/Button/Button";
 import { Link } from "react-router-dom";
 import { Video } from "../../../types/video";
 import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
+import { CheckCircle } from "lucide-react";
 
 export const EvaluatedVideosTab: React.FC = () => {
   const { videos, loading, error, study_id } = useStudyVideos();
@@ -14,6 +15,20 @@ export const EvaluatedVideosTab: React.FC = () => {
   }
   if (error) {
     return <p className="p-4 text-center text-red-500">Error: {error}</p>;
+  }
+
+  if (evaluatedVideos.length === 0) {
+    return (
+      <Card className="flex flex-col items-center justify-center p-8 bg-slate-50 border border-slate-200 rounded-lg">
+        <CheckCircle className="h-12 w-12 text-green-500 mb-4" />
+        <p className="text-lg font-medium text-[#333333]">
+          No hay videos evaluados
+        </p>
+        <p className="text-sm text-[#A0A0A0] mt-1 text-center">
+          Una vez que alguno de tus videos sean evaluados, verás los resultados aquí.
+        </p>
+      </Card>
+    );
   }
 
   return (
@@ -29,7 +44,7 @@ export const EvaluatedVideosTab: React.FC = () => {
             </h3>
             <p className="text-sm text-[#A0A0A0]">{video.mime_type}</p>
             <div className="text-xs text-[#A0A0A0] mt-1">
-              {video.upload_date} &bull; {video.duration_seconds}
+              {video.upload_date} &bull; {video.duration_seconds}s
             </div>
           </div>
           <Link to={`/student/${study_id}/videos/${video.id}`}>

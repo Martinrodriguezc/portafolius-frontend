@@ -5,7 +5,7 @@ export function ResourceRepositorySection() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-slate-900 mb-6">Repositorio de Material Educativo</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-6 text-center">Repositorio de Material Educativo</h2>
             <p className="text-slate-600 mb-8">
               PortafoliUS incluye un completo repositorio de recursos educativos para complementar su aprendizaje en
               Ultrasonido Clínico:
