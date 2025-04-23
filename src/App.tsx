@@ -34,7 +34,7 @@ import StudentStudiesPage from "./pages/Student/Study/StudyPage";
 import StudentVideoPage from "./pages/Student/Study/Video";
 import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
 import TeacherVideoPage from "./pages/Teacher/Study/Video";
-
+import { TeacherEvaluateVideoPage } from "./pages/Teacher/EvaluateVideoPage";
 
 function App() {
   return (
@@ -83,10 +83,12 @@ function App() {
           />
           <Route path="settings" element={<TeacherSettingsPage />} />
           <Route path="evaluations/:id/videos" element={<TeacherMultipleVideosPage/>}/>
+          <Route path="evaluations/:studyId/videos/:clipId" element={<TeacherVideoPage />} />
           <Route
-            path="/teacher/evaluations/:studyId/videos/:id"
-            element={<TeacherVideoPage />}
+            path="evaluations/:studyId/videos/:clipId/evaluate"
+            element={<TeacherEvaluateVideoPage />}
           />
+          
         </Route>
 
         <Route path="/teacher" element={<TeacherDashboardPage />} />

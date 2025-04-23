@@ -4,7 +4,7 @@ import { fetchVideoUrl, postComment, fetchVideoMeta } from "./utils/requests";
 import { Video } from "../../types/video";
 
 export function useVideoPage() {
-  const { id } = useParams<{ id: string }>();
+  const { clipId } = useParams<{ clipId: string }>();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [videoUrl, setVideoUrl] = useState<string>("");
@@ -17,7 +17,7 @@ export function useVideoPage() {
   const [comment, setComment] = useState<string>("");
 
   useEffect(() => {
-    if (!id) {
+    if (!clipId) {
       setError("No se proporcionó ID de vídeo");
       setLoading(false);
       return;
@@ -25,10 +25,10 @@ export function useVideoPage() {
     (async () => {
       try {
         const [url, videoMeta] = await Promise.all([
-          fetchVideoUrl(id),
-          fetchVideoMeta(id),
+          fetchVideoUrl(clipId),
+          fetchVideoMeta(clipId),
         ]);
-        console.log(fetchVideoMeta(id))
+        console.log(fetchVideoMeta(clipId))
         setVideoUrl(url);
         setMeta(videoMeta);
       } catch (err: unknown) {
@@ -37,7 +37,7 @@ export function useVideoPage() {
         setLoading(false);
       }
     })();
-  }, [id]);
+  }, [clipId]);
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -80,11 +80,11 @@ export function useVideoPage() {
   };
 
   const handleSubmitComment = async () => {
-    if (!id || !comment.trim()) return;
+    if (!clipId || !comment.trim()) return;
     try {
-      await postComment(id, comment.trim());
+      await postComment(clipId, comment.trim());
       setComment("");
-      const updated = await fetchVideoMeta(id);
+      const updated = await fetchVideoMeta(clipId);
       setMeta(updated);
     } catch (err) {
       console.error("Error comentando:", err);
