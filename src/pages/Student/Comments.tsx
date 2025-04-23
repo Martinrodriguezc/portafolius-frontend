@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
 import { evaluatedVideos, pendingVideos, Video } from "../../utils/videoConstants";
+import { ReturnButton } from "../../components/common/Button/ReturnButton";
 
 export default function CommentsPage() {
   const allVideos: Video[] = [...evaluatedVideos, ...pendingVideos];
@@ -14,11 +15,14 @@ export default function CommentsPage() {
 
   return (
     <div className="p-8">
-      <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">Todos los comentarios</h1>
-        <p className="text-[#A0A0A0]">
-          Lista completa de tus comentarios y acceso al video relacionado
-        </p>
+      <header className="mb-8 flex justify-between items-center">
+        <div className="flex flex-col gap-2 mb-4">        
+          <h1 className="text-[20px] font-bold text-[#333333]">Todos los comentarios</h1>
+          <p className="text-[#A0A0A0]">
+            Lista completa de tus comentarios y acceso al video relacionado
+          </p>
+        </div>
+        <ReturnButton />
       </header>
 
       <div className="space-y-4">

@@ -5,15 +5,21 @@ import TabsPanel from "../../../components/common/Tabs/TabsPanel";
 import { CheckSquare, Clock } from "lucide-react";
 import { PendingVideosTab } from "../../../components/student/videos/PendingVideosTab";
 import { EvaluatedVideosTab } from "../../../components/student/videos/EvaluatedVideosTab";
+import { ReturnButton } from "../../../components/common/Button/ReturnButton";
 
 export default function StudentMultipleVideosPage() {
+
+
   return (
     <div className="p-8">
-      <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">Mis Videos</h1>
-        <p className="text-[#A0A0A0]">
-          Revisa tus videos evaluados y pendientes de evaluación
-        </p>
+      <header className="mb-8 flex justify-between items-center">
+        <div className="flex flex-col gap-2 mb-4">
+          <h1 className="text-[20px] font-bold text-[#333333]">Mis Videos</h1>
+          <p className="text-[#A0A0A0]">
+            Revisa tus videos evaluados y pendientes de evaluación
+          </p>
+        </div>
+        <ReturnButton />
       </header>
 
       <TabsContainer defaultValue="evaluated" className="w-full">

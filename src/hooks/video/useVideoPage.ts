@@ -11,9 +11,11 @@ export function useVideoPage() {
   const [meta, setMeta] = useState<Video | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
+
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
   const [comment, setComment] = useState<string>("");
 
   useEffect(() => {
@@ -28,7 +30,6 @@ export function useVideoPage() {
           fetchVideoUrl(id),
           fetchVideoMeta(id),
         ]);
-        console.log(fetchVideoMeta(id))
         setVideoUrl(url);
         setMeta(videoMeta);
       } catch (err: unknown) {
@@ -39,14 +40,25 @@ export function useVideoPage() {
     })();
   }, [id]);
 
+  // Registro los listeners cada vez que cambie la URL del video
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
-    const onTime = () =>
-      vid.duration && setProgress((vid.currentTime / vid.duration) * 100);
-    vid.addEventListener("timeupdate", onTime);
-    return () => vid.removeEventListener("timeupdate", onTime);
-  }, []);
+
+    const updateProgress = () => {
+      if (!vid.duration) return;
+      const percent = (vid.currentTime / vid.duration) * 100;
+      setProgress(percent);
+    };
+
+    vid.addEventListener("loadedmetadata", updateProgress);
+    vid.addEventListener("timeupdate", updateProgress);
+
+    return () => {
+      vid.removeEventListener("loadedmetadata", updateProgress);
+      vid.removeEventListener("timeupdate", updateProgress);
+    };
+  }, [videoUrl]);
 
   const togglePlay = () => {
     const vid = videoRef.current;
@@ -63,7 +75,8 @@ export function useVideoPage() {
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const vid = videoRef.current;
     if (!vid || !vid.duration) return;
-    vid.currentTime = (Number(e.target.value) / 100) * vid.duration;
+    const seekTo = (Number(e.target.value) / 100) * vid.duration;
+    vid.currentTime = seekTo;
     setProgress(Number(e.target.value));
   };
 
