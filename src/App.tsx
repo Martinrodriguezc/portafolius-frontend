@@ -19,7 +19,6 @@ import StudentMaterialsPage from "./pages/Student/Materials";
 import StudentProfilePage from "./pages/Student/Profile";
 import StudentProgressPage from "./pages/Student/Progress";
 import StudentUploadPage from "./pages/Student/Upload";
-import CommentsPage from "./pages/Student/Comments";
 import StudentStudiesPage from "./pages/Student/Study/StudyPage";
 import StudentMultipleVideosPage from "./pages/Student/Study/VideosPage";
 import StudentVideoPage from "./pages/Student/Study/Video";
