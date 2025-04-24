@@ -6,17 +6,13 @@ import { Textarea } from "../../components/common/Textarea/Textarea";
 import { Progress } from "../../components/common/Progress/Progress";
 import { UploadSection } from "../../components/student/upload/UploadSection";
 import { TagSection } from "../../components/student/upload/TagSection";
-import {
-  organOptions,
-  structureOptions,
-  conditionOptions,
-} from "../../utils/constants/uploadConstants";
 import { Select, SelectValue } from "../../components/common/Select/SelectBase";
 import {
   SelectContent,
   SelectTrigger,
 } from "../../components/common/Select/SelectInteraction";
 import { SelectItem } from "../../components/common/Select/SelectItems";
+import { useTagsHierarchy } from "../../hooks/upload/useTagsHierarchy";
 
 export default function UploadPage() {
   const {
@@ -27,21 +23,14 @@ export default function UploadPage() {
     setProtocol,
     comment,
     setComment,
-    tags,
     handleFileChange,
     removeFile,
     handleSubmit,
-    selectedOrgan,
-    setSelectedOrgan,
-    selectedStructure,
-    setSelectedStructure,
-    selectedCondition,
-    setSelectedCondition,
-    addTag,
-    removeTag,
     title,
     setTitle,
   } = useUploadPage();
+
+  const tagsState = useTagsHierarchy();
 
   return (
     <div className="p-8 flex justify-center">
@@ -88,22 +77,18 @@ export default function UploadPage() {
             removeFile={removeFile}
           />
 
-          <TagSection
-            section={{
-              selectedOrgan,
-              setSelectedOrgan,
-              selectedStructure,
-              setSelectedStructure,
-              selectedCondition,
-              setSelectedCondition,
-              organOptions,
-              structureOptions,
-              conditionOptions,
-              addTag,
-              removeTag,
-              tags,
-            }}
-          />
+          <TagSection section={{
+            ...tagsState,
+            selectedOrgan: tagsState.selectedOrgan,
+            selectedStructure: tagsState.selectedStructure,
+            selectedCondition: tagsState.selectedCondition,
+            tags: tagsState.tags,
+            setSelectedOrgan: tagsState.setSelectedOrgan,
+            setSelectedStructure: tagsState.setSelectedStructure,
+            setSelectedCondition: tagsState.setSelectedCondition,
+            addTag: tagsState.addTag,
+            removeTag: tagsState.removeTag,
+          }} />
 
           <div className="space-y-2 mt-6">
             <Label htmlFor="comment" className="text-[14px] text-[#333333]">
