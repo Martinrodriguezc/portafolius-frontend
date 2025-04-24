@@ -28,9 +28,8 @@ export default function GoogleCallbackPage() {
 
         const userData = JSON.parse(atob(userDataBase64));
         const user = userData.user;
-        console.log('User role:', user.role);
         localStorage.setItem('auth_token', token);
-        localStorage.setItem('user_data', JSON.stringify(userData));
+        localStorage.setItem('user_data', JSON.stringify(user));
 
         
         if (user.role === 'google_login') {
