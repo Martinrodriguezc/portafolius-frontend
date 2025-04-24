@@ -1,11 +1,4 @@
-import { InputHTMLAttributes } from "react";
-
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  required?: boolean;
-  showPasswordRequirements?: boolean;
-}
+import { InputProps } from "../../../types/Props/InputProps";
 
 const Input: React.FC<InputProps> = ({
   label,

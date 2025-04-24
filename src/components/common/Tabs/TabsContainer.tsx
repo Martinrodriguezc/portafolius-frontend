@@ -1,17 +1,15 @@
-import React, { useState, ReactNode, ReactElement } from "react";
+import React, { useState, ReactElement } from "react";
+import { TabsProps } from "../../../types/Props/Tabs/TabsProps";
 
-export interface TabsProps {
-  defaultValue: string;
-  children: ReactNode;
-  className?: string;
-}
-
-const TabsContainer: React.FC<TabsProps> = ({ defaultValue, children, className }) => {
+const TabsContainer: React.FC<TabsProps> = ({
+  defaultValue,
+  children,
+  className,
+}) => {
   const [selectedTab, setSelectedTab] = useState<string>(defaultValue);
 
   return (
     <div className={`tabs ${className || ""}`}>
-
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
           return React.cloneElement(

@@ -1,8 +1,5 @@
-import Button from "../../components/common/Button/Button"
-
-interface SignupCTASectionProps {
-  onSignup: () => void
-}
+import Button from "../../components/common/Button/Button";
+import { SignupCTASectionProps } from "../../types/Props/LearnMore/SignupCTASectionProps";
 
 export function SignupCTASection({ onSignup }: SignupCTASectionProps) {
   return (
@@ -12,13 +9,13 @@ export function SignupCTASection({ onSignup }: SignupCTASectionProps) {
           ¿Listo para mejorar su enseñanza y aprendizaje en USC?
         </h2>
         <p className="text-slate-300 max-w-2xl mx-auto mb-8">
-          Únase a PortafoliUS y revolucione la forma en que enseña y aprende Ultrasonido Clínico con nuestra
-          innovadora plataforma educativa.
+          Únase a PortafoliUS y revolucione la forma en que enseña y aprende
+          Ultrasonido Clínico con nuestra innovadora plataforma educativa.
         </p>
         <Button variant="primary" onClick={onSignup}>
           Registrarse Ahora
         </Button>
       </div>
     </section>
-  )
+  );
 }

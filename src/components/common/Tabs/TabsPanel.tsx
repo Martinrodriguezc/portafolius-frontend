@@ -1,11 +1,5 @@
 import React from "react";
-
-export interface TabsContentProps {
-  value: string;
-  children: React.ReactNode;
-  selectedTab?: string;
-  className?: string;
-}
+import { TabsContentProps } from "../../../types/Props/Tabs/TabsContentProps";
 
 const TabsPanel: React.FC<TabsContentProps> = ({ value, children, selectedTab, className }) => {
   if (selectedTab !== value) return null;
