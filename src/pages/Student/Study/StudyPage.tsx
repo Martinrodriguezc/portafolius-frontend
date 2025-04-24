@@ -14,7 +14,7 @@ export default function StudentStudiesPage() {
       <header className="mb-8">
         <h1 className="text-[20px] font-bold text-[#333333]">Mis Estudios</h1>
         <p className="text-[#A0A0A0]">
-          Revisa tus videos evaluados y pendientes de evaluación
+          Revisa tus estudios evaluados y pendientes de evaluación
         </p>
       </header>
 
@@ -25,7 +25,14 @@ export default function StudentStudiesPage() {
             <p className="text-sm text-gray-600">
               Protocolo: {study.protocol.toUpperCase()}
             </p>
-            <p className="text-sm text-gray-600">Estado: {study.status.toUpperCase()}</p>
+            <p className="text-sm text-gray-600">
+              Estado: {study.status.toUpperCase()}
+            </p>
+            {study.status === "EVALUADO" && study.score !== null && (
+              <p className="text-sm text-blue-600 font-semibold">
+                Calificación: {study.score}/10
+              </p>
+            )}
             <p className="text-sm text-gray-600">
               Creado: {new Date(study.created_at).toLocaleDateString()}
             </p>
@@ -40,3 +47,4 @@ export default function StudentStudiesPage() {
     </div>
   );
 }
+

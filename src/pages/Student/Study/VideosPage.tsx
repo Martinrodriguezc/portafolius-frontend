@@ -1,40 +1,48 @@
-import TabsContainer from "../../../components/common/Tabs/TabsContainer";
-import TabsList from "../../../components/common/Tabs/TabsList";
-import TabsButton from "../../../components/common/Tabs/TabsButton";
-import TabsPanel from "../../../components/common/Tabs/TabsPanel";
-import { CheckSquare, Clock } from "lucide-react";
-import { PendingVideosTab } from "../../../components/student/videos/PendingVideosTab";
-import { EvaluatedVideosTab } from "../../../components/student/videos/EvaluatedVideosTab";
+import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
+import Card from "../../../components/common/Card/Card";
+import Button from "../../../components/common/Button/Button";
+import { Link } from "react-router-dom";
 
 export default function StudentMultipleVideosPage() {
+  const { videos, loading, error, study_id } = useStudyVideos();
+
   return (
     <div className="p-8">
       <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">Mis Videos</h1>
-        <p className="text-[#A0A0A0]">
-          Revisa tus videos evaluados y pendientes de evaluación
-        </p>
+        <h1 className="text-[20px] font-bold text-[#333333]">Videos del estudio</h1>
+        <p className="text-[#A0A0A0]">Revisa los videos de tu estudio</p>
       </header>
 
-      <TabsContainer defaultValue="evaluated" className="w-full">
-        <TabsList className="mb-6">
-          <TabsButton value="evaluated">
-            <CheckSquare className="mr-2 h-4 w-4" />
-            Evaluados
-          </TabsButton>
-          <TabsButton value="pending">
-            <Clock className="mr-2 h-4 w-4" />
-            Pendientes
-          </TabsButton>
-        </TabsList>
-
-        <TabsPanel value="evaluated">
-          <EvaluatedVideosTab />
-        </TabsPanel>
-        <TabsPanel value="pending">
-          <PendingVideosTab />
-        </TabsPanel>
-      </TabsContainer>
+      {loading ? (
+        <p className="p-4 text-center">Cargando videos…</p>
+      ) : error ? (
+        <p className="p-4 text-center text-red-500">Error: {error}</p>
+      ) : (
+        <div className="space-y-4">
+          {videos.map((video) => (
+            <Card
+              key={video.id}
+              className="rounded-[8px] p-4 flex items-center justify-between"
+            >
+              <div className="flex-1 mr-4">
+                <h3 className="text-lg font-medium text-[#333333]">
+                  {video.original_filename}
+                </h3>
+                <p className="text-sm text-[#A0A0A0]">{video.mime_type}</p>
+                <div className="text-xs text-[#A0A0A0] mt-1">
+                  {video.upload_date} &bull; {video.duration_seconds}s
+                </div>
+              </div>
+              <Link to={`/student/${study_id}/videos/${video.id}`}>
+                <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[8px] px-[12px] rounded-[8px]">
+                  Ver Video
+                </Button>
+              </Link>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
+

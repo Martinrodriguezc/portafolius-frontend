@@ -54,9 +54,16 @@ function App() {
           <Route path="progress" element={<StudentProgressPage />} />
           <Route path="upload" element={<StudentUploadPage />} />
           <Route path="comments" element={<CommentsPage />} />
-          <Route path="studies" element={<StudentStudiesPage />} />
-          <Route path="studies/:id/videos" element={<StudentMultipleVideosPage />} />
-          <Route path=":studyId/videos/:id" element={<StudentVideoPage />} />
+
+          <Route
+            path="/student/:studyId/videos/:clipId"
+            element={<StudentVideoPage />}
+          />
+          <Route path="/student/studies" element={<StudentStudiesPage />} />
+          <Route
+            path="/student/studies/:id/videos"
+            element={<StudentMultipleVideosPage />}
+          />
         </Route>
 
         <Route path="/teacher" element={<TeacherLayout />}>
