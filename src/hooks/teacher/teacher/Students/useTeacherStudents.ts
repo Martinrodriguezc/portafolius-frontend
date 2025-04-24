@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchTeacherStudents } from "./request/useTeacherStudentsRequests";
-import { TeacherStudent } from "../../../../types/studentType";
+import { TeacherStudent } from "../../../../types/student";
 
 export function useTeacherStudents(teacherId?: number) {
   const [students, setStudents] = useState<TeacherStudent[]>([]);

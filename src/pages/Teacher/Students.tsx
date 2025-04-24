@@ -7,7 +7,7 @@ import Input from "../../components/common/Input/Input";
 import StudentsPreviewInfo from "../../components/teacher/StudentsPreviewInfo";
 import { useTeacherStudents } from "../../hooks/teacher/teacher/Students/useTeacherStudents";
 import { authService } from "../../hooks/auth/authServices";
-import { TeacherStudent } from "../../types/studentType";
+import { TeacherStudent } from "../../types/student";
 
 export default function TeacherStudentsPage() {
   const current = authService.getCurrentUser();
