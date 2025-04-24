@@ -1,15 +1,23 @@
-import { progressData } from "../../utils/progressConstants";
-import { StatsGrid } from "../../components/student/progress/StatsGrid";
-import { LineChart, BarChart, PieChart } from "lucide-react";
-import { OverviewTab } from "../../components/student/progress/OverviewTab";
-import { ProtocolsTab } from "../../components/student/progress/ProtocolsTab";
-import { FeedbackTab } from "../../components/student/progress/FeedbackTab";
-import TabsContainer from "../../components/common/Tabs/TabsContainer";
-import TabsList from "../../components/common/Tabs/TabsList";
-import TabsButton from "../../components/common/Tabs/TabsButton";
-import TabsPanel from "../../components/common/Tabs/TabsPanel";
+import { useProgressData } from '../../hooks/student/useProgressData';
+import { StatsGrid } from '../../components/student/progress/StatsGrid';
+import { OverviewTab } from '../../components/student/progress/OverviewTab';
+import { ProtocolsTab } from '../../components/student/progress/ProtocolsTab';
+import { FeedbackTab } from '../../components/student/progress/FeedbackTab';
+import TabsContainer from '../../components/common/Tabs/TabsContainer';
+import TabsList from '../../components/common/Tabs/TabsList';
+import TabsButton from '../../components/common/Tabs/TabsButton';
+import TabsPanel from '../../components/common/Tabs/TabsPanel';
+import { authService } from '../../hooks/authServices';
 
 export default function ProgressPage() {
+  const user = authService.getCurrentUser();
+  const userId = user?.id ?? 0;
+  const { data, loading, error } = useProgressData(userId);
+
+  if (loading) return <p className="p-8">Cargando progreso...</p>;
+  if (error) return <p className="p-8 text-red-500">Error: {error}</p>;
+  if (!data) return null;
+
   return (
     <div className="p-8">
       <header className="mb-8">
@@ -19,37 +27,31 @@ export default function ProgressPage() {
         </p>
       </header>
 
-      <StatsGrid />
+      <StatsGrid
+        totalStudies={data.totalStudies}
+        evaluatedStudies={data.evaluatedStudies}
+        pendingStudies={data.pendingStudies}
+        averageScore={data.averageScore}
+      />
 
       <TabsContainer defaultValue="overview" className="w-full">
         <TabsList className="mb-6">
-          <TabsButton value="overview">
-            <LineChart className="mr-2 h-4 w-4" />
-            Visión General
-          </TabsButton>
-          <TabsButton value="protocols">
-            <BarChart className="mr-2 h-4 w-4" />
-            Protocolos
-          </TabsButton>
-          <TabsButton value="feedback">
-            <PieChart className="mr-2 h-4 w-4" />
-            Retroalimentación
-          </TabsButton>
+          <TabsButton value="overview">Visión General</TabsButton>
+          <TabsButton value="protocols">Protocolos</TabsButton>
+          <TabsButton value="feedback">Retroalimentación</TabsButton>
         </TabsList>
 
         <TabsPanel value="overview">
           <OverviewTab
-            monthlyProgress={progressData.monthlyProgress}
-            protocolPerformance={progressData.protocolPerformance}
+            monthlyProgress={data.monthlyProgress}
+            protocolPerformance={data.protocolPerformance}
           />
         </TabsPanel>
         <TabsPanel value="protocols">
-          <ProtocolsTab
-            protocolPerformance={progressData.protocolPerformance}
-          />
+          <ProtocolsTab protocolPerformance={data.protocolPerformance} />
         </TabsPanel>
         <TabsPanel value="feedback">
-          <FeedbackTab recentFeedback={progressData.recentFeedback} />
+          <FeedbackTab recentFeedback={data.recentFeedback} />
         </TabsPanel>
       </TabsContainer>
     </div>
