@@ -8,7 +8,7 @@ import { VideoOff } from "lucide-react";
 
 export const PendingVideosTab: React.FC = () => {
   const { videos, loading, error, study_id } = useStudyVideos();
-  const pendingVideos = videos.filter((video) => video.status == "pendiente");
+  const pendingVideos = videos.filter((video) => video.status?.toLowerCase() === "pendiente");
 
   if (loading) {
     return <p className="p-4 text-center">Cargando videos…</p>;
@@ -56,3 +56,4 @@ export const PendingVideosTab: React.FC = () => {
     </div>
   );
 };
+

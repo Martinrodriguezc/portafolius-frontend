@@ -1,85 +1,58 @@
-import { useState, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { sampleStudentsData } from "../../pages/Teacher/utils/utils";
-import type { Student } from "../../types/teacherData";
+import { useState } from "react";
+import { authService } from "../authServices";
+import type { RegisterFormData } from "../../types/register";
 
-export function useStudentForm(mode: "view" | "create") {
-  const navigate = useNavigate();
-  const { id } = useParams<{ id?: string }>();
-  const studentId = id ? Number(id) : undefined;
+interface StudentFormReturn {
+  form: RegisterFormData;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: () => Promise<void>;
+  error: string;
+  showPasswordRequirements: boolean;
+}
 
-  const existingStudent = useMemo<Student | undefined>(() => {
-    return mode === "view" && studentId != null
-      ? sampleStudentsData.find((s) => s.id === studentId)
-      : undefined;
-  }, [mode, studentId]);
+export function useStudentForm(): StudentFormReturn {
+  const [form, setForm] = useState<RegisterFormData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "estudiante",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
 
-  const notFound = mode === "view" && !existingStudent;
-
-  const [formState, setFormState] = useState<Student>(() => ({
-    id: mode === "create" ? Date.now() : existingStudent!.id,
-    name:
-      mode === "create"
-        ? ""
-        : existingStudent!.name,
-    email:
-      mode === "create"
-        ? ""
-        : existingStudent!.email,
-    institution:
-      mode === "create"
-        ? ""
-        : existingStudent!.institution,
-    specialty:
-      mode === "create"
-        ? ""
-        : existingStudent!.specialty,
-    year:
-      mode === "create"
-        ? ""
-        : existingStudent!.year,
-    studies:
-      mode === "create"
-        ? 0
-        : existingStudent!.studies,
-    averageScore:
-      mode === "create"
-        ? 0
-        : existingStudent!.averageScore,
-    lastActivity:
-      mode === "create"
-        ? ""
-        : existingStudent!.lastActivity,
-    status:
-      mode === "create"
-        ? "active"
-        : existingStudent!.status,
-  }));
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-    setFormState((prev) => ({
-      ...prev,
-      [name]:
-        name === "studies" || name === "averageScore"
-          ? Number(value)
-          : value,
-    }));
-  };
-
-  const handleSubmit = () => {
-    if (mode === "create") {
-      sampleStudentsData.push(formState);
+    setForm((f) => ({ ...f, [name]: value }));
+    if (name === "password" && value.length >= 8) {
+      setShowPasswordRequirements(false);
     }
-    navigate("/teacher/students");
-  };
+  }
+
+  async function handleSubmit() {
+    setError("");
+    const { firstName, lastName, email, password } = form;
+    if (!firstName || !lastName || !email || !password) {
+      setError("Todos los campos son requeridos");
+      return;
+    }
+    if (password.length < 8) {
+      setShowPasswordRequirements(true);
+      setError("La contraseña debe tener al menos 8 caracteres");
+      return;
+    }
+    try {
+      await authService.register(form);
+    } catch (err: any) {
+      setError(err.msg ?? "Error al crear estudiante");
+    }
+  }
 
   return {
-    formState,
+    form,
     handleChange,
     handleSubmit,
-    navigate,
-    notFound,
-    existingStudent,
+    error,
+    showPasswordRequirements,
   };
 }

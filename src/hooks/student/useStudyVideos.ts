@@ -33,7 +33,8 @@ export function useStudyVideos(studyId?: string) {
           throw new Error(`Error ${resp.status} al obtener vídeos`);
         }
         const data: FetchResponse = await resp.json();
-        setVideos(data.videos ?? data.clips ?? []);
+        console.log("Fetched data:", data);
+        setVideos(data.clips ?? data.videos ?? []);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : String(err));
       } finally {

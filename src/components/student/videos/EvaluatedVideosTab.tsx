@@ -8,7 +8,7 @@ import { CheckCircle } from "lucide-react";
 
 export const EvaluatedVideosTab: React.FC = () => {
   const { videos, loading, error, study_id } = useStudyVideos();
-  const evaluatedVideos = videos.filter((video) => video.status == "evaluado")
+  const evaluatedVideos = videos.filter((video) => video.status?.toLowerCase() === "evaluado");
 
   if (loading) {
     return <p className="p-4 text-center">Cargando videos…</p>;
@@ -57,3 +57,4 @@ export const EvaluatedVideosTab: React.FC = () => {
     </div>
   );
 };
+

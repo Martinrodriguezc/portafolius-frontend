@@ -7,11 +7,15 @@ export default function LoginPage() {
 
   const handleLoginSuccess = () => {
     const user = authService.getCurrentUser();
-    console.log("Login exitoso, redirigiendo...");
-    if (user && user.role === 'profesor') {
-      navigate('/teacher');
-    } else {
-      navigate('/student');
+    if (user) {
+      if (user.role === 'profesor') {
+        navigate('/teacher');
+      } else if (user.role === 'estudiante') {
+        navigate('/student');
+      } else {
+        console.warn('Rol desconocido:', user.role);
+        navigate('/home');
+      }
     }
   };
 
