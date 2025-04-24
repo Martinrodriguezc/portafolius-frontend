@@ -4,7 +4,10 @@ import {
   createNewStudy,
   generateUploadUrl,
   uploadVideo,
-} from "./utils/requests";
+  assignTagsToClip,
+} from "./requests/requests";
+import { validateVideo } from "./validations/validations";
+import { authService } from "../auth/authServices";
 
 export function useUploadPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -18,7 +21,7 @@ export function useUploadPage() {
   const [selectedCondition, setSelectedCondition] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [title, setTitle] = useState("");
-  const userId = localStorage.getItem("userId") || "1"  //REMOVE AFTER FULL INTEGRATION ;
+  const userId = authService.getCurrentUser()?.id;
 
   if (!userId) {
     throw new Error("No hay userId en localStorage. Debes iniciar sesión.");
@@ -102,8 +105,7 @@ export function useUploadPage() {
       alert("Debes seleccionar un protocolo");
       return;
     }
-
-    if (selectedOrgan === "" || selectedStructure === "") {
+    if (tags.length == 0) {
       logger.warn("Submit fallido: tag incompleto", {
         selectedOrgan,
         selectedStructure,
@@ -116,6 +118,11 @@ export function useUploadPage() {
 
     setIsUploading(true);
     try {
+      logger.debug("Validando vídeo…");
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        await validateVideo(file);
+      }
       const studyId = await createNewStudy(userId, title, protocol);
       logger.info("Estudio creado con ID:", studyId);
 
@@ -123,7 +130,7 @@ export function useUploadPage() {
         const file = files[i];
         logger.info("Inicio de subida de vídeo", { file: file.name, protocol });
 
-        const uploadUrl = await generateUploadUrl(file, studyId);
+        const { uploadUrl, clipId } = await generateUploadUrl(file, studyId);
         logger.debug("URL prefirmada recibida:", uploadUrl);
 
         const progressBefore = Math.round((i / files.length) * 100);
@@ -135,6 +142,17 @@ export function useUploadPage() {
         const result = await uploadVideo(uploadUrl, file);
         if (result.success) {
           logger.info("Vídeo subido exitosamente", { file: file.name });
+
+          const tagIds = tags.map((t) => t.id);
+          try {
+            await assignTagsToClip(clipId, tagIds);
+            logger.info(`Etiquetas asignadas a clipId ${clipId}:`, tagIds);
+          } catch (err) {
+            logger.error(
+              `Error al asignar etiquetas al clipId ${clipId}:`,
+              err
+            );
+          }
         } else {
           logger.error(
             "Error en uploadVideo para archivo:",

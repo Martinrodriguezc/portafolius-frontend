@@ -1,17 +1,6 @@
-import React from "react";
 import { Play, Pause, Maximize2, Minimize2 } from "lucide-react";
 import Button from "../../common/Button/Button";
-
-interface VideoPlayerProps {
-  src: string;
-  videoRef: React.RefObject<HTMLVideoElement | null>;
-  isPlaying: boolean;
-  togglePlay: () => void;
-  progress: number;
-  handleSeek: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isFullscreen: boolean;
-  toggleFullscreen: () => void;
-}
+import { VideoPlayerProps } from "../../../types/Props/Video/VideoPlayerProps";
 
 export default function VideoPlayer({
   src,
@@ -31,14 +20,22 @@ export default function VideoPlayer({
         <Button variant="ghost" size="icon" onClick={togglePlay}>
           {isPlaying ? <Pause /> : <Play />}
         </Button>
+
         <input
           type="range"
           min={0}
           max={100}
+          step={0.1}
           value={progress}
           onChange={handleSeek}
-          className="flex-1"
+          className="
+            flex-1 h-1 rounded-lg
+            bg-slate-300
+            accent-[#4E81BD]
+            cursor-pointer
+          "
         />
+
         <Button variant="ghost" size="icon" onClick={toggleFullscreen}>
           {isFullscreen ? <Minimize2 /> : <Maximize2 />}
         </Button>

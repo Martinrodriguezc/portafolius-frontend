@@ -1,68 +1,72 @@
 import { Link } from "react-router-dom";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
-import { dashboardConstants } from "../../utils/dashboardConstants";
-import { authService } from "../../hooks/authServices";
-
+import { authService } from "../../hooks/auth/authServices";
+import { useRecentComments } from "../../hooks/student/RecentComments/useRecentComments";
 
 export default function StudentDashboard() {
-  const { recentComments } = dashboardConstants;
-  const user = authService.getCurrentUser();
+  const user = authService.getCurrentUser()!;
+  const { comments, loading, error } = useRecentComments(Number(user.id)); //REVISAR
+
   return (
-    <div className="p-8">
-      <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">¡Bienvenido, {user?.first_name}!</h1>
+    <div className="p-8 space-y-12">
+      <header className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-8">
+        <h1 className="text-2xl font-bold text-gray-800">
+          ¡Bienvenido, {user.first_name}!
+        </h1>
+        <Link to="/student/comments">
+          <Button>Ver todos los comentarios</Button>
+        </Link>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-[18px] font-semibold text-[#333333] mb-4">
+        <section>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
             Últimos comentarios
           </h2>
+          {loading && (
+            <p className="text-sm text-gray-500">Cargando comentarios…</p>
+          )}
+          {error && <p className="text-sm text-red-500">Error: {error}</p>}
+
           <div className="space-y-4">
-            {recentComments.map((comment) => (
+            {!loading && !error && comments.length === 0 && (
+              <Card className="bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
+                <p className="text-sm text-gray-500 p-5">
+                  No hay comentarios recientes.
+                </p>
+              </Card>
+            )}
+
+            {comments.map(({ id, text, author, date }) => (
               <Card
-                key={comment.id}
-                className="bg-[#F4F4F4] border-none rounded-[16px]"
+                key={id}
+                className="bg-gray-50 border border-gray-200 rounded-lg shadow-sm"
               >
-                <div className="p-6">
-                  <p className="text-[14px] text-[#333333] mb-3">
-                    {comment.text}
+                <div className="p-5">
+                  <p className="text-base text-gray-700 mb-3 leading-relaxed">
+                    {text}
                   </p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-[13px] font-medium text-[#333333]">
-                      {comment.author}
-                    </span>
-                    <span className="text-[13px] text-[#A0A0A0]">
-                      {comment.date}
-                    </span>
+                  <div className="flex justify-between items-center text-sm text-gray-500">
+                    <span className="font-medium">{author}</span>
+                    <span>{date}</span>
                   </div>
                 </div>
               </Card>
             ))}
           </div>
+        </section>
 
-          <div className="mt-6">
-            <Link to="/student/comments">
-              <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[12px] rounded-[8px]">
-                Ver todos los comentarios
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-[18px] font-semibold text-[#333333] mb-4">
+        <section>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
             Curva de aprendizaje
           </h2>
-          <Card className="bg-[#F4F4F4] border-none rounded-[16px] h-[300px]">
-            <div className="p-6 flex items-center justify-center h-full">
-              <p className="text-[14px] text-[#A0A0A0]">
-                Gráfica de progreso (próximamente)
-              </p>
-            </div>
+          <Card className="bg-gray-50 border border-gray-200 rounded-lg shadow-sm h-80 flex items-center justify-center">
+            <p className="text-sm text-gray-400">
+              Gráfica de progreso (próximamente)
+            </p>
           </Card>
-        </div>
+        </section>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useRegisterForm } from "../../hooks/form/useRegisterForm";
-import { RegisterFormProps } from "../../types/register";
+import { RegisterFormProps } from "../../types/form/Register";
 import Button from "../common/Button/Button";
 import Input from "../common/Input/Input";
 import Toast from "../common/Toast/Toast";
@@ -22,13 +22,9 @@ export default function RegisterForm({
   return (
     <div className="max-w-lg mx-auto p-6">
       {toastMessage && (
-        <Toast 
-          message={toastMessage} 
-          type="error" 
-          onClose={clearToast}
-        />
+        <Toast message={toastMessage} type="error" onClose={clearToast} />
       )}
-      
+
       <header className="flex flex-col items-center mb-8">
         <h1 className="text-3xl font-bold text-[#4E81BD]">PortafoliUS</h1>
         <h2 className="text-xl font-bold text-[#333333] mt-4">Registrarse</h2>
@@ -104,10 +100,7 @@ export default function RegisterForm({
           onFocus={handlePasswordFocus}
         />
 
-        <Button
-          type="submit"
-          fixedWidth={false}
-        >
+        <Button type="submit" fixedWidth={false}>
           Registrarse
         </Button>
 

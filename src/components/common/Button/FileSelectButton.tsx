@@ -1,8 +1,5 @@
+import { FileSelectButtonProps } from "../../../types/Props/common/FileSelectButtonProps";
 import Button from "./Button";
-
-interface FileSelectButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  onRemove: () => void;
-}
 
 const FileSelectButton: React.FC<FileSelectButtonProps> = ({
   onRemove,

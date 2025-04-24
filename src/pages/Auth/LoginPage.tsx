@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../../components/auth/LoginForm";
-import { authService } from "../../hooks/authServices";
+import { authService } from "../../hooks/auth/authServices";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -8,13 +8,13 @@ export default function LoginPage() {
   const handleLoginSuccess = () => {
     const user = authService.getCurrentUser();
     if (user) {
-      if (user.role === 'profesor') {
-        navigate('/teacher');
-      } else if (user.role === 'estudiante') {
-        navigate('/student');
+      if (user.role === "profesor") {
+        navigate("/teacher");
+      } else if (user.role === "estudiante") {
+        navigate("/student");
       } else {
-        console.warn('Rol desconocido:', user.role);
-        navigate('/home');
+        console.warn("Rol desconocido:", user.role);
+        navigate("/home");
       }
     }
   };

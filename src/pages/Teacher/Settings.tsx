@@ -7,25 +7,33 @@ import TeacherLayout from "../layout/TeacherLayout";
 import ProfileForm from "../../components/teacher/Settings/ProfileForm";
 import PlatformSettings from "../../components/teacher/Settings/PlatformSettings";
 import EvaluationSettings from "../../components/teacher/Settings/EvaluationSettings";
-import { useTeacherSettings } from "../../hooks/teacher/useTeacherSettings";
+import { useTeacherSettings } from "../../hooks/teacher/teacher/Settings/useTeacherSettings";
+import { useUserProfile } from "../../hooks/user/UserProfile/useUserProfile";
 
 export default function TeacherSettingsLayout() {
   const {
-    profile,
     platformSettings,
     evaluationSettings,
-    handleProfileChange,
     handlePlatformSettingsChange,
     handleEvaluationSettingsChange,
   } = useTeacherSettings();
+
+  const {
+    profile: user,
+    loading: userLoading,
+    error: userError,
+    updateProfile,
+  } = useUserProfile();
+
+  if (userLoading) return <p className="p-8">Cargando perfil…</p>;
+  if (userError) return <p className="p-8 text-red-500">Error: {userError}</p>;
+  if (!user) return <p className="p-8 text-red-500">Usuario no encontrado</p>;
 
   return (
     <div className="p-8">
       <header className="mb-8">
         <h1 className="text-[20px] font-bold text-[#333333]">Configuración</h1>
-        <p className="text-[#A0A0A0]">
-          Gestiona tu perfil y preferencias de la plataforma
-        </p>
+        <p className="text-[#A0A0A0]">Gestiona tu perfil y preferencias</p>
       </header>
 
       <TabsContainer defaultValue="profile">
@@ -42,10 +50,7 @@ export default function TeacherSettingsLayout() {
         </TabsList>
 
         <TabsPanel value="profile">
-          <ProfileForm
-            profile={profile}
-            onProfileChange={handleProfileChange}
-          />
+          <ProfileForm profile={user} onSave={updateProfile} />
         </TabsPanel>
 
         <TabsPanel value="platform">

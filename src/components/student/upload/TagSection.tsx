@@ -29,7 +29,7 @@ export function TagSection({ section }: TagSectionProps) {
     setSelectedStructure,
     setSelectedCondition,
     addTag,
-    removeTag
+    removeTag,
   } = section;
 
   return (
@@ -41,7 +41,7 @@ export function TagSection({ section }: TagSectionProps) {
         Añade etiquetas para indicar qué estructuras y condiciones se muestran
         en tus videos
       </p>
-      
+
       {loading ? (
         <div className="py-4 text-center">Cargando etiquetas...</div>
       ) : error ? (
@@ -123,7 +123,9 @@ export function TagSection({ section }: TagSectionProps) {
           <Button
             type="button"
             onClick={addTag}
-            disabled={!selectedOrgan || !selectedStructure || !selectedCondition}
+            disabled={
+              !selectedOrgan || !selectedStructure || !selectedCondition
+            }
             variant="outline"
             className="mt-2"
           >
