@@ -14,4 +14,7 @@ export interface TeacherStudent {
   last_name: string;
   email: string;
   created_at: string;
+  studies: number;
+  average_score: number;
+  last_activity: string;
 }

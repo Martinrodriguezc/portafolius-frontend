@@ -1,5 +1,5 @@
 import { config } from "../../../../../config/config";
-import { TeacherStats } from "../../../../../types/teacherStats";
+import { TeacherStats } from "../../../../../types/Teacher";
 import { authService } from "../../../../auth/authServices";
 
 export const fetchTeacherStats = async (

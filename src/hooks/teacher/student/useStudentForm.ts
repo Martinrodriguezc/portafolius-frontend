@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchStudentStudies } from "./studies/request/studentStudiesRequest";
 import { Study } from "../../../types/Study";
 
-export function useStudentStudies(studentId: number) {
+export function useFetchStudentStudies(studentId: number) {
   const [studies, setStudies] = useState<Study[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");

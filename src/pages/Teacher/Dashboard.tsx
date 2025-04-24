@@ -1,42 +1,35 @@
-import { useEffect, useState } from "react";
-import { authService } from "../../hooks/auth/authServices";
-import { useTeacherStats } from "../../hooks/teacher/teacher/Stats/useTeacherStats";
-import { useTeacherVideos } from "../../hooks/teacher/teacher/Video/useTeacherVideos";
+import Button from "../../components/common/Button/Button";
+import Card from "../../components/common/Card/Card";
+import TabsButton from "../../components/common/Tabs/TabsButton";
 import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";
-import TabsButton from "../../components/common/Tabs/TabsButton";
 import TabsPanel from "../../components/common/Tabs/TabsPanel";
-import Card from "../../components/common/Card/Card";
-import Button from "../../components/common/Button/Button";
+import { useTeacherDashboard } from "../../hooks/teacher/dashboard/useTeacherDashboard";
 
-export default function TeacherDashboard() {
-  const [lastName, setLastName] = useState(() => {
-    const u = authService.getCurrentUser();
-    return u?.last_name ?? "";
-  });
-
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const user = (e as CustomEvent).detail;
-      setLastName(user.last_name);
-    };
-    window.addEventListener("userUpdated", handler);
-    return () => window.removeEventListener("userUpdated", handler);
-  }, []);
-
-  const { stats, loading: statsLoading, error: statsError } = useTeacherStats();
+export default function TeacherDashboardPage() {
   const {
+    lastName,
+    stats,
+    statsLoading,
+    statsError,
     pending,
     evaluated,
-    loading: vidsLoading,
-    error: vidsError,
-  } = useTeacherVideos();
+    vidsLoading,
+    vidsError,
+  } = useTeacherDashboard();
 
-  if (statsLoading || vidsLoading) return <p className="p-8">Cargando…</p>;
-  if (statsError)
+  if (statsLoading || vidsLoading) {
+    return <p className="p-8">Cargando…</p>;
+  }
+  if (statsError) {
     return <p className="p-8 text-red-500">Error: {statsError}</p>;
-  if (vidsError) return <p className="p-8 text-red-500">Error: {vidsError}</p>;
-  if (!stats) return null;
+  }
+  if (vidsError) {
+    return <p className="p-8 text-red-500">Error: {vidsError}</p>;
+  }
+  if (!stats) {
+    return null;
+  }
 
   return (
     <div className="p-8">

@@ -1,22 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
-import type { TeacherStudent } from "../../hooks/teacher/teacher/Students/useTeacherStudents";
-import { Study } from "../../hooks/teacher/useStudentStudies";
-
-interface Props {
-  student: TeacherStudent;
-  studies: Study[];
-  loadingStudies: boolean;
-  errorStudies: string;
-}
+import { StudentProfileViewProps } from "../../types/Teacher";
 
 export default function StudentProfileView({
   student,
   studies,
   loadingStudies,
   errorStudies,
-}: Props) {
+}: StudentProfileViewProps) {
   const nav = useNavigate();
 
   return (

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { TeacherStats } from "../../../../types/teacherStats";
 import { authService } from "../../../auth/authServices";
 import { fetchTeacherStats } from "./request/useTeacherStatsRequest";
+import { TeacherStats } from "../../../../types/Teacher";
 
 export function useTeacherStats() {
   const [stats, setStats] = useState<TeacherStats | null>(null);

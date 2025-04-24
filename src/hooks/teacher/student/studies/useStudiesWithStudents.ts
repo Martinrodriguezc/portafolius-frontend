@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { config } from "../../../../config/config";
 import { StudyWithStudent } from "../../../../types/Study";
 
-
-
 export function useStudiesWithStudent() {
   const [data, setData] = useState<StudyWithStudent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

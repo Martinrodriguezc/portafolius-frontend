@@ -1,4 +1,3 @@
-// src/pages/Teacher/Evaluations.tsx
 import { Link } from "react-router-dom";
 import { Badge, Calendar, CheckCircle } from "lucide-react";
 import TeacherLayout from "../layout/TeacherLayout";
@@ -63,7 +62,7 @@ export default function TeacherEvaluationsLayout() {
             </span>
             <span className="text-[24px] font-bold text-[#333333] mt-2">
               {(completed.length > 0
-                ? completed.reduce((sum, s) => sum + (s as any).score, 0) /
+                ? completed.reduce((sum, s) => sum + s.score, 0) /
                   completed.length
                 : 0
               ).toFixed(1)}
@@ -128,7 +127,7 @@ export default function TeacherEvaluationsLayout() {
               </p>
             </Card>
           ) : (
-            completed.map((study: any) => (
+            completed.map((study) => (
               <Card
                 key={study.study_id}
                 className="border-none shadow-sm rounded-[16px] mb-4"

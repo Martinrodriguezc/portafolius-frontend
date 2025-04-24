@@ -1,14 +1,8 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+/*import { useNavigate } from "react-router-dom";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
 import Input from "../../components/common/Input/Input";
-import { authService } from "../../hooks/auth/authServices";
-import {
-  useTeacherStudents,
-  TeacherStudent,
-} from "../../hooks/teacher/teacher/Students/useTeacherStudents";
-import { useStudentStudies } from "../../hooks/teacher/student/useStudentForm";
+import type { Study } from "../../types/Study";
 
 interface Props {
   mode: "create" | "view";
@@ -16,47 +10,31 @@ interface Props {
 
 export default function StudentProfileTeacherPage({ mode }: Props) {
   const navigate = useNavigate();
-  const current = authService.getCurrentUser();
-  const teacherId = current?.id;
-  const { id } = useParams<{ id: string }>();
-  const studentId = Number(id);
-
   const {
-    students,
-    loading: studentsLoading,
-    error: studentsError,
-  } = useTeacherStudents(teacherId);
-
-  const [student, setStudent] = useState<TeacherStudent | null>(null);
-
-  const {
+    teacherId,
+    student,
+    studentsLoading,
+    studentsError,
     form,
     handleChange,
     handleSubmit,
     showPasswordRequirements,
-    error: formError,
-  } = useStudentForm();
-
-  const {
+    formError,
     studies,
-    loading: studiesLoading,
-    error: studiesError,
-  } = useStudentStudies(studentId);
+    studiesLoading,
+    studiesError,
+  } = useStudentProfileTeacherPage(mode);
 
-  useEffect(() => {
-    if (mode === "view" && !studentsLoading) {
-      setStudent(students.find((s) => s.id === studentId) || null);
-    }
-  }, [mode, studentsLoading, students, studentId]);
-
-  if (!teacherId)
+  if (!teacherId) {
     return <p className="p-8 text-red-500">Debes iniciar sesión</p>;
+  }
 
   if (mode === "view") {
     if (studentsLoading) return <p className="p-8">Cargando perfil…</p>;
     if (studentsError)
       return <p className="p-8 text-red-500">Error: {studentsError}</p>;
-    if (!student) return <p className="p-8">Estudiante no encontrado</p>;
+    if (!student)
+      return <p className="p-8">Estudiante no encontrado</p>;
 
     return (
       <div className="p-8">
@@ -76,7 +54,9 @@ export default function StudentProfileTeacherPage({ mode }: Props) {
 
         <h2 className="text-[18px] font-semibold mb-4">Estudios</h2>
         {studiesLoading && <p>Cargando estudios…</p>}
-        {studiesError && <p className="text-red-500">Error: {studiesError}</p>}
+        {studiesError && (
+          <p className="text-red-500">Error: {studiesError}</p>
+        )}
         {!studiesLoading && !studiesError && studies.length === 0 && (
           <p>No hay estudios para este estudiante.</p>
         )}
@@ -153,4 +133,4 @@ export default function StudentProfileTeacherPage({ mode }: Props) {
       </Card>
     </div>
   );
-}
+}*/

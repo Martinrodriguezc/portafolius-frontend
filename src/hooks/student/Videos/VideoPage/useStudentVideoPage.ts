@@ -3,13 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { EvaluationForm } from "../../../../types/evaluation";
 import { fetchVideoMeta, fetchVideoUrl } from "../../../video/utils/requests";
 import { evaluationService } from "../../../teacher/evaluations/evaluationService/evaluationService";
+import { Video } from "../../../../types/Video";
 
 export function useStudentVideoPage() {
   const { clipId, studyId } = useParams<{ clipId: string; studyId: string }>();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [url, setUrl] = useState("");
-  const [meta, setMeta] = useState<any>(null);
+  const [meta, setMeta] = useState<Video | null>(null);
   const [evaluation, setEvaluation] = useState<EvaluationForm | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

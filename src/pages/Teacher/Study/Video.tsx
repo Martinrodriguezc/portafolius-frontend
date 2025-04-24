@@ -1,4 +1,3 @@
-// src/pages/Teacher/TeacherVideoPage.tsx
 import { Link } from "react-router-dom";
 import Button from "../../../components/common/Button/Button";
 import Card from "../../../components/common/Card/Card";
@@ -19,7 +18,7 @@ export default function TeacherVideoPage() {
     handleSeek,
     isFullscreen,
     toggleFullscreen,
-  } = useVideoPage(); // 🟦 se eliminó comment y setComment y handleSubmitComment
+  } = useVideoPage();
 
   if (loading) return <p className="p-8">Cargando vídeo…</p>;
   if (error || !meta) return <p className="p-8 text-red-500">Error: {error}</p>;
@@ -40,7 +39,6 @@ export default function TeacherVideoPage() {
 
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="w-full lg:w-2/3 space-y-4">
-          {/* 🟦 VIDEO */}
           <Card className="rounded-[16px]">
             <VideoPlayer
               src={videoUrl}
@@ -54,17 +52,16 @@ export default function TeacherVideoPage() {
             />
           </Card>
 
-          {/* 🟦 DETALLES DEL ESTUDIO */}
           <Card className="p-4 rounded-lg shadow">
             <h3 className="text-lg font-semibold text-[#333] mb-2">Detalles del estudio</h3>
             <p className="text-sm text-[#555] mb-1">
-              <strong>Estudiante:</strong> {meta?.first_name} {meta?.last_name}
+              <strong>Estudiante:</strong> {meta?.original_filename} {meta?.size_bytes}
             </p>
             <p className="text-sm text-[#555] mb-1">
-              <strong>Título:</strong> {meta?.title || "No disponible"}
+              <strong>Título:</strong> {meta?.order_index || "No disponible"}
             </p>
             <p className="text-sm text-[#555] mb-1">
-              <strong>Protocolo:</strong> {meta?.protocol?.toUpperCase() || "No especificado"}
+              <strong>Protocolo:</strong> {meta?.status?.toUpperCase() || "No especificado"}
             </p>
             <p className="text-sm text-[#555] mb-1">
               <strong>Archivo:</strong> {meta?.original_filename}
@@ -72,7 +69,6 @@ export default function TeacherVideoPage() {
           </Card>
         </div>
 
-        {/* 🟦 FORMULARIO DE EVALUACIÓN */}
         <div className="w-full lg:w-1/3">
           <Card className="rounded-[16px] p-4 text-center">
             <h3 className="font-medium mb-4">Formulario de evaluación</h3>

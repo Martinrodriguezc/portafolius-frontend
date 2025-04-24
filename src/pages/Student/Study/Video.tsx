@@ -53,14 +53,14 @@ export default function StudentVideoPage() {
             Detalles del estudio
           </h3>
           <p className="text-sm text-[#555] mb-1">
-            <strong>Estudiante:</strong> {meta?.first_name} {meta?.last_name}
+            <strong>Estudiante:</strong> {meta?.original_filename}
           </p>
           <p className="text-sm text-[#555] mb-1">
-            <strong>Título:</strong> {meta?.title || "No disponible"}
+            <strong>Título:</strong> {meta?.status || "No disponible"}
           </p>
           <p className="text-sm text-[#555] mb-1">
             <strong>Protocolo:</strong>{" "}
-            {meta?.protocol?.toUpperCase() || "No especificado"}
+            {meta?.object_key?.toUpperCase() || "No especificado"}
           </p>
           <p className="text-sm text-[#555] mb-1">
             <strong>Archivo:</strong> {meta?.original_filename}
@@ -74,8 +74,8 @@ export default function StudentVideoPage() {
           {evaluation ? (
             <>
               <p className="text-sm text-[#555] mb-2">
-                <strong>Profesor:</strong> {evaluation.teacher_first_name}{" "}
-                {evaluation.teacher_last_name}
+                <strong>Profesor:</strong> {evaluation.feedback_summary}{" "}
+                {evaluation.study_id}
               </p>
               <p className="text-sm text-[#555] mb-2">
                 <strong>Calificación:</strong> {evaluation.score}/10

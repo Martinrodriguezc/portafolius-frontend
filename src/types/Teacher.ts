@@ -1,3 +1,6 @@
+import { TeacherStudent } from "./Student";
+import { Study } from "./Study";
+
 export interface TeacherProfile {
   firstName: string;
   lastName: string;
@@ -30,3 +33,9 @@ export interface TeacherStats {
   studentCount: number;
 }
 
+export interface StudentProfileViewProps {
+  student: TeacherStudent;
+  studies: Study[];
+  loadingStudies: boolean;
+  errorStudies: string;
+}
