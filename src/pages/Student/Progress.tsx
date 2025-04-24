@@ -1,4 +1,4 @@
-import { useProgressData } from "../../hooks/student/useProgressData";
+import { useProgressData } from "../../hooks/student/Progress/useProgressData";
 import { StatsGrid } from "../../components/student/progress/StatsGrid";
 import { OverviewTab } from "../../components/student/progress/OverviewTab";
 import { ProtocolsTab } from "../../components/student/progress/ProtocolsTab";

@@ -4,7 +4,7 @@ import Button from "../../../components/common/Button/Button";
 import {
   useStudentStudies,
   Study,
-} from "../../../hooks/student/useStudentStudies";
+} from "../../../hooks/student/Studies/useStudentStudies";
 import { BookOpen } from "lucide-react";
 
 export default function StudentStudiesPage() {

@@ -3,7 +3,7 @@ import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
 import { Link } from "react-router-dom";
 import { Video } from "../../../types/video";
-import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
+import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
 import { CheckCircle } from "lucide-react";
 
 export const EvaluatedVideosTab: React.FC = () => {

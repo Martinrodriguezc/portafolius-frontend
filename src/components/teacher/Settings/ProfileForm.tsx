@@ -2,7 +2,7 @@ import Card from "../../common/Card/Card";
 import Input from "../../common/Input/Input";
 import Button from "../../common/Button/Button";
 import { SaveProfileProps } from "../../../types/Props/UserProfileProps";
-import { useProfileForm } from "../../../hooks/user/useProfileForm";
+import { useProfileForm } from "../../../hooks/user/ProfileForm/useProfileForm";
 
 export default function ProfileForm({ profile, onSave }: SaveProfileProps) {
   const { busy, error, saved, form, handleChange, handleSubmit } =

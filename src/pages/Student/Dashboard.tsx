@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
 import { authService } from "../../hooks/auth/authServices";
-import { useRecentComments } from "../../hooks/student/useRecentComments";
+import { useRecentComments } from "../../hooks/student/RecentComments/useRecentComments";
 
 export default function StudentDashboard() {
   const user = authService.getCurrentUser();

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
-import type { TeacherStudent } from "../../hooks/teacher/useTeacherStudents";
+import type { TeacherStudent } from "../../hooks/teacher/teacher/Students/useTeacherStudents";
 import { Study } from "../../hooks/teacher/useStudentStudies";
 
 interface Props {
@@ -25,7 +25,9 @@ export default function StudentProfileView({
         Perfil de {student.first_name} {student.last_name}
       </h1>
       <Card className="p-6 space-y-4 mb-8">
-        <p><strong>Email:</strong> {student.email}</p>
+        <p>
+          <strong>Email:</strong> {student.email}
+        </p>
         <div className="flex justify-end">
           <Button variant="outline" onClick={() => nav(-1)}>
             Volver
@@ -47,9 +49,7 @@ export default function StudentProfileView({
               <p className="text-sm text-gray-500">
                 Protocolo: {st.protocol || "—"}
               </p>
-              <p className="text-sm text-gray-500">
-                Estado: {st.status}
-              </p>
+              <p className="text-sm text-gray-500">Estado: {st.status}</p>
             </Card>
           ))}
         </div>

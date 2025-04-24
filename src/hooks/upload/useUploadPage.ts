@@ -21,7 +21,7 @@ export function useUploadPage() {
   const [selectedCondition, setSelectedCondition] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [title, setTitle] = useState("");
-  const userId = authService.getCurrentUser().id;
+  const userId = authService.getCurrentUser()?.id;
 
   if (!userId) {
     throw new Error("No hay userId en localStorage. Debes iniciar sesión.");

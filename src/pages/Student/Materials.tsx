@@ -1,4 +1,4 @@
-import { useStudentMaterials } from "../../hooks/student/useStudentMaterials";
+import { useStudentMaterials } from "../../hooks/student/Materials/useStudentMaterials";
 import { authService } from "../../hooks/auth/authServices";
 import { groupBy } from "lodash";
 

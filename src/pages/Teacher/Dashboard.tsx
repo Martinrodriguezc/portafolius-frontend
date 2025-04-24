@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { authService } from "../../hooks/auth/authServices";
-import { useTeacherStats } from "../../hooks/teacher/useTeacherStats";
-import { useTeacherVideos } from "../../hooks/teacher/useTeacherVideos";
+import { useTeacherStats } from "../../hooks/teacher/teacher/Stats/useTeacherStats";
+import { useTeacherVideos } from "../../hooks/teacher/teacher/Video/useTeacherVideos";
 import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";
 import TabsButton from "../../components/common/Tabs/TabsButton";

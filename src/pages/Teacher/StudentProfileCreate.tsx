@@ -2,12 +2,16 @@ import { useNavigate } from "react-router-dom";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
 import Input from "../../components/common/Input/Input";
-import { useStudentForm } from "../../hooks/teacher/useStudentForm";
+import { useStudentForm } from "../../hooks/teacher/student/useStudentForm";
 
 export default function StudentProfileCreate() {
   const nav = useNavigate();
-  const { form, handleChange, handleSubmit, error: formError } =
-    useStudentForm();
+  const {
+    form,
+    handleChange,
+    handleSubmit,
+    error: formError,
+  } = useStudentForm();
 
   return (
     <div className="p-8">

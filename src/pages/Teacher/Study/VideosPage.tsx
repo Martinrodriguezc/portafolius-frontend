@@ -1,4 +1,4 @@
-import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
+import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
 import Card from "../../../components/common/Card/Card";
 import Button from "../../../components/common/Button/Button";
 import { Link } from "react-router-dom";
@@ -9,10 +9,10 @@ export default function StudentMultipleVideosPage() {
   return (
     <div className="p-8">
       <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">Videos del estudio</h1>
-        <p className="text-[#A0A0A0]">
-          Revisa los videos de tu estudio
-        </p>
+        <h1 className="text-[20px] font-bold text-[#333333]">
+          Videos del estudio
+        </h1>
+        <p className="text-[#A0A0A0]">Revisa los videos de tu estudio</p>
       </header>
 
       {loading ? (
@@ -47,4 +47,3 @@ export default function StudentMultipleVideosPage() {
     </div>
   );
 }
-

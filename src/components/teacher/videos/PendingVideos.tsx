@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
-import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
+import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
 import { Video } from "../../../types/video";
 import { VideoOff } from "lucide-react";
 

@@ -7,3 +7,12 @@ export interface EvaluationForm {
     feedback_summary: string;
   }
 
+export interface Evaluation {
+  id: number
+  student: string
+  protocol: string
+  videos: number
+  tags: string[]
+  date: string
+  score?: number
+}

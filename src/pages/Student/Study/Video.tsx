@@ -3,8 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import { ReturnButton } from "../../../components/common/Button/ReturnButton";
 import Card from "../../../components/common/Card/Card";
 import VideoPlayer from "../../../components/student/videos/VideoPlayer";
-import { fetchVideoUrl, fetchVideoMeta } from "../../../hooks/video/utils/requests";
-import { evaluationService } from "../../../hooks/teacher/evaluationService";
+import {
+  fetchVideoUrl,
+  fetchVideoMeta,
+} from "../../../hooks/video/utils/requests";
+import { evaluationService } from "../../../hooks/teacher/evaluations/evaluationService/evaluationService";
 
 export default function StudentVideoPage() {
   const { clipId, studyId } = useParams<{ clipId: string; studyId: string }>();
@@ -91,10 +94,12 @@ export default function StudentVideoPage() {
 
   return (
     <div className="p-8 flex flex-col lg:flex-row gap-6">
-            <header className="mb-8 flex justify-between items-center">
-        <div className="flex flex-col gap-2 mb-4">        <h1 className="text-[20px] font-bold text-[#333333]">
-          {meta.original_filename}
-        </h1>
+      <header className="mb-8 flex justify-between items-center">
+        <div className="flex flex-col gap-2 mb-4">
+          {" "}
+          <h1 className="text-[20px] font-bold text-[#333333]">
+            {meta.original_filename}
+          </h1>
           <p className="text-[#A0A0A0]">Fecha de subida: {meta.upload_date}</p>
         </div>
         <ReturnButton />
@@ -114,11 +119,22 @@ export default function StudentVideoPage() {
         </Card>
 
         <Card className="p-4 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-[#333] mb-2">Detalles del estudio</h3>
-          <p className="text-sm text-[#555] mb-1"><strong>Estudiante:</strong> {meta?.first_name} {meta?.last_name}</p>
-          <p className="text-sm text-[#555] mb-1"><strong>Título:</strong> {meta?.title || "No disponible"}</p>
-          <p className="text-sm text-[#555] mb-1"><strong>Protocolo:</strong> {meta?.protocol?.toUpperCase() || "No especificado"}</p>
-          <p className="text-sm text-[#555] mb-1"><strong>Archivo:</strong> {meta?.original_filename}</p>
+          <h3 className="text-lg font-semibold text-[#333] mb-2">
+            Detalles del estudio
+          </h3>
+          <p className="text-sm text-[#555] mb-1">
+            <strong>Estudiante:</strong> {meta?.first_name} {meta?.last_name}
+          </p>
+          <p className="text-sm text-[#555] mb-1">
+            <strong>Título:</strong> {meta?.title || "No disponible"}
+          </p>
+          <p className="text-sm text-[#555] mb-1">
+            <strong>Protocolo:</strong>{" "}
+            {meta?.protocol?.toUpperCase() || "No especificado"}
+          </p>
+          <p className="text-sm text-[#555] mb-1">
+            <strong>Archivo:</strong> {meta?.original_filename}
+          </p>
         </Card>
       </div>
 
@@ -127,20 +143,25 @@ export default function StudentVideoPage() {
           <h2 className="text-xl font-semibold mb-4">Evaluación</h2>
           {evaluation ? (
             <>
-              <strong>Profesor:</strong> {evaluation.teacher_first_name} {evaluation.teacher_last_name}
-              <p className="text-sm text-[#555] mb-2"><strong>Calificación:</strong> {evaluation.score}/10</p>
-              <p className="text-sm text-[#555] mb-1"><strong>Feedback:</strong></p>
+              <strong>Profesor:</strong> {evaluation.teacher_first_name}{" "}
+              {evaluation.teacher_last_name}
+              <p className="text-sm text-[#555] mb-2">
+                <strong>Calificación:</strong> {evaluation.score}/10
+              </p>
+              <p className="text-sm text-[#555] mb-1">
+                <strong>Feedback:</strong>
+              </p>
               <div className="border p-3 bg-gray-50 rounded text-sm text-[#333] whitespace-pre-wrap">
                 {evaluation.feedback_summary}
               </div>
             </>
           ) : (
-            <p className="text-[#A0A0A0]">Este video aún no ha sido evaluado.</p>
+            <p className="text-[#A0A0A0]">
+              Este video aún no ha sido evaluado.
+            </p>
           )}
         </Card>
       </div>
     </div>
   );
 }
-
-

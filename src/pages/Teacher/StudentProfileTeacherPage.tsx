@@ -7,12 +7,8 @@ import { authService } from "../../hooks/auth/authServices";
 import {
   useTeacherStudents,
   TeacherStudent,
-} from "../../hooks/teacher/useTeacherStudents";
-import { useStudentForm } from "../../hooks/teacher/useStudentForm";
-import {
-  useStudentStudies,
-  Study,
-} from "../../hooks/teacher/useStudentStudies";
+} from "../../hooks/teacher/teacher/Students/useTeacherStudents";
+import { useStudentStudies } from "../../hooks/teacher/student/useStudentForm";
 
 interface Props {
   mode: "create" | "view";

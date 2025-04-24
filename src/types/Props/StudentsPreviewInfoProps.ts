@@ -1,5 +1,5 @@
-import { TeacherStudent } from "../teacherData";
+import { Student } from "../student";
 
 export interface StudentsPreviewInfoProps {
-  student: TeacherStudent;
+  student: Student;
 }

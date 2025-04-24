@@ -17,7 +17,7 @@ export const generateUploadUrl = async (
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId: authService.getCurrentUser().id,
+        userId: authService.getCurrentUser()?.id,
         fileName: file.name,
         contentType: file.type,
         studyId: studyId,

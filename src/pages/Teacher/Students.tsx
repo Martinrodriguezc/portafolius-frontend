@@ -8,7 +8,7 @@ import StudentsPreviewInfo from "../../components/teacher/StudentsPreviewInfo";
 import {
   useTeacherStudents,
   TeacherStudent,
-} from "../../hooks/teacher/useTeacherStudents";
+} from "../../hooks/teacher/teacher/Students/useTeacherStudents";
 import { authService } from "../../hooks/auth/authServices";
 
 export default function TeacherStudentsPage() {

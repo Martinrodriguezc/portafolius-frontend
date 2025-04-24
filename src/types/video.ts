@@ -1,16 +1,3 @@
-/*export interface Video {
-    id: string;
-    title: string;
-    description: string;
-    date: string;
-    duration: string;
-    tags: { id: number; text: string; author: "student" | "teacher" }[];
-    comments: { id: number; text: string; author: string; date: string }[];
-    original_filename?: string;
-    mime_type?: string;
-    upload_date?: string;
-  }
-*/
 export interface Video {
   id: number;
   study_id: number;
@@ -23,3 +10,14 @@ export interface Video {
   order_index: number;
   status: string;
 }
+
+export interface TeacherVideo {
+  id: number;
+  study_id: number;
+  original_filename: string;
+  upload_date: string;
+  duration_seconds: number;
+  evaluated_at?: string;
+  score?: number;
+}
+
