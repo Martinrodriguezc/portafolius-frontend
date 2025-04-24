@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import {
   TabsListProps,
   WithTabStateProps,
-} from "../../../types/Props/Tabs/TabsListProps";
+} from "../../../types/Props/Tabs/component/TabsListProps";
 
 const TabsList: React.FC<TabsListProps> = ({
   children,

@@ -1,16 +1,14 @@
-import React from "react";
 import Button from "../../common/Button/Button";
 import Input from "../../common/Input/Input";
 import { Upload, X } from "lucide-react";
 import FileSelectButton from "../../common/Button/FileSelectButton";
+import { UploadSectionProps } from "../../../types/Props/UploadSectionProps";
 
-interface UploadSectionProps {
-  files: File[];
-  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  removeFile: (index: number) => void;
-}
-
-export function UploadSection({ files, handleFileChange, removeFile }: UploadSectionProps) {
+export function UploadSection({
+  files,
+  handleFileChange,
+  removeFile,
+}: UploadSectionProps) {
   return (
     <div className="border-2 border-dashed border-[#A0A0A0] rounded-[16px] p-8 text-center">
       <Upload className="mx-auto h-12 w-12 text-[#A0A0A0] mb-4" />
@@ -43,9 +41,17 @@ export function UploadSection({ files, handleFileChange, removeFile }: UploadSec
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {files.map((file, index) => (
-              <div key={index} className="bg-[#F4F4F4] rounded-[8px] p-3 flex justify-between items-center">
-                <span className="text-[14px] text-[#333333] truncate">{file.name}</span>
-                <FileSelectButton onRemove={() => removeFile(index)} aria-label="Remove file">
+              <div
+                key={index}
+                className="bg-[#F4F4F4] rounded-[8px] p-3 flex justify-between items-center"
+              >
+                <span className="text-[14px] text-[#333333] truncate">
+                  {file.name}
+                </span>
+                <FileSelectButton
+                  onRemove={() => removeFile(index)}
+                  aria-label="Remove file"
+                >
                   <X size={16} />
                 </FileSelectButton>
               </div>

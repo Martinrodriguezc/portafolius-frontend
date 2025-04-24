@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import Button from "../common/Button/Button";
-import type { TeacherStudent } from "../../hooks/teacher/useTeacherStudents";
+import { StudentsPreviewInfoProps } from "../../types/Props/StudentsPreviewInfoProps";
 
-interface Props { student: TeacherStudent }
-
-export default function StudentsPreviewInfo({ student }: Props) {
+export default function StudentsPreviewInfo({
+  student,
+}: StudentsPreviewInfoProps) {
   return (
     <div className="flex justify-between items-center">
       <div>
-        <h3 className="font-medium">{student.first_name} {student.last_name}</h3>
+        <h3 className="font-medium">
+          {student.first_name} {student.last_name}
+        </h3>
         <p className="text-sm text-[#A0A0A0]">{student.email}</p>
       </div>
       <Link to={`/teacher/students/${student.id}`}>

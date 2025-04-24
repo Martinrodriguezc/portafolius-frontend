@@ -1,11 +1,5 @@
 import Card from '../../../components/common/Card/Card';
-
-export interface StatsGridProps {
-  totalStudies: number;
-  evaluatedStudies: number;
-  pendingStudies: number;
-  averageScore: number;
-}
+import { StatsGridProps } from '../../../types/Props/StatsGridProps';
 
 export function StatsGrid({
   totalStudies,

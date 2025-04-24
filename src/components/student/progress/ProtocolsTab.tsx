@@ -1,12 +1,5 @@
-import Card from '../../../components/common/Card/Card';
-
-export interface ProtocolsTabProps {
-  protocolPerformance: {
-    protocol: string;
-    studies: number;
-    score: number;
-  }[];
-}
+import Card from "../../../components/common/Card/Card";
+import { ProtocolsTabProps } from "../../../types/Props/Tabs/ProtocolsTabProps";
 
 export function ProtocolsTab({ protocolPerformance }: ProtocolsTabProps) {
   return (

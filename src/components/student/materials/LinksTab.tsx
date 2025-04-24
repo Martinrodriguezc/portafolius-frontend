@@ -1,11 +1,9 @@
 import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
 import { ExternalLink } from "lucide-react";
-import { Material } from "../../../types/material";
+import { LinksTabProps } from "../../../types/Props/Tabs/LinksTabProps";
 
-interface Props { links: Material[] }
-
-export function LinksTab({ links }: Props) {
+export function LinksTab({ links }: LinksTabProps) {
   return (
     <div className="space-y-4">
       {links.map((link) => (
@@ -15,8 +13,12 @@ export function LinksTab({ links }: Props) {
               <ExternalLink className="h-6 w-6 text-[#4E81BD]" />
             </div>
             <div className="flex-1">
-              <h3 className="text-[16px] font-medium text-[#333]">{link.title}</h3>
-              <p className="text-[14px] text-[#A0A0A0] mt-1">{link.description}</p>
+              <h3 className="text-[16px] font-medium text-[#333]">
+                {link.title}
+              </h3>
+              <p className="text-[14px] text-[#A0A0A0] mt-1">
+                {link.description}
+              </p>
 
               <div className="flex justify-end mt-4">
                 <Button

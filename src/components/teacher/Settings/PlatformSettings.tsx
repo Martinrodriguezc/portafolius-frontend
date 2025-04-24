@@ -1,20 +1,7 @@
 import React, { ChangeEvent } from "react";
 import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
-
-interface PlatformSettingsProps {
-  settings: {
-    autoAssign: boolean;
-    notifyNewStudies: boolean;
-    showScores: boolean;
-    allowComments: boolean;
-    defaultProtocol: string;
-  };
-  onSettingChange: <K extends keyof PlatformSettingsProps["settings"]>(
-    key: K,
-    value: PlatformSettingsProps["settings"][K]
-  ) => void;
-}
+import { PlatformSettingsProps } from "../../../types/Props/PlatformSettingsProps";
 
 const PlatformSettings: React.FC<PlatformSettingsProps> = ({
   settings,

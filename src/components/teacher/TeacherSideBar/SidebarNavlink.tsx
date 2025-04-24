@@ -1,13 +1,7 @@
 import { Link } from "react-router-dom";
+import { TeacherSidebarNavLinkProps } from "../../../types/Props/TeacherSidebarNavLinkProps";
 
-interface SidebarNavLinkProps {
-  to: string;
-  icon: React.ReactNode;
-  label: string;
-  isActive: boolean;
-}
-
-export const SidebarNavLink: React.FC<SidebarNavLinkProps> = ({
+export const SidebarNavLink: React.FC<TeacherSidebarNavLinkProps> = ({
   to,
   icon,
   label,

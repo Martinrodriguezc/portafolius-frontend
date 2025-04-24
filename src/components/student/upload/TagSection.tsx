@@ -2,17 +2,13 @@ import { Plus, X } from "lucide-react";
 import { Label } from "../../common/Label/Label";
 import Button from "../../common/Button/Button";
 import { Badge } from "../../common/Badge/Badge";
-import { TagSectionProps } from "../../../types/TagTypes";
 import { Select, SelectValue } from "../../common/Select/SelectBase";
 import {
   SelectContent,
   SelectTrigger,
 } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
-
-interface TagSectionWrapperProps {
-  section: TagSectionProps;
-}
+import { TagSectionWrapperProps } from "../../../types/Props/TagSectionWrapperProps";
 
 export function TagSection({ section }: TagSectionWrapperProps) {
   const {

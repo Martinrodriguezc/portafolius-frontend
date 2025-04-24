@@ -1,5 +1,5 @@
 import React from "react";
-import { TabsButtonProps } from "../../../types/Props/Tabs/TabsButtonProps";
+import { TabsButtonProps } from "../../../types/Props/Tabs/component/TabsButtonProps";
 
 const TabsButton: React.FC<TabsButtonProps> = ({
   value,

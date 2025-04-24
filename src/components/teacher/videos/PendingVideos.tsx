@@ -29,7 +29,7 @@ export const PendingVideosTab: React.FC = () => {
       </Card>
     );
   }
-  
+
   return (
     <div className="space-y-4">
       {videos.map((video: Video) => (

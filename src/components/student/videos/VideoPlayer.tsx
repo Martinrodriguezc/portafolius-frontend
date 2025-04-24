@@ -1,17 +1,6 @@
-import React from "react";
 import { Play, Pause, Maximize2, Minimize2 } from "lucide-react";
 import Button from "../../common/Button/Button";
-
-interface VideoPlayerProps {
-  src: string;
-  videoRef: React.RefObject<HTMLVideoElement | null>;
-  isPlaying: boolean;
-  togglePlay: () => void;
-  progress: number;
-  handleSeek: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isFullscreen: boolean;
-  toggleFullscreen: () => void;
-}
+import { VideoPlayerProps } from "../../../types/Props/VideoPlayerProps";
 
 export default function VideoPlayer({
   src,

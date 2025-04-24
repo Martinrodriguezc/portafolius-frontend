@@ -1,12 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { isActivePath } from "./utils/studentSidebarUtils";
-
-interface StudentSidebarNavLinkProps {
-  to: string;
-  icon: React.ReactNode;
-  label: string;
-}
+import { StudentSidebarNavLinkProps } from "../../../types/Props/StudentSidebarNavLinkProps";
 
 export const StudentSidebarNavLink: React.FC<StudentSidebarNavLinkProps> = ({
   to,

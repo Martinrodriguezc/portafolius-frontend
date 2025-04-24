@@ -1,14 +1,5 @@
-import Card from '../../../components/common/Card/Card';
-
-export interface FeedbackTabProps {
-  recentFeedback: {
-    id: number;
-    date: string;
-    protocol: string;
-    score: number;
-    comment: string;
-  }[];
-}
+import Card from "../../../components/common/Card/Card";
+import { FeedbackTabProps } from "../../../types/Props/Tabs/FeedbackTabProps";
 
 export function FeedbackTab({ recentFeedback }: FeedbackTabProps) {
   return (
@@ -16,7 +7,7 @@ export function FeedbackTab({ recentFeedback }: FeedbackTabProps) {
       <h3 className="text-[16px] font-medium text-[#333333]">
         Retroalimentación Reciente
       </h3>
-      {recentFeedback.map(feedback => (
+      {recentFeedback.map((feedback) => (
         <Card key={feedback.id} className="rounded-[16px] p-6">
           <div className="flex justify-between items-start mb-2">
             <div>

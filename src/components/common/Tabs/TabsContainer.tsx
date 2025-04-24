@@ -1,5 +1,5 @@
 import React, { useState, ReactElement } from "react";
-import { TabsProps } from "../../../types/Props/Tabs/TabsProps";
+import { TabsProps } from "../../../types/Props/Tabs/component/TabsProps";
 
 const TabsContainer: React.FC<TabsProps> = ({
   defaultValue,

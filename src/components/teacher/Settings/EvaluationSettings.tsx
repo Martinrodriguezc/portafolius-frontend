@@ -2,21 +2,7 @@ import React, { ChangeEvent } from "react";
 import Card from "../../common/Card/Card";
 import Input from "../../common/Input/Input";
 import Button from "../../common/Button/Button";
-
-export interface EvaluationSettingsProps {
-  evaluationSettings: {
-    evaluationTemplate: string;
-    minScore: number;
-    maxVideosPerDay: number;
-    autoPublish: boolean;
-  };
-  onSettingChange: <
-    K extends keyof EvaluationSettingsProps["evaluationSettings"]
-  >(
-    key: K,
-    value: EvaluationSettingsProps["evaluationSettings"][K]
-  ) => void;
-}
+import { EvaluationSettingsProps } from "../../../types/Props/EvaluationSettingsProps";
 
 const EvaluationSettings: React.FC<EvaluationSettingsProps> = ({
   evaluationSettings,
