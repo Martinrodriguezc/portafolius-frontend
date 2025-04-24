@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { evaluatedVideos, pendingVideos } from "../../utils/videoConstants";
 import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";
@@ -6,8 +7,18 @@ import TabsPanel from "../../components/common/Tabs/TabsPanel";
 import { CheckSquare, Clock } from "lucide-react";
 import { EvaluatedVideosTab } from "../../components/student/videos/EvaluatedVideosTab";
 import { PendingVideosTab } from "../../components/student/videos/PendingVideosTab";
+import { getDiagnosedVideos } from "../../components/diagnosis/DiagnosisService";
+
 
 export default function VideosPage() {
+  const [diagnosedIds, setDiagnosedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    getDiagnosedVideos()
+      .then(setDiagnosedIds)
+      .catch((err) => console.error("Error al obtener diagnósticos:", err));
+  }, []);
+
   return (
     <div className="p-8">
       <header className="mb-8">
@@ -28,10 +39,10 @@ export default function VideosPage() {
         </TabsList>
 
         <TabsPanel value="evaluated">
-          <EvaluatedVideosTab videos={evaluatedVideos} />
+          <EvaluatedVideosTab videos={evaluatedVideos} diagnosedIds={diagnosedIds} />
         </TabsPanel>
         <TabsPanel value="pending">
-          <PendingVideosTab videos={pendingVideos} />
+          <PendingVideosTab videos={pendingVideos} diagnosedIds={diagnosedIds} />
         </TabsPanel>
       </TabsContainer>
     </div>

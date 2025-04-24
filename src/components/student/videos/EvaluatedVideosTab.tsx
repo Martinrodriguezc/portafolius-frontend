@@ -6,9 +6,10 @@ import { Link } from "react-router-dom";
 
 interface Props {
   videos: Video[];
+  diagnosedIds: string[];
 }
 
-export const EvaluatedVideosTab: React.FC<Props> = ({ videos }) => (
+export const EvaluatedVideosTab: React.FC<Props> = ({ videos, diagnosedIds }) => (
   <div className="space-y-4">
     {videos.map((video) => (
       <Card key={video.id} className="rounded-[8px] p-4 flex items-center justify-between">
@@ -18,6 +19,9 @@ export const EvaluatedVideosTab: React.FC<Props> = ({ videos }) => (
           <div className="text-xs text-[#A0A0A0] mt-1">
             {video.date} &bull; {video.duration}
           </div>
+          {diagnosedIds.includes(video.id) && (
+            <div className="mt-2 text-sm text-green-600 font-medium">✅ Diagnóstico enviado</div>
+          )}
         </div>
         <Link to={`/student/videos/${video.id}`}>
           <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-[14px] font-medium py-[8px] px-[12px] rounded-[8px]">
@@ -28,3 +32,4 @@ export const EvaluatedVideosTab: React.FC<Props> = ({ videos }) => (
     ))}
   </div>
 );
+

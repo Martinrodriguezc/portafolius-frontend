@@ -10,16 +10,26 @@ import {
   Video
 } from "../../utils/videoConstants";
 
+import DiagnosisTree from "../../components/diagnosis/DiagnosisTree";
+import { useDiagnosis } from "../../components/diagnosis/useDiagnosis";
+import { diagnosisTree } from "../../components/diagnosis/diagnosisTreeData";
+
 export default function VideoPage() {
   const { id } = useParams() as { id: string };
-  const { isPlaying, setIsPlaying, comment, setComment, handleSubmitComment } =
-    useVideoPage();
+  const { isPlaying, setIsPlaying, comment, setComment, handleSubmitComment } = useVideoPage();
 
   const allVideos: Video[] = [...evaluatedVideos, ...pendingVideos];
   const videoData = allVideos.find((v) => v.id === id);
   if (!videoData) {
     return <div className="p-8">Video no encontrado</div>;
   }
+
+  const {
+    selections,
+    selectAtLevel,
+    confirmDiagnosis,
+    isConfirmed
+  } = useDiagnosis();
 
   return (
     <div className="p-8">
@@ -45,6 +55,34 @@ export default function VideoPage() {
                   )}
                 </Button>
               </div>
+            </div>
+
+            {/* Diagnóstico - Árbol de decisiones */}
+            <div className="mt-6">
+              <DiagnosisTree
+                tree={diagnosisTree}
+                selections={selections}
+                onSelect={selectAtLevel}
+              />
+
+              {selections.length === 3 && (
+                <div className="mt-4 bg-[#F4F4F4] p-4 rounded-lg">
+                  <p className="text-[14px] mb-2">
+                    Diagnóstico seleccionado:{" "}
+                    <strong>{selections.join(" → ")}</strong>
+                  </p>
+                  {!isConfirmed ? (
+                    <Button
+                      onClick={confirmDiagnosis}
+                      className="bg-[#4E81BD] text-white px-4 py-2 rounded-lg"
+                    >
+                      Confirmar diagnóstico
+                    </Button>
+                  ) : (
+                    <p className="text-green-600">¡Diagnóstico confirmado!</p>
+                  )}
+                </div>
+              )}
             </div>
 
             {videoData.tags.length > 0 && (
@@ -91,6 +129,7 @@ export default function VideoPage() {
                 </div>
               ))}
             </div>
+
             <div className="space-y-3">
               <Textarea
                 placeholder="Escribe un comentario..."
