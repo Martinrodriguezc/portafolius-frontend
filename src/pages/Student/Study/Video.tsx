@@ -118,6 +118,7 @@ export default function StudentVideoPage() {
           <h2 className="text-xl font-semibold mb-4">Evaluación</h2>
           {evaluation ? (
             <>
+              <strong>Profesor:</strong> {evaluation.teacher_first_name} {evaluation.teacher_last_name}
               <p className="text-sm text-[#555] mb-2"><strong>Calificación:</strong> {evaluation.score}/10</p>
               <p className="text-sm text-[#555] mb-1"><strong>Feedback:</strong></p>
               <div className="border p-3 bg-gray-50 rounded text-sm text-[#333] whitespace-pre-wrap">
