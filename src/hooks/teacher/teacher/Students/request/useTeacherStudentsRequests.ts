@@ -1,5 +1,5 @@
 import { config } from "../../../../../config/config";
-import { TeacherStudent } from "../../../../../types/Student";
+import { TeacherStudent } from "../../../../../types/studentType";
 
 export const fetchTeacherStudents = async (
   teacherId: number

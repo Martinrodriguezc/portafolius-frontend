@@ -15,7 +15,7 @@ import { FileText, Video, ExternalLink } from "lucide-react";
 export default function MaterialsPage() {
   const user = authService.getCurrentUser();
   const studentId = user?.id;
-  const { data, isLoading } = useStudentMaterials(studentId);
+  const { data, isLoading } = useStudentMaterials(Number(studentId)); //REVISAR
   console.log(data)
 
   if (!studentId) return <p className="p-8 text-red-600">Sesión expirada.</p>;

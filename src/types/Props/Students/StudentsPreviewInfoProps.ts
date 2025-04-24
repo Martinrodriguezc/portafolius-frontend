@@ -1,4 +1,4 @@
-import { Student } from "../../Student";
+import { Student } from "../../studentType";
 
 export interface StudentsPreviewInfoProps {
   student: Student;

@@ -29,7 +29,6 @@ export interface StudyWithStatus {
   score: number;
 }
 
-
 export interface StudyWithStudent {
   student_name: string;
   study: Study;

@@ -12,7 +12,7 @@ import { authService } from "../../hooks/auth/authServices";
 export default function ProgressPage() {
   const user = authService.getCurrentUser();
   const userId = user?.id ?? 0;
-  const { data, loading, error } = useProgressData(userId);
+  const { data, loading, error } = useProgressData(Number(userId)); //REVISAR
 
   if (loading) return <p className="p-8">Cargando progreso...</p>;
   if (error) return <p className="p-8 text-red-500">Error: {error}</p>;

@@ -59,7 +59,7 @@ export function useProgressData(userId: number) {
         const mapP = new Map<string, { sum: number; count: number }>();
         studies.forEach((s) => {
           const entry = mapP.get(s.protocol) || { sum: 0, count: 0 };
-          const ev = evalForms.find((ev) => ev.study_id === s.id);
+          const ev = evalForms.find((ev) => String(ev.study_id )=== s.id); //REVISAR
           if (ev) {
             entry.sum += ev.score;
             entry.count++;
@@ -78,7 +78,7 @@ export function useProgressData(userId: number) {
           .sort((a, b) => Date.parse(b.submitted_at) - Date.parse(a.submitted_at))
           .slice(0, 5)
           .map((e) => {
-            const st = studies.find((st) => st.id === e.study_id);
+            const st = studies.find((st) => st.id === String(e.study_id)); //REVISAR
             return {
               id: e.id,
               date: new Date(e.submitted_at).toLocaleDateString("es", {

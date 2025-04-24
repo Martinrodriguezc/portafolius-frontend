@@ -1,7 +1,7 @@
 import { config } from "../../../../config/config";
 import { EvaluationForm } from "../../../../types/evaluation";
+import { Study } from "../../../../types/Study";
 import { authService } from "../../../auth/authServices";
-import { Study } from "../../Studies/useStudentStudies";
 
 export const fetchStudies = async (userId: number): Promise<Study[]> => {
   console.log("Obteniendo estudios para userId:", userId);

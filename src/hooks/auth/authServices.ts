@@ -8,7 +8,7 @@ import {
 } from "./requests/authRequests";
 import { LoginFormData } from "../../types/form/Login";
 import { RegisterFormData } from "../../types/form/Register";
-import { AuthResponse, UserProps } from "../../types/UserProps";
+import { AuthResponse, UserProps } from "../../types/User";
 
 const TOKEN_KEY = "auth_token";
 const USER_KEY = "user_data";

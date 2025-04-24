@@ -11,4 +11,4 @@ export interface TagSelectorState {
   selectedStructure: string;
   selectedCondition: string;
   tags: { id: string; text: string }[];
-} 
+}

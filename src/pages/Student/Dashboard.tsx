@@ -6,7 +6,7 @@ import { useRecentComments } from "../../hooks/student/RecentComments/useRecentC
 
 export default function StudentDashboard() {
   const user = authService.getCurrentUser()!;
-  const { comments, loading, error } = useRecentComments(user.id);
+  const { comments, loading, error } = useRecentComments(Number(user.id)); //REVISAR
 
   return (
     <div className="p-8 space-y-12">

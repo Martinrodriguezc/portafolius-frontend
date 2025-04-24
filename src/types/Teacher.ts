@@ -1,4 +1,4 @@
-import { TeacherStudent } from "./Student";
+import { TeacherStudent } from "./studentType";
 import { Study } from "./Study";
 
 export interface TeacherProfile {

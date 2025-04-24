@@ -7,12 +7,12 @@ import Input from "../../components/common/Input/Input";
 import StudentsPreviewInfo from "../../components/teacher/StudentsPreviewInfo";
 import { useTeacherStudents } from "../../hooks/teacher/teacher/Students/useTeacherStudents";
 import { authService } from "../../hooks/auth/authServices";
-import { TeacherStudent } from "../../types/Student";
+import { TeacherStudent } from "../../types/studentType";
 
 export default function TeacherStudentsPage() {
   const current = authService.getCurrentUser();
   const teacherId = current?.id;
-  const { students, loading, error } = useTeacherStudents(teacherId);
+  const { students, loading, error } = useTeacherStudents(Number(teacherId)); //REVISAR
   const [search, setSearch] = useState("");
 
   if (!teacherId)

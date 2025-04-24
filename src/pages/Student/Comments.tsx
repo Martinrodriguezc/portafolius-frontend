@@ -6,8 +6,8 @@ import { useRecentComments } from "../../hooks/student/RecentComments/useRecentC
 import { ReturnButton } from "../../components/common/Button/ReturnButton";
 
 export default function CommentsPage() {
-  const userId = authService.getCurrentUser().id;
-  const { comments, loading, error } = useRecentComments(userId);
+  const userId = authService.getCurrentUser()?.id;
+  const { comments, loading, error } = useRecentComments(Number(userId)); //REVISAR
 
   return (
     <div className="p-8">

@@ -2,8 +2,6 @@ import { config } from "../../../../config/config";
 import { RawStudy } from "../../../../types/Study";
 import { authService } from "../../../auth/authServices";
 
-
-
 export const fetchStudentStudies = async (
   userId: string
 ): Promise<RawStudy[]> => {

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+/*import { useNavigate } from "react-router-dom";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
 import Input from "../../components/common/Input/Input";
@@ -66,3 +66,4 @@ export default function StudentProfileCreate() {
     </div>
   );
 }
+*/

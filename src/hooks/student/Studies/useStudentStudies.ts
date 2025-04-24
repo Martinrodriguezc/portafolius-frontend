@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { authService } from "../../auth/authServices";
-import { Study } from "../../teacher/useStudentStudies";
 import { fetchStudentStudies } from "./request/studiesRequest";
-import { RawStudy } from "../../../types/Study";
+import { RawStudy, Study } from "../../../types/Study";
 
 export function useStudentStudies() {
   const [studies, setStudies] = useState<Study[]>([]);
@@ -19,7 +18,7 @@ export function useStudentStudies() {
       try {
         const rawStudies: RawStudy[] = await fetchStudentStudies(userId);
         const transformed: Study[] = rawStudies.map((s) => ({
-          id: Number(s.id),
+          id: s.id,
           title: s.title,
           protocol: s.protocol,
           created_at: s.created_at,
