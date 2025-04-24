@@ -16,7 +16,7 @@ export function useStudentStudies() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
 
-  const userId = authService.getCurrentUser().id;
+  const userId = authService.getCurrentUser()?.id;
 
   if (!userId) {
     throw new Error("No hay userId en localStorage. Debes iniciar sesión.");

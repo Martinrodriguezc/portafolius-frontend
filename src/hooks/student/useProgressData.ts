@@ -1,34 +1,7 @@
 import { useEffect, useState } from "react";
-import { config } from "../../config/config";
-import { authService } from "../auth/authServices";
+import { fetchStudies, fetchEvaluations } from "./requests/progressRequests";
+import { ProgressData } from "../../types/ProgressData";
 
-interface Study {
-  id: number;
-  protocol: string;
-}
-interface EvaluationForm {
-  id: number;
-  study_id: number;
-  submitted_at: string;
-  score: number;
-  feedback_summary: string;
-}
-
-export interface ProgressData {
-  totalStudies: number;
-  evaluatedStudies: number;
-  pendingStudies: number;
-  averageScore: number;
-  monthlyProgress: { month: string; studies: number; score: number }[];
-  protocolPerformance: { protocol: string; studies: number; score: number }[];
-  recentFeedback: {
-    id: number;
-    date: string;
-    protocol: string;
-    score: number;
-    comment: string;
-  }[];
-}
 
 export function useProgressData(userId: number) {
   const [data, setData] = useState<ProgressData>();
@@ -36,30 +9,10 @@ export function useProgressData(userId: number) {
   const [error, setError] = useState<string>();
 
   useEffect(() => {
-    (async () => {
+    const load = async () => {
       try {
-        const token = authService.getToken();
-        if (!token) throw new Error("No autorizado");
-
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        };
-
-        const resStudies = await fetch(`${config.SERVER_URL}/study/${userId}`, {
-          headers,
-        });
-        if (resStudies.status === 401) throw new Error("No autorizado");
-        if (!resStudies.ok) throw new Error(`Error ${resStudies.status}`);
-        const { studies }: { studies: Study[] } = await resStudies.json();
-
-        const resEvals = await fetch(
-          `${config.SERVER_URL}/evaluations?studentId=${userId}`,
-          { headers }
-        );
-        if (resEvals.status === 401) throw new Error("No autorizado");
-        if (!resEvals.ok) throw new Error(`Error ${resEvals.status}`);
-        const evalForms: EvaluationForm[] = await resEvals.json();
+        const studies = await fetchStudies(userId);
+        const evalForms = await fetchEvaluations(userId);
 
         const totalStudies = studies.length;
         const evaluatedStudies = evalForms.length;
@@ -143,7 +96,9 @@ export function useProgressData(userId: number) {
       } finally {
         setLoading(false);
       }
-    })();
+    };
+
+    load();
   }, [userId]);
 
   return { data, loading, error };
