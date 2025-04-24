@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { EvaluationForm } from "../../../../types/evaluation";
 import { fetchVideoMeta, fetchVideoUrl } from "../../../video/utils/requests";
 import { evaluationService } from "../evaluationService/evaluationService";
-import { Video } from "../../../../types/Video";
+import { Video } from "../../../../types/VideoTypes";
 
 export function useTeacherEvaluateVideo() {
   const { studyId, clipId } = useParams<{ studyId: string; clipId: string }>();

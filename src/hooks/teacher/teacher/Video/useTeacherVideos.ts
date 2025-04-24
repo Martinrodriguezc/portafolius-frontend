@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TeacherVideo } from "../../../../types/Video";
+import { TeacherVideo } from "../../../../types/VideoTypes";
 import { authService } from "../../../auth/authServices";
 import { fetchTeacherVideos } from "./request/useTeacherVideoRequests";
 

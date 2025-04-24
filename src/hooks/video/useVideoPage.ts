@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchVideoUrl, postComment, fetchVideoMeta } from "./utils/requests";
-import { Video } from "../../types/Video";
+import { Video } from "../../types/VideoTypes";
 
 export function useVideoPage() {
   const { clipId } = useParams<{ clipId: string }>();

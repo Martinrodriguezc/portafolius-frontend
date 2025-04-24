@@ -4,7 +4,7 @@ import Button from "../../common/Button/Button";
 import { Link } from "react-router-dom";
 import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
 import { CheckCircle } from "lucide-react";
-import { Video } from "../../../types/Video"
+import { Video } from "../../../types/VideoTypes";
 
 export const EvaluatedVideosTab: React.FC = () => {
   const { videos, loading, error, study_id } = useStudyVideos();

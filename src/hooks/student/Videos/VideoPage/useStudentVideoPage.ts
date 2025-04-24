@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { EvaluationForm } from "../../../../types/evaluation";
 import { fetchVideoMeta, fetchVideoUrl } from "../../../video/utils/requests";
-import { Video } from "../../../../types/Video";
+import { Video } from "../../../../types/VideoTypes";
 
 export function useStudentVideoPage() {
   const { clipId, studyId } = useParams<{ clipId: string; studyId: string }>();
@@ -94,6 +94,6 @@ export function useStudentVideoPage() {
     togglePlay,
     handleSeek,
     toggleFullscreen,
-    setEvaluation
+    setEvaluation,
   };
 }

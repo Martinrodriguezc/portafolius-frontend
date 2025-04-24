@@ -1,5 +1,5 @@
 import { config } from "../../../../../config/config";
-import { TeacherVideo } from "../../../../../types/Video";
+import { TeacherVideo } from "../../../../../types/VideoTypes";
 import { authService } from "../../../../auth/authServices";
 
 export const fetchTeacherVideos = async (

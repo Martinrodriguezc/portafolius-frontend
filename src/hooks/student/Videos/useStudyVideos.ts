@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Video } from "../../../types/Video";
+import { Video } from "../../../types/VideoTypes";
 import { fetchStudyVideos } from "./request/videosRequest";
 
 export function useStudyVideos(studyId?: string) {

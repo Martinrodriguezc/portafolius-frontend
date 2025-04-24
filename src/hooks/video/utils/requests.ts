@@ -1,5 +1,5 @@
 import { config } from "../../../config/config";
-import { Video } from "../../../types/Video";
+import { Video } from "../../../types/VideoTypes";
 
 interface DownloadResponse {
   downloadUrl: string;
