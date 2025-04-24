@@ -123,7 +123,10 @@ export default function TeacherEvaluationsLayout() {
                       <Calendar className="mr-1 h-4 w-4" />
                       <span>{new Date(study.created_at).toLocaleDateString()}</span>
                       <span className="mx-2">•</span>
-                      <span>Protocolo: {study.protocol.toUpperCase()}</span>
+                      <span>
+                        <strong>Estudio:</strong> {study.title || "Sin título"} <span className="mx-2">•</span>
+                        <strong>Protocolo:</strong> {study.protocol.toUpperCase()}
+                      </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">

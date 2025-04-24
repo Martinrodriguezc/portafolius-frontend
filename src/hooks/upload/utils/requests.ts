@@ -4,7 +4,7 @@ import logger from "../../../config/logger";
 export const generateUploadUrl = async (
   file: File,
   studyId: string
-): Promise<string> => {
+): Promise<{ uploadUrl: string; clipId: number }> => {
   logger.debug("Iniciando generateUploadUrl para:", file.name);
 
   const endpoint = `${config.SERVER_URL}/video/generate_upload_url`;
@@ -40,7 +40,7 @@ export const generateUploadUrl = async (
   const data = await response.json();
   const { uploadUrl } = data;
   logger.info("URL prefirmada obtenida con éxito:", uploadUrl);
-  return uploadUrl;
+  return { uploadUrl: data.uploadUrl, clipId: data.clipId };
 };
 
 export const uploadVideo = async (
@@ -118,4 +118,16 @@ export const createNewStudy = async (
   const { study } = data;
   logger.info("Estudio creado con éxito:", study);
   return study.id;
+};
+
+export async function assignTagsToClip(clipId: number, tagIds: number[]) {
+  const res = await fetch(`${config.SERVER_URL}/video/${clipId}/tags`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ tagIds }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Error ${res.status} al asignar etiquetas al clip`);
+  }
 };

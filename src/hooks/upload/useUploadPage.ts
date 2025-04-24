@@ -4,6 +4,7 @@ import {
   createNewStudy,
   generateUploadUrl,
   uploadVideo,
+  assignTagsToClip,
 } from "./utils/requests";
 import { validateVideo } from "./validations/validations";
 import { authService } from "../authServices";
@@ -129,7 +130,7 @@ export function useUploadPage() {
         const file = files[i];
         logger.info("Inicio de subida de vídeo", { file: file.name, protocol });
 
-        const uploadUrl = await generateUploadUrl(file, studyId);
+        const { uploadUrl, clipId } = await generateUploadUrl(file, studyId);
         logger.debug("URL prefirmada recibida:", uploadUrl);
 
         const progressBefore = Math.round((i / files.length) * 100);
@@ -141,6 +142,15 @@ export function useUploadPage() {
         const result = await uploadVideo(uploadUrl, file);
         if (result.success) {
           logger.info("Vídeo subido exitosamente", { file: file.name });
+
+          const tagIds = tags.map((t) => t.id);
+          try {
+            await assignTagsToClip(clipId, tagIds);
+            logger.info(`Etiquetas asignadas a clipId ${clipId}:`, tagIds);
+          } catch (err) {
+            logger.error(`Error al asignar etiquetas al clipId ${clipId}:`, err);
+          }
+
         } else {
           logger.error(
             "Error en uploadVideo para archivo:",

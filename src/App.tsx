@@ -91,18 +91,6 @@ function App() {
           
         </Route>
 
-        <Route path="/teacher" element={<TeacherDashboardPage />} />
-        <Route
-          path="/teacher/evaluations"
-          element={<TeacherEvaluationsPage />}
-        />
-        <Route path="/teacher/students" element={<TeacherStudentsPage />} />
-        <Route path="/teacher/settings" element={<TeacherSettingsPage />} />
-        <Route path="/teacher" element={<TeacherDashboardPage />} />
-        <Route path="/teacher/evaluations" element={<TeacherEvaluationsPage/>}/>
-        <Route path="/teacher/students" element={<TeacherStudentsPage/>}/>
-        <Route path="/teacher/settings" element={<TeacherSettingsPage/>}/>
-        
 
       </Routes>
     </Router>
