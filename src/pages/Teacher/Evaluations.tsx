@@ -25,13 +25,11 @@ export default function TeacherEvaluationsLayout() {
   );
 
   return (
-    <div className="p-8">
-      <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">Evaluaciones</h1>
-        <p className="text-[#A0A0A0]">
-          Historial de evaluaciones realizadas y pendientes
-        </p>
-      </header>
+      <div className="p-8">
+        <header className="mb-8">
+          <h1 className="text-[20px] font-bold text-[#333333]">Evaluaciones</h1>
+          <p className="text-[#A0A0A0]">Historial de tus evaluaciones</p>
+        </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card className="border-none shadow-sm rounded-[16px]">
