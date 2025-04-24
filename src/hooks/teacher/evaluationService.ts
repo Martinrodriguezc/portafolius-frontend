@@ -26,6 +26,13 @@ export const evaluationService = {
     return await res.json();
   },
 
+  async getByStudyId(studyId: number): Promise<EvaluationForm> {
+    const res = await fetch(`${BASE}/by-study/${studyId}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return data.evaluation;
+  },
+
   async update(id: number, score: number, feedback: string): Promise<EvaluationForm> {
     const res = await fetch(`${BASE}/${id}`, {
       method: "PUT",

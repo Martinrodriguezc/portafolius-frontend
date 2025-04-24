@@ -59,7 +59,7 @@ function App() {
           <Route path="comments" element={<CommentsPage />} />
 
           <Route
-            path="/student/:studyId/videos/:id"
+            path="/student/:studyId/videos/:clipId"
             element={<StudentVideoPage />}
           />
           <Route path="/student/studies" element={<StudentStudiesPage />} />
