@@ -127,6 +127,7 @@ export async function assignTagsToClip(clipId: number, tagIds: number[]) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tagIds }),
   });
+  console.log(res)
 
   if (!res.ok) {
     throw new Error(`Error ${res.status} al asignar etiquetas al clip`);

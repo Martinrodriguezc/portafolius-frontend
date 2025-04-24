@@ -1,35 +1,48 @@
+// src/hooks/useProgressData.ts
 import { useEffect, useState } from "react";
 import { fetchStudies, fetchEvaluations } from "./requests/progressRequests";
 import { ProgressData } from "../../../types/ProgressData";
+import { EvaluationForm } from "../../../types/evaluation";
+
+const initialProgressData: ProgressData = {
+  totalStudies: 0,
+  evaluatedStudies: 0,
+  pendingStudies: 0,
+  averageScore: 0,
+  monthlyProgress: [],
+  protocolPerformance: [],
+  recentFeedback: [],
+};
 
 export function useProgressData(userId: number) {
-  const [data, setData] = useState<ProgressData>();
+  const [data, setData] = useState<ProgressData>(initialProgressData);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const load = async () => {
       try {
-        const studies = await fetchStudies(userId);
-        const evalForms = await fetchEvaluations(userId);
+        const studies = await fetchStudies(userId) || [];
+        const evalRaw = await fetchEvaluations(userId);
+        const evalForms: EvaluationForm[] = Array.isArray(evalRaw)
+          ? evalRaw
+          : [];
 
         const totalStudies = studies.length;
         const evaluatedStudies = evalForms.length;
         const pendingStudies = totalStudies - evaluatedStudies;
-        const averageScore =
-          evaluatedStudies > 0
-            ? parseFloat(
-                (
-                  evalForms.reduce((s, e) => s + e.score, 0) / evaluatedStudies
-                ).toFixed(1)
-              )
-            : 0;
+        const averageScore = evaluatedStudies > 0
+          ? parseFloat(
+              (
+                evalForms.reduce((sum, e) => sum + e.score, 0) /
+                evaluatedStudies
+              ).toFixed(1)
+            )
+          : 0;
 
         const mapM = new Map<string, { sum: number; count: number }>();
         evalForms.forEach((e) => {
-          const month = new Date(e.submitted_at).toLocaleString("es", {
-            month: "long",
-          });
+          const month = new Date(e.submitted_at).toLocaleString("es", { month: "long" });
           const prev = mapM.get(month) || { sum: 0, count: 0 };
           prev.sum += e.score;
           prev.count++;
@@ -39,19 +52,19 @@ export function useProgressData(userId: number) {
           ([month, { sum, count }]) => ({
             month,
             studies: count,
-            score: parseFloat((sum / count).toFixed(1)),
+            score: count > 0 ? parseFloat((sum / count).toFixed(1)) : 0,
           })
         );
 
         const mapP = new Map<string, { sum: number; count: number }>();
         studies.forEach((s) => {
-          if (!mapP.has(s.protocol)) mapP.set(s.protocol, { sum: 0, count: 0 });
-          const entry = mapP.get(s.protocol)!;
+          const entry = mapP.get(s.protocol) || { sum: 0, count: 0 };
           const ev = evalForms.find((ev) => ev.study_id === s.id);
           if (ev) {
             entry.sum += ev.score;
             entry.count++;
           }
+          mapP.set(s.protocol, entry);
         });
         const protocolPerformance = Array.from(mapP.entries()).map(
           ([protocol, { sum, count }]) => ({
@@ -62,18 +75,14 @@ export function useProgressData(userId: number) {
         );
 
         const recentFeedback = evalForms
-          .sort(
-            (a, b) => Date.parse(b.submitted_at) - Date.parse(a.submitted_at)
-          )
+          .sort((a, b) => Date.parse(b.submitted_at) - Date.parse(a.submitted_at))
           .slice(0, 5)
           .map((e) => {
             const st = studies.find((st) => st.id === e.study_id);
             return {
               id: e.id,
               date: new Date(e.submitted_at).toLocaleDateString("es", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
+                day: "numeric", month: "long", year: "numeric",
               }),
               protocol: st?.protocol || "",
               score: e.score,
@@ -97,7 +106,7 @@ export function useProgressData(userId: number) {
       }
     };
 
-    load();
+    void load();
   }, [userId]);
 
   return { data, loading, error };

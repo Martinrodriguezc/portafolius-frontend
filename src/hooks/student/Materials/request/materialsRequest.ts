@@ -9,6 +9,7 @@ export const fetchStudentMaterials = async (
   const response: AxiosResponse<Material[]> = await axios.get(
     `${config.SERVER_URL}/materials/student/${studentId}/`
   );
+  console.log(response.data)
   return response.data;
 };
 

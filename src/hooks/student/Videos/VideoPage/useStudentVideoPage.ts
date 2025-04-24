@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { EvaluationForm } from "../../../../types/evaluation";
 import { fetchVideoMeta, fetchVideoUrl } from "../../../video/utils/requests";
-import { evaluationService } from "../../../teacher/evaluations/evaluationService/evaluationService";
 import { Video } from "../../../../types/Video";
 
 export function useStudentVideoPage() {
@@ -33,13 +32,6 @@ export function useStudentVideoPage() {
         ]);
         setUrl(videoUrl);
         setMeta(videoMeta);
-
-        if (studyId) {
-          const evalFound = await evaluationService.getByStudyId(
-            Number(studyId)
-          );
-          if (evalFound) setEvaluation(evalFound);
-        }
       } catch (err: unknown) {
         if (err instanceof Error) setError(err.message);
         else setError(String(err));
@@ -102,5 +94,6 @@ export function useStudentVideoPage() {
     togglePlay,
     handleSeek,
     toggleFullscreen,
+    setEvaluation
   };
 }

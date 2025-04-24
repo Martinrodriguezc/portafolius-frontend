@@ -16,10 +16,10 @@ export default function MaterialsPage() {
   const user = authService.getCurrentUser();
   const studentId = user?.id;
   const { data, isLoading } = useStudentMaterials(studentId);
+  console.log(data)
 
   if (!studentId) return <p className="p-8 text-red-600">Sesión expirada.</p>;
   if (isLoading) return <p className="p-8">Cargando materiales…</p>;
-  if (!data?.length) return <p className="p-8">No hay materiales asignados.</p>;
 
   const grouped = groupBy(data, "type");
 

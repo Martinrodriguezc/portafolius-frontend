@@ -23,7 +23,7 @@ export default function StudentVideoPage() {
   if (error) return <p className="p-8 text-red-500">{error}</p>;
 
   return (
-    <div className="p-8 flex flex-col lg:flex-row gap-6">
+    <div className="p-8 flex flex-col gap-6">
       <header className="mb-8 flex justify-between items-center">
         <div className="flex flex-col gap-2 mb-4">
           <h1 className="text-[20px] font-bold text-[#333333]">
@@ -68,7 +68,7 @@ export default function StudentVideoPage() {
         </Card>
       </div>
 
-      <div className="w-full lg:w-1/3">
+      <div className="w-full lg:w-2/3 space-y-4">
         <Card className="p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Evaluación</h2>
           {evaluation ? (
