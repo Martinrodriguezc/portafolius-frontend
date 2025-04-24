@@ -59,7 +59,7 @@ export const authService = {
       
       if (response.data.token) {
         localStorage.setItem(TOKEN_KEY, response.data.token);
-        localStorage.setItem(USER_KEY, JSON.stringify(response.data.user));
+        localStorage.setItem(USER_KEY, JSON.stringify(response.data.user.user));
       }
       
       return response.data;
@@ -70,7 +70,7 @@ export const authService = {
 
   async updateUserRole(role: string) {
     try {
-      const currentUser = this.getCurrentUser().user;
+      const currentUser = this.getCurrentUser();
       console.log('currentUser', currentUser);
       if (!currentUser) throw new Error('Usuario no encontrado');
 
