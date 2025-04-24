@@ -7,7 +7,6 @@ import { ReturnButton } from "../../components/common/Button/ReturnButton";
 
 export default function CommentsPage() {
   const userId = authService.getCurrentUser().id;
-  //const userId = user?.id!;
   const { comments, loading, error } = useRecentComments(userId);
 
   return (

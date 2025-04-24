@@ -1,59 +1,9 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-
-interface GoogleAuthError {
-  message: string;
-  code?: string;
-}
+import { useNavigate } from "react-router-dom";
+import { useGoogleAuthCallback } from "../../hooks/auth/useGoogleAuthCallback";
 
 export default function GoogleCallbackPage() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { loading, error } = useGoogleAuthCallback();
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    const handleCallback = async () => {
-      try {
-        console.log("Iniciando proceso de callback");
-        const urlParams = new URLSearchParams(location.search);
-        console.log("URL params:", Object.fromEntries(urlParams));
-
-        const token = urlParams.get("token");
-        const userDataBase64 = urlParams.get("userData");
-
-        console.log("Token recibido:", token);
-        console.log("UserData Base64 recibido:", userDataBase64);
-
-        if (!token || !userDataBase64) {
-          console.error("Datos faltantes:", { token, userDataBase64 });
-          throw new Error("No se recibieron los datos de autenticación");
-        }
-
-        const userData = JSON.parse(atob(userDataBase64));
-        const user = userData.user;
-        localStorage.setItem("auth_token", token);
-        localStorage.setItem("user_data", JSON.stringify(user));
-
-        if (user.role === "google_login") {
-          navigate("/select-role");
-        } else if (user.role === "profesor") {
-          navigate("/teacher");
-        } else if (user.role === "estudiante") {
-          navigate("/student");
-        }
-      } catch (err: unknown) {
-        const error = err as GoogleAuthError;
-        setError(
-          error.message || "Error al procesar la autenticación con Google"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    handleCallback();
-  }, [location, navigate]);
 
   if (loading) {
     return (

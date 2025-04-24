@@ -6,8 +6,7 @@ import { useRecentComments } from "../../hooks/student/RecentComments/useRecentC
 
 export default function StudentDashboard() {
   const user = authService.getCurrentUser();
-  const userId = user?.id!;
-  const { comments, loading, error } = useRecentComments(userId);
+  const { comments, loading, error } = useRecentComments(user.id);
 
   return (
     <div className="p-8">

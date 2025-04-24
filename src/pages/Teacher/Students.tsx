@@ -5,11 +5,9 @@ import Button from "../../components/common/Button/Button";
 import Card from "../../components/common/Card/Card";
 import Input from "../../components/common/Input/Input";
 import StudentsPreviewInfo from "../../components/teacher/StudentsPreviewInfo";
-import {
-  useTeacherStudents,
-  TeacherStudent,
-} from "../../hooks/teacher/teacher/Students/useTeacherStudents";
+import { useTeacherStudents } from "../../hooks/teacher/teacher/Students/useTeacherStudents";
 import { authService } from "../../hooks/auth/authServices";
+import { TeacherStudent } from "../../types/Student";
 
 export default function TeacherStudentsPage() {
   const current = authService.getCurrentUser();

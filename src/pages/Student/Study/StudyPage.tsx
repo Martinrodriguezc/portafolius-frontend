@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 import Card from "../../../components/common/Card/Card";
 import Button from "../../../components/common/Button/Button";
-import {
-  useStudentStudies,
-  Study,
-} from "../../../hooks/student/Studies/useStudentStudies";
+import { useStudentStudies } from "../../../hooks/student/Studies/useStudentStudies";
 import { BookOpen } from "lucide-react";
+import { Study } from "../../../types/Study";
 
 export default function StudentStudiesPage() {
   const { studies, loading, error } = useStudentStudies();
@@ -17,7 +15,7 @@ export default function StudentStudiesPage() {
       <div
         className="flex flex-col items-center justify-center
                       min-h-[70vh] p-16
-                      bg-slate-50 border border-slate-200 rounded-xl bg-white m-6"
+                      bg-slate-50 border border-slate-200 rounded-x m-6"
       >
         <BookOpen className="h-16 w-16 text-[#4E81BD] mb-6" />
         <p className="text-2xl font-semibold text-[#333333] mb-2">
