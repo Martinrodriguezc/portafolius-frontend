@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { ReturnButton } from "../../../components/common/Button/ReturnButton";
 import Card from "../../../components/common/Card/Card";
 import VideoPlayer from "../../../components/student/videos/VideoPlayer";
 import { fetchVideoUrl, fetchVideoMeta } from "../../../hooks/video/utils/requests";
@@ -90,6 +91,14 @@ export default function StudentVideoPage() {
 
   return (
     <div className="p-8 flex flex-col lg:flex-row gap-6">
+            <header className="mb-8 flex justify-between items-center">
+        <div className="flex flex-col gap-2 mb-4">        <h1 className="text-[20px] font-bold text-[#333333]">
+          {meta.original_filename}
+        </h1>
+          <p className="text-[#A0A0A0]">Fecha de subida: {meta.upload_date}</p>
+        </div>
+        <ReturnButton />
+      </header>
       <div className="w-full lg:w-2/3 space-y-4">
         <Card className="rounded-lg overflow-hidden">
           <VideoPlayer

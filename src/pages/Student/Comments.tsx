@@ -4,6 +4,7 @@ import Button from '../../components/common/Button/Button';
 import { authService } from '../../hooks/authServices';
 import { useRecentComments } from '../../hooks/student/useRecentComments';
 
+
 export default function CommentsPage() {
   const user = authService.getCurrentUser();
   const userId = user?.id!;
@@ -11,13 +12,14 @@ export default function CommentsPage() {
 
   return (
     <div className="p-8">
-      <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">
-          Todos los comentarios
-        </h1>
-        <p className="text-[#A0A0A0]">
-          Lista completa de tus comentarios y acceso al video relacionado
-        </p>
+      <header className="mb-8 flex justify-between items-center">
+        <div className="flex flex-col gap-2 mb-4">        
+          <h1 className="text-[20px] font-bold text-[#333333]">Todos los comentarios</h1>
+          <p className="text-[#A0A0A0]">
+            Lista completa de tus comentarios y acceso al video relacionado
+          </p>
+        </div>
+        <ReturnButton />
       </header>
 
       {loading && <p>Cargando comentarios…</p>}

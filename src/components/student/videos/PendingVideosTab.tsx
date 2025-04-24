@@ -4,6 +4,7 @@ import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
 import { useStudyVideos } from "../../../hooks/student/useStudyVideos";
 import { Video } from "../../../types/video";
+import { VideoOff } from "lucide-react";
 
 export const PendingVideosTab: React.FC = () => {
   const { videos, loading, error, study_id } = useStudyVideos();
@@ -14,6 +15,19 @@ export const PendingVideosTab: React.FC = () => {
   }
   if (error) {
     return <p className="p-4 text-center text-red-500">Error: {error}</p>;
+  }
+  if (pendingVideos.length === 0) {
+    return (
+      <Card className="flex flex-col items-center justify-center p-8 bg-slate-50 border border-slate-200 rounded-lg">
+        <VideoOff className="h-12 w-12 text-[#4E81BD] mb-4" />
+        <p className="text-lg font-medium text-[#333333]">
+          No hay videos pendientes de evaluación
+        </p>
+        <p className="text-sm text-[#A0A0A0] mt-1 text-center">
+          Cuando subas más contenido, aquí aparecerá la lista
+        </p>
+      </Card>
+    );
   }
 
   return (

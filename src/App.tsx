@@ -33,13 +33,14 @@ import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
 import TeacherVideoPage from "./pages/Teacher/Study/Video";
 import { TeacherEvaluateVideoPage } from "./pages/Teacher/EvaluateVideoPage";
 import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
-
+import LearnMorePage from "./pages/LearnMore";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/home" element={<HomePage />} />
+        <Route path="/learn_more" element={<LearnMorePage />} />
         <Route path="/" element={<Navigate to="/home" replace />} />
 
         <Route path="/login" element={<LoginPage />} />

@@ -4,6 +4,7 @@ import Button from "../../../components/common/Button/Button";
 import Card from "../../../components/common/Card/Card";
 import VideoPlayer from "../../../components/student/videos/VideoPlayer";
 import { useVideoPage } from "../../../hooks/video/useVideoPage";
+import { ReturnButton } from "../../../components/common/Button/ReturnButton";
 
 export default function TeacherVideoPage() {
   const {
@@ -25,13 +26,16 @@ export default function TeacherVideoPage() {
 
   return (
     <div className="p-8">
-      <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">
-          {meta.original_filename}
-        </h1>
-        <p className="text-[#A0A0A0]">
-          Fecha de subida: {new Date(meta.upload_date).toLocaleString()}
-        </p>
+      <header className="mb-8 flex justify-between items-center">
+        <div className="flex flex-col gap-2 mb-4">
+          <h1 className="text-[20px] font-bold text-[#333333]">
+            {meta.original_filename}
+          </h1>
+          <p className="text-[#A0A0A0]">
+            Fecha de subida: {new Date(meta.upload_date).toLocaleString()}
+          </p>
+        </div>
+        <ReturnButton />
       </header>
 
       <div className="flex flex-col lg:flex-row gap-6">
