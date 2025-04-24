@@ -2,9 +2,9 @@ import React from "react";
 import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
 import { Link } from "react-router-dom";
-import { Video } from "../../../types/Video";
 import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
 import { CheckCircle } from "lucide-react";
+import { Video } from "../../../types/Video"
 
 export const EvaluatedVideosTab: React.FC = () => {
   const { videos, loading, error, study_id } = useStudyVideos();
