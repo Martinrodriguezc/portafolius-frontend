@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { evaluatedVideos, pendingVideos } from "../../utils/videoConstants";
 import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";
@@ -7,17 +6,10 @@ import TabsPanel from "../../components/common/Tabs/TabsPanel";
 import { CheckSquare, Clock } from "lucide-react";
 import { EvaluatedVideosTab } from "../../components/student/videos/EvaluatedVideosTab";
 import { PendingVideosTab } from "../../components/student/videos/PendingVideosTab";
-import { getDiagnosedVideos } from "../../components/diagnosis/DiagnosisService";
-
+import { useDiagnosedVideos } from "../../hooks/video/useDiagnosedVideos";
 
 export default function VideosPage() {
-  const [diagnosedIds, setDiagnosedIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    getDiagnosedVideos()
-      .then(setDiagnosedIds)
-      .catch((err) => console.error("Error al obtener diagnósticos:", err));
-  }, []);
+  const diagnosedIds = useDiagnosedVideos();
 
   return (
     <div className="p-8">
