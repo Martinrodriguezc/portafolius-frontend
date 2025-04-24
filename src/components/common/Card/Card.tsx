@@ -1,6 +1,4 @@
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
-}
+import { CardProps } from "../../../types/Props/CardProps";
 
 const Card: React.FC<CardProps> = ({ children, className = "", ...props }) => {
   const baseClasses =

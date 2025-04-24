@@ -1,13 +1,13 @@
-import { useProgressData } from '../../hooks/student/useProgressData';
-import { StatsGrid } from '../../components/student/progress/StatsGrid';
-import { OverviewTab } from '../../components/student/progress/OverviewTab';
-import { ProtocolsTab } from '../../components/student/progress/ProtocolsTab';
-import { FeedbackTab } from '../../components/student/progress/FeedbackTab';
-import TabsContainer from '../../components/common/Tabs/TabsContainer';
-import TabsList from '../../components/common/Tabs/TabsList';
-import TabsButton from '../../components/common/Tabs/TabsButton';
-import TabsPanel from '../../components/common/Tabs/TabsPanel';
-import { authService } from '../../hooks/authServices';
+import { useProgressData } from "../../hooks/student/useProgressData";
+import { StatsGrid } from "../../components/student/progress/StatsGrid";
+import { OverviewTab } from "../../components/student/progress/OverviewTab";
+import { ProtocolsTab } from "../../components/student/progress/ProtocolsTab";
+import { FeedbackTab } from "../../components/student/progress/FeedbackTab";
+import TabsContainer from "../../components/common/Tabs/TabsContainer";
+import TabsList from "../../components/common/Tabs/TabsList";
+import TabsButton from "../../components/common/Tabs/TabsButton";
+import TabsPanel from "../../components/common/Tabs/TabsPanel";
+import { authService } from "../../hooks/auth/authServices";
 
 export default function ProgressPage() {
   const user = authService.getCurrentUser();

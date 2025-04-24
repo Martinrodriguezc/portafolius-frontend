@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { config } from "../../config/config";
-import { authService } from "../authServices";
+import { authService } from "../auth/authServices";
 
 export interface Study {
   id: string;
@@ -50,4 +50,3 @@ export function useStudentStudies() {
 
   return { studies, loading, error };
 }
-

@@ -71,16 +71,27 @@ function App() {
           <Route index element={<TeacherDashboardPage />} />
           <Route path="evaluations" element={<TeacherEvaluationsPage />} />
           <Route path="students" element={<TeacherStudentsPage />} />
-          <Route path="students/new" element={<StudentProfileTeacherPage mode="create" />} />
-          <Route path="students/:id" element={<StudentProfileTeacherPage mode="view" />} />
+          <Route
+            path="students/new"
+            element={<StudentProfileTeacherPage mode="create" />}
+          />
+          <Route
+            path="students/:id"
+            element={<StudentProfileTeacherPage mode="view" />}
+          />
           <Route path="settings" element={<TeacherSettingsPage />} />
-          <Route path="evaluations/:id/videos" element={<TeacherMultipleVideosPage/>}/>
-          <Route path="evaluations/:studyId/videos/:clipId" element={<TeacherVideoPage />} />
+          <Route
+            path="evaluations/:id/videos"
+            element={<TeacherMultipleVideosPage />}
+          />
+          <Route
+            path="evaluations/:studyId/videos/:clipId"
+            element={<TeacherVideoPage />}
+          />
           <Route
             path="evaluations/:studyId/videos/:clipId/evaluate"
             element={<TeacherEvaluateVideoPage />}
           />
-          
         </Route>
       </Routes>
     </Router>

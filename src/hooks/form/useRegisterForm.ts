@@ -6,7 +6,7 @@ import {
   RegisterFormData,
   RegisterFormErrors,
 } from "../../types/register";
-import { authService } from "../authServices";
+import { authService } from "../auth/authServices";
 
 export const useRegisterForm = (onSuccess?: () => void) => {
   const { formData, formErrors, handleInputChange } = useFormHook<
@@ -17,7 +17,7 @@ export const useRegisterForm = (onSuccess?: () => void) => {
   const [showPasswordRequirements, setShowPasswordRequirements] =
     useState(false);
   const [toastMessage, setToastMessage] = useState<string>("");
-  
+
   const handlePasswordFocus = () => setShowPasswordRequirements(true);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,9 +31,12 @@ export const useRegisterForm = (onSuccess?: () => void) => {
           onSuccess();
         }
       } catch (error: unknown) {
-        setToastMessage((error as { msg: string }).msg || 'Error al registrarse');
+        setToastMessage(
+          (error as { msg: string }).msg || "Error al registrarse"
+        );
       }
-    } else {      const firstError = Object.values(errors).find(error => error !== '');
+    } else {
+      const firstError = Object.values(errors).find((error) => error !== "");
       if (firstError) {
         setToastMessage(firstError);
       }

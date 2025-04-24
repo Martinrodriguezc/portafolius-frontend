@@ -7,7 +7,7 @@ import {
   assignTagsToClip,
 } from "./utils/requests";
 import { validateVideo } from "./validations/validations";
-import { authService } from "../authServices";
+import { authService } from "../auth/authServices";
 
 export function useUploadPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -148,9 +148,11 @@ export function useUploadPage() {
             await assignTagsToClip(clipId, tagIds);
             logger.info(`Etiquetas asignadas a clipId ${clipId}:`, tagIds);
           } catch (err) {
-            logger.error(`Error al asignar etiquetas al clipId ${clipId}:`, err);
+            logger.error(
+              `Error al asignar etiquetas al clipId ${clipId}:`,
+              err
+            );
           }
-
         } else {
           logger.error(
             "Error en uploadVideo para archivo:",

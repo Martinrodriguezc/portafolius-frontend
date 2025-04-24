@@ -5,8 +5,11 @@ import Button from "../../components/common/Button/Button";
 import Card from "../../components/common/Card/Card";
 import Input from "../../components/common/Input/Input";
 import StudentsPreviewInfo from "../../components/teacher/StudentsPreviewInfo";
-import { useTeacherStudents, TeacherStudent } from "../../hooks/teacher/useTeacherStudents";
-import { authService } from "../../hooks/authServices";
+import {
+  useTeacherStudents,
+  TeacherStudent,
+} from "../../hooks/teacher/useTeacherStudents";
+import { authService } from "../../hooks/auth/authServices";
 
 export default function TeacherStudentsPage() {
   const current = authService.getCurrentUser();
@@ -14,13 +17,17 @@ export default function TeacherStudentsPage() {
   const { students, loading, error } = useTeacherStudents(teacherId);
   const [search, setSearch] = useState("");
 
-  if (!teacherId) return <p className="p-8 text-red-500">Debes iniciar sesión</p>;
-  if (loading)     return <p className="p-8">Cargando estudiantes…</p>;
-  if (error)       return <p className="p-8 text-red-500">Error: {error}</p>;
+  if (!teacherId)
+    return <p className="p-8 text-red-500">Debes iniciar sesión</p>;
+  if (loading) return <p className="p-8">Cargando estudiantes…</p>;
+  if (error) return <p className="p-8 text-red-500">Error: {error}</p>;
 
-  const filtered = students.filter(s =>
-    `${s.first_name} ${s.last_name}`.toLowerCase().includes(search.toLowerCase()) ||
-    s.email.toLowerCase().includes(search.toLowerCase())
+  const filtered = students.filter(
+    (s) =>
+      `${s.first_name} ${s.last_name}`
+        .toLowerCase()
+        .includes(search.toLowerCase()) ||
+      s.email.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -31,7 +38,9 @@ export default function TeacherStudentsPage() {
           <p className="text-[#A0A0A0]">Gestiona y supervisa tu cohorte</p>
         </div>
         <Link to="/teacher/students/new">
-          <Button><UserPlus className="mr-2"/> Añadir Estudiante</Button>
+          <Button>
+            <UserPlus className="mr-2" /> Añadir Estudiante
+          </Button>
         </Link>
       </header>
 
@@ -41,7 +50,7 @@ export default function TeacherStudentsPage() {
           <Input
             placeholder="Buscar..."
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
             className="pl-10"
           />
         </div>

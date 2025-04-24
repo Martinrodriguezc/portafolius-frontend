@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { authService } from "../authServices";
+import { authService } from "../auth/authServices";
 import type { RegisterFormData } from "../../types/register";
 
 interface StudentFormReturn {
@@ -19,7 +19,8 @@ export function useStudentForm(): StudentFormReturn {
     password: "",
   });
   const [error, setError] = useState("");
-  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+  const [showPasswordRequirements, setShowPasswordRequirements] =
+    useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { config } from "../../config/config";
-import { authService } from "../../hooks/authServices";
+import { authService } from "../auth/authServices";
 
 export interface TeacherVideo {
   id: number;

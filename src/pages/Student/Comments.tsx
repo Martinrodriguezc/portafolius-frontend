@@ -1,20 +1,22 @@
-import { Link } from 'react-router-dom';
-import Card from '../../components/common/Card/Card';
-import Button from '../../components/common/Button/Button';
-import { authService } from '../../hooks/authServices';
-import { useRecentComments } from '../../hooks/student/useRecentComments';
-
+import { Link } from "react-router-dom";
+import Card from "../../components/common/Card/Card";
+import Button from "../../components/common/Button/Button";
+import { authService } from "../../hooks/auth/authServices";
+import { useRecentComments } from "../../hooks/student/useRecentComments";
+import { ReturnButton } from "../../components/common/Button/ReturnButton";
 
 export default function CommentsPage() {
-  const user = authService.getCurrentUser();
-  const userId = user?.id!;
+  const userId = authService.getCurrentUser().id;
+  //const userId = user?.id!;
   const { comments, loading, error } = useRecentComments(userId);
 
   return (
     <div className="p-8">
       <header className="mb-8 flex justify-between items-center">
-        <div className="flex flex-col gap-2 mb-4">        
-          <h1 className="text-[20px] font-bold text-[#333333]">Todos los comentarios</h1>
+        <div className="flex flex-col gap-2 mb-4">
+          <h1 className="text-[20px] font-bold text-[#333333]">
+            Todos los comentarios
+          </h1>
           <p className="text-[#A0A0A0]">
             Lista completa de tus comentarios y acceso al video relacionado
           </p>
@@ -23,7 +25,7 @@ export default function CommentsPage() {
       </header>
 
       {loading && <p>Cargando comentarios…</p>}
-      {error   && <p className="text-red-500">Error: {error}</p>}
+      {error && <p className="text-red-500">Error: {error}</p>}
 
       <div className="space-y-4">
         {comments.map((com) => (

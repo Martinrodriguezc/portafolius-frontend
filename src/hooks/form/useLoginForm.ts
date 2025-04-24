@@ -1,15 +1,17 @@
 import { useFormHook } from "./useFormHook";
 import { validateLoginForm } from "../../utils/validation/forms/formValidation";
-import { initialLoginFormState, LoginFormData, LoginFormErrors } from "../../types/login";
-import { authService } from "../authServices";
-
+import {
+  initialLoginFormState,
+  LoginFormData,
+  LoginFormErrors,
+} from "../../types/login";
+import { authService } from "../auth/authServices";
 
 export const useLoginForm = (onSuccess?: () => void) => {
-  const { formData, formErrors, handleInputChange } = useFormHook<LoginFormData, LoginFormErrors>(
-    initialLoginFormState,
-    validateLoginForm,
-    onSuccess
-  );
+  const { formData, formErrors, handleInputChange } = useFormHook<
+    LoginFormData,
+    LoginFormErrors
+  >(initialLoginFormState, validateLoginForm, onSuccess);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,11 +26,10 @@ export const useLoginForm = (onSuccess?: () => void) => {
       }
     }
   };
-  
+
   const handleGoogleLogin = () => {
     authService.initiateGoogleLogin();
-    console.log('Iniciando Google Login');
-    
+    console.log("Iniciando Google Login");
   };
 
   return {

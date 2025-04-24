@@ -1,20 +1,24 @@
 import { config } from "../../config/config";
 import type { EvaluationForm } from "../../types/evaluation";
 
-const BASE = `${config.SERVER_URL}/evaluations`;
-
 export const evaluationService = {
   async getAll(): Promise<EvaluationForm[]> {
-    const res = await fetch(BASE, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("auth_token")}` },
+    const res = await fetch(config.SERVER_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     return data.evaluations;
   },
 
-  async create(studyId: number, score: number, feedback: string): Promise<EvaluationForm> {
-    const res = await fetch(`${BASE}/${studyId}`, {
+  async create(
+    studyId: number,
+    score: number,
+    feedback: string
+  ): Promise<EvaluationForm> {
+    const res = await fetch(`${config.SERVER_URL}/${studyId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,14 +31,19 @@ export const evaluationService = {
   },
 
   async getByStudyId(studyId: number): Promise<EvaluationForm> {
-    const res = await fetch(`${BASE}/by-study/${studyId}`);
+    const res = await fetch(`${config.SERVER_URL}/evaluations/by-study/${studyId}`);
+    console.log(res)
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     return data.evaluation;
   },
 
-  async update(id: number, score: number, feedback: string): Promise<EvaluationForm> {
-    const res = await fetch(`${BASE}/${id}`, {
+  async update(
+    id: number,
+    score: number,
+    feedback: string
+  ): Promise<EvaluationForm> {
+    const res = await fetch(`${config.SERVER_URL}/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

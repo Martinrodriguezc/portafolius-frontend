@@ -1,6 +1,6 @@
 import { config } from "../../../config/config";
 import logger from "../../../config/logger";
-import { authService } from "../../authServices";
+import { authService } from "../../auth/authServices";
 
 export const generateUploadUrl = async (
   file: File,
@@ -21,7 +21,7 @@ export const generateUploadUrl = async (
         fileName: file.name,
         contentType: file.type,
         studyId: studyId,
-        sizeBytes: file.size
+        sizeBytes: file.size,
       }),
     });
     logger.debug("Respuesta recibida de generate_upload_url:", response);
@@ -87,7 +87,6 @@ export const createNewStudy = async (
 ): Promise<string> => {
   logger.debug("Creando nuevo estudio para subir los archivos");
 
-
   const endpoint = `${config.SERVER_URL}/study/${userId}/studies`;
   logger.debug("Solicitando URL prefirmada a:", endpoint);
 
@@ -132,4 +131,4 @@ export async function assignTagsToClip(clipId: number, tagIds: number[]) {
   if (!res.ok) {
     throw new Error(`Error ${res.status} al asignar etiquetas al clip`);
   }
-};
+}
