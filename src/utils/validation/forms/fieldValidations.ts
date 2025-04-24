@@ -22,7 +22,7 @@ export const validateEmail = (email: string): string => {
 
 const hasMinLength = (password: string): boolean => password.length >= 8;
 const hasSpecialChar = (password: string): boolean =>
-  /[!@#$%^&*]/.test(password);
+  /[!@#$%^&*.]/.test(password);
 
 const hasUpperCase = (password: string): boolean => /[A-Z]/.test(password);
 
