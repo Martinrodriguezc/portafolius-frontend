@@ -10,7 +10,7 @@ import {
   organOptions,
   structureOptions,
   conditionOptions,
-} from "../../utils/uploadConstants";
+} from "../../utils/constants/uploadConstants";
 import { Select, SelectValue } from "../../components/common/Select/SelectBase";
 import {
   SelectContent,

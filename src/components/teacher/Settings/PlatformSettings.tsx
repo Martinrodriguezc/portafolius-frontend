@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from "react";
 import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
-import { PlatformSettingsProps } from "../../../types/Props/PlatformSettingsProps";
+import { PlatformSettingsProps } from "../../../types/Props/Settings/PlatformSettingsProps";
 
 const PlatformSettings: React.FC<PlatformSettingsProps> = ({
   settings,
@@ -106,9 +106,7 @@ const PlatformSettings: React.FC<PlatformSettingsProps> = ({
           </select>
         </div>
         <div className="pt-4">
-          <Button>
-            Guardar configuración
-          </Button>
+          <Button>Guardar configuración</Button>
         </div>
       </div>
     </Card>

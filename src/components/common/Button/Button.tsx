@@ -1,5 +1,5 @@
 import { Slot } from "@radix-ui/react-slot";
-import { ButtonProps } from "../../../types/Props/ButtonProps";
+import { ButtonProps } from "../../../types/Props/common/ButtonProps";
 import {
   baseStyle,
   variantStyles,

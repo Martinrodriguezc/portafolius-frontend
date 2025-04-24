@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { UseProfileFormReturn, UserProfile } from "../../../types/userProfile";
+import { UseProfileFormReturn, UserProfile } from "../../../types/User";
 
 export function useProfileForm(
   profile: UserProfile,

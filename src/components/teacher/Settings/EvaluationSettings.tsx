@@ -2,7 +2,7 @@ import React, { ChangeEvent } from "react";
 import Card from "../../common/Card/Card";
 import Input from "../../common/Input/Input";
 import Button from "../../common/Button/Button";
-import { EvaluationSettingsProps } from "../../../types/Props/EvaluationSettingsProps";
+import { EvaluationSettingsProps } from "../../../types/Props/Settings/EvaluationSettingsProps";
 
 const EvaluationSettings: React.FC<EvaluationSettingsProps> = ({
   evaluationSettings,

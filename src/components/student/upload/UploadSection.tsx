@@ -2,7 +2,7 @@ import Button from "../../common/Button/Button";
 import Input from "../../common/Input/Input";
 import { Upload, X } from "lucide-react";
 import FileSelectButton from "../../common/Button/FileSelectButton";
-import { UploadSectionProps } from "../../../types/Props/UploadSectionProps";
+import { UploadSectionProps } from "../../../types/Props/Video/UploadSectionProps";
 
 export function UploadSection({
   files,

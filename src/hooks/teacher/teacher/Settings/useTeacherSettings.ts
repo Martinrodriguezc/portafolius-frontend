@@ -3,7 +3,7 @@ import {
   EvaluationSettingsType,
   PlatformSettingsType,
   TeacherProfile,
-} from "../../../../types/teacherSettings";
+} from "../../../../types/Teacher";
 
 export function useTeacherSettings() {
   const [profile, setProfile] = useState<TeacherProfile>({

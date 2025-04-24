@@ -1,6 +1,6 @@
 import { Play, Pause, Maximize2, Minimize2 } from "lucide-react";
 import Button from "../../common/Button/Button";
-import { VideoPlayerProps } from "../../../types/Props/VideoPlayerProps";
+import { VideoPlayerProps } from "../../../types/Props/Video/VideoPlayerProps";
 
 export default function VideoPlayer({
   src,

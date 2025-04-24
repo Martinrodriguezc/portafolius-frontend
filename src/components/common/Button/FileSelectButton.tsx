@@ -1,4 +1,4 @@
-import { FileSelectButtonProps } from "../../../types/Props/FileSelectButtonProps";
+import { FileSelectButtonProps } from "../../../types/Props/common/FileSelectButtonProps";
 import Button from "./Button";
 
 const FileSelectButton: React.FC<FileSelectButtonProps> = ({

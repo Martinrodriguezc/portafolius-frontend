@@ -1,4 +1,4 @@
-import { BaseFormState } from './form';
+import { BaseFormState } from "./form";
 
 export interface RegisterFormData {
   firstName: string;
@@ -16,28 +16,31 @@ export interface RegisterFormErrors {
   password: string;
 }
 
-export type role = 'estudiante' | 'profesor' | 'google_login' | 'admin';
+export type role = "estudiante" | "profesor" | "google_login" | "admin";
 
-export type RegisterFormState = BaseFormState<RegisterFormData, RegisterFormErrors> & {
+export type RegisterFormState = BaseFormState<
+  RegisterFormData,
+  RegisterFormErrors
+> & {
   showPasswordRequirements: boolean;
 };
 
 export const initialRegisterFormState: RegisterFormState = {
   formData: {
-    firstName: '',
-    lastName: '',
-    email: '',
-    role: '',
-    password: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "",
+    password: "",
   },
   formErrors: {
-    firstName: '',
-    lastName: '',
-    email: '',
-    role: '',
-    password: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "",
+    password: "",
   },
-  showPasswordRequirements: false
+  showPasswordRequirements: false,
 };
 
 export interface RegisterFormProps {

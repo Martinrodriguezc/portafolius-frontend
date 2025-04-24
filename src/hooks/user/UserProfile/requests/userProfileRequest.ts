@@ -1,5 +1,5 @@
 import { config } from "../../../../config/config";
-import { UserProfile } from "../../../../types/userProfile";
+import { UserProfile } from "../../../../types/User";
 import { authService } from "../../../auth/authServices";
 
 export const fetchUserProfileRequest = async (

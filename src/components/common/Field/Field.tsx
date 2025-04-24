@@ -1,4 +1,4 @@
-import { FieldProps } from "../../../types/Props/FieldProps";
+import { FieldProps } from "../../../types/Props/common/FieldProps";
 
 export default function Field({ label, children, className = "" }: FieldProps) {
   return (

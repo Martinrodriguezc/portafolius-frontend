@@ -1,5 +1,5 @@
 import { config } from "../../../../../config/config";
-import { TeacherVideo } from "../../../../../types/video";
+import { TeacherVideo } from "../../../../../types/Video";
 import { authService } from "../../../../auth/authServices";
 
 export const fetchTeacherVideos = async (
@@ -21,4 +21,3 @@ export const fetchTeacherVideos = async (
   };
   return data;
 };
-

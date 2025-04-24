@@ -2,7 +2,7 @@ import React from "react";
 import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
 import { Link } from "react-router-dom";
-import { Video } from "../../../types/video";
+import { Video } from "../../../types/Video";
 import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
 import { CheckCircle } from "lucide-react";
 

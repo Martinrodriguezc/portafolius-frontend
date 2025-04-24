@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { UserProfile, UseUserProfileReturn } from "../../../types/userProfile";
+import { UserProfile, UseUserProfileReturn } from "../../../types/User";
 import { authService } from "../../auth/authServices";
 import {
   fetchUserProfileRequest,

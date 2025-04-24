@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from "../common/Button/Button";
-import { StudentsPreviewInfoProps } from "../../types/Props/StudentsPreviewInfoProps";
+import { StudentsPreviewInfoProps } from "../../types/Props/Students/StudentsPreviewInfoProps";
 
 export default function StudentsPreviewInfo({
   student,

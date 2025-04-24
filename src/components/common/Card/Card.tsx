@@ -1,4 +1,4 @@
-import { CardProps } from "../../../types/Props/CardProps";
+import { CardProps } from "../../../types/Props/common/CardProps";
 
 const Card: React.FC<CardProps> = ({ children, className = "", ...props }) => {
   const baseClasses =

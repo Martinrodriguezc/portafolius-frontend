@@ -1,5 +1,5 @@
 import { config } from "../../../../config/config";
-import { Video } from "../../../../types/video";
+import { Video } from "../../../../types/Video";
 
 export const fetchStudyVideos = async (studyId: string): Promise<Video[]> => {
   const resp = await fetch(`${config.SERVER_URL}/study/${studyId}/videos`);

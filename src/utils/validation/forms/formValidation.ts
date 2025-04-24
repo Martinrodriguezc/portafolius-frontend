@@ -1,5 +1,8 @@
-import { LoginFormData, LoginFormErrors } from "../../../types/login";
-import { RegisterFormData, RegisterFormErrors } from "../../../types/register";
+import { LoginFormData, LoginFormErrors } from "../../../types/form/Login";
+import {
+  RegisterFormData,
+  RegisterFormErrors,
+} from "../../../types/form/Register";
 import {
   validateEmail,
   validateLastName,

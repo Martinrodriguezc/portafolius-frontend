@@ -5,7 +5,7 @@ import {
   initialRegisterFormState,
   RegisterFormData,
   RegisterFormErrors,
-} from "../../types/register";
+} from "../../types/form/Register";
 import { authService } from "../auth/authServices";
 
 export const useRegisterForm = (onSuccess?: () => void) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../common/Button/Button";
-import { VideoProps } from "../../types/Props/VideoProps";
+import { VideoProps } from "../../types/Props/Video/VideoProps";
 
 export const VideoCard: React.FC<VideoProps> = ({ video }) => {
   return (

@@ -1,5 +1,5 @@
 import { useLoginForm } from "../../hooks/form/useLoginForm";
-import { LoginFormProps } from "../../types/login";
+import { LoginFormProps } from "../../types/form/Login";
 import Button from "../common/Button/Button";
 import Input from "../common/Input/Input";
 

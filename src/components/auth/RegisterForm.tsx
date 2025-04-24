@@ -1,5 +1,5 @@
 import { useRegisterForm } from "../../hooks/form/useRegisterForm";
-import { RegisterFormProps } from "../../types/register";
+import { RegisterFormProps } from "../../types/form/Register";
 import Button from "../common/Button/Button";
 import Input from "../common/Input/Input";
 import Toast from "../common/Toast/Toast";

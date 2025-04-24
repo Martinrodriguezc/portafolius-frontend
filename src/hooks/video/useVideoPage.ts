@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchVideoUrl, postComment, fetchVideoMeta } from "./utils/requests";
-import { Video } from "../../types/video";
+import { Video } from "../../types/Video";
 
 export function useVideoPage() {
   const { clipId } = useParams<{ clipId: string }>();
@@ -30,7 +30,7 @@ export function useVideoPage() {
           fetchVideoUrl(clipId),
           fetchVideoMeta(clipId),
         ]);
-        console.log(fetchVideoMeta(clipId))
+        console.log(fetchVideoMeta(clipId));
         setVideoUrl(url);
         setMeta(videoMeta);
       } catch (err: unknown) {

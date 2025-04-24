@@ -6,8 +6,8 @@ import {
   updateUserRoleRequest,
   updateUserProfileRequest,
 } from "./requests/authRequests";
-import { LoginFormData } from "../../types/login";
-import { RegisterFormData } from "../../types/register";
+import { LoginFormData } from "../../types/form/Login";
+import { RegisterFormData } from "../../types/form/Register";
 import { AuthResponse, UserProps } from "../../types/UserProps";
 
 const TOKEN_KEY = "auth_token";

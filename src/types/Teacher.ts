@@ -23,3 +23,10 @@ export interface EvaluationSettingsType {
   maxVideosPerDay: number;
   autoPublish: boolean;
 }
+
+export interface TeacherStats {
+  pendingCount: number;
+  evaluatedToday: number;
+  studentCount: number;
+}
+

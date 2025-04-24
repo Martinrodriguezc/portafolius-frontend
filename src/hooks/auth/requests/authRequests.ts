@@ -1,9 +1,9 @@
 // src/services/auth/requests.ts
 import axios, { AxiosResponse } from "axios";
-import { LoginFormData } from "../../../types/login";
+import { LoginFormData } from "../../../types/form/Login";
 import { AuthResponse, UserProps } from "../../../types/UserProps";
 import { config } from "../../../config/config";
-import { RegisterFormData } from "../../../types/register";
+import { RegisterFormData } from "../../../types/form/Register";
 
 export const loginRequest = (
   credentials: LoginFormData

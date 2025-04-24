@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { isActivePath } from "./utils/studentSidebarUtils";
-import { StudentSidebarNavLinkProps } from "../../../types/Props/StudentSidebarNavLinkProps";
+import { StudentSidebarNavLinkProps } from "../../../types/Props/Students/StudentSidebarNavLinkProps";
 
 export const StudentSidebarNavLink: React.FC<StudentSidebarNavLinkProps> = ({
   to,

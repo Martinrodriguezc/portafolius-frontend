@@ -4,7 +4,7 @@ import {
   initialLoginFormState,
   LoginFormData,
   LoginFormErrors,
-} from "../../types/login";
+} from "../../types/form/Login";
 import { authService } from "../auth/authServices";
 
 export const useLoginForm = (onSuccess?: () => void) => {
