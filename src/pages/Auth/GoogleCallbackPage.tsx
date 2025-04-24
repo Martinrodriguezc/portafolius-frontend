@@ -17,13 +17,9 @@ export default function GoogleCallbackPage() {
       try {
         console.log('Iniciando proceso de callback');
         const urlParams = new URLSearchParams(location.search);
-        console.log('URL params:', Object.fromEntries(urlParams));
         
         const token = urlParams.get('token');
         const userDataBase64 = urlParams.get('userData');
-        
-        console.log('Token recibido:', token);
-        console.log('UserData Base64 recibido:', userDataBase64);
         
         if (!token || !userDataBase64) {
           console.error('Datos faltantes:', { token, userDataBase64 });
@@ -32,8 +28,9 @@ export default function GoogleCallbackPage() {
 
         const userData = JSON.parse(atob(userDataBase64));
         const user = userData.user;
+        console.log('User role:', user.role);
         localStorage.setItem('auth_token', token);
-        localStorage.setItem('user_data', JSON.stringify(user));
+        localStorage.setItem('user_data', JSON.stringify(userData));
 
         
         if (user.role === 'google_login') {

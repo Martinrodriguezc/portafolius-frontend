@@ -23,4 +23,14 @@ export interface TagSelectorState {
   selectedStructure: string;
   selectedCondition: string;
   tags: { id: string; text: string }[];
+}
+
+export interface TagSectionProps {
+  section: TagSelectorState & TagHierarchy & {
+    setSelectedOrgan: (organ: string) => void;
+    setSelectedStructure: (structure: string) => void;
+    setSelectedCondition: (condition: string) => void;
+    addTag: () => void;
+    removeTag: (id: string) => void;
+  };
 } 

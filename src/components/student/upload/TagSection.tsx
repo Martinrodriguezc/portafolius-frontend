@@ -8,9 +8,13 @@ import {
   SelectTrigger,
 } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
-import { useTagsHierarchy } from "../../../hooks/upload/useTagsHierarchy";
+import { TagSectionProps } from "../../../types/tag";
 
-export function TagSection() {
+export function TagSection({ section }: TagSectionProps) {
+  if (!section) {
+    return null;
+  }
+
   const {
     organs,
     structures,
@@ -26,7 +30,7 @@ export function TagSection() {
     setSelectedCondition,
     addTag,
     removeTag
-  } = useTagsHierarchy();
+  } = section;
 
   return (
     <div className="space-y-4 border border-[#A0A0A0]/30 rounded-[16px] p-6 mt-4">
