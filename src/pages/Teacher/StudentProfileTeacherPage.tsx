@@ -6,7 +6,7 @@ import Input  from "../../components/common/Input/Input";
 
 import { useStudentProfile } from "../../hooks/teacher/student/useStudentProfile";          
 import { useStudentProfileTeacherPage } from "../../hooks/teacher/student/useStudentProfileTeacherPage"; 
-import { authService } from "../../hooks/authServices";
+import { authService } from "../../hooks/auth/authServices";
 
 export interface Props {
   mode: "create" | "view";
