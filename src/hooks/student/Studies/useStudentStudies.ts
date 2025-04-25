@@ -18,7 +18,7 @@ export function useStudentStudies() {
       try {
         const rawStudies: RawStudy[] = await fetchStudentStudies(userId);
         const transformed: Study[] = rawStudies.map((s) => ({
-          id: s.id,
+          id: Number(s.id),
           title: s.title,
           protocol: s.protocol,
           created_at: s.created_at,
