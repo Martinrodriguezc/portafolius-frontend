@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useTags } from "./useTags";
-import { Tag, TagHierarchy, TagSelectorState } from "../../types/tag";
+import { TagSelectorState } from "../../types/tag";
 
 export const useTagsHierarchy = () => {
   const { tags: backendTags, loading, error } = useTags();
