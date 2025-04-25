@@ -8,7 +8,7 @@ export interface RawStudy {
 }
 
 export interface Study {
-  id: string;
+  id: number;
   title: string;
   protocol: string;
   status: "EVALUADO" | "PENDIENTE";
