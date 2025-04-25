@@ -1,21 +1,6 @@
 import { useState } from "react";
-
-interface ProfileData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  institution: string;
-  specialty: string;
-  year: string;
-  avatar: string;
-}
-
-interface NotificationsData {
-  email: boolean;
-  evaluations: boolean;
-  comments: boolean;
-  materials: boolean;
-}
+import { ProfileData } from "../../types/Props/Tabs/PersonalTabProps";
+import { NotificationsData } from "../../types/Props/Tabs/NotificationsTabProps";
 
 export function useProfilePage() {
   const [profile, setProfile] = useState<ProfileData>({

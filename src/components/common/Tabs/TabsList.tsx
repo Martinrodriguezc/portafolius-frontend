@@ -1,16 +1,8 @@
-import React, { ReactNode, ReactElement } from "react";
-
-interface TabsListProps {
-  children: ReactNode;
-  className?: string;
-  selectedTab?: string;
-  setSelectedTab?: React.Dispatch<React.SetStateAction<string>>;
-}
-
-interface WithTabStateProps {
-  selectedTab?: string;
-  setSelectedTab?: React.Dispatch<React.SetStateAction<string>>;
-}
+import React, { ReactElement } from "react";
+import {
+  TabsListProps,
+  WithTabStateProps,
+} from "../../../types/Props/Tabs/component/TabsListProps";
 
 const TabsList: React.FC<TabsListProps> = ({
   children,
@@ -20,12 +12,17 @@ const TabsList: React.FC<TabsListProps> = ({
 }) => {
   const clonedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
-      return React.cloneElement(child as ReactElement<WithTabStateProps>, { selectedTab, setSelectedTab });
+      return React.cloneElement(child as ReactElement<WithTabStateProps>, {
+        selectedTab,
+        setSelectedTab,
+      });
     }
     return child;
   });
 
-  return <div className={`flex border-b ${className || ""}`}>{clonedChildren}</div>;
+  return (
+    <div className={`flex border-b ${className || ""}`}>{clonedChildren}</div>
+  );
 };
 
 export default TabsList;

@@ -1,10 +1,4 @@
-import React from "react";
-
-interface FieldProps {
-  label: string;
-  children: React.ReactNode;
-  className?: string;
-}
+import { FieldProps } from "../../../types/Props/common/FieldProps";
 
 export default function Field({ label, children, className = "" }: FieldProps) {
   return (

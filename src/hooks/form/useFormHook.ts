@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { BaseFormState, ValidationResult } from "../../types/form";
+import { BaseFormState, ValidationResult } from "../../types/form/form";
 
 export function useFormHook<T, E>(
   initialState: BaseFormState<T, E>,

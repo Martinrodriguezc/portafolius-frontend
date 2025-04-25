@@ -1,11 +1,4 @@
-import React, { InputHTMLAttributes } from "react";
-
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  required?: boolean;
-  showPasswordRequirements?: boolean;
-}
+import { InputProps } from "../../../types/Props/common/InputProps";
 
 const Input: React.FC<InputProps> = ({
   label,
@@ -50,11 +43,7 @@ const Input: React.FC<InputProps> = ({
           </ul>
         </div>
       )}
-      {error && (
-        <p className="text-red-500 text-[12px] mt-1">
-          {error}
-        </p>
-      )}
+      {error && <p className="text-red-500 text-[12px] mt-1">{error}</p>}
     </div>
   );
 };

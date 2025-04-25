@@ -1,8 +1,7 @@
 import { useLoginForm } from "../../hooks/form/useLoginForm";
-import { LoginFormProps } from "../../types/login";
+import { LoginFormProps } from "../../types/form/Login";
 import Button from "../common/Button/Button";
 import Input from "../common/Input/Input";
-
 
 export default function LoginForm({
   onLoginSuccess,
@@ -15,6 +14,7 @@ export default function LoginForm({
     passwordError,
     handleInputChange,
     handleSubmit,
+    handleGoogleLogin,
   } = useLoginForm(onLoginSuccess);
 
   return (
@@ -58,7 +58,12 @@ export default function LoginForm({
           </div>
         </div>
 
-        <Button variant="google" fixedWidth={false}>
+        <Button
+          variant="google"
+          fixedWidth={false}
+          onClick={handleGoogleLogin}
+          type="button"
+        >
           <svg
             className="mr-2 h-4 w-4"
             aria-hidden="true"

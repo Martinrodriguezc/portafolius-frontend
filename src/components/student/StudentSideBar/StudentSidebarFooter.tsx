@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { LogOut } from "lucide-react";
-import { authService } from "../../../hooks/authServices";
+import { authService } from "../../../hooks/auth/authServices";
 
 export const StudentSidebarFooter: React.FC = () => {
   const handleLogout = () => {

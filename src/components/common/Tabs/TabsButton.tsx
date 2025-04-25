@@ -1,11 +1,5 @@
 import React from "react";
-
-export interface TabsButtonProps {
-  value: string;
-  children: React.ReactNode;
-  selectedTab?: string;
-  setSelectedTab?: React.Dispatch<React.SetStateAction<string>>;
-}
+import { TabsButtonProps } from "../../../types/Props/Tabs/component/TabsButtonProps";
 
 const TabsButton: React.FC<TabsButtonProps> = ({
   value,
