@@ -1,3 +1,4 @@
+import { CheckCircle, Clock } from "lucide-react";
 import Button from "../../components/common/Button/Button";
 import Card from "../../components/common/Card/Card";
 import TabsButton from "../../components/common/Tabs/TabsButton";
@@ -60,32 +61,56 @@ export default function TeacherDashboardPage() {
         </TabsList>
 
         <TabsPanel value="pendiente">
-          {pending.map((v) => (
-            <Card key={v.id} className="p-4 flex justify-between">
-              <div>
-                <h4>{v.original_filename}</h4>
-                <p className="text-sm text-gray-500">
-                  {new Date(v.upload_date).toLocaleString()} ·{" "}
-                  {v.duration_seconds}s
-                </p>
-              </div>
-              <Button>Evaluar</Button>
+          {pending.length === 0 ? (
+            <Card className="flex flex-col items-center justify-center p-8 bg-slate-50 border border-slate-200 rounded-lg">
+              <Clock className="h-12 w-12 text-yellow-500 mb-4" />
+              <p className="text-lg font-medium text-[#333333]">
+                No hay videos pendientes
+              </p>
+              <p className="text-sm text-[#A0A0A0] mt-1 text-center">
+                Cuando tus estudiantes suban videos, los verás aquí para evaluarlos.
+              </p>
             </Card>
-          ))}
+          ) : (
+            pending.map((v) => (
+              <Card key={v.id} className="p-4 flex justify-between m-4">
+                <div>
+                  <h4>{v.original_filename}</h4>
+                  <p className="text-sm text-gray-500">
+                    {new Date(v.upload_date).toLocaleString()} ·{" "}
+                    {v.duration_seconds}s
+                  </p>
+                </div>
+                <Button>Evaluar</Button>
+              </Card>
+            ))
+          )}
         </TabsPanel>
 
         <TabsPanel value="evaluado">
-          {evaluated.map((v) => (
-            <Card key={v.id} className="p-4 flex justify-between">
-              <div>
-                <h4>{v.original_filename}</h4>
-                <p className="text-sm text-gray-500">
-                  {new Date(v.evaluated_at!).toLocaleString()} · {v.score}/10
-                </p>
-              </div>
-              <Button>Ver</Button>
+          {evaluated.length === 0 ? (
+            <Card className="flex flex-col items-center justify-center p-8 bg-slate-50 border border-slate-200 rounded-lg">
+              <CheckCircle className="h-12 w-12 text-green-500 mb-4" />
+              <p className="text-lg font-medium text-[#333333]">
+                No hay videos evaluados
+              </p>
+              <p className="text-sm text-[#A0A0A0] mt-1 text-center">
+                Una vez que evalúes videos, sus resultados aparecerán aquí.
+              </p>
             </Card>
-          ))}
+          ) : (
+            evaluated.map((v) => (
+              <Card key={v.id} className="p-4 flex justify-between">
+                <div>
+                  <h4>{v.original_filename}</h4>
+                  <p className="text-sm text-gray-500">
+                    {new Date(v.evaluated_at!).toLocaleString()} · {v.score}/10
+                  </p>
+                </div>
+                <Button>Ver</Button>
+              </Card>
+            ))
+          )}
         </TabsPanel>
       </TabsContainer>
     </div>
