@@ -1,8 +1,10 @@
-/*import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
 import Input from "../../components/common/Input/Input";
 import type { Study } from "../../types/Study";
+import { useStudentProfileTeacherPage } from "../../hooks/teacher/student//useStudentProfileTeacherPage";
+
 
 interface Props {
   mode: "create" | "view";
@@ -133,4 +135,4 @@ export default function StudentProfileTeacherPage({ mode }: Props) {
       </Card>
     </div>
   );
-}*/
+}
