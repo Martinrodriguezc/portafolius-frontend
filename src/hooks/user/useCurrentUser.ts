@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { authService } from "../authServices";
+import { authService } from "../auth/authServices";
 
 
 export function useCurrentUser() {

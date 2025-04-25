@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 
 import { config }        from "../../../config/config";
 import { Student }       from "../../../types/student";
-import { authService }   from "../../authServices";
+import { authService }   from "../../auth/authServices";
 import { useFetchStudentStudies } from "./useStudentForm";
 
 interface FormState {

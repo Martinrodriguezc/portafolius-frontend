@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 
 import { config }       from "../../../config/config";
-import { authService }  from "../../authServices";
+import { authService }  from "../../auth/authServices";
 import { Student }      from "../../../types/student";
 import { Study }        from "../../../types/Study";
 
