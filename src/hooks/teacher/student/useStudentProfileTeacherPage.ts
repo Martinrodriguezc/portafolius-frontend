@@ -1,12 +1,11 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
-import { config } from "../../../config/config";
-import { Student } from "../../../types/student";
-import { authService } from "../../authServices";
+import { config }        from "../../../config/config";
+import { Student }       from "../../../types/student";
+import { authService }   from "../../authServices";
 import { useFetchStudentStudies } from "./useStudentForm";
-
 
 interface FormState {
   firstName: string;
@@ -15,21 +14,22 @@ interface FormState {
   password:  string;
 }
 
-const BACKEND_URL = config.SERVER_URL;           
+const BACKEND_URL = config.SERVER_URL;
 const MIN_PW_LEN  = 8;
 
 
 export function useStudentProfileTeacherPage(mode: "create" | "view") {
-  const navigate  = useNavigate();
-  const teacher   = authService.getCurrentUser();
-  const teacherId = teacher?.id;
+
+  const navigate   = useNavigate();
+  const teacher    = authService.getCurrentUser();
+  const teacherId  = teacher?.id;
 
   const { id: paramId } = useParams();
   const studentId = Number(paramId);
 
-  const [student, setStudent]    = useState<Student | null>(null);
-  const [stLoad, setStLoad]      = useState(false);
-  const [stErr,  setStErr]       = useState<string>("");
+  const [student,  setStudent]  = useState<Student | null>(null);
+  const [stLoad,   setStLoad]   = useState(false);
+  const [stErr,    setStErr]    = useState("");
 
   const [form, setForm] = useState<FormState>({
     firstName: "",
@@ -37,8 +37,8 @@ export function useStudentProfileTeacherPage(mode: "create" | "view") {
     email:     "",
     password:  "",
   });
-  const [formErr,      setFormErr]      = useState("");
-  const [showPwReq,    setShowPwReq]    = useState(false);
+  const [formErr,      setFormErr]   = useState("");
+  const [showPwReq,    setShowPwReq] = useState(false);
 
   const {
     studies,
@@ -58,7 +58,10 @@ export function useStudentProfileTeacherPage(mode: "create" | "view") {
         );
         setStudent(data.user);
       } catch (err: unknown) {
-        setStErr(err instanceof Error ? err.message : "Error");
+        const msg =
+          (err as AxiosError<{ msg: string }>).response?.data?.msg ??
+          (err instanceof Error ? err.message : "Error");
+        setStErr(msg);
       } finally {
         setStLoad(false);
       }
@@ -91,8 +94,11 @@ export function useStudentProfileTeacherPage(mode: "create" | "view") {
       });
 
       navigate(-1);
-    } catch (err: any) {
-      setFormErr(err?.msg ?? "Error");
+    } catch (err: unknown) {
+      const msg =
+        (err as { msg?: string }).msg ??
+        (err instanceof Error ? err.message : "Error");
+      setFormErr(msg);
     }
   };
 

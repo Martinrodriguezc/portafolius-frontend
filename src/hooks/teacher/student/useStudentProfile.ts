@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
-import { config }    from "../../../config/config";
-import { authService } from "../../authServices";
-import { Student } from "../../../types/student";
-import { Study }   from "../../../types/Study";
+import { config }       from "../../../config/config";
+import { authService }  from "../../authServices";
+import { Student }      from "../../../types/student";
+import { Study }        from "../../../types/Study";
 
 const BASE = config.SERVER_URL;
 
@@ -31,12 +31,14 @@ export function useStudentProfile(enabled = true) {
         });
 
         setStudent(
-          (data.user as Student) ??
-          (data.data as Student) ??
-          (data as Student)
+          (data.user  as Student) ??
+          (data.data  as Student) ??
+          (data       as Student)
         );
-      } catch (err: any) {
-        setStudentError(err.response?.data?.msg ?? "No encontrado");
+      } catch (err: unknown) {
+        const msg =
+          (err as AxiosError<{ msg: string }>)?.response?.data?.msg ?? "No encontrado";
+        setStudentError(msg);
       } finally {
         setStudentLoading(false);
       }
@@ -54,8 +56,10 @@ export function useStudentProfile(enabled = true) {
           `${BASE}/study/${studentId}`
         );
         setStudies(data.studies);
-      } catch (err: any) {
-        setStudiesError(err.response?.data?.msg ?? "Error");
+      } catch (err: unknown) {
+        const msg =
+          (err as AxiosError<{ msg: string }>)?.response?.data?.msg ?? "Error";
+        setStudiesError(msg);
       } finally {
         setStudiesLoading(false);
       }
