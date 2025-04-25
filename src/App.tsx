@@ -32,7 +32,7 @@ import CommentsPage from "./pages/Student/Comments";
 import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
 import TeacherVideoPage from "./pages/Teacher/Study/Video";
 //import { TeacherEvaluateVideoPage } from "./pages/Teacher/EvaluateVideoPage";
-//import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
+import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import LearnMorePage from "./pages/LearnMore";
 
 function App() {
@@ -69,18 +69,19 @@ function App() {
 
         <Route path="/teacher" element={<TeacherLayout />}>
           <Route index element={<TeacherDashboardPage />} />
-          <Route path="evaluations" element={<TeacherEvaluationsPage />} />
-          <Route path="students" element={<TeacherStudentsPage />} />
-          <Route path="settings" element={<TeacherSettingsPage />} />
-          <Route
-            path="evaluations/:id/videos"
-            element={<TeacherMultipleVideosPage />}
-          />
-          <Route
-            path="evaluations/:studyId/videos/:clipId"
-            element={<TeacherVideoPage />}
-          />
 
+          {/* --- estudiantes ------------------------------------------------ */}
+          <Route path="students"          element={<TeacherStudentsPage />} />
+          <Route path="students/new"      element={<StudentProfileTeacherPage mode="create" />} />
+          <Route path="students/:id"      element={<StudentProfileTeacherPage mode="view"   />} />
+
+          {/* --- evaluaciones ---------------------------------------------- */}
+          <Route path="evaluations"                              element={<TeacherEvaluationsPage />} />
+          <Route path="evaluations/:id/videos"                   element={<TeacherMultipleVideosPage />} />
+          <Route path="evaluations/:studyId/videos/:clipId"      element={<TeacherVideoPage />} />
+
+          {/* --- ajustes ---------------------------------------------------- */}
+          <Route path="settings" element={<TeacherSettingsPage />} />
         </Route>
       </Routes>
     </Router>
