@@ -13,7 +13,6 @@ export const useDiagnosis = () => {
   const confirmDiagnosis = () => {
     if (selections.length === 3) {
       setIsConfirmed(true);
-      // Aquí podrías enviar a backend
     }
   };
 
