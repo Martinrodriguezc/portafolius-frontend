@@ -53,7 +53,7 @@ export const updateEvaluationRequest = async (
   score: number,
   feedback: string
 ): Promise<EvaluationForm> => {
-  const res = await fetch(`${config.SERVER_URL}/${id}`, {
+  const res = await fetch(`${config.SERVER_URL}/evaluations/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
