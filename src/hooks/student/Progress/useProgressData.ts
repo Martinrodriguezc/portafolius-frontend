@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchStudies, fetchEvaluations } from "./requests/progressRequests";
 import { ProgressData } from "../../../types/ProgressData";
 import { EvaluationForm } from "../../../types/evaluation";
+import { RawStudy, Study } from "../../../types/Study";
 
 const initialProgressData: ProgressData = {
   totalStudies: 0,
@@ -21,69 +22,83 @@ export function useProgressData(userId: number) {
   useEffect(() => {
     const load = async () => {
       try {
-        const studies = await fetchStudies(userId) || [];
-        const evalRaw = await fetchEvaluations(userId);
-        const evalForms: EvaluationForm[] = Array.isArray(evalRaw)
-          ? evalRaw
-          : [];
+        const rawStudies: RawStudy[] = await fetchStudies(userId);
+        const studies: Study[] = rawStudies.map((s) => ({
+          id: Number(s.id),
+          title: s.title,
+          protocol: s.protocol,
+          created_at: s.created_at,
+          status: s.has_evaluation ? "EVALUADO" : "PENDIENTE",
+          score: s.score ?? null,
+        }));
+
+        const evalForms: EvaluationForm[] = await fetchEvaluations(userId);
+
+        const scored = studies.filter(
+          (s): s is Study & { score: number } => s.score !== null
+        );
 
         const totalStudies = studies.length;
-        const evaluatedStudies = evalForms.length;
+        const evaluatedStudies = scored.length;
         const pendingStudies = totalStudies - evaluatedStudies;
-        const averageScore = evaluatedStudies > 0
-          ? parseFloat(
-              (
-                evalForms.reduce((sum, e) => sum + e.score, 0) /
-                evaluatedStudies
-              ).toFixed(1)
-            )
-          : 0;
+        const averageScore =
+          evaluatedStudies > 0
+            ? Number(
+                (
+                  scored.reduce((sum, s) => sum + s.score, 0) /
+                  evaluatedStudies
+                ).toFixed(1)
+              )
+            : 0;
 
-        const mapM = new Map<string, { sum: number; count: number }>();
-        evalForms.forEach((e) => {
-          const month = new Date(e.submitted_at).toLocaleString("es", { month: "long" });
-          const prev = mapM.get(month) || { sum: 0, count: 0 };
-          prev.sum += e.score;
-          prev.count++;
-          mapM.set(month, prev);
+        const monthMap = new Map<string, { sum: number; count: number }>();
+        scored.forEach((s) => {
+          const month = new Date(s.created_at).toLocaleString("es", {
+            month: "long",
+          });
+          const agg = monthMap.get(month) || { sum: 0, count: 0 };
+          agg.sum += s.score;
+          agg.count++;
+          monthMap.set(month, agg);
         });
-        const monthlyProgress = Array.from(mapM.entries()).map(
+        const monthlyProgress = [...monthMap.entries()].map(
           ([month, { sum, count }]) => ({
             month,
             studies: count,
-            score: count > 0 ? parseFloat((sum / count).toFixed(1)) : 0,
+            score: Number((sum / count).toFixed(1)),
           })
         );
 
-        const mapP = new Map<string, { sum: number; count: number }>();
-        studies.forEach((s) => {
-          const entry = mapP.get(s.protocol) || { sum: 0, count: 0 };
-          const ev = evalForms.find((ev) => ev.study_id === s.id); 
-          if (ev) {
-            entry.sum += ev.score;
-            entry.count++;
-          }
-          mapP.set(s.protocol, entry);
+        const protoMap = new Map<string, { sum: number; count: number }>();
+        scored.forEach((s) => {
+          const agg = protoMap.get(s.protocol) || { sum: 0, count: 0 };
+          agg.sum += s.score;
+          agg.count++;
+          protoMap.set(s.protocol, agg);
         });
-        const protocolPerformance = Array.from(mapP.entries()).map(
+        const protocolPerformance = [...protoMap.entries()].map(
           ([protocol, { sum, count }]) => ({
             protocol,
             studies: count,
-            score: count > 0 ? parseFloat((sum / count).toFixed(1)) : 0,
+            score: Number((sum / count).toFixed(1)),
           })
         );
 
-        const recentFeedback = evalForms
-          .sort((a, b) => Date.parse(b.submitted_at) - Date.parse(a.submitted_at))
+        const recentFeedback = [...evalForms]
+          .sort(
+            (a, b) => Date.parse(b.submitted_at) - Date.parse(a.submitted_at)
+          )
           .slice(0, 5)
           .map((e) => {
             const st = studies.find((st) => st.id === e.study_id);
             return {
               id: e.id,
               date: new Date(e.submitted_at).toLocaleDateString("es", {
-                day: "numeric", month: "long", year: "numeric",
+                day: "numeric",
+                month: "long",
+                year: "numeric",
               }),
-              protocol: st?.protocol || "",
+              protocol: st?.protocol ?? "",
               score: e.score,
               comment: e.feedback_summary,
             };
@@ -98,7 +113,7 @@ export function useProgressData(userId: number) {
           protocolPerformance,
           recentFeedback,
         });
-      } catch (err: unknown) {
+      } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
       } finally {
         setLoading(false);
