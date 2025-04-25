@@ -2,11 +2,12 @@ import { config } from "../../../../../config/config";
 import { EvaluationForm } from "../../../../../types/evaluation";
 
 export const fetchAllEvaluations = async (): Promise<EvaluationForm[]> => {
-  const res = await fetch(config.SERVER_URL, {
+  const res = await fetch(`${config.SERVER_URL}/evaluations`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
     },
   });
+  console.log("Obteniendo evaluaciones:", res)
   if (!res.ok) {
     throw new Error(`HTTP ${res.status}`);
   }
@@ -19,7 +20,7 @@ export const createEvaluationRequest = async (
   score: number,
   feedback: string
 ): Promise<EvaluationForm> => {
-  const res = await fetch(`${config.SERVER_URL}/${studyId}`, {
+  const res = await fetch(`${config.SERVER_URL}/evaluations/${studyId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,6 +28,7 @@ export const createEvaluationRequest = async (
     },
     body: JSON.stringify({ score, feedback_summary: feedback }),
   });
+  console.log("wena")
   if (!res.ok) {
     throw new Error(`HTTP ${res.status}`);
   }
