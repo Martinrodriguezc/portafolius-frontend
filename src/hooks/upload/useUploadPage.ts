@@ -105,6 +105,7 @@ export function useUploadPage() {
       alert("Debes seleccionar un protocolo");
       return;
     }
+    /* ARREGLAR
     if (tags.length == 0) {
       logger.warn("Submit fallido: tag incompleto", {
         selectedOrgan,
@@ -114,7 +115,7 @@ export function useUploadPage() {
         "Tienes etiquetas de diagnóstico sin agregar. Por favor completa y presiona 'Agregar tag' o limpia los campos."
       );
       return;
-    }
+    }*/
 
     setIsUploading(true);
     try {
