@@ -1,4 +1,4 @@
-import { TeacherStudent } from "./student";
+import { TeacherStudent, Student } from "./student";
 import { Study } from "./Study";
 
 export interface TeacherProfile {
@@ -34,7 +34,7 @@ export interface TeacherStats {
 }
 
 export interface StudentProfileViewProps {
-  student: TeacherStudent;
+  student: TeacherStudent | Student;
   studies: Study[];
   loadingStudies: boolean;
   errorStudies: string;
