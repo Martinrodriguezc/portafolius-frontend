@@ -1,10 +1,9 @@
 import { config } from "../../../../config/config";
+import { RawStudy } from "../../../../types/Study";
 import { EvaluationForm } from "../../../../types/evaluation";
-import { Study } from "../../../../types/Study";
 import { authService } from "../../../auth/authServices";
 
-export const fetchStudies = async (userId: number): Promise<Study[]> => {
-  console.log("Obteniendo estudios para userId:", userId);
+export async function fetchStudies(userId: number): Promise<RawStudy[]> {
   const token = authService.getToken();
   if (!token) throw new Error("No autorizado");
 
@@ -18,14 +17,13 @@ export const fetchStudies = async (userId: number): Promise<Study[]> => {
   if (res.status === 401) throw new Error("No autorizado");
   if (!res.ok) throw new Error(`Error ${res.status} al obtener estudios`);
 
-  const { studies } = (await res.json()) as { studies: Study[] };
-  return studies;
-};
+  const body = await res.json();
+  return (body.studies ?? []) as RawStudy[];
+}
 
-export const fetchEvaluations = async (
+export async function fetchEvaluations(
   userId: number
-): Promise<EvaluationForm[]> => {
-  console.log("Obteniendo evaluaciones para userId:", userId);
+): Promise<EvaluationForm[]> {
   const token = authService.getToken();
   if (!token) throw new Error("No autorizado");
 
@@ -40,7 +38,12 @@ export const fetchEvaluations = async (
   );
 
   if (res.status === 401) throw new Error("No autorizado");
+  if (res.status === 204) return [];
   if (!res.ok) throw new Error(`Error ${res.status} al obtener evaluaciones`);
 
-  return (await res.json()) as EvaluationForm[];
-};
+  const body = await res.json();
+
+  if (Array.isArray(body)) return body as EvaluationForm[];
+  if (body && Array.isArray(body.evaluations)) return body.evaluations;
+  return [];
+}
