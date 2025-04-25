@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-import Card   from "../../components/common/Card/Card";
+import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
-import Input  from "../../components/common/Input/Input";
+import Input from "../../components/common/Input/Input";
 
-import { useStudentProfile } from "../../hooks/teacher/student/useStudentProfile";          
-import { useStudentProfileTeacherPage } from "../../hooks/teacher/student/useStudentProfileTeacherPage"; 
+import { useStudentProfile } from "../../hooks/teacher/student/useStudentProfile";
+import { useStudentProfileTeacherPage } from "../../hooks/teacher/student/useStudentProfileTeacherPage";
 import { authService } from "../../hooks/auth/authServices";
 
 export interface Props {
@@ -13,8 +13,8 @@ export interface Props {
 }
 
 export default function StudentProfileTeacherPage({ mode }: Props) {
-  const nav      = useNavigate();
-  const teacher  = authService.getCurrentUser();
+  const nav = useNavigate();
+  const teacher = authService.getCurrentUser();
 
   const {
     student,
@@ -23,7 +23,7 @@ export default function StudentProfileTeacherPage({ mode }: Props) {
     studies,
     studiesLoading,
     studiesError,
-  } = useStudentProfile();               
+  } = useStudentProfile();
 
   const {
     form,
@@ -39,8 +39,9 @@ export default function StudentProfileTeacherPage({ mode }: Props) {
 
   if (mode === "view") {
     if (studentLoading) return <p className="p-8">Cargando perfil…</p>;
-    if (studentError)   return <p className="p-8 text-red-500">Error: {studentError}</p>;
-    if (!student)       return <p className="p-8">Estudiante no encontrado</p>;
+    if (studentError)
+      return <p className="p-8 text-red-500">Error: {studentError}</p>;
+    if (!student) return <p className="p-8">Estudiante no encontrado</p>;
 
     return (
       <div className="p-8">
@@ -62,7 +63,7 @@ export default function StudentProfileTeacherPage({ mode }: Props) {
         <h2 className="text-[18px] font-semibold mb-4">Estudios</h2>
 
         {studiesLoading && <p>Cargando estudios…</p>}
-        {studiesError   && <p className="text-red-500">Error: {studiesError}</p>}
+        {studiesError && <p className="text-red-500">Error: {studiesError}</p>}
 
         {!studiesLoading && !studiesError && studies.length === 0 && (
           <p>No hay estudios para este estudiante.</p>

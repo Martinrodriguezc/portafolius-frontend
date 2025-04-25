@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Search, UserPlus } from "lucide-react";
+import { Search, UserPlus, Users } from "lucide-react";
 import { useState } from "react";
 import Button from "../../components/common/Button/Button";
 import Card from "../../components/common/Card/Card";
@@ -12,19 +12,16 @@ import { TeacherStudent } from "../../types/student";
 export default function TeacherStudentsPage() {
   const current = authService.getCurrentUser();
   const teacherId = current?.id;
-  const { students, loading, error } = useTeacherStudents(Number(teacherId)); //REVISAR
+  const { students, loading, error } = useTeacherStudents(Number(teacherId));
   const [search, setSearch] = useState("");
 
-  if (!teacherId)
-    return <p className="p-8 text-red-500">Debes iniciar sesión</p>;
+  if (!teacherId) return <p className="p-8 text-red-500">Debes iniciar sesión</p>;
   if (loading) return <p className="p-8">Cargando estudiantes…</p>;
   if (error) return <p className="p-8 text-red-500">Error: {error}</p>;
 
   const filtered = students.filter(
     (s) =>
-      `${s.first_name} ${s.last_name}`
-        .toLowerCase()
-        .includes(search.toLowerCase()) ||
+      `${s.first_name} ${s.last_name}`.toLowerCase().includes(search.toLowerCase()) ||
       s.email.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -55,11 +52,23 @@ export default function TeacherStudentsPage() {
       </Card>
 
       <div className="space-y-4">
-        {filtered.map((s: TeacherStudent) => (
-          <Card key={s.id} className="p-4">
-            <StudentsPreviewInfo student={s} />
+        {filtered.length === 0 ? (
+          <Card className="flex flex-col items-center justify-center p-8 bg-slate-50 border border-slate-200 rounded-lg">
+            <Users className="h-12 w-12 text-gray-500 mb-4" />
+            <p className="text-lg font-medium text-[#333333]">
+              No hay estudiantes
+            </p>
+            <p className="text-sm text-[#A0A0A0] mt-1 text-center">
+              Ajusta tu búsqueda o añade nuevos estudiantes.
+            </p>
           </Card>
-        ))}
+        ) : (
+          filtered.map((s: TeacherStudent) => (
+            <Card key={s.id} className="p-4">
+              <StudentsPreviewInfo student={s} />
+            </Card>
+          ))
+        )}
       </div>
     </div>
   );
