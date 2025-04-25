@@ -31,7 +31,7 @@ import TeacherSettingsPage from "./pages/Teacher/Settings";
 import CommentsPage from "./pages/Student/Comments";
 import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
 import TeacherVideoPage from "./pages/Teacher/Study/Video";
-//import { TeacherEvaluateVideoPage } from "./pages/Teacher/EvaluateVideoPage";
+import TeacherEvaluateVideoPage  from "./pages/Teacher/EvaluateVideoPage";
 import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import LearnMorePage from "./pages/LearnMore";
 
@@ -79,7 +79,9 @@ function App() {
           <Route path="evaluations"                              element={<TeacherEvaluationsPage />} />
           <Route path="evaluations/:id/videos"                   element={<TeacherMultipleVideosPage />} />
           <Route path="evaluations/:studyId/videos/:clipId"      element={<TeacherVideoPage />} />
+          <Route path="evaluations/:studyId/videos/:clipId/evaluate" element={<TeacherEvaluateVideoPage />} />
 
+          
           {/* --- ajustes ---------------------------------------------------- */}
           <Route path="settings" element={<TeacherSettingsPage />} />
         </Route>
