@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Badge, Calendar, CheckCircle } from "lucide-react";
-import TeacherLayout from "../layout/TeacherLayout";
 import Card from "../../components/common/Card/Card";
 import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";
@@ -12,18 +11,8 @@ import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
 export default function TeacherEvaluationsLayout() {
   const { pending, completed, loading, error } = useAllStudies();
 
-  if (loading)
-    return (
-      <TeacherLayout>
-        <p className="p-8">Cargando…</p>
-      </TeacherLayout>
-    );
-  if (error)
-    return (
-      <TeacherLayout>
-        <p className="p-8 text-red-500">{error}</p>
-      </TeacherLayout>
-    );
+  if (loading) return <p className="p-8">Cargando…</p>;
+  if (error) return <p className="p-8 text-red-500">{error}</p>;
 
   return (
     <div className="p-8">
@@ -178,8 +167,4 @@ export default function TeacherEvaluationsLayout() {
   );
 }
 
-export const TeacherEvaluationsPage = () => (
-  <TeacherLayout>
-    <TeacherEvaluationsLayout />
-  </TeacherLayout>
-);
+export const TeacherEvaluationsPage = () => <TeacherEvaluationsLayout />;

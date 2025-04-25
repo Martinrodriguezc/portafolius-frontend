@@ -3,7 +3,6 @@ import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";
 import TabsButton from "../../components/common/Tabs/TabsButton";
 import TabsPanel from "../../components/common/Tabs/TabsPanel";
-import TeacherLayout from "../layout/TeacherLayout";
 import ProfileForm from "../../components/teacher/Settings/ProfileForm";
 import PlatformSettings from "../../components/teacher/Settings/PlatformSettings";
 import EvaluationSettings from "../../components/teacher/Settings/EvaluationSettings";
@@ -71,8 +70,4 @@ export default function TeacherSettingsLayout() {
   );
 }
 
-export const TeacherSettingsPage = () => (
-  <TeacherLayout>
-    <TeacherSettingsLayout />
-  </TeacherLayout>
-);
+export const TeacherSettingsPage = () => <TeacherSettingsLayout />;
