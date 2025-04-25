@@ -2,7 +2,7 @@ import axios from "axios";
 import { LoginFormData } from "../types/form/Login";
 import { RegisterFormData } from "../types/form/Register";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 const TOKEN_KEY = "auth_token";
 const USER_KEY = "user_data";
 
