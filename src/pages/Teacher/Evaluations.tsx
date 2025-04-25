@@ -11,8 +11,14 @@ import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
 export default function TeacherEvaluationsLayout() {
   const { pending, completed, loading, error } = useAllStudies();
 
-  if (loading) return <p className="p-8">Cargando…</p>;
-  if (error) return <p className="p-8 text-red-500">{error}</p>;
+  if (loading)
+    return (
+        <p className="p-8">Cargando…</p>
+    );
+  if (error)
+    return (
+        <p className="p-8 text-red-500">{error}</p>
+    );
 
   return (
     <div className="p-8">
@@ -167,4 +173,6 @@ export default function TeacherEvaluationsLayout() {
   );
 }
 
-export const TeacherEvaluationsPage = () => <TeacherEvaluationsLayout />;
+export const TeacherEvaluationsPage = () => (
+    <TeacherEvaluationsLayout />
+);

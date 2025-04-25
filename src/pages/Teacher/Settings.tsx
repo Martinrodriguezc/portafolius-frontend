@@ -70,4 +70,6 @@ export default function TeacherSettingsLayout() {
   );
 }
 
-export const TeacherSettingsPage = () => <TeacherSettingsLayout />;
+export const TeacherSettingsPage = () => (
+    <TeacherSettingsLayout />
+);
