@@ -15,8 +15,7 @@ export const useTags = () => {
         const response = await axios.get<TagResponse>(
           `${config.SERVER_URL}/video/tags`
         );
-        console.log("TAGS SON:", response.data);
-
+    
         if (response.data.success) {
           setTags(response.data.tags);
           setError(null);
@@ -24,7 +23,7 @@ export const useTags = () => {
           throw new Error(response.data.msg || "Error al obtener tags");
         }
       } catch (error: unknown) {
-        console.error("Error al obtener tags:", error);
+        console.error("🔴 Error detallado:", error);
         setError((error as Error).message || "Error al cargar los tags");
       } finally {
         setLoading(false);

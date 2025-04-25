@@ -9,12 +9,9 @@ import {
 } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
 import { TagSectionProps } from "../../../types/tag";
+import { DiagnosticTag } from "../../../types/tag";
 
 export function TagSection({ section }: TagSectionProps) {
-  if (!section) {
-    return null;
-  }
-
   const {
     organs,
     structures,
@@ -135,7 +132,7 @@ export function TagSection({ section }: TagSectionProps) {
           {tags.length > 0 && (
             <div className="mt-4">
               <div className="flex flex-wrap gap-2">
-                {tags.map((tag: { id: string; text: string }) => (
+                {tags.map((tag: DiagnosticTag) => (
                   <Badge
                     key={tag.id}
                     className="bg-[#4E81BD]/10 text-[#4E81BD] hover:bg-[#4E81BD]/20 px-3 py-1"

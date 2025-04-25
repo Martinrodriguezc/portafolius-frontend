@@ -1,6 +1,9 @@
 export interface Tag {
   id: string;
   name: string;
+  organ: string;
+  structure: string;
+  condition: string;
   created_by?: string;
 }
 
@@ -22,7 +25,12 @@ export interface TagSelectorState {
   selectedOrgan: string;
   selectedStructure: string;
   selectedCondition: string;
-  tags: { id: string; text: string }[];
+  tags: DiagnosticTag[];
+}
+
+export interface DiagnosticTag {
+  id: number;
+  text: string;
 }
 
 export interface TagSectionProps {
@@ -31,6 +39,6 @@ export interface TagSectionProps {
     setSelectedStructure: (structure: string) => void;
     setSelectedCondition: (condition: string) => void;
     addTag: () => void;
-    removeTag: (id: string) => void;
+    removeTag: (id: number) => void;
   };
-} 
+}
