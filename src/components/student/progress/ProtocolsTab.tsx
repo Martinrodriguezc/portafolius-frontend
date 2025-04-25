@@ -1,7 +1,19 @@
 import Card from "../../../components/common/Card/Card";
 import { ProtocolsTabProps } from "../../../types/Props/Tabs/ProtocolsTabProps";
+import NoDataMessage from "./NoDataMessage";
+import protocolsIcon from "../../../assets/protocols-icon.svg";
 
-export function ProtocolsTab({ protocolPerformance }: ProtocolsTabProps) {
+export const ProtocolsTab = ({ protocolPerformance }: ProtocolsTabProps) => {
+  if (!protocolPerformance?.length) {
+    return (
+      <NoDataMessage 
+        title="No hay protocolos disponibles" 
+        message="No se han encontrado protocolos para mostrar"
+        icon={protocolsIcon}
+      />
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {protocolPerformance.map((protocol, index) => (
@@ -21,4 +33,4 @@ export function ProtocolsTab({ protocolPerformance }: ProtocolsTabProps) {
       ))}
     </div>
   );
-}
+};

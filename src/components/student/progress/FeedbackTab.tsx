@@ -1,7 +1,19 @@
 import Card from "../../../components/common/Card/Card";
 import { FeedbackTabProps } from "../../../types/Props/Tabs/FeedbackTabProps";
+import NoDataMessage from "./NoDataMessage";
+import feedbackIcon from "../../../assets/feedback-icon.svg";
 
-export function FeedbackTab({ recentFeedback }: FeedbackTabProps) {
+export const FeedbackTab = ({ recentFeedback }: FeedbackTabProps) => {
+  if (!recentFeedback?.length) {
+    return (
+      <NoDataMessage 
+        title="No hay retroalimentación" 
+        message="Aún no hay retroalimentación disponible"
+        icon={feedbackIcon}
+      />
+    );
+  }
+
   return (
     <div className="space-y-4">
       <h3 className="text-[16px] font-medium text-[#333333]">
@@ -25,4 +37,4 @@ export function FeedbackTab({ recentFeedback }: FeedbackTabProps) {
       ))}
     </div>
   );
-}
+};
