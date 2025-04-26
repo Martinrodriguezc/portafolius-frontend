@@ -92,14 +92,3 @@ function App() {
 
 export default App;
 
-/*<Route
-path="students/new"
-element={<StudentProfileTeacherPage mode="create" />}
-/>
-<Route
-path="students/:id"
-element={<StudentProfileTeacherPage mode="view" />}
-/>          <Route
-            path="evaluations/:studyId/videos/:clipId/evaluate"
-            element={<TeacherEvaluateVideoPage />}
-          />*/
