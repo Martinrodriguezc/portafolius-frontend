@@ -24,13 +24,13 @@ export default function StudentStudiesPage() {
         <p className="text-base text-[#A0A0A0] mb-6 text-center">
           Crea o sube un estudio para que aparezca en esta lista.
         </p>
-        <Link to="/student/upload">
+        <Link to="/student/create_study">
           <Button
             className="bg-[#4E81BD] hover:bg-[#4E81BD]/90
                              text-base font-medium
                              py-3 px-8 rounded-lg"
           >
-            Subir Videos
+            Crear nuevo estudio
           </Button>
         </Link>
       </div>
