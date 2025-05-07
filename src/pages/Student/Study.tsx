@@ -1,46 +1,22 @@
-import { useState } from "react"
-import { X, Plus, Tag, ClipboardList, CalendarIcon } from 'lucide-react'
+import { ClipboardList } from "lucide-react"
 import Card from "../../components/common/Card/Card"
 import { Label } from "../../components/common/Label/Label"
-import { Select, SelectValue } from "../../components/common/Select/SelectBase"
-import { SelectContent, SelectTrigger } from "../../components/common/Select/SelectInteraction"
-import { SelectItem } from "../../components/common/Select/SelectItems"
 import { Textarea } from "../../components/common/Textarea/Textarea"
 import { Progress } from "../../components/common/Progress/Progress"
 import Button from "../../components/common/Button/Button"
+import { useCreateStudy } from "../../hooks/student/Studies/useCreateStudy"
 
 export default function StudentCreateStudyPage() {
-    // State management
-    const [title, setTitle] = useState("")
-    const [comment, setComment] = useState("")
-    const [isCreating, setIsCreating] = useState(false)
-    const [createProgress, setCreateProgress] = useState(0)
-    const [date, setDate] = useState("")
-
-
-
-    // Submit function
-    const handleSubmit = () => {
-
-        setIsCreating(true)
-
-        // Simulate creation progress
-        let progress = 0
-        const interval = setInterval(() => {
-            progress += 10
-            setCreateProgress(progress)
-
-            if (progress >= 100) {
-                clearInterval(interval)
-                setIsCreating(false)
-                alert("Estudio creado exitosamente")
-                // Reset form
-                setTitle("")
-                setComment("")
-                setDate("")
-            }
-        }, 200)
-    }
+    const {
+        title,
+        setTitle,
+        description,
+        setDescription,
+        isCreating,
+        createProgress,
+        handleSubmit,
+        handleCancel,
+    } = useCreateStudy()
 
     return (
         <div className="p-8 flex justify-center">
@@ -65,31 +41,14 @@ export default function StudentCreateStudyPage() {
                     </div>
 
                     <div className="space-y-4 mb-6">
-                        <Label htmlFor="date" className="text-[14px] text-[#333333]">
-                            Fecha del estudio
-                        </Label>
-                        <div className="relative">
-                            <input
-                                type="date"
-                                id="date"
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                                className="w-full h-[42px] text-[14px] border border-[#A0A0A0] rounded-[8px] px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#4E81BD] focus:border-transparent"
-                            />
-                            <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[#A0A0A0]" />
-                        </div>
-                    </div>
-
-                
-                    <div className="space-y-4 mb-6">
-                        <Label htmlFor="comment" className="text-[14px] text-[#333333]">
-                            Comentarios adicionales
+                        <Label htmlFor="description" className="text-[14px] text-[#333333]">
+                            Descripción
                         </Label>
                         <Textarea
-                            id="comment"
+                            id="description"
                             placeholder="Añade cualquier información relevante sobre el estudio..."
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             className="min-h-[100px] text-[14px] border-[#A0A0A0] rounded-[8px] placeholder:text-[#A0A0A0]"
                         />
                     </div>
@@ -130,6 +89,7 @@ export default function StudentCreateStudyPage() {
                     <div className="flex gap-4">
                         <Button
                             variant="outline"
+                            onClick={handleCancel}
                             className="flex-1 border-[#A0A0A0] text-[#333333] text-[14px] font-medium py-[12px] rounded-[8px] mt-6"
                         >
                             Cancelar

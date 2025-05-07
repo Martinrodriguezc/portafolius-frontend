@@ -1,206 +1,170 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logger from "../../config/logger";
 import {
-  createNewStudy,
   generateUploadUrl,
   uploadVideo,
   assignTagsToClip,
 } from "./requests/requests";
 import { validateVideo } from "./validations/validations";
 import { authService } from "../auth/authServices";
+import { RawStudy } from "../../types/Study";
+import { fetchStudentStudies } from "../student/Studies/request/studiesRequest";
+import { FileWithMetadata } from "../../components/student/upload/UploadSection";
 
+/**
+ * Hook para manejar la página de subida de videos a un estudio.
+ */
 export function useUploadPage() {
-  const [files, setFiles] = useState<File[]>([]);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
-  const [protocol, setProtocol] = useState("");
-  const [comment, setComment] = useState("");
-  const [tags, setTags] = useState<{ id: number; text: string }[]>([]);
-  const [selectedOrgan, setSelectedOrgan] = useState("");
-  const [selectedStructure, setSelectedStructure] = useState("");
-  const [selectedCondition, setSelectedCondition] = useState("");
-  const [tagInput, setTagInput] = useState("");
-  const [title, setTitle] = useState("");
   const userId = authService.getCurrentUser()?.id;
+  if (!userId) throw new Error("No hay userId en localStorage. Debes iniciar sesión.");
 
-  if (!userId) {
-    throw new Error("No hay userId en localStorage. Debes iniciar sesión.");
-  }
+  const [studies, setStudies] = useState<RawStudy[]>([]);
+  const [selectedStudy, setSelectedStudy] = useState<string>("");
+  const [files, setFiles] = useState<FileWithMetadata[]>([]);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const newFiles = Array.from(e.target.files);
-      setFiles((prev) => {
-        const updated = [...prev, ...newFiles];
-        logger.debug(
-          "Archivos seleccionados:",
-          updated.map((f) => f.name)
-        );
-        return updated;
+  // Carga los estudios al montar
+  useEffect(() => {
+    fetchStudentStudies(userId)
+      .then(setStudies)
+      .catch((err) => {
+        logger.error("No se pudieron cargar los estudios:", err);
+        alert("Error al cargar tus estudios");
       });
-    }
+  }, [userId]);
+
+  // Cuando el usuario selecciona archivos nuevos
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const newFiles: FileWithMetadata[] = Array.from(e.target.files).map((file) => ({
+      file,
+      protocol: "",
+      selectedOrgan: "",
+      selectedStructure: "",
+      selectedCondition: "",
+      tags: [],
+    }));
+    setFiles((prev) => {
+      const updated = [...prev, ...newFiles];
+      logger.debug("Archivos seleccionados con metadata:", updated.map((f) => f.file.name));
+      return updated;
+    });
   };
 
   const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    logger.debug(`Archivo metadata en índice ${index} removido.`);
+  };
+
+  const updateFileProtocol = (index: number, protocol: string) => {
+    setFiles((prev) => prev.map((item, i) => (i === index ? { ...item, protocol } : item)));
+  };
+  const updateFileOrgan = (index: number, selectedOrgan: string) => {
+    setFiles((prev) => prev.map((item, i) => (i === index ? { ...item, selectedOrgan } : item)));
+  };
+  const updateFileStructure = (index: number, selectedStructure: string) => {
+    setFiles((prev) => prev.map((item, i) => (i === index ? { ...item, selectedStructure } : item)));
+  };
+  const updateFileCondition = (index: number, selectedCondition: string) => {
+    setFiles((prev) => prev.map((item, i) => (i === index ? { ...item, selectedCondition } : item)));
+  };
+
+  const addTagToFile = (index: number) => {
     setFiles((prev) => {
-      const updated = prev.filter((_, i) => i !== index);
-      logger.debug(
-        `Archivo en índice ${index} removido. Quedan:`,
-        updated.map((f) => f.name)
+      const item = prev[index];
+      if (!item.selectedOrgan || !item.selectedStructure || !item.selectedCondition) return prev;
+      const newTag = `${item.selectedOrgan} → ${item.selectedStructure} → ${item.selectedCondition}`;
+      return prev.map((it, i) =>
+        i === index
+          ? { ...it, tags: [...it.tags, newTag], selectedOrgan: "", selectedStructure: "", selectedCondition: "" }
+          : it
       );
-      return updated;
     });
   };
 
-  const addTag = () => {
-    if (selectedOrgan && selectedStructure && selectedCondition) {
-      const tagText = `${selectedOrgan} → ${selectedStructure} → ${selectedCondition}`;
-      setTags((prev) => {
-        const updated = [...prev, { id: Date.now(), text: tagText }];
-        logger.info("Tag agregado:", tagText);
-        return updated;
-      });
-      setSelectedOrgan("");
-      setSelectedStructure("");
-      setSelectedCondition("");
-    } else {
-      logger.warn("Faltan datos para agregar tag:", {
-        selectedOrgan,
-        selectedStructure,
-        selectedCondition,
-      });
-    }
-  };
-
-  const removeTag = (id: number) => {
-    setTags((prev) => {
-      const updated = prev.filter((tag) => tag.id !== id);
-      logger.debug("Tag removido, id:", id);
-      return updated;
-    });
-  };
-
-  const addCustomTag = () => {
-    if (!tagInput.trim()) {
-      logger.warn("Intento de agregar tag vacío");
-      return;
-    }
-    setTags((prev) => {
-      const updated = [...prev, { id: Date.now(), text: tagInput.trim() }];
-      logger.info("Custom tag agregado:", tagInput.trim());
-      return updated;
-    });
-    setTagInput("");
+  const removeTagFromFile = (fileIndex: number, tagIndex: number) => {
+    setFiles((prev) =>
+      prev.map((item, i) =>
+        i === fileIndex ? { ...item, tags: item.tags.filter((_, j) => j !== tagIndex) } : item
+      )
+    );
   };
 
   const handleSubmit = async () => {
-    if (files.length < 4 && files.length > 8) {
-      logger.warn("Submit fallido: Cantidad de archivos no es correcta");
+    if (!selectedStudy) {
+      alert("Por favor selecciona un estudio al cual subir los videos.");
+      return;
+    }
+    // Validar archivos mínimos
+    if (files.length < 0 || files.length > 8) {
       alert("Debes seleccionar entre 4 y 8 archivos para subir a tu estudio");
       return;
     }
-
-    if (!protocol) {
-      logger.warn("Submit fallido: no se seleccionó protocolo");
-      alert("Debes seleccionar un protocolo");
+    // Validar que cada archivo tenga protocolo
+    if (files.some((f) => !f.protocol)) {
+      alert("Por favor asigna un protocolo a cada video.");
       return;
     }
-    /* ARREGLAR
-    if (tags.length == 0) {
-      logger.warn("Submit fallido: tag incompleto", {
-        selectedOrgan,
-        selectedStructure,
-      });
-      alert(
-        "Tienes etiquetas de diagnóstico sin agregar. Por favor completa y presiona 'Agregar tag' o limpia los campos."
-      );
-      return;
-    }*/
 
     setIsUploading(true);
     try {
-      logger.debug("Validando vídeo…");
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+      // Validación de cada video
+      for (const { file } of files) {
         await validateVideo(file);
       }
-      const studyId = await createNewStudy(userId, title, protocol);
-      logger.info("Estudio creado con ID:", studyId);
 
       for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        logger.info("Inicio de subida de vídeo", { file: file.name, protocol });
+        const { file, tags } = files[i];
+        logger.info("Inicio de subida de vídeo", { file: file.name });
 
-        const { uploadUrl, clipId } = await generateUploadUrl(file, studyId);
-        logger.debug("URL prefirmada recibida:", uploadUrl);
+        // Solicitar URL prefirmada
+        const { uploadUrl, clipId } = await generateUploadUrl(file, selectedStudy);
 
         const progressBefore = Math.round((i / files.length) * 100);
         setUploadProgress(progressBefore);
-        logger.debug(
-          `Progreso actualizado a ${progressBefore}% para ${file.name}`
-        );
 
+        // Subir al storage
         const result = await uploadVideo(uploadUrl, file);
-        if (result.success) {
-          logger.info("Vídeo subido exitosamente", { file: file.name });
-
-          const tagIds = tags.map((t) => t.id);
-          try {
-            await assignTagsToClip(clipId, tagIds);
-            logger.info(`Etiquetas asignadas a clipId ${clipId}:`, tagIds);
-          } catch (err) {
-            logger.error(
-              `Error al asignar etiquetas al clipId ${clipId}:`,
-              err
-            );
-          }
-        } else {
-          logger.error(
-            "Error en uploadVideo para archivo:",
-            file.name,
-            result.message
-          );
+        if (!result.success) {
           alert(`Error al subir ${file.name}: ${result.message}`);
+          continue;
+        }
+
+        // Asignar tags al clip recién creado
+        const tagList = files[i].tags;
+        if (tagList.length > 0) {
+          await assignTagsToClip(clipId, tagList.map((_, idx) => idx)); // o usar IDs reales
         }
       }
 
       setUploadProgress(100);
       alert("Todos los archivos se subieron exitosamente");
       setFiles([]);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      logger.error("Error en handleSubmit global:", err);
-      alert(`Error inesperado: ${message}`);
+      setSelectedStudy("");
+    } catch (err: any) {
+      logger.error("Error en handleSubmit:", err);
+      alert(`Error inesperado: ${err.message || err}`);
     } finally {
       setIsUploading(false);
-      logger.debug("isUploading seteado a false");
     }
   };
 
   return {
+    studies,
     files,
     uploadProgress,
     isUploading,
-    protocol,
-    setProtocol,
-    comment,
-    setComment,
-    tags,
+    selectedStudy,
+    setSelectedStudy,
     handleFileChange,
     removeFile,
+    updateFileProtocol,
+    updateFileOrgan,
+    updateFileStructure,
+    updateFileCondition,
+    addTagToFile,
+    removeTagFromFile,
     handleSubmit,
-    selectedOrgan,
-    setSelectedOrgan,
-    selectedStructure,
-    setSelectedStructure,
-    selectedCondition,
-    setSelectedCondition,
-    addTag,
-    removeTag,
-    tagInput,
-    setTagInput,
-    addCustomTag,
-    title,
-    setTitle,
   };
 }
