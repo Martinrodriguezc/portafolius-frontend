@@ -20,7 +20,7 @@ export function useStudentStudies() {
         const transformed: Study[] = rawStudies.map((s) => ({
           id: Number(s.id),
           title: s.title,
-          protocol: s.protocol,
+          description: s.description,
           created_at: s.created_at,
           status: s.has_evaluation ? "EVALUADO" : "PENDIENTE",
           score: s.score ?? null,

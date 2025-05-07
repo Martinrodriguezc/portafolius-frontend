@@ -7,17 +7,20 @@ import TabsButton from "../../components/common/Tabs/TabsButton";
 import TabsPanel from "../../components/common/Tabs/TabsPanel";
 import Button from "../../components/common/Button/Button";
 import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
+import { ErrorDisplay } from "../../components/common/Error/Error";
 
 export default function TeacherEvaluationsLayout() {
   const { pending, completed, loading, error } = useAllStudies();
 
   if (loading)
     return (
-        <p className="p-8">Cargando…</p>
+      <p className="p-8">Cargando…</p>
     );
   if (error)
     return (
-        <p className="p-8 text-red-500">{error}</p>
+      <p className="p-8 text-red-500">
+        <ErrorDisplay error={error} />
+      </p>
     );
 
   return (
@@ -58,7 +61,7 @@ export default function TeacherEvaluationsLayout() {
             <span className="text-[24px] font-bold text-[#333333] mt-2">
               {(completed.length > 0
                 ? completed.reduce((sum, s) => sum + s.score, 0) /
-                  completed.length
+                completed.length
                 : 0
               ).toFixed(1)}
               /10
@@ -102,7 +105,7 @@ export default function TeacherEvaluationsLayout() {
                         {new Date(study.created_at).toLocaleDateString()}
                       </span>
                       <span className="mx-2">•</span>
-                      <span>Protocolo: {study.protocol.toUpperCase()}</span>
+                      <span>Descripcion: {study.description.toUpperCase()}</span>
                     </div>
                   </div>
                   <Link to={`/teacher/evaluations/${study.study_id}/videos`}>
@@ -147,8 +150,8 @@ export default function TeacherEvaluationsLayout() {
                       <span>
                         <strong>Estudio:</strong> {study.title || "Sin título"}{" "}
                         <span className="mx-2">•</span>
-                        <strong>Protocolo:</strong>{" "}
-                        {study.protocol.toUpperCase()}
+                        <strong>Descripcion:</strong>{" "}
+                        {study.description.toUpperCase()}
                       </span>
                     </div>
                   </div>
@@ -174,5 +177,5 @@ export default function TeacherEvaluationsLayout() {
 }
 
 export const TeacherEvaluationsPage = () => (
-    <TeacherEvaluationsLayout />
+  <TeacherEvaluationsLayout />
 );

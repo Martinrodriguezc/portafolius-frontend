@@ -1,7 +1,8 @@
 export interface RawStudy {
   id: string;
   title: string;
-  protocol: string;
+  description: string;
+  status: string;
   created_at: string;
   has_evaluation: boolean;
   score?: number | null;
@@ -10,7 +11,7 @@ export interface RawStudy {
 export interface Study {
   id: number;
   title: string;
-  protocol: string;
+  description: string;
   status: "EVALUADO" | "PENDIENTE";
   created_at: string;
   score: number | null;
@@ -19,7 +20,7 @@ export interface Study {
 export interface StudyWithStatus {
   study_id: number;
   title: string;
-  protocol: string;
+  description: string;
   status: string;
   created_at: string;
   has_evaluation: boolean;

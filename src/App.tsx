@@ -34,6 +34,7 @@ import TeacherVideoPage from "./pages/Teacher/Study/Video";
 import TeacherEvaluateVideoPage  from "./pages/Teacher/EvaluateVideoPage";
 import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import LearnMorePage from "./pages/LearnMore";
+import StudentCreateStudyPage from "./pages/Student/Study";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
           <Route path="profile" element={<StudentProfilePage />} />
           <Route path="progress" element={<StudentProgressPage />} />
           <Route path="upload" element={<StudentUploadPage />} />
+          <Route path="create_study" element={<StudentCreateStudyPage />} />
           <Route path="comments" element={<CommentsPage />} />
 
           <Route

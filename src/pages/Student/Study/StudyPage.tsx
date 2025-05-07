@@ -24,13 +24,13 @@ export default function StudentStudiesPage() {
         <p className="text-base text-[#A0A0A0] mb-6 text-center">
           Crea o sube un estudio para que aparezca en esta lista.
         </p>
-        <Link to="/student/upload">
+        <Link to="/student/create_study">
           <Button
             className="bg-[#4E81BD] hover:bg-[#4E81BD]/90
                              text-base font-medium
                              py-3 px-8 rounded-lg"
           >
-            Subir Videos
+            Crear nuevo estudio
           </Button>
         </Link>
       </div>
@@ -50,7 +50,7 @@ export default function StudentStudiesPage() {
           <Card className="rounded-[16px] mb-6" key={study.id}>
             <h2 className="text-lg font-medium mb-2">{study.title}</h2>
             <p className="text-sm text-gray-600">
-              Protocolo: {study.protocol.toUpperCase()}
+              Descripcion: {study.description.toUpperCase()}
             </p>
             <p className="text-sm text-gray-600">
               Estado: {study.status.toUpperCase()}

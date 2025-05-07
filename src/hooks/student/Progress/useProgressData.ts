@@ -26,7 +26,7 @@ export function useProgressData(userId: number) {
         const studies: Study[] = rawStudies.map((s) => ({
           id: Number(s.id),
           title: s.title,
-          protocol: s.protocol,
+          description: s.description,
           created_at: s.created_at,
           status: s.has_evaluation ? "EVALUADO" : "PENDIENTE",
           score: s.score ?? null,
@@ -44,11 +44,11 @@ export function useProgressData(userId: number) {
         const averageScore =
           evaluatedStudies > 0
             ? Number(
-                (
-                  scored.reduce((sum, s) => sum + s.score, 0) /
-                  evaluatedStudies
-                ).toFixed(1)
-              )
+              (
+                scored.reduce((sum, s) => sum + s.score, 0) /
+                evaluatedStudies
+              ).toFixed(1)
+            )
             : 0;
 
         const monthMap = new Map<string, { sum: number; count: number }>();
@@ -71,10 +71,10 @@ export function useProgressData(userId: number) {
 
         const protoMap = new Map<string, { sum: number; count: number }>();
         scored.forEach((s) => {
-          const agg = protoMap.get(s.protocol) || { sum: 0, count: 0 };
+          const agg = protoMap.get(s.description) || { sum: 0, count: 0 };
           agg.sum += s.score;
           agg.count++;
-          protoMap.set(s.protocol, agg);
+          protoMap.set(s.description, agg);
         });
         const protocolPerformance = [...protoMap.entries()].map(
           ([protocol, { sum, count }]) => ({
@@ -98,7 +98,7 @@ export function useProgressData(userId: number) {
                 month: "long",
                 year: "numeric",
               }),
-              protocol: st?.protocol ?? "",
+              protocol: st?.description ?? "",
               score: e.score,
               comment: e.feedback_summary,
             };
