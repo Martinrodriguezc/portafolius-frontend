@@ -18,9 +18,11 @@ export function useTagOptions() {
         setOrgans(data.organs);
         setStructures(data.structures);
         setConditions(data.conditions);
-      } catch (err: any) {
-        console.error('Error al cargar tag utils:', err);
-        setError(err.message || 'Error desconocido');
+      } catch (err: unknown) {
+        const msg =
+          (err as { msg?: string }).msg ??
+          (err instanceof Error ? err.message : "Error");
+        setError(msg);
       } finally {
         setLoading(false);
       }

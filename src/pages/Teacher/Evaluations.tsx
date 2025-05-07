@@ -150,8 +150,8 @@ export default function TeacherEvaluationsLayout() {
                       <span>
                         <strong>Estudio:</strong> {study.title || "Sin título"}{" "}
                         <span className="mx-2">•</span>
-                        <strong>Protocolo:</strong>{" "}
-                        {study.protocol.toUpperCase()}
+                        <strong>Descripcion:</strong>{" "}
+                        {study.description.toUpperCase()}
                       </span>
                     </div>
                   </div>

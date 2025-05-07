@@ -8,8 +8,6 @@ import TabsList from "../../components/common/Tabs/TabsList"
 import TabsButton from "../../components/common/Tabs/TabsButton"
 import TabsPanel from "../../components/common/Tabs/TabsPanel"
 import { authService } from "../../hooks/auth/authServices"
-import { AlertCircle, RefreshCw } from "lucide-react"
-import Button from "../../components/common/Button/Button"
 import { ErrorDisplay } from "../../components/common/Error/Error"
 
 export default function ProgressPage() {
