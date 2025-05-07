@@ -39,7 +39,7 @@ export default function StudentProfileView({
             <Card key={st.id} className="p-4">
               <h3 className="font-medium">{st.title}</h3>
               <p className="text-sm text-gray-500">
-                Protocolo: {st.protocol || "—"}
+                Description: {st.description || "—"}
               </p>
               <p className="text-sm text-gray-500">Estado: {st.status}</p>
             </Card>
