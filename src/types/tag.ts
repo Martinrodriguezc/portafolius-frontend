@@ -42,3 +42,7 @@ export interface TagSectionProps {
     removeTag: (id: number) => void;
   };
 }
+
+export interface Organ { id: number; name: string }
+export interface Structure { id: number; name: string; organ_id: number }
+export interface Condition { id: number; name: string; structure_id: number }

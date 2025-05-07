@@ -5,6 +5,8 @@ import { authService } from "../../auth/authServices";
 export const generateUploadUrl = async (
   file: File,
   studyId: string,
+  protocol: string,
+  tagIds: number[],
 ): Promise<{ uploadUrl: string; clipId: number }> => {
   logger.debug("Iniciando generateUploadUrl para:", file.name);
 
@@ -22,6 +24,8 @@ export const generateUploadUrl = async (
         contentType: file.type,
         studyId,
         sizeBytes: file.size,
+        protocol: protocol,
+        tagsIds: tagIds
       }),
     });
     logger.debug("Respuesta recibida de generate_upload_url:", response);
@@ -80,13 +84,12 @@ export const uploadVideo = async (
   return { success: true, message: "Archivo subido correctamente" };
 };
 
-export async function assignTagsToClip(clipId: number, tagIds: number[]) {
+export async function assignTagsToClip(clipId: number, tagIds: number[], userId: string) {
   const res = await fetch(`${config.SERVER_URL}/video/${clipId}/tags`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ tagIds }),
+    body: JSON.stringify({ tagIds, userId }),
   });
-  console.log(res)
 
   if (!res.ok) {
     throw new Error(`Error ${res.status} al asignar etiquetas al clip`);
