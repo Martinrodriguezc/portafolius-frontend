@@ -1,4 +1,3 @@
-import React from "react";
 import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
 import Card from "../../../components/common/Card/Card";
 import Button from "../../../components/common/Button/Button";
