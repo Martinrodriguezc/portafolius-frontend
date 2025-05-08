@@ -6,8 +6,8 @@ import { ReturnButton } from "../../../components/common/Button/ReturnButton";
 
 export default function StudentMultipleVideosPage() {
   const { videos, loading, error, study_id } = useStudyVideos();
-
   return (
+  
     <div className="p-8">
       <header className="mb-8 flex justify-between items-center">
         <div className="flex flex-col">
@@ -32,11 +32,13 @@ export default function StudentMultipleVideosPage() {
             >
               <div className="flex-1 mr-4">
                 <h3 className="text-lg font-medium text-[#333333]">
-                  {video.original_filename}
+                  
                 </h3>
-                <p className="text-sm text-[#A0A0A0]">{video.mime_type}</p>
+                <p className="text-sm text-[#A0A0A0]">{video.original_filename}</p>
                 <div className="text-xs text-[#A0A0A0] mt-1">
-                  {video.upload_date} &bull; {video.duration_seconds}s
+                  Fecha: {new Date(video.upload_date).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                  <br />
+                  Protocolo: {video.protocol}
                 </div>
               </div>
               <Link to={`/teacher/evaluations/${study_id}/videos/${video.id}`}>

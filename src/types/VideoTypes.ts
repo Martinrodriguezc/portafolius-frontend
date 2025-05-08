@@ -9,6 +9,7 @@ export interface Video {
   upload_date: string;
   order_index: number;
   status: string;
+  protocol: string;
 }
 
 export interface TeacherVideo {
