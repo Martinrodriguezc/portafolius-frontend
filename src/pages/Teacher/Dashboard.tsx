@@ -6,6 +6,7 @@ import TabsContainer from "../../components/common/Tabs/TabsContainer";
 import TabsList from "../../components/common/Tabs/TabsList";
 import TabsPanel from "../../components/common/Tabs/TabsPanel";
 import { useTeacherDashboard } from "../../hooks/teacher/dashboard/useTeacherDashboard";
+import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
 
 export default function TeacherDashboardPage() {
   const {
@@ -19,18 +20,28 @@ export default function TeacherDashboardPage() {
     vidsError,
   } = useTeacherDashboard();
 
-  if (statsLoading || vidsLoading) {
+  const {
+    pending: studiesPending,
+    completed: studiesCompleted,
+    loading: studiesLoading,
+    error: studiesError,
+  } = useAllStudies();
+
+  if (statsLoading || vidsLoading || studiesLoading) {
     return <p className="p-8">Cargando…</p>;
   }
-  if (statsError) {
-    return <p className="p-8 text-red-500">Error: {statsError}</p>;
-  }
-  if (vidsError) {
-    return <p className="p-8 text-red-500">Error: {vidsError}</p>;
+  if (statsError || vidsError || studiesError) {
+    return (
+      <p className="p-8 text-red-500">
+        Error: {statsError || vidsError || studiesError}
+      </p>
+    );
   }
   if (!stats) {
     return null;
   }
+
+  const allStudies = [...studiesPending, ...studiesCompleted];
 
   return (
     <div className="p-8">
@@ -72,18 +83,35 @@ export default function TeacherDashboardPage() {
               </p>
             </Card>
           ) : (
-            pending.map((v) => (
-              <Card key={v.id} className="p-4 flex justify-between m-4">
-                <div>
-                  <h4>{v.original_filename}</h4>
-                  <p className="text-sm text-gray-500">
-                    {new Date(v.upload_date).toLocaleString()} ·{" "}
-                    {v.duration_seconds}s
-                  </p>
-                </div>
-                <Button>Evaluar</Button>
-              </Card>
-            ))
+            <div className="space-y-4">
+              {pending.map((v) => {
+                const study = allStudies.find((s) => s.study_id === v.study_id);
+                const studentName = study
+                  ? `${study.first_name} ${study.last_name}`
+                  : "Desconocido";
+                return (
+                  <Card
+                    key={v.id}
+                    className="rounded-[8px] p-4 flex items-center justify-between"
+                  >
+                    <div className="flex-1 mr-4">
+                      <h3 className="text-lg font-medium text-[#333333]">
+                        {v.original_filename}
+                      </h3>
+                      <div className="text-xs text-[#A0A0A0] mt-1">
+                        {studentName} ·{" "}
+                        {new Date(v.upload_date).toLocaleDateString("es-ES", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        })}
+                      </div>
+                    </div>
+                    <Button>Evaluar</Button>
+                  </Card>
+                );
+              })}
+            </div>
           )}
         </TabsPanel>
 
@@ -99,17 +127,36 @@ export default function TeacherDashboardPage() {
               </p>
             </Card>
           ) : (
-            evaluated.map((v) => (
-              <Card key={v.id} className="p-4 flex justify-between">
-                <div>
-                  <h4>{v.original_filename}</h4>
-                  <p className="text-sm text-gray-500">
-                    {new Date(v.evaluated_at!).toLocaleString()} · {v.score}/10
-                  </p>
-                </div>
-                <Button>Ver</Button>
-              </Card>
-            ))
+            <div className="space-y-4">
+              {evaluated.map((v) => {
+                const study = allStudies.find((s) => s.study_id === v.study_id);
+                const studentName = study
+                  ? `${study.first_name} ${study.last_name}`
+                  : "Desconocido";
+                return (
+                  <Card
+                    key={v.id}
+                    className="rounded-[8px] p-4 flex items-center justify-between"
+                  >
+                    <div className="flex-1 mr-4">
+                      <h3 className="text-lg font-medium text-[#333333]">
+                        {v.original_filename}
+                      </h3>
+                      <div className="text-xs text-[#A0A0A0] mt-1">
+                        {studentName} ·{" "}
+                        {new Date(v.evaluated_at!).toLocaleDateString("es-ES", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        })}{" "}
+                        · {v.score}/10
+                      </div>
+                    </div>
+                    <Button>Ver</Button>
+                  </Card>
+                );
+              })}
+            </div>
           )}
         </TabsPanel>
       </TabsContainer>

@@ -4,6 +4,7 @@ import Card from "../../../components/common/Card/Card";
 import VideoPlayer from "../../../components/student/videos/VideoPlayer";
 import { useVideoPage } from "../../../hooks/video/useVideoPage";
 import { ReturnButton } from "../../../components/common/Button/ReturnButton";
+import { useAllStudies } from "../../../hooks/teacher/useAllStudies/useAllStudies";
 
 export default function TeacherVideoPage() {
   const {
@@ -19,6 +20,10 @@ export default function TeacherVideoPage() {
     isFullscreen,
     toggleFullscreen,
   } = useVideoPage();
+
+  const { pending, completed, loading: studiesLoading } = useAllStudies();
+  const allStudies = [...pending, ...completed];
+  const currentStudy = allStudies.find((s) => s.study_id === meta?.study_id);
 
   if (loading) return <p className="p-8">Cargando vídeo…</p>;
   if (error || !meta) return <p className="p-8 text-red-500">Error: {error}</p>;
@@ -55,17 +60,23 @@ export default function TeacherVideoPage() {
           <Card className="p-4 rounded-lg shadow">
             <h3 className="text-lg font-semibold text-[#333] mb-2">Detalles del estudio</h3>
             <p className="text-sm text-[#555] mb-1">
-              <strong>Estudiante:</strong> {meta?.original_filename} {meta?.size_bytes}
+              <strong>Estudiante:</strong>{" "}
+              {studiesLoading
+                ? "Cargando…"
+                : currentStudy
+                ? `${currentStudy.first_name} ${currentStudy.last_name}`
+                : "No disponible"}
             </p>
             <p className="text-sm text-[#555] mb-1">
-              <strong>Título:</strong> {meta?.order_index || "No disponible"}
+              <strong>Título:</strong>{" "}
+              {studiesLoading
+                ? "Cargando…"
+                : currentStudy?.title ?? "No disponible"}
             </p>
             <p className="text-sm text-[#555] mb-1">
-              <strong>Protocolo:</strong> {meta?.status?.toUpperCase() || "No especificado"}
+              <strong>Protocolo:</strong> {meta.protocol}
             </p>
-            <p className="text-sm text-[#555] mb-1">
-              <strong>Archivo:</strong> {meta?.original_filename}
-            </p>
+
           </Card>
         </div>
 
@@ -81,4 +92,3 @@ export default function TeacherVideoPage() {
     </div>
   );
 }
-
