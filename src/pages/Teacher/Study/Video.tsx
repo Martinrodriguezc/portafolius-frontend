@@ -76,9 +76,7 @@ export default function TeacherVideoPage() {
             <p className="text-sm text-[#555] mb-1">
               <strong>Protocolo:</strong> {meta.protocol}
             </p>
-            <p className="text-sm text-[#555] mb-1">
-              <strong>Archivo:</strong> {meta.original_filename}
-            </p>
+
           </Card>
         </div>
 
