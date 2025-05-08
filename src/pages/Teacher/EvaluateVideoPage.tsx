@@ -4,6 +4,7 @@ import Button from "../../components/common/Button/Button";
 import { Textarea } from "../../components/common/Textarea/Textarea";
 import VideoPlayer from "../../components/student/videos/VideoPlayer";
 import { useTeacherEvaluateVideo } from "../../hooks/teacher/evaluations/useTeacherEvaluateVideo/useTeacherEvaluateVideo";
+import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
 
 interface ExistingEvaluation {
   id: number;
@@ -42,7 +43,13 @@ const TeacherEvaluateVideoPage: React.FC = () => {
     onSubmit,
   } = useTeacherEvaluateVideo();
 
-  if (loading) return <p className="p-8">Cargando…</p>;
+  const { pending, completed } = useAllStudies();
+  const allStudies = [...pending, ...completed];
+  const currentStudy = meta
+    ? allStudies.find((s) => s.study_id === meta.study_id)
+    : undefined;
+
+  if (loading || !meta) return <p className="p-8">Cargando…</p>;
   if (error) return <p className="p-8 text-red-500">{error}</p>;
 
   return (
@@ -67,18 +74,20 @@ const TeacherEvaluateVideoPage: React.FC = () => {
             Detalles del estudio
           </h3>
           <p className="text-sm text-[#555] mb-1">
-            <strong>Estudiante:</strong> {meta?.order_index} {meta?.object_key}
+            <strong>Estudiante:</strong>{" "}
+            {currentStudy
+              ? `${currentStudy.first_name} ${currentStudy.last_name}`
+              : "No disponible"}
           </p>
           <p className="text-sm text-[#555] mb-1">
             <strong>Título:</strong>{" "}
-            {meta?.original_filename || "No disponible"}
+            {currentStudy?.title ?? "No disponible"}
           </p>
           <p className="text-sm text-[#555] mb-1">
-            <strong>Protocolo:</strong>{" "}
-            {meta?.original_filename?.toUpperCase() || "No especificado"}
+            <strong>Protocolo:</strong> {meta.protocol}
           </p>
           <p className="text-sm text-[#555] mb-1">
-            <strong>Archivo:</strong> {meta?.original_filename}
+            <strong>Archivo:</strong> {meta.original_filename}
           </p>
         </Card>
       </div>
@@ -120,7 +129,6 @@ const TeacherEvaluateVideoPage: React.FC = () => {
           </Button>
         </Card>
 
-        {/* Tarjeta que muestra la evaluación existente entregada */}
         {existing && (
           <Card className="mt-6 p-4 rounded-lg shadow">
             <h3 className="text-lg font-semibold mb-4">Evaluación entregada</h3>
@@ -141,7 +149,8 @@ const TeacherEvaluateVideoPage: React.FC = () => {
               {(existing as ExistingEvaluation).protocol}
             </p>
             <p className="text-sm">
-              <strong>Título:</strong> {(existing as ExistingEvaluation).title}
+              <strong>Título:</strong>{" "}
+              {(existing as ExistingEvaluation).title}
             </p>
             <p className="text-xs text-gray-500">
               <strong>Fecha de envío:</strong>{" "}
