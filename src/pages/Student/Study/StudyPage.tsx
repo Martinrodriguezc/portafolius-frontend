@@ -390,7 +390,7 @@ export default function StudentStudiesPage() {
               </ul>
               <div className="mt-4 pt-4 border-t border-slate-100">
                 <Link
-                  to="/student/resources"
+                  to="/student/materials"
                   className="text-[#4E81BD] text-sm font-medium flex items-center hover:underline"
                 >
                   Ver más recursos de aprendizaje <ArrowRight className="h-4 w-4 ml-1" />
