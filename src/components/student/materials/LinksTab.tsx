@@ -33,6 +33,7 @@ export function LinksTab({ links }: LinksTabProps) {
       const domain = new URL(url).hostname.replace("www.", "")
       return domain
     } catch (e) {
+      console.log(e)
       return url
     }
   }
