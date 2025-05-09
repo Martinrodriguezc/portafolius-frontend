@@ -28,7 +28,6 @@ export function LinksTab({ links }: LinksTabProps) {
       (link.tags && link.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))),
   )
 
-  // Function to extract domain from URL
   const extractDomain = (url: string) => {
     try {
       const domain = new URL(url).hostname.replace("www.", "")

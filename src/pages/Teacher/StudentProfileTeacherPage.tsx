@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams} from "react-router-dom";
 import { useStudentProfile } from "../../hooks/teacher/student/useStudentProfile";
 import { PageHeader } from "../../components/teacher/StudentProfile/Header";
 import { LoadingState } from "../../components/teacher/StudentProfile/Loading";
@@ -14,7 +14,6 @@ import { HelpSection } from "../../components/teacher/StudentProfile/HelpSection
 
 export default function StudentProfileTeacherPage() {
   const { studentId } = useParams<{ studentId: string }>();
-  const nav = useNavigate();
   const {
     student,
     studentLoading,

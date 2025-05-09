@@ -22,7 +22,6 @@ interface StudentTabsProps {
 }
 
 export const StudentTabs: React.FC<StudentTabsProps> = ({
-  studentId,
   activeTab,
   setActiveTab,
   searchTerm,

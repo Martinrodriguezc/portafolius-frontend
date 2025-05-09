@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { FileText, Download, ExternalLink, Search, Tag } from 'lucide-react'
+import { FileText, Download, ExternalLink, Tag } from 'lucide-react'
 import Card from "../../common/Card/Card"
 
 export interface Document {
