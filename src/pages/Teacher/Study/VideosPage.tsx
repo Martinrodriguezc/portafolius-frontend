@@ -30,7 +30,6 @@ export default function StudentMultipleVideosPage() {
 
   const label = selectedProtocol ? (selectedProtocol === "all" ? "Mostrar todos" : selectedProtocol) : ""
 
-  // Page header component - extracted for reuse in all states
   const PageHeader = () => (
     <header className="mb-8 flex flex-col md:flex-row justify-between md:items-center gap-4">
       <div className="flex items-start gap-3">

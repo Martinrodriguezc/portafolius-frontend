@@ -4,7 +4,6 @@ import {
   BarChart2,
   BookOpen,
   Calendar,
-  FileText,
 } from "lucide-react";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";

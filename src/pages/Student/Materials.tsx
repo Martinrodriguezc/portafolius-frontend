@@ -1,6 +1,5 @@
 import { useStudentMaterials } from "../../hooks/student/Materials/useStudentMaterials"
 import { authService } from "../../hooks/auth/authServices"
-import { groupBy } from "lodash"
 
 import DocumentsTab from "../../components/student/materials/DocumentsTab"
 import { VideosTab } from "../../components/student/materials/VideosTab"
@@ -25,7 +24,7 @@ import {
 export default function MaterialsPage() {
   const user = authService.getCurrentUser()
   const studentId = user?.id
-  const { data, isLoading, error } = useStudentMaterials(Number(studentId))
+  const { isLoading, error } = useStudentMaterials(Number(studentId))
 
   // Page header component - extracted for reuse in all states
   const PageHeader = () => (
@@ -133,7 +132,6 @@ export default function MaterialsPage() {
     )
   }
 
-  const grouped = groupBy(data, "type")
 
   return (
     <div className="p-8 md:p-10 max-w-7xl mx-auto">
@@ -151,7 +149,6 @@ export default function MaterialsPage() {
               <p className="text-[#666666]">
                 Tienes acceso a{" "}
                 <span className="font-medium text-[#4E81BD]">
-                  {data.length} {data.length === 1 ? "recurso" : "recursos"}
                 </span>{" "}
                 educativos
               </p>
@@ -164,7 +161,7 @@ export default function MaterialsPage() {
                 <FileText className="h-5 w-5 text-[#4E81BD]" />
               </div>
               <p className="text-xs text-[#666666]">Documentos</p>
-              <p className="text-sm font-medium text-[#333333]">{(grouped.document || []).length}</p>
+              <p className="text-sm font-medium text-[#333333]"></p>
             </div>
 
             <div className="bg-white p-3 rounded-lg shadow-sm border border-[#4E81BD]/20 text-center">
@@ -172,7 +169,7 @@ export default function MaterialsPage() {
                 <Video className="h-5 w-5 text-[#4E81BD]" />
               </div>
               <p className="text-xs text-[#666666]">Videos</p>
-              <p className="text-sm font-medium text-[#333333]">{(grouped.video || []).length}</p>
+              <p className="text-sm font-medium text-[#333333]"></p>
             </div>
 
             <div className="bg-white p-3 rounded-lg shadow-sm border border-[#4E81BD]/20 text-center">
@@ -180,7 +177,7 @@ export default function MaterialsPage() {
                 <ExternalLink className="h-5 w-5 text-[#4E81BD]" />
               </div>
               <p className="text-xs text-[#666666]">Enlaces</p>
-              <p className="text-sm font-medium text-[#333333]">{(grouped.link || []).length}</p>
+              <p className="text-sm font-medium text-[#333333]"></p>
             </div>
           </div>
         </div>
@@ -215,15 +212,15 @@ export default function MaterialsPage() {
           <TabsList className="mb-8 border-b border-slate-200 pb-1 overflow-x-auto scrollbar-hide">
             <TabsButton value="documents" >
               <FileText className="h-4 w-4" />
-              Documentos ({(grouped.document || []).length})
+              Documentos 
             </TabsButton>
             <TabsButton value="videos" >
               <Video className="h-4 w-4" />
-              Videos ({(grouped.video || []).length})
+              Videos 
             </TabsButton>
             <TabsButton value="links">
               <ExternalLink className="h-4 w-4" />
-              Enlaces ({(grouped.link || []).length})
+              Enlaces 
             </TabsButton>
           </TabsList>
 

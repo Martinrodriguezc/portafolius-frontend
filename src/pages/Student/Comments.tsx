@@ -5,9 +5,7 @@ import {
   BookOpen,
   Lightbulb,
   Clock,
-  CheckCircle,
   Plus,
-  ArrowRight,
 } from "lucide-react";
 import { authService } from "../../hooks/auth/authServices";
 import Button from "../../components/common/Button/Button";

@@ -24,8 +24,8 @@ import StudentMultipleVideosPage from "./pages/Student/Study/VideosPage";
 import StudentVideoPage from "./pages/Student/Study/Video";
 
 import TeacherDashboardPage from "./pages/Teacher/Dashboard";
-import TeacherEvaluationsPage from "./pages/Teacher/Evaluations";
-import TeacherStudentsPage from "./pages/Teacher/Students";
+import TeacherEvaluationsPage from "./pages/Teacher/allEvaluations";
+import TeacherStudentsPage from "./pages/Teacher/AllStudents";
 import TeacherSettingsPage from "./pages/Teacher/Settings";
 
 import CommentsPage from "./pages/Student/Comments";
