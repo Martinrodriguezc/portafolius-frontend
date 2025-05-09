@@ -19,7 +19,7 @@ export interface LinksTabProps {
 }
 
 export function LinksTab({ links }: LinksTabProps) {
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm] = useState("")
 
   const filteredLinks = links.filter(
     (link) =>

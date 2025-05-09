@@ -10,7 +10,7 @@ export function useCreateStudy() {
     const [isCreating, setIsCreating] = useState(false);
     const [createProgress, setCreateProgress] = useState(0);
     const navigate = useNavigate()
-    const [error, setError] = useState("")
+    const [error] = useState("")
 
     const handleSubmit = async () => {
         if (!title || !description) {

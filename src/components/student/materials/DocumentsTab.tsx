@@ -20,7 +20,7 @@ interface DocumentsTabProps {
 }
 
 export default function DocumentsTab({ documents }: DocumentsTabProps) {
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm] = useState("")
 
   const filteredDocuments = documents.filter(
     (doc) =>

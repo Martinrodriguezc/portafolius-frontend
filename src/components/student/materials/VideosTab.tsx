@@ -19,7 +19,7 @@ interface VideosTabProps {
 }
 
 export function VideosTab({ videos }: VideosTabProps) {
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm] = useState("")
 
   const filteredVideos = videos.filter(
     (video) =>

@@ -27,8 +27,8 @@ export function useUploadPage() {
   const [organs, setOrgans] = useState<Organ[]>([]);
   const [structures, setStructures] = useState<Structure[]>([]);
   const [conditions, setConditions] = useState<Condition[]>([]);
-  const [loading, setLoading] = useState("")
-  const [error, setError] = useState("")
+  const [loading] = useState("")
+  const [error] = useState("")
 
   useEffect(() => {
     fetchStudentStudies(userId)
