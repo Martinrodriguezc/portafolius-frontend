@@ -1,21 +1,19 @@
-import { useNavigate } from "react-router-dom";
-
-import Card from "../../components/common/Card/Card";
-import Button from "../../components/common/Button/Button";
-import Input from "../../components/common/Input/Input";
-
+import { useState } from "react";
+import { useParams} from "react-router-dom";
 import { useStudentProfile } from "../../hooks/teacher/student/useStudentProfile";
-import { useStudentProfileTeacherPage } from "../../hooks/teacher/student/useStudentProfileTeacherPage";
-import { authService } from "../../hooks/auth/authServices";
+import { PageHeader } from "../../components/teacher/StudentProfile/Header";
+import { LoadingState } from "../../components/teacher/StudentProfile/Loading";
+import { ErrorState } from "../../components/teacher/StudentProfile/Error";
+import { StudentInfoCard } from "../../components/teacher/StudentProfile/StudentInfoCard";
+import { QuickActions } from "../../components/teacher/StudentProfile/QuickActions";
+import { TopMetrics } from "../../components/teacher/StudentProfile/TopMetrics";
+import { StudentTabs } from "../../components/teacher/StudentProfile/StudentTabs";
+import { RecommendedResources } from "../../components/teacher/StudentProfile/RecommendedResources";
+import { HelpSection } from "../../components/teacher/StudentProfile/HelpSection";
 
-export interface Props {
-  mode: "create" | "view";
-}
 
-export default function StudentProfileTeacherPage({ mode }: Props) {
-  const nav = useNavigate();
-  const teacher = authService.getCurrentUser();
-
+export default function StudentProfileTeacherPage() {
+  const { studentId } = useParams<{ studentId: string }>();
   const {
     student,
     studentLoading,
@@ -25,128 +23,106 @@ export default function StudentProfileTeacherPage({ mode }: Props) {
     studiesError,
   } = useStudentProfile();
 
-  const {
-    form,
-    handleChange,
-    handleSubmit,
-    showPasswordRequirements,
-    formError,
-  } = useStudentProfileTeacherPage("create");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("date");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [activeTab, setActiveTab] = useState("studies");
 
-  if (!teacher) {
-    return <p className="p-8 text-red-500">Debes iniciar sesión</p>;
-  }
+  const total = studies.length;
+  const completedCount = studies.filter((s) => s.status === "EVALUADO").length;
+  const average =
+    completedCount > 0
+      ? (
+          studies
+            .filter((s) => s.status === "EVALUADO")
+            .reduce((sum, s) => sum + (s.score || 0), 0) / completedCount
+        ).toFixed(1)
+      : "—";
 
-  if (mode === "view") {
-    if (studentLoading) return <p className="p-8">Cargando perfil…</p>;
-    if (studentError)
-      return <p className="p-8 text-red-500">Error: {studentError}</p>;
-    if (!student) return <p className="p-8">Estudiante no encontrado</p>;
+  const filtered = studies.filter((s) => {
+    const matchSearch =
+      !searchTerm ||
+      s.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (s.description?.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchStatus =
+      statusFilter === "all" ||
+      (statusFilter === "evaluated" && s.status === "EVALUADO") ||
+      (statusFilter === "pending" && s.status !== "EVALUADO");
+    return matchSearch && matchStatus;
+  });
+  const sortedStudies = filtered.slice().sort((a, b) => {
+    if (sortBy === "date")
+      return Date.parse(b.created_at) - Date.parse(a.created_at);
+    if (sortBy === "title") return a.title.localeCompare(b.title);
+    if (sortBy === "status") return a.status === b.status ? 0 : a.status === "EVALUADO" ? -1 : 1;
+    if (sortBy === "score") return (b.score || 0) - (a.score || 0);
+    return 0;
+  });
 
+  const recentActivity = [
+    { id: 1, type: "login", date: new Date() },
+    // ...
+  ];
+  const teacherNotes = [
+    { id: 1, text: "Nota de ejemplo", date: new Date() },
+    // ...
+  ];
+  const recommendedResources = [
+    { id: 1, title: "Recurso PDF", type: "pdf" },
+    // ...
+  ];
+
+  if (studentLoading || studiesLoading) {
     return (
       <div className="p-8">
-        <h1 className="mb-6 text-[20px] font-bold">
-          Perfil de {student.first_name} {student.last_name}
-        </h1>
-
-        <Card className="p-6 space-y-4 mb-8">
-          <p>
-            <strong>Email:</strong> {student.email}
-          </p>
-          <div className="flex justify-end">
-            <Button variant="outline" onClick={() => nav(-1)}>
-              Volver
-            </Button>
-          </div>
-        </Card>
-
-        <h2 className="text-[18px] font-semibold mb-4">Estudios</h2>
-
-        {studiesLoading && <p>Cargando estudios…</p>}
-        {studiesError && <p className="text-red-500">Error: {studiesError}</p>}
-
-        {!studiesLoading && !studiesError && studies.length === 0 && (
-          <p>No hay estudios para este estudiante.</p>
-        )}
-
-        {!studiesLoading && !studiesError && studies.length > 0 && (
-          <div className="space-y-4">
-            {studies.map((st) => (
-              <Card key={st.id} className="p-4">
-                <h3 className="font-medium">{st.title}</h3>
-                <p className="text-sm text-gray-500">
-                  Descripcion: {st.description || "—"}
-                </p>
-                <p className="text-sm text-gray-500">Estado: {st.status}</p>
-              </Card>
-            ))}
-          </div>
-        )}
+        <PageHeader studentName="" studentEmail="" />
+        <LoadingState title="Cargando perfil…" />
+      </div>
+    );
+  }
+  if (studentError || studiesError || !student) {
+    return (
+      <div className="p-8">
+        <PageHeader studentName="" studentEmail="" />
+        <ErrorState message={(studentError || studiesError)?.toString() || ""} />
       </div>
     );
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-[20px] font-bold mb-6">Añadir nuevo estudiante</h1>
+    <div className="p-8 space-y-8 bg-slate-50">
+      <PageHeader
+        studentName={`${student.first_name} ${student.last_name}`}
+        studentEmail={student.email}
+      />
 
-      <Card className="p-6 space-y-4">
-        {formError && <p className="text-red-500">{formError}</p>}
+      <StudentInfoCard student={student} />
+      <QuickActions />
 
-        <div>
-          <label className="block mb-1">First Name</label>
-          <Input
-            name="firstName"
-            value={form.firstName}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <TopMetrics
+        total={total}
+        completedCount={completedCount}
+        average={average}
+        studies={studies}
+      />
 
-        <div>
-          <label className="block mb-1">Last Name</label>
-          <Input
-            name="lastName"
-            value={form.lastName}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <StudentTabs
+        studentId={studentId!}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        sortedStudies={sortedStudies}
+        recentActivity={recentActivity}
+        teacherNotes={teacherNotes}
+      />
 
-        <div>
-          <label className="block mb-1">Email</label>
-          <Input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1">Password</label>
-          <Input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-          {showPasswordRequirements && (
-            <ul className="mt-2 ml-4 text-sm text-red-500 list-disc">
-              <li>Al menos 8 caracteres</li>
-            </ul>
-          )}
-        </div>
-
-        <div className="flex justify-end space-x-4">
-          <Button variant="outline" onClick={() => nav(-1)}>
-            Cancelar
-          </Button>
-          <Button onClick={handleSubmit}>Guardar</Button>
-        </div>
-      </Card>
+      <RecommendedResources resources={recommendedResources} />
+      <HelpSection />
     </div>
   );
 }

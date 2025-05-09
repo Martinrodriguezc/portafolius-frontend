@@ -27,6 +27,8 @@ export function useUploadPage() {
   const [organs, setOrgans] = useState<Organ[]>([]);
   const [structures, setStructures] = useState<Structure[]>([]);
   const [conditions, setConditions] = useState<Condition[]>([]);
+  const [loading] = useState("")
+  const [error] = useState("")
 
   useEffect(() => {
     fetchStudentStudies(userId)
@@ -167,5 +169,7 @@ export function useUploadPage() {
     addTagToFile,
     removeTagFromFile,
     handleSubmit,
+    loading,
+    error
   };
 }
