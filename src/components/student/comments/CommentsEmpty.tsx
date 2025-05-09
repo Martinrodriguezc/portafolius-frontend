@@ -1,4 +1,3 @@
-import React from 'react';
 import { BookOpen, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CommentsHeader from './CommentsHeader';

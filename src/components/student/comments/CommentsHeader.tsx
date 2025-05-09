@@ -1,4 +1,3 @@
-import React from 'react';
 import { MessageSquare } from 'lucide-react';
 import { ReturnButton } from '../../common/Button/ReturnButton';
 

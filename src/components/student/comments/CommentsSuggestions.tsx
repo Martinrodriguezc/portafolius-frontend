@@ -1,4 +1,3 @@
-import React from 'react';
 import { Lightbulb, Clock } from 'lucide-react';
 import Card from '../../common/Card/Card';
 

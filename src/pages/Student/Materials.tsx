@@ -1,4 +1,3 @@
-import React from 'react';
 import { authService } from '../../hooks/auth/authServices';
 import { useStudentMaterials } from '../../hooks/student/Materials/useStudentMaterials';
 
@@ -21,15 +20,15 @@ export default function MaterialsPage() {
   if (error)      return <MaterialsError message={error.toString()} />;
 
   // materials es Material[]; partitiónalas según su tipo:
-  const documents = materials
+  const documents = materials!
     .filter((m): m is Material & { documents: NonNullable<Material['documents']> } => m.type === 'document' && !!m.documents)
     .flatMap(m => m.documents);
 
-  const videos = materials
+  const videos = materials!
     .filter((m): m is Material & { videos: NonNullable<Material['videos']> } => m.type === 'video' && !!m.videos)
     .flatMap(m => m.videos);
 
-  const links = materials
+  const links = materials!
     .filter((m): m is Material & { links: NonNullable<Material['links']> } => m.type === 'link' && !!m.links)
     .flatMap(m => m.links);
 
