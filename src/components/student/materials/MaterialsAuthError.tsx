@@ -1,4 +1,3 @@
-import React from 'react';
 import MaterialsHeader from './MaterialsHeader';
 import { AlertCircle } from 'lucide-react';
 

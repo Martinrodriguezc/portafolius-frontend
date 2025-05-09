@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import Card from '../../common/Card/Card';

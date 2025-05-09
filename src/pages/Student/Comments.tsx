@@ -1,4 +1,3 @@
-import React from 'react';
 import { authService } from '../../hooks/auth/authServices';
 import { useRecentComments } from '../../hooks/student/RecentComments/useRecentComments';
 import CommentsHeader from '../../components/student/comments/CommentsHeader';

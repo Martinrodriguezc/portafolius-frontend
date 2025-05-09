@@ -1,4 +1,3 @@
-import React from 'react';
 import TabsContainer from '../../common/Tabs/TabsContainer';
 import TabsList      from '../../common/Tabs/TabsList';
 import TabsButton    from '../../common/Tabs/TabsButton';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { BookOpenCheck, FileText, Video, ExternalLink } from 'lucide-react';
 import { Document } from './DocumentsTab';
 import { ResourceVideo } from './VideosTab';

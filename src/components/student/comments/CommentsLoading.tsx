@@ -1,4 +1,3 @@
-import React from 'react';
 import CommentsHeader from './CommentsHeader';
 
 export default function CommentsLoading() {
