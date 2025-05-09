@@ -1,6 +1,5 @@
 import { authService } from '../../hooks/auth/authServices';
 import { useStudentMaterials } from '../../hooks/student/Materials/useStudentMaterials';
-
 import MaterialsHeader       from '../../components/student/materials/MaterialsHeader';
 import MaterialsAuthError    from '../../components/student/materials/MaterialsAuthError';
 import MaterialsLoading      from '../../components/student/materials/MaterialsLoading';
@@ -15,21 +14,34 @@ export default function MaterialsPage() {
   const studentId = Number(user?.id ?? '');
   const { data: materials, isLoading, error } = useStudentMaterials(studentId);
 
-  if (!studentId) return <MaterialsAuthError />;
-  if (isLoading)  return <MaterialsLoading />;
-  if (error)      return <MaterialsError message={error.toString()} />;
+  if (!studentId) {
+    return <MaterialsAuthError />;
+  }
+  if (isLoading) {
+    return <MaterialsLoading />;
+  }
+  if (error) {
+    return <MaterialsError message={error.toString()} />;
+  }
 
-  // materials es Material[]; partitiónalas según su tipo:
-  const documents = materials!
-    .filter((m): m is Material & { documents: NonNullable<Material['documents']> } => m.type === 'document' && !!m.documents)
+  const items: Material[] = materials!;
+
+  const documents = items
+    .filter((m): m is Material & { documents: NonNullable<Material['documents']> } =>
+      m.type === 'document' && Array.isArray(m.documents)
+    )
     .flatMap(m => m.documents);
 
-  const videos = materials!
-    .filter((m): m is Material & { videos: NonNullable<Material['videos']> } => m.type === 'video' && !!m.videos)
+  const videos = items
+    .filter((m): m is Material & { videos: NonNullable<Material['videos']> } =>
+      m.type === 'video' && Array.isArray(m.videos)
+    )
     .flatMap(m => m.videos);
 
-  const links = materials!
-    .filter((m): m is Material & { links: NonNullable<Material['links']> } => m.type === 'link' && !!m.links)
+  const links = items
+    .filter((m): m is Material & { links: NonNullable<Material['links']> } =>
+      m.type === 'link' && Array.isArray(m.links)
+    )
     .flatMap(m => m.links);
 
   return (
@@ -41,4 +53,5 @@ export default function MaterialsPage() {
     </div>
   );
 }
+
 

@@ -1,5 +1,6 @@
-import { ResourceVideo } from "../components/student/materials/VideosTab";
-import { LinksTabProps } from "./Props/Tabs/LinksTabProps";
+import { Document as DocType }       from '../components/student/materials/DocumentsTab';
+import { ResourceVideo }             from '../components/student/materials/VideosTab';
+import { Link as LinkType }          from '../components/student/materials/LinksTab';
 
 export type MaterialType = "document" | "video" | "link";
 
@@ -13,7 +14,8 @@ export interface Material {
   size_bytes?: number;
   mime_type?: string;
   uploaded_at: string;
-  documents: Document[] | null;
-  videos: ResourceVideo[]| null;
-  links: LinksTabProps[] | null;
+
+  documents: DocType[]   | null;
+  videos:    ResourceVideo[] | null;
+  links:     LinkType[]  | null;
 }
