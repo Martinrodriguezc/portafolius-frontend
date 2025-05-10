@@ -1,62 +1,57 @@
-import { useStudentMaterials } from "../../hooks/student/Materials/useStudentMaterials";
-import { authService } from "../../hooks/auth/authServices";
-import { groupBy } from "lodash";
-
-import DocumentsTab from "../../components/student/materials/DocumentsTab";
-import { VideosTab } from "../../components/student/materials/VideosTab";
-import { LinksTab } from "../../components/student/materials/LinksTab";
-
-import TabsContainer from "../../components/common/Tabs/TabsContainer";
-import TabsList from "../../components/common/Tabs/TabsList";
-import TabsButton from "../../components/common/Tabs/TabsButton";
-import TabsPanel from "../../components/common/Tabs/TabsPanel";
-import { FileText, Video, ExternalLink } from "lucide-react";
+import { authService } from '../../hooks/auth/authServices';
+import { useStudentMaterials } from '../../hooks/student/Materials/useStudentMaterials';
+import MaterialsHeader       from '../../components/student/materials/MaterialsHeader';
+import MaterialsAuthError    from '../../components/student/materials/MaterialsAuthError';
+import MaterialsLoading      from '../../components/student/materials/MaterialsLoading';
+import MaterialsError        from '../../components/student/materials/MaterialsError';
+import MaterialsSummary      from '../../components/student/materials/MaterialsSummary';
+import MaterialsSearchFilter from '../../components/student/materials/MaterialsSearchFilter';
+import MaterialsTabs         from '../../components/student/materials/MaterialsTabs';
+import { Material }          from '../../types/material';
 
 export default function MaterialsPage() {
   const user = authService.getCurrentUser();
-  const studentId = user?.id;
-  const { data, isLoading } = useStudentMaterials(Number(studentId)); //REVISAR
-  console.log(data)
+  const studentId = Number(user?.id ?? '');
+  const { data: materials, isLoading, error } = useStudentMaterials(studentId);
 
-  if (!studentId) return <p className="p-8 text-red-600">Sesión expirada.</p>;
-  if (isLoading) return <p className="p-8">Cargando materiales…</p>;
+  if (!studentId) {
+    return <MaterialsAuthError />;
+  }
+  if (isLoading) {
+    return <MaterialsLoading />;
+  }
+  if (error) {
+    return <MaterialsError message={error.toString()} />;
+  }
 
-  const grouped = groupBy(data, "type");
+  const items: Material[] = materials!;
+
+  const documents = items
+    .filter((m): m is Material & { documents: NonNullable<Material['documents']> } =>
+      m.type === 'document' && Array.isArray(m.documents)
+    )
+    .flatMap(m => m.documents);
+
+  const videos = items
+    .filter((m): m is Material & { videos: NonNullable<Material['videos']> } =>
+      m.type === 'video' && Array.isArray(m.videos)
+    )
+    .flatMap(m => m.videos);
+
+  const links = items
+    .filter((m): m is Material & { links: NonNullable<Material['links']> } =>
+      m.type === 'link' && Array.isArray(m.links)
+    )
+    .flatMap(m => m.links);
 
   return (
-    <div className="p-8">
-      <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333]">
-          Material de Estudio
-        </h1>
-        <p className="text-[#A0A0A0]">
-          Recursos educativos para mejorar tus habilidades en ultrasonido
-        </p>
-      </header>
-
-      <TabsContainer defaultValue="documents">
-        <TabsList className="mb-6">
-          <TabsButton value="documents">
-            <FileText className="mr-2 h-4 w-4" /> Documentos
-          </TabsButton>
-          <TabsButton value="videos">
-            <Video className="mr-2 h-4 w-4" /> Videos
-          </TabsButton>
-          <TabsButton value="links">
-            <ExternalLink className="mr-2 h-4 w-4" /> Enlaces
-          </TabsButton>
-        </TabsList>
-
-        <TabsPanel value="documents">
-          <DocumentsTab documents={grouped.document ?? []} />
-        </TabsPanel>
-        <TabsPanel value="videos">
-          <VideosTab videos={grouped.video ?? []} />
-        </TabsPanel>
-        <TabsPanel value="links">
-          <LinksTab links={grouped.link ?? []} />
-        </TabsPanel>
-      </TabsContainer>
+    <div className="p-8 md:p-10 max-w-7xl mx-auto">
+      <MaterialsHeader />
+      <MaterialsSummary counts={{ documents, videos, links }} />
+      <MaterialsSearchFilter />
+      <MaterialsTabs documents={documents} videos={videos} links={links} />
     </div>
   );
 }
+
+

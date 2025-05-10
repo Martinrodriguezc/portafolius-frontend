@@ -24,16 +24,17 @@ import StudentMultipleVideosPage from "./pages/Student/Study/VideosPage";
 import StudentVideoPage from "./pages/Student/Study/Video";
 
 import TeacherDashboardPage from "./pages/Teacher/Dashboard";
-import TeacherEvaluationsPage from "./pages/Teacher/Evaluations";
-import TeacherStudentsPage from "./pages/Teacher/Students";
+import TeacherEvaluationsPage from "./pages/Teacher/allEvaluations";
+import TeacherStudentsPage from "./pages/Teacher/AllStudents";
 import TeacherSettingsPage from "./pages/Teacher/Settings";
 
 import CommentsPage from "./pages/Student/Comments";
 import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
 import TeacherVideoPage from "./pages/Teacher/Study/Video";
-import TeacherEvaluateVideoPage  from "./pages/Teacher/EvaluateVideoPage";
+import TeacherEvaluateVideoPage from "./pages/Teacher/EvaluateVideoPage";
 import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import LearnMorePage from "./pages/LearnMore";
+import StudentCreateStudyPage from "./pages/Student/Study";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
           <Route path="profile" element={<StudentProfilePage />} />
           <Route path="progress" element={<StudentProgressPage />} />
           <Route path="upload" element={<StudentUploadPage />} />
+          <Route path="create_study" element={<StudentCreateStudyPage />} />
           <Route path="comments" element={<CommentsPage />} />
 
           <Route
@@ -71,17 +73,17 @@ function App() {
           <Route index element={<TeacherDashboardPage />} />
 
           {/* --- estudiantes ------------------------------------------------ */}
-          <Route path="students"          element={<TeacherStudentsPage />} />
-          <Route path="students/new"      element={<StudentProfileTeacherPage mode="create" />} />
-          <Route path="students/:id"      element={<StudentProfileTeacherPage mode="view"   />} />
+          <Route path="students" element={<TeacherStudentsPage />} />
+          <Route path="students/new" element={<StudentProfileTeacherPage />} />
+          <Route path="students/:id" element={<StudentProfileTeacherPage />} />
 
           {/* --- evaluaciones ---------------------------------------------- */}
-          <Route path="evaluations"                              element={<TeacherEvaluationsPage />} />
-          <Route path="evaluations/:id/videos"                   element={<TeacherMultipleVideosPage />} />
-          <Route path="evaluations/:studyId/videos/:clipId"      element={<TeacherVideoPage />} />
+          <Route path="evaluations" element={<TeacherEvaluationsPage />} />
+          <Route path="evaluations/:id/videos" element={<TeacherMultipleVideosPage />} />
+          <Route path="evaluations/:studyId/videos/:clipId" element={<TeacherVideoPage />} />
           <Route path="evaluations/:studyId/videos/:clipId/evaluate" element={<TeacherEvaluateVideoPage />} />
 
-          
+
           {/* --- ajustes ---------------------------------------------------- */}
           <Route path="settings" element={<TeacherSettingsPage />} />
         </Route>
@@ -92,14 +94,3 @@ function App() {
 
 export default App;
 
-/*<Route
-path="students/new"
-element={<StudentProfileTeacherPage mode="create" />}
-/>
-<Route
-path="students/:id"
-element={<StudentProfileTeacherPage mode="view" />}
-/>          <Route
-            path="evaluations/:studyId/videos/:clipId/evaluate"
-            element={<TeacherEvaluateVideoPage />}
-          />*/

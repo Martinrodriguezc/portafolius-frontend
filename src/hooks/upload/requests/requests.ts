@@ -4,7 +4,9 @@ import { authService } from "../../auth/authServices";
 
 export const generateUploadUrl = async (
   file: File,
-  studyId: string
+  studyId: string,
+  protocol: string,
+  tagIds: number[],
 ): Promise<{ uploadUrl: string; clipId: number }> => {
   logger.debug("Iniciando generateUploadUrl para:", file.name);
 
@@ -20,8 +22,10 @@ export const generateUploadUrl = async (
         userId: authService.getCurrentUser()?.id,
         fileName: file.name,
         contentType: file.type,
-        studyId: studyId,
+        studyId,
         sizeBytes: file.size,
+        protocol: protocol,
+        tagsIds: tagIds
       }),
     });
     logger.debug("Respuesta recibida de generate_upload_url:", response);
@@ -40,10 +44,10 @@ export const generateUploadUrl = async (
   }
 
   const data = await response.json();
-  const { uploadUrl } = data;
-  logger.info("URL prefirmada obtenida con éxito:", uploadUrl);
+  logger.info("URL prefirmada obtenida con éxito:", data.uploadUrl);
   return { uploadUrl: data.uploadUrl, clipId: data.clipId };
 };
+
 
 export const uploadVideo = async (
   uploadUrl: string,
@@ -80,54 +84,12 @@ export const uploadVideo = async (
   return { success: true, message: "Archivo subido correctamente" };
 };
 
-export const createNewStudy = async (
-  userId: string,
-  title: string,
-  protocol: string
-): Promise<string> => {
-  logger.debug("Creando nuevo estudio para subir los archivos");
-
-  const endpoint = `${config.SERVER_URL}/study/${userId}/studies`;
-  logger.debug("Solicitando URL prefirmada a:", endpoint);
-
-  let response: Response;
-  try {
-    response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: title,
-        protocol: protocol,
-      }),
-    });
-    logger.debug("Respuesta recibida en POST study:", response);
-  } catch (networkError) {
-    logger.error("Error en la creación del estudio:", networkError);
-    throw networkError;
-  }
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    logger.error("Backend devolvió error:", {
-      status: response.status,
-      body: errorData,
-    });
-    throw new Error(errorData.message || "Error al crear el estudio");
-  }
-
-  const data = await response.json();
-  const { study } = data;
-  logger.info("Estudio creado con éxito:", study);
-  return study.id;
-};
-
-export async function assignTagsToClip(clipId: number, tagIds: number[]) {
+export async function assignTagsToClip(clipId: number, tagIds: number[], userId: string) {
   const res = await fetch(`${config.SERVER_URL}/video/${clipId}/tags`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ tagIds }),
+    body: JSON.stringify({ tagIds, userId }),
   });
-  console.log(res)
 
   if (!res.ok) {
     throw new Error(`Error ${res.status} al asignar etiquetas al clip`);

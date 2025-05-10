@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Video } from "../../../types/VideoTypes";
 import { fetchStudyVideos } from "./request/videosRequest";
+import { fetchVideoMeta } from "../../../hooks/video/utils/requests";
+
 
 export function useStudyVideos(studyId?: string) {
   const params = useParams<{ id: string }>();
@@ -20,8 +22,20 @@ export function useStudyVideos(studyId?: string) {
 
     const load = async () => {
       try {
-        const result = await fetchStudyVideos(id);
-        setVideos(result);
+        const basic: Video[] = await fetchStudyVideos(id);
+        const enriched = await Promise.all(
+          basic.map(async (v) => {
+            const meta: Video = await fetchVideoMeta(String(v.id));
+            return {
+              ...v,
+              protocol:    meta.protocol,
+              upload_date: meta.upload_date, 
+              duration_seconds: meta.duration_seconds,
+            };
+          })
+        );
+
+        setVideos(enriched);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : String(err));
       } finally {
