@@ -1,13 +1,16 @@
-import { config } from "../../../../../config/config";
-import { Study } from "../../../../../types/Study";
+import axios, { AxiosResponse } from 'axios';
+import { config } from '../../../../../config/config';
+import { Study } from '../../../../../types/Study';
 
-export const fetchStudentStudies = async (
+export async function fetchStudentStudies(
   studentId: number
-): Promise<Study[]> => {
-  const res = await fetch(`${config.SERVER_URL}/study/${studentId}`);
-  if (!res.ok) {
-    throw new Error(`Error ${res.status} al obtener estudios`);
+): Promise<Study[]> {
+  const url = `${config.SERVER_URL}/study/${studentId}`;
+  const response: AxiosResponse<{ studies: Study[] }> = await axios.get(url, {
+    validateStatus: () => true,
+  });
+  if (response.status !== 200) {
+    throw new Error(`Error ${response.status} al obtener estudios`);
   }
-  const data = (await res.json()) as { studies: Study[] };
-  return data.studies;
-};
+  return response.data.studies;
+}

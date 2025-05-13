@@ -41,7 +41,6 @@ export function useVideoPage() {
     })();
   }, [clipId]);
 
-  // Registro los listeners cada vez que cambie la URL del video
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;

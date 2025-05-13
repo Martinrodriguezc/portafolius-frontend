@@ -4,13 +4,13 @@ import { NotificationsData } from "../../types/Props/Tabs/NotificationsTabProps"
 
 export function useProfilePage() {
   const [profile, setProfile] = useState<ProfileData>({
-    firstName: "Carlos",
-    lastName: "Rodríguez",
-    email: "carlos.rodriguez@ejemplo.com",
-    institution: "Universidad Médica Nacional",
-    specialty: "Medicina de Emergencias",
-    year: "3er año de residencia",
-    avatar: "/placeholder.svg?height=100&width=100",
+    firstName: "",
+    lastName: "",
+    email: "",
+    institution: "",
+    specialty: "",
+    year: "",
+    avatar: "",
   });
 
   const [notifications, setNotifications] = useState<NotificationsData>({

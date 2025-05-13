@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { authService } from "../../../auth/authServices";
-import { fetchTeacherStats } from "./request/useTeacherStatsRequest";
+import { fetchTeacherStats } from "./request/statsRequest";
 import { TeacherStats } from "../../../../types/Teacher";
 
 export function useTeacherStats() {

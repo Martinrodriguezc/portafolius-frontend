@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchTeacherStudents } from "./request/useTeacherStudentsRequests";
+import { fetchTeacherStudents } from "./request/studentsRequests";
 import { TeacherStudent } from "../../../../types/student";
 
 export function useTeacherStudents(teacherId?: number) {

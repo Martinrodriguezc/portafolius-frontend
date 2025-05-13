@@ -1,28 +1,29 @@
-import { config } from "../../../../../config/config";
-import { Evaluation } from "../../../../../types/evaluation";
+import axios, { AxiosResponse } from 'axios';
+import { config } from '../../../../../config/config';
+import { Evaluation } from '../../../../../types/evaluation';
 
-export const fetchPendingEvaluations = async (
+export async function fetchPendingEvaluations(
   teacherId: number
-): Promise<Evaluation[]> => {
-  const res = await fetch(
-    `${config.SERVER_URL}/teacher/${teacherId}/evaluations/pending`
-  );
-  if (!res.ok) {
-    throw new Error(`Error ${res.status} al obtener pendientes`);
+): Promise<Evaluation[]> {
+  const url = `${config.SERVER_URL}/teacher/${teacherId}/evaluations/pending`;
+  const response: AxiosResponse<{ pending: Evaluation[] }> = await axios.get(url, {
+    validateStatus: () => true,
+  });
+  if (response.status !== 200) {
+    throw new Error(`Error ${response.status} al obtener pendientes`);
   }
-  const data = (await res.json()) as { pending: Evaluation[] };
-  return data.pending;
-};
+  return response.data.pending;
+}
 
-export const fetchCompletedEvaluations = async (
+export async function fetchCompletedEvaluations(
   teacherId: number
-): Promise<Evaluation[]> => {
-  const res = await fetch(
-    `${config.SERVER_URL}/teacher/${teacherId}/evaluations/completed`
-  );
-  if (!res.ok) {
-    throw new Error(`Error ${res.status} al obtener completadas`);
+): Promise<Evaluation[]> {
+  const url = `${config.SERVER_URL}/teacher/${teacherId}/evaluations/completed`;
+  const response: AxiosResponse<{ completed: Evaluation[] }> = await axios.get(url, {
+    validateStatus: () => true,
+  });
+  if (response.status !== 200) {
+    throw new Error(`Error ${response.status} al obtener completadas`);
   }
-  const data = (await res.json()) as { completed: Evaluation[] };
-  return data.completed;
-};
+  return response.data.completed;
+}
