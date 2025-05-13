@@ -10,8 +10,8 @@ export async function fetchRecentComments(
       `${config.SERVER_URL}/study/${userId}/comments`
     );
     return response.data.comments;
-  } catch (err: any) {
-    if (err.response) {
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response) {
       throw new Error(`Error ${err.response.status} al cargar comentarios`);
     }
     throw err;

@@ -19,12 +19,20 @@ import {
 import { authService } from '../../../auth/authServices';
 import { UserProfile } from '../../../../types/User';
 
+interface RawUserProfilePayload {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    role?: string;
+}
+
 describe('userProfileRequests (axios)', () => {
     let mock: AxiosMockAdapter;
     const userId = 33;
     const profileUrl = `http://testserver/users/${userId}`;
 
-    const rawProfile: any = {
+    const rawProfile: RawUserProfilePayload = {
         id: '33',
         first_name: 'María',
         last_name: 'González',
@@ -42,11 +50,15 @@ describe('userProfileRequests (axios)', () => {
     beforeAll(() => {
         mock = new AxiosMockAdapter(axios);
     });
+
     afterEach(() => {
         mock.reset();
         jest.clearAllMocks();
     });
-    afterAll(() => mock.restore());
+
+    afterAll(() => {
+        mock.restore();
+    });
 
     describe('fetchUserProfileRequest', () => {
         it('resuelve perfil con id numérico cuando status 200', async () => {
@@ -55,14 +67,15 @@ describe('userProfileRequests (axios)', () => {
 
             const result = await fetchUserProfileRequest(userId);
             expect(result).toEqual(parsedProfile);
-            expect(mock.history.get[0].headers!['Authorization']).toBe(
-                'Bearer tok123'
-            );
+
+            const sentHeaders = mock.history.get[0].headers ?? {};
+            expect(sentHeaders.Authorization).toBe('Bearer tok123');
         });
 
         it('lanza error si status != 200', async () => {
             (authService.getToken as jest.Mock).mockReturnValue('tok123');
             mock.onGet(profileUrl).reply(404);
+
             await expect(fetchUserProfileRequest(userId)).rejects.toThrow(
                 'Error 404 al cargar perfil'
             );
@@ -70,10 +83,13 @@ describe('userProfileRequests (axios)', () => {
     });
 
     describe('updateUserProfileRequest', () => {
-        const updates = { first_name: 'Ana', email: 'ana@nueva.cl' };
-        const returnedProfile: any = {
+        const updates: Partial<Omit<UserProfile, 'id'>> = {
+            first_name: 'Ana',
+            email: 'ana@nueva.cl',
+        };
+        const returnedProfile: RawUserProfilePayload & { role: string } = {
             id: '33',
-            ...updates,
+            first_name: 'Ana',
             last_name: 'González',
             email: 'ana@nueva.cl',
             role: 'admin',
@@ -97,10 +113,17 @@ describe('userProfileRequests (axios)', () => {
         });
 
         it('lanza error si no viene role en la respuesta', async () => {
-            const badProfile = { id: '33', firstName: 'X' };
+            const incompleteProfile = {
+                id: '33',
+                first_name: 'X',
+                last_name: 'Y',
+                email: 'x@y.com',
+            } as RawUserProfilePayload;
+
             (authService.updateUserProfile as jest.Mock).mockResolvedValueOnce(
-                badProfile
+                incompleteProfile
             );
+
             await expect(updateUserProfileRequest(updates)).rejects.toThrow(
                 'Role no recibido al actualizar perfil'
             );
