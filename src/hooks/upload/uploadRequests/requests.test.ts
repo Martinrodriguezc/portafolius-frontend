@@ -1,3 +1,18 @@
+class MockFile {
+  name: string;
+  size: number;
+  type: string;
+  constructor(chunks: (string | Buffer)[], filename: string, options: { type: string }) {
+    this.name = filename;
+    this.type = options.type;
+    this.size = chunks.reduce((sum, chunk) => {
+      if (typeof chunk === 'string') return sum + Buffer.byteLength(chunk);
+      return sum + chunk.byteLength;
+    }, 0);
+  }
+}
+(global as any).File = MockFile;
+
 import axios from 'axios';
 import AxiosMockAdapter from 'axios-mock-adapter';
 
