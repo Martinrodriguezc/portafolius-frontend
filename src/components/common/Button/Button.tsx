@@ -15,7 +15,8 @@ const Button: React.FC<ButtonProps> = ({
   asChild = false,
   ...props
 }) => {
-  const widthClass = fixedWidth ? "w-64" : "w-full";
+  const widthClass = fixedWidth ? "w-40 sm:w-64" : "w-full";
+
   const combinedClasses = [
     widthClass,
     baseStyle,

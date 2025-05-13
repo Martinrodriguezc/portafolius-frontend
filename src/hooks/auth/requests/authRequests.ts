@@ -6,8 +6,12 @@ import { AuthResponse, UserProps } from "../../../types/User";
 
 export const loginRequest = (
   credentials: LoginFormData
-): Promise<AxiosResponse<AuthResponse>> =>
-  axios.post<AuthResponse>(`${config.SERVER_URL}/auth/login`, credentials);
+): Promise<AxiosResponse<AuthResponse>> => {
+  return axios.post<AuthResponse>(
+    `${config.SERVER_URL}/auth/login`,
+    credentials
+  );
+};
 
 export const registerRequest = (
   userData: RegisterFormData
