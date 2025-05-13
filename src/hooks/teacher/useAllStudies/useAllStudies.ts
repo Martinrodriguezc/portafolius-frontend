@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StudyWithStatus } from "../../../types/Study";
-import { fetchAllStudiesRequest } from "./request/useAllStudiesRequest";
+import { fetchAllStudiesRequest } from "./request/studiesRequest";
 
 export function useAllStudies() {
   const [studies, setStudies] = useState<StudyWithStatus[]>([]);

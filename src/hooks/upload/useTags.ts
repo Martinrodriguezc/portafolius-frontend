@@ -1,37 +1,33 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Tag, TagResponse } from "../../types/tag";
-import { config } from "../../config/config";
+import { useState, useEffect } from 'react';
+import { Tag } from '../../types/tag';
+import { fetchTags } from './tagsRequests/requests';
 
-export const useTags = () => {
+export function useTags() {
   const [tags, setTags] = useState<Tag[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get<TagResponse>(
-          `${config.SERVER_URL}/video/tags`
-        );
-    
-        if (response.data.success) {
-          setTags(response.data.tags);
-          setError(null);
-        } else {
-          throw new Error(response.data.msg || "Error al obtener tags");
-        }
-      } catch (error: unknown) {
-        console.error("🔴 Error detallado:", error);
-        setError((error as Error).message || "Error al cargar los tags");
-      } finally {
-        setLoading(false);
-      }
-    };
+    let mounted = true;
+    setLoading(true);
 
-    fetchTags();
+    fetchTags()
+      .then(fetched => {
+        if (!mounted) return;
+        setTags(fetched);
+        setError(null);
+      })
+      .catch(err => {
+        if (mounted) setError(err instanceof Error ? err.message : 'Error al cargar los tags');
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return { tags, loading, error };
-};
+}

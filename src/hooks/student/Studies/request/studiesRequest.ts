@@ -1,65 +1,56 @@
-import { config } from "../../../../config/config";
-import { RawStudy } from "../../../../types/Study";
-import { authService } from "../../../auth/authServices";
+import axios, { AxiosResponse } from 'axios';
+import { config } from '../../../../config/config';
+import { RawStudy } from '../../../../types/Study';
+import { authService } from '../../../auth/authServices';
 
-export const createNewStudy = async (
+export async function createNewStudy(
   userId: string,
   title: string,
   description: string
-): Promise<string> => {
-  console.log("Creando nuevo estudio para subir los archivos");
-
+): Promise<string> {
   const endpoint = `${config.SERVER_URL}/study/${userId}/studies`;
-  console.log("Solicitando URL prefirmada a:", endpoint);
 
-  let response: Response;
   try {
-    response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: title,
-        description: description,
-      }),
-    });
-    console.log("Respuesta recibida en POST study:", response);
-  } catch (networkError) {
-    console.log("Error en la creación del estudio:", networkError);
-    throw networkError;
+    const response: AxiosResponse<{ study: { id: string } }> = await axios.post(
+      endpoint,
+      { title, description },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+    return response.data.study.id;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response) {
+      const msg = (err.response.data as any).message;
+      throw new Error(msg || `Error ${err.response.status} al crear el estudio`);
+    }
+    throw err;
   }
+}
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    console.log("Backend devolvió error:", {
-      status: response.status,
-      body: errorData,
-    });
-    throw new Error(errorData.message || "Error al crear el estudio");
-  }
-
-  const data = await response.json();
-  const { study } = data;
-  console.log("Estudio creado con éxito:", study);
-  return study.id;
-};
-
-export const fetchStudentStudies = async (
+export async function fetchStudentStudies(
   userId: string
-): Promise<RawStudy[]> => {
+): Promise<RawStudy[]> {
   const token = authService.getToken();
-  if (!token) throw new Error("No autorizado");
+  if (!token) throw new Error('No autorizado');
 
-  const res = await fetch(`${config.SERVER_URL}/study/${userId}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error(`Error ${res.status} al obtener estudios`);
+  try {
+    const response: AxiosResponse<{ studies: RawStudy[] }> = await axios.get(
+      `${config.SERVER_URL}/study/${userId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: () => true,
+      }
+    );
+    if (response.status !== 200) {
+      throw new Error(`Error ${response.status} al obtener estudios`);
+    }
+    return response.data.studies;
+  } catch (err) {
+    if (axios.isAxiosError(err) && !err.response) {
+      throw err;
+    }
+    throw err;
   }
-
-  const { studies } = (await res.json()) as { studies: RawStudy[] };
-  return studies;
-};
+}

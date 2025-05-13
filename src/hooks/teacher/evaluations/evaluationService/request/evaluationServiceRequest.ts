@@ -1,68 +1,77 @@
-import { config } from "../../../../../config/config";
-import { EvaluationForm } from "../../../../../types/evaluation";
+import axios, { AxiosResponse } from 'axios';
+import { config } from '../../../../../config/config';
+import { EvaluationForm } from '../../../../../types/evaluation';
 
-export const fetchAllEvaluations = async (): Promise<EvaluationForm[]> => {
-  const res = await fetch(`${config.SERVER_URL}/evaluations`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-    },
-  });
-  console.log("Obteniendo evaluaciones:", res)
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status}`);
+export async function fetchAllEvaluations(): Promise<EvaluationForm[]> {
+  const token = localStorage.getItem('auth_token') ?? '';
+  const response: AxiosResponse<{ evaluations: EvaluationForm[] }> =
+    await axios.get(`${config.SERVER_URL}/evaluations`, {
+      headers: { Authorization: `Bearer ${token}` },
+      validateStatus: () => true,
+    });
+  if (response.status < 200 || response.status >= 300) {
+    throw new Error(`HTTP ${response.status}`);
   }
-  const data = (await res.json()) as { evaluations: EvaluationForm[] };
-  return data.evaluations;
-};
+  return response.data.evaluations;
+}
 
-export const createEvaluationRequest = async (
+export async function createEvaluationRequest(
   studyId: number,
   score: number,
   feedback: string
-): Promise<EvaluationForm> => {
-  const res = await fetch(`${config.SERVER_URL}/evaluations/${studyId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-    },
-    body: JSON.stringify({ score, feedback_summary: feedback }),
-  });
-  console.log("wena")
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status}`);
+): Promise<EvaluationForm> {
+  const token = localStorage.getItem('auth_token') ?? '';
+  const response: AxiosResponse<EvaluationForm> =
+    await axios.post(
+      `${config.SERVER_URL}/evaluations/${studyId}`,
+      { score, feedback_summary: feedback },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: () => true,
+      }
+    );
+  if (response.status < 200 || response.status >= 300) {
+    throw new Error(`HTTP ${response.status}`);
   }
-  return (await res.json()) as EvaluationForm;
-};
+  return response.data;
+}
 
-export const fetchEvaluationByStudyId = async (
+export async function fetchEvaluationByStudyId(
   studyId: number
-): Promise<EvaluationForm> => {
-  const res = await fetch(
-    `${config.SERVER_URL}/evaluations/by-study/${studyId}`
-  );
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status}`);
+): Promise<EvaluationForm> {
+  const response: AxiosResponse<{ evaluation: EvaluationForm }> =
+    await axios.get(`${config.SERVER_URL}/evaluations/by-study/${studyId}`, {
+      validateStatus: () => true,
+    });
+  if (response.status < 200 || response.status >= 300) {
+    throw new Error(`HTTP ${response.status}`);
   }
-  const data = (await res.json()) as { evaluation: EvaluationForm };
-  return data.evaluation;
-};
+  return response.data.evaluation;
+}
 
-export const updateEvaluationRequest = async (
+export async function updateEvaluationRequest(
   id: number,
   score: number,
   feedback: string
-): Promise<EvaluationForm> => {
-  const res = await fetch(`${config.SERVER_URL}/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-    },
-    body: JSON.stringify({ score, feedback_summary: feedback }),
-  });
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status}`);
+): Promise<EvaluationForm> {
+  const token = localStorage.getItem('auth_token') ?? '';
+  const response: AxiosResponse<EvaluationForm> =
+    await axios.put(
+      `${config.SERVER_URL}/${id}`,
+      { score, feedback_summary: feedback },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: () => true,
+      }
+    );
+  if (response.status < 200 || response.status >= 300) {
+    throw new Error(`HTTP ${response.status}`);
   }
-  return (await res.json()) as EvaluationForm;
-};
+  return response.data;
+}

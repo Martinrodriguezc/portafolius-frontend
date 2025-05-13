@@ -1,14 +1,19 @@
-import { config } from "../../../../config/config";
-import { Video } from "../../../../types/VideoTypes";
+import axios, { AxiosResponse } from 'axios';
+import { config } from '../../../../config/config';
+import { Video } from '../../../../types/VideoTypes';
 
-export const fetchStudyVideos = async (studyId: string): Promise<Video[]> => {
-  const resp = await fetch(`${config.SERVER_URL}/study/${studyId}/videos`);
-  if (!resp.ok) {
-    throw new Error(`Error ${resp.status} al obtener vídeos`);
+export async function fetchStudyVideos(studyId: string): Promise<Video[]> {
+  const url = `${config.SERVER_URL}/study/${studyId}/videos`;
+
+  const response: AxiosResponse<{ videos?: Video[]; clips?: Video[] }> =
+    await axios.get(url, {
+      validateStatus: () => true,
+    });
+
+  if (response.status !== 200) {
+    throw new Error(`Error ${response.status} al obtener vídeos`);
   }
-  const data = (await resp.json()) as {
-    videos?: Video[];
-    clips?: Video[];
-  };
-  return data.clips ?? data.videos ?? [];
-};
+
+  const { clips, videos } = response.data;
+  return clips ?? videos ?? [];
+}

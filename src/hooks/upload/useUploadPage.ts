@@ -4,7 +4,7 @@ import {
   generateUploadUrl,
   uploadVideo,
   assignTagsToClip,
-} from "./requests/requests";
+} from "./uploadRequests/requests";
 import { validateVideo } from "./validations/validations";
 import { authService } from "../auth/authServices";
 import { RawStudy } from "../../types/Study";
