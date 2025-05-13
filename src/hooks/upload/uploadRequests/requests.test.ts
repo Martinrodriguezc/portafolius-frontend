@@ -1,27 +1,38 @@
-class MockFile {
-  name: string;
-  size: number;
-  type: string;
-  constructor(chunks: (string | Buffer)[], filename: string, options: { type: string }) {
+class MockFile extends Blob implements File {
+  readonly name: string;
+  readonly lastModified: number;
+  readonly webkitRelativePath = "";
+
+  constructor(
+    chunks: BlobPart[],
+    filename: string,
+    options: FilePropertyBag = {}
+  ) {
+    super(chunks, options);
     this.name = filename;
-    this.type = options.type;
-    this.size = chunks.reduce((sum, chunk) => {
-      if (typeof chunk === 'string') return sum + Buffer.byteLength(chunk);
-      return sum + chunk.byteLength;
-    }, 0);
+    this.lastModified = options.lastModified ?? Date.now();
   }
 }
-(global as any).File = MockFile;
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      File: typeof MockFile;
+    }
+  }
+}
+
+global.File = MockFile;
 
 import axios from 'axios';
 import AxiosMockAdapter from 'axios-mock-adapter';
 
 jest.mock('../../../config/logger', () => ({
-    debug: jest.fn(),
-    info:  jest.fn(),
-    error: jest.fn(),
-  }));
-  
+  debug: jest.fn(),
+  info: jest.fn(),
+  error: jest.fn(),
+}));
+
 jest.mock('../../../config/config', () => ({
   config: { SERVER_URL: 'http://testserver' }
 }));
@@ -52,10 +63,14 @@ describe('videoServiceRequests (axios)', () => {
     mock.reset();
     jest.clearAllMocks();
   });
-  afterAll(() => mock.restore());
+
+  afterAll(() => {
+    mock.restore();
+  });
 
   describe('generateUploadUrl', () => {
     const endpoint = 'http://testserver/video/generate_upload_url';
+
     it('resuelve correctamente el uploadUrl y clipId', async () => {
       mock
         .onPost(endpoint, {
@@ -69,41 +84,33 @@ describe('videoServiceRequests (axios)', () => {
         })
         .reply(200, { uploadUrl: 'http://s3/upload', clipId: 99 });
 
-      const result = await generateUploadUrl(
-        dummyFile,
-        's1',
-        'p1',
-        [1, 2]
-      );
+      const result = await generateUploadUrl(dummyFile, 's1', 'p1', [1, 2]);
       expect(result).toEqual({ uploadUrl: 'http://s3/upload', clipId: 99 });
     });
 
     it('lanza error con message del backend en status !=200', async () => {
-      mock
-        .onPost(endpoint)
-        .reply(400, { message: 'Bad request' });
-      await expect(
-        generateUploadUrl(dummyFile, 's1', 'p1', [1])
-      ).rejects.toThrow('Bad request');
+      mock.onPost(endpoint).reply(400, { message: 'Bad request' });
+      await expect(generateUploadUrl(dummyFile, 's1', 'p1', [1])).rejects.toThrow(
+        'Bad request'
+      );
     });
 
     it('lanza error genérico si no hay message', async () => {
       mock.onPost(endpoint).reply(500, {});
-      await expect(
-        generateUploadUrl(dummyFile, 's1', 'p1', [1])
-      ).rejects.toThrow('Error al obtener la URL prefirmada');
+      await expect(generateUploadUrl(dummyFile, 's1', 'p1', [1])).rejects.toThrow(
+        'Error al obtener la URL prefirmada'
+      );
     });
 
     it('propaga error de red', async () => {
       mock.onPost(endpoint).networkError();
-      await expect(
-        generateUploadUrl(dummyFile, 's1', 'p1', [])
-      ).rejects.toThrow();
+      await expect(generateUploadUrl(dummyFile, 's1', 'p1', [])).rejects.toThrow();
     });
   });
 
   describe('uploadVideo', () => {
     const uploadUrl = 'http://s3/upload';
+
     it('resuelve success=true en 2xx', async () => {
       mock.onPut(uploadUrl).reply(204);
       const res = await uploadVideo(uploadUrl, dummyFile);
@@ -114,12 +121,8 @@ describe('videoServiceRequests (axios)', () => {
     });
 
     it('lanza error con message del backend en fallo', async () => {
-      mock
-        .onPut(uploadUrl)
-        .reply(400, { message: 'S3 error' });
-      await expect(uploadVideo(uploadUrl, dummyFile)).rejects.toThrow(
-        'S3 error'
-      );
+      mock.onPut(uploadUrl).reply(400, { message: 'S3 error' });
+      await expect(uploadVideo(uploadUrl, dummyFile)).rejects.toThrow('S3 error');
     });
 
     it('propaga error de red', async () => {
