@@ -1,35 +1,21 @@
-class MockFile extends Blob implements File {
+globalThis.File = class extends Blob {
   readonly name: string;
   readonly lastModified: number;
   readonly webkitRelativePath = "";
 
-  constructor(
-    chunks: BlobPart[],
-    filename: string,
-    options: FilePropertyBag = {}
-  ) {
+  constructor(chunks: BlobPart[], filename: string, options: FilePropertyBag = {}) {
     super(chunks, options);
     this.name = filename;
     this.lastModified = options.lastModified ?? Date.now();
   }
-}
-
-declare global {
-  namespace NodeJS {
-    interface Global {
-      File: typeof MockFile;
-    }
-  }
-}
-
-global.File = MockFile;
+};
 
 import axios from 'axios';
 import AxiosMockAdapter from 'axios-mock-adapter';
 
 jest.mock('../../../config/logger', () => ({
   debug: jest.fn(),
-  info: jest.fn(),
+  info:  jest.fn(),
   error: jest.fn(),
 }));
 
