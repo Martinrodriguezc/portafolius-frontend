@@ -3,6 +3,11 @@ import { config } from '../../../../config/config';
 import { RawStudy } from '../../../../types/Study';
 import { authService } from '../../../auth/authServices';
 
+interface ErrorResponse {
+  message?: string;
+  [key: string]: unknown;
+}
+
 export async function createNewStudy(
   userId: string,
   title: string,
@@ -19,7 +24,7 @@ export async function createNewStudy(
     return response.data.study.id;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
-      const msg = (err.response.data as any).message;
+      const msg = (err.response.data as ErrorResponse).message;
       throw new Error(msg || `Error ${err.response.status} al crear el estudio`);
     }
     throw err;

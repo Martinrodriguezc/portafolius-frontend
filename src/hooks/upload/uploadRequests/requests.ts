@@ -3,6 +3,11 @@ import { config } from '../../../config/config';
 import logger from '../../../config/logger';
 import { authService } from '../../auth/authServices';
 
+interface ErrorResponse {
+  message?: string;
+  [key: string]: unknown;
+}
+
 export async function generateUploadUrl(
   file: File,
   studyId: string,
@@ -36,8 +41,8 @@ export async function generateUploadUrl(
     );
 
     if (response.status !== 200) {
-      const msg = response.data.message;
-      throw new Error(msg || 'Error al obtener la URL prefirmada');
+      const errData = response.data as ErrorResponse;
+      throw new Error(errData.message ?? 'Error al obtener la URL prefirmada');
     }
 
     return {
@@ -46,8 +51,8 @@ export async function generateUploadUrl(
     };
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
-      const msg = (err.response.data as any).message;
-      throw new Error(msg || 'Error al obtener la URL prefirmada');
+      const errData = err.response.data as ErrorResponse;
+      throw new Error(errData.message ?? 'Error al obtener la URL prefirmada');
     }
     throw err;
   }
@@ -60,14 +65,22 @@ export async function uploadVideo(
   logger.info('Subiendo archivo a S3:', uploadUrl);
 
   try {
-    const response = await axios.put(uploadUrl, file, {
-      headers: { 'Content-Type': file.type },
-      validateStatus: () => true,
-    });
+    const response = await axios.put<string>(
+      uploadUrl,
+      file,
+      {
+        headers: { 'Content-Type': file.type },
+        validateStatus: () => true,
+      }
+    );
 
     if (response.status < 200 || response.status >= 300) {
-      const msg = (response.data as any).message;
-      throw new Error(msg || 'Error al subir el archivo a S3');
+      const errData = response.data as unknown;
+      const msg =
+        typeof errData === 'object' && errData !== null && 'message' in errData
+          ? (errData as ErrorResponse).message
+          : undefined;
+      throw new Error(msg ?? 'Error al subir el archivo a S3');
     }
 
     logger.info('Archivo subido exitosamente a S3:', {
@@ -77,8 +90,8 @@ export async function uploadVideo(
     return { success: true, message: 'Archivo subido correctamente' };
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
-      const msg = (err.response.data as any).message;
-      throw new Error(msg || 'Error al subir el archivo a S3');
+      const errData = err.response.data as ErrorResponse;
+      throw new Error(errData.message ?? 'Error al subir el archivo a S3');
     }
     throw err;
   }
@@ -92,18 +105,26 @@ export async function assignTagsToClip(
   const endpoint = `${config.SERVER_URL}/video/${clipId}/tags`;
 
   try {
-    const response = await axios.post(
+    const response = await axios.post<void, AxiosResponse<ErrorResponse>>(
       endpoint,
       { tagIds, userId },
       { validateStatus: () => true }
     );
+
     if (response.status !== 200) {
-      throw new Error(`Error ${response.status} al asignar etiquetas al clip`);
+      // Si response.data es undefined, lo reemplazamos por {}
+      const errData = response.data ?? {};
+      throw new Error(
+        errData.message ??
+          `Error ${response.status} al asignar etiquetas al clip`
+      );
     }
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
+      // igual aquí: err.response.data puede ser undefined
+      const errData = err.response.data ?? {};
       throw new Error(
-        (err.response.data as any).message ||
+        errData.message ??
           `Error ${err.response.status} al asignar etiquetas al clip`
       );
     }
