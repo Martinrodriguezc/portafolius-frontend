@@ -1,4 +1,4 @@
-import { UserPlus, FileSpreadsheet, BookPlus, Settings } from "lucide-react";
+import { UserPlus, FileSpreadsheet, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const QuickActions: React.FC = () => {
@@ -18,13 +18,6 @@ export const QuickActions: React.FC = () => {
       color: "bg-green-50",
     },
     {
-      title: "Añadir Curso",
-      description: "Crear un nuevo curso en la plataforma",
-      icon: <BookPlus className="h-6 w-6 text-purple-500" />,
-      link: "/admin/academic/courses/new",
-      color: "bg-purple-50",
-    },
-    {
       title: "Configuración",
       description: "Ajustar parámetros del sistema",
       icon: <Settings className="h-6 w-6 text-gray-500" />,
@@ -36,7 +29,7 @@ export const QuickActions: React.FC = () => {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold text-gray-900">Acciones Rápidas</h2>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {actions.map((action, index) => (
           <Link
             key={index}

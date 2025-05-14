@@ -42,6 +42,10 @@ import UserManagementPage from "./pages/admin/UserManagement";
 import AcademicManagementPage from "./pages/admin/AcademicManagement";
 import ReportsPage from "./pages/admin/Reports";
 import AdminSettingsPage from "./pages/admin/Settings";
+import AdminEvaluationsPage from "./pages/admin/AdminEvaluations";
+import AdminVideosPage from "./pages/admin/AdminVideosPage";
+import AdminVideoPage from "./pages/admin/AdminVideoPage";
+import AdminEvaluateVideoPage from "./pages/admin/AdminEvaluateVideo";
 
 function App() {
   return (
@@ -100,6 +104,10 @@ function App() {
           <Route index element={<AdminDashboardPage />} />
           <Route path="users" element={<UserManagementPage />} />
           <Route path="academic" element={<AcademicManagementPage />} />
+          <Route path="evaluations" element={<AdminEvaluationsPage />} />
+          <Route path="evaluations/:id/videos" element={<AdminVideosPage />} />
+          <Route path="evaluations/:studyId/videos/:clipId" element={<AdminVideoPage />} />
+          <Route path="evaluations/:studyId/videos/:clipId/evaluate" element={<AdminEvaluateVideoPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="settings" element={<AdminSettingsPage />} />
         </Route>

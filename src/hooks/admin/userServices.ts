@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { User, UserFormData } from '../../types/Admin/UserTypes';
 import { ServiceResponse } from '../../types/Admin/ServiceTypes';
-import { authService } from '../auth/authServices';
-import {config} from '../../config/config';
+import { config } from '../../config/config';
+import { checkAdminStatus } from './adminCheck';
 
 export const useUserServices = () => {
   const [students, setStudents] = useState<User[]>([]);
@@ -22,7 +22,7 @@ export const useUserServices = () => {
         user.role === 'estudiante'
       );
       const teachersList = allUsers.filter((user: User) => 
-        user.role === 'profesor'
+        user.role === 'profesor' || user.role === 'admin'
       );
       
       setStudents(studentsList);
@@ -35,20 +35,16 @@ export const useUserServices = () => {
     }
   };
 
+
   const addUser = async (newUser: Omit<UserFormData, 'id' | 'createdAt'>): Promise<ServiceResponse<User>> => {
     try {
-      const currentUser = authService.getCurrentUser();
-      
-      if (!currentUser) {
-        return { success: false, error: 'No hay sesión activa' };
+      const adminCheck = checkAdminStatus();
+      if (!adminCheck.isAdmin) {
+        return { success: false, error: adminCheck.error };
       }
       
       const payload = {
-        user: {
-          id: currentUser.id,
-          email: currentUser.email,
-          role: currentUser.role
-        },
+        user: adminCheck.currentUser,
         newUser: newUser
       };
       
@@ -60,7 +56,7 @@ export const useUserServices = () => {
       } else if (newUser.role === 'profesor') {
         setTeachers(prev => [...prev, createdUser]);
       } else if (newUser.role === 'admin') {
-        console.log('Administrador añadido:', createdUser);
+        setTeachers(prev => [...prev, createdUser]);
       }
       
       return { success: true, data: createdUser };

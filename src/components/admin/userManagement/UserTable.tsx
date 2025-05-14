@@ -18,10 +18,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, userType, onUserUpdate }) 
   const handleDelete = async (user: User) => {
     console.log(user);
     if (window.confirm(`¿Estás seguro de que deseas eliminar a ${user.first_name} ${user.last_name}?`)) {
-      const userRole = user.role === 'student' ? 'estudiante' : 
-                       user.role === 'teacher' ? 'profesor' : user.role;
-      
-      const result = await deleteUser(user.id, userRole as 'estudiante' | 'profesor');
+      const result = await deleteUser(user.id, user.role);
       if (result.success) {
         onUserUpdate();
       }
@@ -29,7 +26,6 @@ const UserTable: React.FC<UserTableProps> = ({ users, userType, onUserUpdate }) 
   };
 
   const formatDate = (dateString: string) => {
-    console.log(dateString);
     const date = new Date(dateString);
     return date.toLocaleDateString('es-ES', {
       year: 'numeric',
@@ -73,7 +69,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, userType, onUserUpdate }) 
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">{user.first_name} {user.last_name}</div>
                         <div className="text-sm text-gray-500">
-                          {userType === 'estudiante' ? 'Estudiante' : 'Profesor'}
+                          {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                         </div>
                       </div>
                     </div>
@@ -93,13 +89,15 @@ const UserTable: React.FC<UserTableProps> = ({ users, userType, onUserUpdate }) 
                       >
                         <Edit className="h-5 w-5" />
                       </button>
-                      <button
-                        onClick={() => handleDelete(user)}
-                        className="flex items-center p-1.5 text-red-600 hover:bg-red-50 rounded"
-                        title="Eliminar"
-                      >
-                        <Trash2 className="h-5 w-5" />
-                      </button>
+                      {user.role !== 'admin' && (
+                        <button
+                          onClick={() => handleDelete(user)}
+                          className="flex items-center p-1.5 text-red-600 hover:bg-red-50 rounded"
+                          title="Eliminar"
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

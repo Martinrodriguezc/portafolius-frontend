@@ -1,50 +1,43 @@
-import { Users, BookOpen, BarChart } from "lucide-react";
+import { Users, BookOpen, GraduationCap } from "lucide-react";
+import { DashboardStats } from "../../../hooks/admin/dashboardServices";
+import { StatCardProps } from "../../../types/Admin/StatCardTypes";
 
-interface StatsPanelProps {
-  userCount: number;
-  courseCount: number;
-  evalCount: number;
-}
+type StatsPanelProps = Pick<DashboardStats, 'users' | 'evaluations' | 'studies'>;
 
 export const StatsPanel: React.FC<StatsPanelProps> = ({
-  userCount,
-  courseCount,
-  evalCount,
+  users,
+  evaluations,
+  studies
 }) => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <StatCard
         icon={<Users className="h-6 w-6 text-blue-500" />}
         label="Usuarios Registrados"
-        value={userCount}
-        trend={userCount > 0 ? "+5%" : "0%"}
-        trendUp={userCount > 0}
+        value={users.total}
+        trend={`${users.growthPercentage > 0 ? '+' : ''}${users.growthPercentage.toFixed(1)}%`}
+        trendUp={users.growthPercentage > 0}
+        subtitle={`${users.newLastWeek} nuevos esta semana`}
       />
       <StatCard
         icon={<BookOpen className="h-6 w-6 text-green-500" />}
-        label="Cursos Activos"
-        value={courseCount}
-        trend={courseCount > 0 ? "+2%" : "0%"}
-        trendUp={courseCount > 0}
+        label="Evaluaciones Realizadas"
+        value={evaluations.total}
+        trend={`${evaluations.growthPercentage > 0 ? '+' : ''}${evaluations.growthPercentage.toFixed(1)}%`}
+        trendUp={evaluations.growthPercentage > 0}
+        subtitle={`${evaluations.newLastWeek} nuevas esta semana`}
       />
       <StatCard
-        icon={<BarChart className="h-6 w-6 text-purple-500" />}
-        label="Evaluaciones Realizadas"
-        value={evalCount}
-        trend={evalCount > 0 ? "+8%" : "0%"}
-        trendUp={evalCount > 0}
+        icon={<GraduationCap className="h-6 w-6 text-purple-500" />}
+        label="Estudios Creados"
+        value={studies.total}
+        trend={`${studies.growthPercentage > 0 ? '+' : ''}${studies.growthPercentage.toFixed(1)}%`}
+        trendUp={studies.growthPercentage > 0}
+        subtitle={`${studies.newLastWeek} nuevos esta semana`}
       />
     </div>
   );
 };
-
-interface StatCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-  trend: string;
-  trendUp: boolean;
-}
 
 const StatCard: React.FC<StatCardProps> = ({
   icon,
@@ -52,6 +45,7 @@ const StatCard: React.FC<StatCardProps> = ({
   value,
   trend,
   trendUp,
+  subtitle
 }) => {
   return (
     <div className="rounded-lg border bg-white p-4 shadow-sm transition-all hover:shadow">
@@ -67,7 +61,8 @@ const StatCard: React.FC<StatCardProps> = ({
       </div>
       <div className="mt-3">
         <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-gray-500">{label}</p>
+        <p className="text-sm text-gray-500">{label}</p>
+        <p className="text-xs text-gray-400 mt-1">{subtitle}</p>
       </div>
     </div>
   );
