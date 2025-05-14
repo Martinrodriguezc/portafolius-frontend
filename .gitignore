@@ -26,3 +26,5 @@ dist-ssr
 .env
 
 project-tree.md
+
+coverage/

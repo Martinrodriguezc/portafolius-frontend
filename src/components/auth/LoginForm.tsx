@@ -20,8 +20,8 @@ export default function LoginForm({
   return (
     <div>
       <div className="flex flex-col items-center mb-6">
-        <h1 className="text-[32px] font-bold text-[#4E81BD]">PortafoliUS</h1>
-        <h2 className="text-[20px] font-bold text-[#333333] mt-4">
+        <h1 className="md:text-[32px] font-bold text-[#4E81BD] ">PortafoliUS</h1>
+        <h2 className="md:text-[20px] font-bold text-[#333333] mt-4">
           Iniciar sesión
         </h2>
       </div>

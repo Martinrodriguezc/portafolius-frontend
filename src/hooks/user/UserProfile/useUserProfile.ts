@@ -4,7 +4,7 @@ import { authService } from "../../auth/authServices";
 import {
   fetchUserProfileRequest,
   updateUserProfileRequest,
-} from "./requests/userProfileRequest";
+} from "./requests/profileRequest";
 
 export function useUserProfile(): UseUserProfileReturn {
   const userIdRaw = authService.getCurrentUser()?.id;

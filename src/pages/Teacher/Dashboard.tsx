@@ -1,4 +1,3 @@
-import { PageHeader } from "../../components/teacher/dashboard/Header";
 import { LoadingState } from "../../components/teacher/dashboard/Loading";
 import { StatsPanel } from "../../components/teacher/dashboard/StatsPanels";
 import { TipsSection } from "../../components/teacher/dashboard/Tips";
@@ -6,6 +5,7 @@ import { VideoTabsPanel } from "../../components/teacher/dashboard/VideoTabsPane
 import { useTeacherDashboard } from "../../hooks/teacher/dashboard/useTeacherDashboard";
 import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
 import { ErrorState } from "../../components/teacher/dashboard/Error";
+import { PageHeader } from "../../components/teacher/dashboard/Header";
 
 export default function TeacherDashboardPage() {
   const {
@@ -34,7 +34,7 @@ export default function TeacherDashboardPage() {
   const allStudies = [...studiesPending, ...studiesCompleted];
 
   return (
-    <div className="p-8 md:p-10 max-w-7xl mx-auto space-y-8">
+    <main className="p-8 md:p-10 max-w-7xl mx-auto space-y-8">
       <PageHeader lastName={lastName} />
       <StatsPanel
         pendingCount={stats.pendingCount}
@@ -50,6 +50,6 @@ export default function TeacherDashboardPage() {
         total={pending.length + evaluated.length}
         pendingCount={pending.length}
       />
-    </div>
+    </main>
   );
 }
