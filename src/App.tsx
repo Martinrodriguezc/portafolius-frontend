@@ -7,6 +7,7 @@ import {
 
 import StudentLayout from "./pages/layout/StudentLayout";
 import TeacherLayout from "./pages/layout/TeacherLayout";
+import AdminLayout from "./pages/layout/AdminLayout";
 
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
@@ -35,6 +36,12 @@ import TeacherEvaluateVideoPage from "./pages/Teacher/EvaluateVideoPage";
 import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import LearnMorePage from "./pages/LearnMore";
 import StudentCreateStudyPage from "./pages/Student/Study";
+
+import AdminDashboardPage from "./pages/admin/AdminDashboard";
+import UserManagementPage from "./pages/admin/UserManagement";
+import AcademicManagementPage from "./pages/admin/AcademicManagement";
+import ReportsPage from "./pages/admin/Reports";
+import AdminSettingsPage from "./pages/admin/Settings";
 
 function App() {
   return (
@@ -86,6 +93,15 @@ function App() {
 
           {/* --- ajustes ---------------------------------------------------- */}
           <Route path="settings" element={<TeacherSettingsPage />} />
+        </Route>
+
+        {/* --- Admin Routes ---------------------------------------------------- */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="users" element={<UserManagementPage />} />
+          <Route path="academic" element={<AcademicManagementPage />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="settings" element={<AdminSettingsPage />} />
         </Route>
       </Routes>
     </Router>
