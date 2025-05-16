@@ -23,7 +23,7 @@ export function UserRolesSection() {
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-slate-900 mb-6 sm:mb-8 md:mb-12">
           Roles de Usuario
         </h2>
-        <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 max-w-5xl mx-auto px-4 sm:px-6">
           <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-5 sm:p-6 md:p-8 rounded-xl border border-slate-100 hover:shadow-md transition-shadow duration-300">
             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#4E81BD]/10 rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto">
               <Users className="h-6 w-6 sm:h-8 sm:w-8 text-[#4E81BD]" />
