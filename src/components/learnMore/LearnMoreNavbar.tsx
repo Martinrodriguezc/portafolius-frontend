@@ -8,7 +8,7 @@ export function LearnMoreNavbar({ handleBack }: LearnMoreNavbarProps) {
 
   return (
     <nav className="sticky top-0 z-10 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Stethoscope className="h-5 w-5 sm:h-6 sm:w-6 text-[#4E81BD] mr-2" />
