@@ -1,16 +1,13 @@
-import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { useAssignServices } from '../../../hooks/admin/assignServices';
 import { Search } from 'lucide-react';
 
 export const AssignmentsList: React.FC = () => {
-  const { assignments, loading, error, fetchAssignments } = useAssignServices();
+  const { assignments, loading, error } = useAssignServices();
   const [searchTerm, setSearchTerm] = useState('');
   const [displayCount, setDisplayCount] = useState(10);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    fetchAssignments();
-  }, []);
 
   const filteredAssignments = useMemo(() => {
     if (!searchTerm.trim()) return assignments;

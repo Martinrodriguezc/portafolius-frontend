@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { config } from '../../config/config';
 import { checkAdminStatus } from './adminCheck';
 import { authService } from '../auth/authServices';
@@ -75,9 +75,15 @@ const useMetricaData = <T>(endpoint: string) => {
       } else {
         setError('La respuesta del servidor no fue exitosa');
       }
-    } catch (err: any) {
-      setError(err.message || 'Error al obtener los datos');
-      console.error(err);
+    } catch (e: unknown) {
+      let errorMsg = 'Error al obtener los datos';
+      if (e instanceof AxiosError) {
+        errorMsg = e.message;
+      } else if (e instanceof Error) {
+        errorMsg = e.message;
+      }
+      setError(errorMsg);
+      console.error(e);
     } finally {
       setLoading(false);
     }
@@ -112,8 +118,8 @@ export const useTasaFinalizacionEstudios = () =>
 export const useTopProfesoresEvaluaciones = () => 
   useMetricaData<Profesor[]>('/admin/metricas/top-profesores-evaluaciones');
 
-export const useMensajesPorMes = () => 
-  useMetricaData<DatosPorMes[]>('/admin/metricas/mensajes-por-mes');
+export const useVideoClipsPorMes = () => 
+  useMetricaData<DatosPorMes[]>('/admin/metricas/video-clips-por-mes');
 
 export const useMaterialPorTipo = () => 
   useMetricaData<MaterialPorTipo[]>('/admin/metricas/material-por-tipo');
@@ -129,7 +135,7 @@ export const formatearMes = (fechaYYYYMM: string): string => {
 };
 
 // Función para exportar datos a CSV
-export const exportarCSV = (datos: any[], nombreArchivo: string): void => {
+export const exportarCSV = <T extends Record<string, unknown>>(datos: T[], nombreArchivo: string): void => {
   if (!datos.length) return;
   
   const headers = Object.keys(datos[0]).join(',');

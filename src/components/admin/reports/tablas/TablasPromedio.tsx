@@ -9,7 +9,20 @@ const TablasPromedio: React.FC<TablasPromedioProps> = ({ data }) => {
   const { top_usuarios, bottom_usuarios } = data;
   
   // Función para renderizar las estrellas basadas en la calificación
-  const renderEstrellas = (promedio: number) => {
+  const renderEstrellas = (promedio: number | undefined | null) => {
+    // Si el promedio no es un número, mostrar 0 estrellas
+    if (typeof promedio !== 'number') {
+      return (
+        <div className="flex">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <svg key={i} className="h-4 w-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          ))}
+        </div>
+      );
+    }
+    
     // Normalizar el promedio a una escala de 5 estrellas
     // Asumimos que las calificaciones están en escala de 0-10
     const estrellas = (promedio / 10) * 5;
@@ -50,6 +63,15 @@ const TablasPromedio: React.FC<TablasPromedioProps> = ({ data }) => {
       </div>
     );
   };
+
+  // Función para formatear el promedio de manera segura
+  const formatearPromedio = (promedio: number | undefined | null): string => {
+    if (typeof promedio === 'number') {
+      return promedio.toFixed(1);
+    }
+    // Si no es un número, mostrar un guión o cero
+    return '0.0';
+  };
   
   return (
     <div className="h-full flex flex-col space-y-4">
@@ -74,7 +96,7 @@ const TablasPromedio: React.FC<TablasPromedioProps> = ({ data }) => {
                 <td className="py-1.5 truncate max-w-[120px]">{usuario.nombre_completo}</td>
                 <td className="py-1.5 text-center">
                   <div className="flex flex-col items-center">
-                    <span className="font-medium text-gray-900">{usuario.promedio.toFixed(1)}</span>
+                    <span className="font-medium text-gray-900">{formatearPromedio(usuario.promedio)}</span>
                     <div className="mt-0.5">{renderEstrellas(usuario.promedio)}</div>
                   </div>
                 </td>
@@ -114,7 +136,7 @@ const TablasPromedio: React.FC<TablasPromedioProps> = ({ data }) => {
                 <td className="py-1.5 truncate max-w-[120px]">{usuario.nombre_completo}</td>
                 <td className="py-1.5 text-center">
                   <div className="flex flex-col items-center">
-                    <span className="font-medium text-gray-900">{usuario.promedio.toFixed(1)}</span>
+                    <span className="font-medium text-gray-900">{formatearPromedio(usuario.promedio)}</span>
                     <div className="mt-0.5">{renderEstrellas(usuario.promedio)}</div>
                   </div>
                 </td>

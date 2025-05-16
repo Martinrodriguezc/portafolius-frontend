@@ -1,4 +1,4 @@
-import { BarChart, Home, Settings, Users, BookOpen, CheckSquare } from "lucide-react";
+import { BarChart, Home, Settings, Users, BookOpen, CheckSquare, Files } from "lucide-react";
 import { SidebarHeader } from "./SidebarHeader";
 import { SidebarNavLink } from "./SidebarNavlink";
 import { SidebarFooter } from "./SidebarFooter";
@@ -30,6 +30,12 @@ export default function AdminSidebar() {
             icon={<BookOpen className="h-5 w-5" />}
             label="Gestión Académica"
             isActive={isActive(location.pathname, "/admin/academic", true)}
+          />
+          <SidebarNavLink
+            to="/admin/materials"
+            icon={<Files className="h-5 w-5" />}
+            label="Gestión de Materiales"
+            isActive={isActive(location.pathname, "/admin/materials", true)}
           />
           <SidebarNavLink
             to="/admin/evaluations"

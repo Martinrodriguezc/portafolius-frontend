@@ -2,6 +2,7 @@ import React from "react";
 import { DatosPorMes, formatearMes } from "../../../../hooks/admin/metricsServices";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { TooltipItem } from 'chart.js';
 
 // Registrar los componentes necesarios de Chart.js
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
@@ -18,19 +19,19 @@ const GraficoArea: React.FC<GraficoAreaProps> = ({ data }) => {
   const labels = sortedData.map(item => formatearMes(item.mes));
   const valores = sortedData.map(item => item.cantidad);
 
-  // Configuración del dataset
+  // Configuración del dataset con colores para videos (rojo/negro)
   const chartData = {
     labels,
     datasets: [
       {
-        label: 'Mensajes',
+        label: 'Videos',
         data: valores,
-        borderColor: 'rgb(124, 58, 237)',
-        backgroundColor: 'rgba(124, 58, 237, 0.5)',
+        borderColor: 'rgb(229, 57, 53)',  // Rojo para videos
+        backgroundColor: 'rgba(229, 57, 53, 0.5)',  // Rojo con transparencia
         tension: 0.3,
         fill: true,
         pointBackgroundColor: 'white',
-        pointBorderColor: 'rgb(124, 58, 237)',
+        pointBorderColor: 'rgb(229, 57, 53)',
         pointBorderWidth: 2,
         pointRadius: 4,
         pointHoverRadius: 6,
@@ -48,11 +49,11 @@ const GraficoArea: React.FC<GraficoAreaProps> = ({ data }) => {
       },
       tooltip: {
         callbacks: {
-          title: function(context: any) {
+          title: function(context: TooltipItem<'line'>[]) {
             return context[0].label;
           },
-          label: function(context: any) {
-            return `Mensajes: ${context.parsed.y}`;
+          label: function(context: TooltipItem<'line'>) {
+            return `Videos subidos: ${context.parsed.y}`;
           }
         }
       }

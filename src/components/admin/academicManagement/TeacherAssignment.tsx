@@ -6,6 +6,13 @@ import { User } from '../../../types/Admin/UserTypes';
 import { Search, CheckSquare, Square } from 'lucide-react';
 import { UserListProps } from '../../../types/Props/Admin/AcademicManagementProps';
 
+interface StudentWithAssignment extends User {
+  assignedTeacher?: {
+    id: number;
+    fullName: string;
+  };
+}
+
 const UserList: React.FC<UserListProps> = ({
   users,
   searchTerm,
@@ -21,7 +28,7 @@ const UserList: React.FC<UserListProps> = ({
     return selectedUsers.some(selected => selected.id === user.id);
   };
 
-  const getAssignmentStatus = (user: any) => {
+  const getAssignmentStatus = (user: StudentWithAssignment) => {
     return user.assignedTeacher 
       ? `Asignado a: ${user.assignedTeacher.fullName}`
       : 'No asignado';
@@ -80,11 +87,11 @@ const UserList: React.FC<UserListProps> = ({
                       </p>
                       {showAssignmentStatus && (
                         <span className={`text-xs px-2 py-1 rounded-full ${
-                          'assignedTeacher' in user && user.assignedTeacher
+                          'assignedTeacher' in user && (user as StudentWithAssignment).assignedTeacher
                             ? 'bg-green-100 text-green-800'
                             : 'bg-gray-100 text-gray-800'
                         }`}>
-                          {getAssignmentStatus(user)}
+                          {getAssignmentStatus(user as StudentWithAssignment)}
                         </span>
                       )}
                     </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { config } from '../../config/config';
 import { checkAdminStatus } from './adminCheck';
 import { authService } from '../auth/authServices';
@@ -44,8 +44,13 @@ export const useAssignServices = () => {
         success: true,
         data: response.data
       };
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.msg || 'Error al asignar profesor';
+    } catch (e: unknown) {
+      let errorMessage = 'Error al asignar profesor';
+      if (e instanceof AxiosError && e.response?.data?.msg) {
+        errorMessage = e.response.data.msg;
+      } else if (e instanceof Error) {
+        errorMessage = e.message;
+      }
       setError(errorMessage);
       setLoading(false);
       return {
@@ -78,8 +83,13 @@ export const useAssignServices = () => {
 
       setAssignments(response.data.assignments);
       setLoading(false);
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.msg || 'Error al obtener las asignaciones';
+    } catch (e: unknown) {
+      let errorMessage = 'Error al obtener las asignaciones';
+      if (e instanceof AxiosError && e.response?.data?.msg) {
+        errorMessage = e.response.data.msg;
+      } else if (e instanceof Error) {
+        errorMessage = e.message;
+      }
       setError(errorMessage);
       setLoading(false);
     }

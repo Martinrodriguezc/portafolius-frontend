@@ -2,6 +2,7 @@ import React from "react";
 import { DatosPorMes, formatearMes } from "../../../../hooks/admin/metricsServices";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { TooltipItem } from 'chart.js';
 
 // Registrar los componentes necesarios de Chart.js
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
@@ -48,10 +49,10 @@ const GraficoLinea: React.FC<GraficoLineaProps> = ({ data }) => {
       },
       tooltip: {
         callbacks: {
-          title: function(context: any) {
+          title: function(context: TooltipItem<'line'>[]) {
             return context[0].label;
           },
-          label: function(context: any) {
+          label: function(context: TooltipItem<'line'>) {
             return `Usuarios: ${context.parsed.y}`;
           }
         }

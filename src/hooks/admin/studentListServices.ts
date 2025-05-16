@@ -14,14 +14,11 @@ interface StudentWithAssignment extends User {
 
 export const useStudentList = () => {
   const { students, loading: studentsLoading } = useUserServices();
-  const { assignments, loading: assignmentsLoading, fetchAssignments } = useAssignServices();
+  const { assignments, loading: assignmentsLoading } = useAssignServices();
   const [studentsWithAssignments, setStudentsWithAssignments] = useState<StudentWithAssignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchAssignments();
-  }, []);
 
   useEffect(() => {
     if (!studentsLoading && !assignmentsLoading) {
@@ -58,6 +55,5 @@ export const useStudentList = () => {
     getFilteredStudents,
     loading,
     error,
-    refreshList: fetchAssignments
   };
 }; 

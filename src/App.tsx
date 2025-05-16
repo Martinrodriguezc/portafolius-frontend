@@ -46,6 +46,7 @@ import AdminEvaluationsPage from "./pages/admin/AdminEvaluations";
 import AdminVideosPage from "./pages/admin/AdminVideosPage";
 import AdminVideoPage from "./pages/admin/AdminVideoPage";
 import AdminEvaluateVideoPage from "./pages/admin/AdminEvaluateVideo";
+import MaterialsManagementPage from "./pages/admin/MaterialsManagement";
 
 function App() {
   return (
@@ -104,6 +105,7 @@ function App() {
           <Route index element={<AdminDashboardPage />} />
           <Route path="users" element={<UserManagementPage />} />
           <Route path="academic" element={<AcademicManagementPage />} />
+          <Route path="materials" element={<MaterialsManagementPage />} />
           <Route path="evaluations" element={<AdminEvaluationsPage />} />
           <Route path="evaluations/:id/videos" element={<AdminVideosPage />} />
           <Route path="evaluations/:studyId/videos/:clipId" element={<AdminVideoPage />} />

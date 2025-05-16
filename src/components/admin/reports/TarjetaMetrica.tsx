@@ -1,15 +1,16 @@
 import React, { ReactNode } from "react";
 
 interface TarjetaMetricaProps {
-  title: string;
+  title: string | ReactNode;
+  description?: string;
   children: ReactNode;
   exportarCSV?: () => void;
 }
 
-const TarjetaMetrica: React.FC<TarjetaMetricaProps> = ({ title, children, exportarCSV }) => {
+const TarjetaMetrica: React.FC<TarjetaMetricaProps> = ({ title, description, children, exportarCSV }) => {
   return (
     <div className="rounded-lg border bg-white p-6 shadow-sm h-full flex flex-col">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-2">
         <h3 className="text-lg font-medium text-gray-900">{title}</h3>
         {exportarCSV && (
           <button
@@ -34,6 +35,9 @@ const TarjetaMetrica: React.FC<TarjetaMetricaProps> = ({ title, children, export
           </button>
         )}
       </div>
+      {description && (
+        <p className="text-sm text-gray-500 mb-4">{description}</p>
+      )}
       <div className="flex-1 min-h-[300px] md:min-h-[350px]">
         {children}
       </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { DatosPorMes, formatearMes } from "../../../../hooks/admin/metricsServices";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, TooltipItem } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
 // Registrar los componentes necesarios de Chart.js
@@ -44,10 +44,10 @@ const GraficoBarras: React.FC<GraficoBarrasProps> = ({ data }) => {
       },
       tooltip: {
         callbacks: {
-          title: function(context: any) {
+          title: function(context: TooltipItem<'bar'>[]) {
             return context[0].label;
           },
-          label: function(context: any) {
+          label: function(context: TooltipItem<'bar'>) {
             return `Estudios: ${context.parsed.y}`;
           }
         }

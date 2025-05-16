@@ -1,6 +1,6 @@
 import React from "react";
 import { DistribucionUsuarios } from "../../../../hooks/admin/metricsServices";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, TooltipItem } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 // Registrar los componentes necesarios de Chart.js
@@ -8,6 +8,17 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface GraficoPastelProps {
   data: DistribucionUsuarios[];
+}
+
+// Interfaz para el contexto del datalabels
+interface DataLabelsContext {
+  chart: {
+    data: {
+      datasets: {
+        data: number[];
+      }[];
+    };
+  };
 }
 
 const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
@@ -73,10 +84,16 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: function(context: TooltipItem<'pie'>) {
             const label = context.label || '';
-            const value = context.raw || 0;
-            const datasetTotal = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+            const value = context.raw as number || 0;
+            // Calcular el total sumando todos los valores
+            let datasetTotal = 0;
+            if (context.dataset.data) {
+              for (const val of context.dataset.data) {
+                datasetTotal += Number(val);
+              }
+            }
             const percentage = datasetTotal > 0 ? Math.round((value / datasetTotal) * 100) : 0;
             return `${label}: ${value} (${percentage}%)`;
           }
@@ -84,10 +101,14 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
       },
       // Plugin personalizado para mostrar porcentajes en el gráfico
       datalabels: {
-        formatter: (value: number, ctx: any) => {
-          const dataArr = ctx.chart.data.datasets[0].data;
-          const totalValue = dataArr.reduce((total: number, val: number) => total + val, 0);
-          const percentage = ((value / totalValue) * 100).toFixed(1) + "%";
+        formatter: (value: number, ctx: DataLabelsContext) => {
+          let totalValue = 0;
+          if (ctx.chart.data.datasets[0].data) {
+            for (const val of ctx.chart.data.datasets[0].data) {
+              totalValue += Number(val);
+            }
+          }
+          const percentage = totalValue > 0 ? ((value / totalValue) * 100).toFixed(1) + "%" : "0%";
           return percentage;
         },
         color: '#fff',
