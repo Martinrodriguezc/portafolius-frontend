@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useFormHook } from "./useFormHook";
 import { validateLoginForm } from "../../utils/validation/forms/formValidation";
 import {
@@ -13,17 +14,33 @@ export const useLoginForm = (onSuccess?: () => void) => {
     LoginFormErrors
   >(initialLoginFormState, validateLoginForm, onSuccess);
 
+  const [generalError, setGeneralError] = useState<string>("");
+  const [formIncompleteError, setFormIncompleteError] = useState<string>("");
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { isValid } = validateLoginForm(formData);
+    setGeneralError("");
+    setFormIncompleteError("");
 
-    if (isValid) {
-      try {
-        await authService.login(formData);
-        if (onSuccess) onSuccess();
-      } catch (error: unknown) {
-        throw { msg: (error as Error).message };
+    const { isValid, errors } = validateLoginForm(formData);
+
+    if (!isValid) {
+      if (
+        errors.email === "required" ||
+        errors.password === "required" ||
+        !formData.email.trim() ||
+        !formData.password.trim()
+      ) {
+        setFormIncompleteError("Debes rellenar todos los campos.");
       }
+      return;
+    }
+
+    try {
+      await authService.login(formData);
+      if (onSuccess) onSuccess();
+    } catch (error: unknown) {
+      setGeneralError("Email o contraseña incorrectos.");
     }
   };
 
@@ -37,6 +54,8 @@ export const useLoginForm = (onSuccess?: () => void) => {
     password: formData.password,
     emailError: formErrors.email,
     passwordError: formErrors.password,
+    generalError,
+    formIncompleteError,
     handleInputChange,
     handleSubmit,
     handleGoogleLogin,

@@ -12,6 +12,8 @@ export default function LoginForm({
     password,
     emailError,
     passwordError,
+    generalError,
+    formIncompleteError,
     handleInputChange,
     handleSubmit,
     handleGoogleLogin,
@@ -46,6 +48,28 @@ export default function LoginForm({
           onChange={handleInputChange}
           error={passwordError}
         />
+
+        {formIncompleteError && (
+          <div
+            role="alert"
+            className="flex items-center gap-2 bg-yellow-100 border border-yellow-500 text-yellow-700 px-4 py-2 rounded-md mb-4"
+          >
+            <span aria-hidden="true" className="text-xl">⚠️</span>
+            <p className="text-sm font-medium">{formIncompleteError}</p>
+          </div>
+        )}
+
+
+        {generalError && (
+          <div
+            role="alert"
+            className="flex items-center gap-2 bg-red-100 border border-red-500 text-red-700 px-4 py-2 rounded-md mb-4"
+          >
+            <span aria-hidden="true" className="text-xl">⚠️</span>
+            <p className="text-sm font-medium">{generalError}</p>
+          </div>
+        )}
+
 
         <Button fixedWidth={false}>Iniciar Sesión</Button>
 

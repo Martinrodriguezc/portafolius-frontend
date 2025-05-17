@@ -3,7 +3,6 @@ import Button from "../../../components/common/Button/Button"
 import Card from "../../../components/common/Card/Card"
 import VideoPlayer from "../../../components/student/videos/VideoPlayer"
 import { useVideoPage } from "../../../hooks/video/useVideoPage"
-import { ReturnButton } from "../../../components/common/Button/ReturnButton"
 import { useAllStudies } from "../../../hooks/teacher/useAllStudies/useAllStudies"
 import {
   AlertCircle,
@@ -17,6 +16,7 @@ import {
   ClipboardList,
   ArrowRight,
 } from "lucide-react"
+import ReturnButton from "../../../components/common/Button/ReturnButton"
 
 export default function TeacherVideoPage() {
   const {
