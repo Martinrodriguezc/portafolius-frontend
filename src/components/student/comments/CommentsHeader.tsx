@@ -1,5 +1,5 @@
 import { MessageSquare } from 'lucide-react';
-import { ReturnButton } from '../../common/Button/ReturnButton';
+import ReturnButton from '../../common/Button/ReturnButton';
 
 export default function CommentsHeader() {
   return (
