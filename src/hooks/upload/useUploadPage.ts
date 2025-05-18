@@ -4,6 +4,7 @@ import {
   generateUploadUrl,
   uploadVideo,
   assignTagsToClip,
+  notifyUploadCallback,
 } from "./uploadRequests/requests";
 import { validateVideo } from "./validations/validations";
 import { authService } from "../auth/authServices";
@@ -120,27 +121,36 @@ export function useUploadPage() {
     if (files.some((f) => !f.protocol)) return alert("Asigna protocolo a cada video.");
 
     setIsUploading(true);
+    setUploadProgress(0);
+
     try {
       for (const { file } of files) {
         await validateVideo(file);
       }
+
       for (let i = 0; i < files.length; i++) {
         const { file, tags } = files[i];
-        const tagIds = files[i].tags.map(t => t.id);
-        const { uploadUrl, clipId } = await generateUploadUrl(
+        const tagIds = tags.map(t => t.id);
+        const { uploadUrl, clipId, key } = await generateUploadUrl(
           file,
           selectedStudy,
           files[i].protocol,
           tagIds
         );
-        console.log(files[i].protocol)
-        setUploadProgress(Math.round((i / files.length) * 100));
-        const res = await uploadVideo(uploadUrl, file);
-        if (res.success && tags.length) {
-          const tagIds = files[i].tags.map(t => t.id);
+
+        await uploadVideo(uploadUrl, file, (percent) => {
+          const totalPercent = Math.round(((i + percent / 100) / files.length) * 100);
+          setUploadProgress(totalPercent);
+        });
+
+        if (tags.length) {
           await assignTagsToClip(clipId, tagIds, userId);
         }
+
+        const { thumbnailKey } = await notifyUploadCallback(key, String(clipId));
+        console.log("Miniatura generada en:", thumbnailKey);
       }
+
       setUploadProgress(100);
       alert("Videos subidos exitosamente");
       setFiles([]);
@@ -152,6 +162,7 @@ export function useUploadPage() {
       setIsUploading(false);
     }
   };
+
 
   return {
     studies,

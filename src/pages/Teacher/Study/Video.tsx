@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import Button from "../../../components/common/Button/Button"
 import Card from "../../../components/common/Card/Card"
 import VideoPlayer from "../../../components/student/videos/VideoPlayer"
 import { useVideoPage } from "../../../hooks/video/useVideoPage"
-import { ReturnButton } from "../../../components/common/Button/ReturnButton"
 import { useAllStudies } from "../../../hooks/teacher/useAllStudies/useAllStudies"
 import {
   AlertCircle,
@@ -17,6 +16,9 @@ import {
   ClipboardList,
   ArrowRight,
 } from "lucide-react"
+import ReturnButton from "../../../components/common/Button/ReturnButton"
+import VideoCarousel from "../../../components/common/Carousel/VideoCarousel"
+import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos"
 
 export default function TeacherVideoPage() {
   const {
@@ -32,6 +34,9 @@ export default function TeacherVideoPage() {
     isFullscreen,
     toggleFullscreen,
   } = useVideoPage()
+
+  const { studyId } = useParams<{ studyId: string }>();
+  const { videos } = useStudyVideos(studyId)
 
   const { pending, completed, loading: studiesLoading } = useAllStudies()
   const allStudies = [...pending, ...completed]
@@ -52,19 +57,19 @@ export default function TeacherVideoPage() {
           <p className="text-sm sm:text-base text-[#666666]">
             {meta
               ? `Subido el: ${new Date(meta.upload_date).toLocaleDateString(
-                  "es-ES",
-                  {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  }
-                )}`
+                "es-ES",
+                {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                }
+              )}`
               : "Cargando información del video..."}
           </p>
         </div>
       </div>
       <div className="flex-shrink-0">
-        <ReturnButton />
+        <ReturnButton to={`/teacher/evaluations/${studyId}/videos`} />
       </div>
     </header>
   )
@@ -155,6 +160,10 @@ export default function TeacherVideoPage() {
               />
             </div>
           </Card>
+
+          {videos.length > 1 && (
+            <VideoCarousel videos={videos} studyId={studyId!} teacher={true} />
+          )}
 
           {/* Details */}
           <Card className="rounded-[16px] border border-slate-200 shadow-sm overflow-hidden">

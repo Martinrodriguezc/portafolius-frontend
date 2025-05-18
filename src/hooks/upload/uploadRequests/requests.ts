@@ -13,7 +13,7 @@ export async function generateUploadUrl(
   studyId: string,
   protocol: string,
   tagIds: number[]
-): Promise<{ uploadUrl: string; clipId: number }> {
+): Promise<{ uploadUrl: string; clipId: number; key: string }> {
   logger.debug('Iniciando generateUploadUrl para:', file.name);
   const endpoint = `${config.SERVER_URL}/video/generate_upload_url`;
   logger.debug('Solicitando URL prefirmada a:', endpoint);
@@ -23,6 +23,7 @@ export async function generateUploadUrl(
       uploadUrl: string;
       clipId: number;
       message?: string;
+      key: string;
     }> = await axios.post(
       endpoint,
       {
@@ -48,6 +49,7 @@ export async function generateUploadUrl(
     return {
       uploadUrl: response.data.uploadUrl,
       clipId: response.data.clipId,
+      key: response.data.key,
     };
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
@@ -60,42 +62,50 @@ export async function generateUploadUrl(
 
 export async function uploadVideo(
   uploadUrl: string,
-  file: File
+  file: File,
+  onProgress?: (percent: number) => void
 ): Promise<{ success: boolean; message: string }> {
-  logger.info('Subiendo archivo a S3:', uploadUrl);
+  logger.info("Subiendo archivo a S3:", uploadUrl);
 
   try {
-    const response = await axios.put<string>(
-      uploadUrl,
-      file,
-      {
-        headers: { 'Content-Type': file.type },
-        validateStatus: () => true,
-      }
-    );
+    const response = await axios.put<string>(uploadUrl, file, {
+      headers: { "Content-Type": file.type },
+      validateStatus: () => true,
+      onUploadProgress: (progressEvent) => {
+        if (progressEvent.total) {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          if (onProgress) onProgress(percentCompleted);
+        }
+      },
+    });
 
     if (response.status < 200 || response.status >= 300) {
       const errData = response.data as unknown;
       const msg =
-        typeof errData === 'object' && errData !== null && 'message' in errData
-          ? (errData as ErrorResponse).message
+        typeof errData === "object" &&
+          errData !== null &&
+          "message" in errData
+          ? (errData as { message: string }).message
           : undefined;
-      throw new Error(msg ?? 'Error al subir el archivo a S3');
+      throw new Error(msg ?? "Error al subir el archivo a S3");
     }
 
-    logger.info('Archivo subido exitosamente a S3:', {
+    logger.info("Archivo subido exitosamente a S3:", {
       name: file.name,
       size: file.size,
     });
-    return { success: true, message: 'Archivo subido correctamente' };
+    return { success: true, message: "Archivo subido correctamente" };
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
-      const errData = err.response.data as ErrorResponse;
-      throw new Error(errData.message ?? 'Error al subir el archivo a S3');
+      const errData = err.response.data as { message?: string };
+      throw new Error(errData.message ?? "Error al subir el archivo a S3");
     }
     throw err;
   }
 }
+
 
 export async function assignTagsToClip(
   clipId: number,
@@ -116,7 +126,7 @@ export async function assignTagsToClip(
       const errData = response.data ?? {};
       throw new Error(
         errData.message ??
-          `Error ${response.status} al asignar etiquetas al clip`
+        `Error ${response.status} al asignar etiquetas al clip`
       );
     }
   } catch (err) {
@@ -125,9 +135,42 @@ export async function assignTagsToClip(
       const errData = err.response.data ?? {};
       throw new Error(
         errData.message ??
-          `Error ${err.response.status} al asignar etiquetas al clip`
+        `Error ${err.response.status} al asignar etiquetas al clip`
       );
     }
     throw err;
   }
+}
+
+export interface UploadCallbackResponse {
+  success: boolean;
+  thumbnailKey?: string;
+  message?: string;
+}
+
+
+export async function notifyUploadCallback(
+  key: string,
+  videoId: string
+): Promise<UploadCallbackResponse> {
+  const res = await fetch(`${config.SERVER_URL}/video/upload-callback`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ key, videoId })
+  });
+
+  if (!res.ok) {
+    let errorMsg = `Error ${res.status}`;
+    try {
+      const err = await res.json();
+      errorMsg = err.message || errorMsg;
+    } catch (err: unknown){
+      console.error("Error al parsear la respuesta de error:", err);
+    throw new Error(errorMsg);
+  }
+  }
+
+  return (await res.json()) as UploadCallbackResponse;
 }

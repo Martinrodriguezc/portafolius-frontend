@@ -14,7 +14,13 @@ export default function VideoPlayer({
 }: VideoPlayerProps) {
   return (
     <div className="relative bg-black rounded-lg overflow-hidden">
-      <video ref={videoRef} src={src} className="w-full h-auto" />
+      <video
+        ref={videoRef}
+        src={src}
+        className="w-full h-auto"
+        loop
+        onEnded={() => videoRef.current?.play()}
+      />
 
       <div className="absolute bottom-2 left-2 right-2 flex items-center gap-2">
         <Button variant="ghost" size="icon" onClick={togglePlay}>

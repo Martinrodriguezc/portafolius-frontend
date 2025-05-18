@@ -1,13 +1,25 @@
 import { ArrowLeft } from "lucide-react";
 import Button from "./Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-export function ReturnButton() {
+interface ReturnButtonProps {
+  to?: string; 
+}
+
+export default function ReturnButton({ to }: ReturnButtonProps) {
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
   };
-  return (
+
+  return to ? (
+    <Link to={to}>
+      <Button variant="outline" className="flex items-center gap-2">
+        <ArrowLeft className="h-4 w-4" />
+        Volver
+      </Button>
+    </Link>
+  ) : (
     <Button
       variant="outline"
       onClick={handleBack}

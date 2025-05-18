@@ -2,7 +2,6 @@ import { useRegisterForm } from "../../hooks/form/useRegisterForm";
 import { RegisterFormProps } from "../../types/form/Register";
 import Button from "../common/Button/Button";
 import Input from "../common/Input/Input";
-import Toast from "../common/Toast/Toast";
 
 export default function RegisterForm({
   onRegisterSuccess,
@@ -15,16 +14,11 @@ export default function RegisterForm({
     handleInputChange,
     handlePasswordFocus,
     handleSubmit,
-    toastMessage,
-    clearToast,
+    errorMessage,
   } = useRegisterForm(onRegisterSuccess);
 
   return (
     <div className="max-w-lg mx-auto p-6">
-      {toastMessage && (
-        <Toast message={toastMessage} type="error" onClose={clearToast} />
-      )}
-
       <header className="flex flex-col items-center mb-8">
         <h1 className="text-3xl font-bold text-[#4E81BD]">PortafoliUS</h1>
         <h2 className="text-xl font-bold text-[#333333] mt-4">Registrarse</h2>
@@ -36,7 +30,6 @@ export default function RegisterForm({
             id="firstName"
             label="Nombre"
             type="text"
-            required
             value={formData.firstName}
             onChange={handleInputChange}
             error={formErrors.firstName}
@@ -45,7 +38,6 @@ export default function RegisterForm({
             id="lastName"
             label="Apellido"
             type="text"
-            required
             value={formData.lastName}
             onChange={handleInputChange}
             error={formErrors.lastName}
@@ -56,7 +48,6 @@ export default function RegisterForm({
           id="email"
           label="Correo electrónico"
           type="email"
-          required
           value={formData.email}
           onChange={handleInputChange}
           error={formErrors.email}
@@ -71,9 +62,8 @@ export default function RegisterForm({
           </label>
           <select
             id="role"
-            className={`w-full h-10 text-sm border ${
-              formErrors.role ? "border-red-500" : "border-[#A0A0A0]"
-            } rounded-md px-3 focus:outline-none focus:ring focus:border-blue-300`}
+            className={`w-full h-10 text-sm border ${formErrors.role ? "border-red-500" : "border-[#A0A0A0]"
+              } rounded-md px-3 focus:outline-none focus:ring focus:border-blue-300`}
             value={formData.role}
             onChange={handleInputChange}
           >
@@ -92,13 +82,22 @@ export default function RegisterForm({
           id="password"
           label="Contraseña"
           type="password"
-          required
           value={formData.password}
           onChange={handleInputChange}
           error={formErrors.password}
           showPasswordRequirements={showPasswordRequirements}
           onFocus={handlePasswordFocus}
         />
+
+        {errorMessage && (
+          <div
+            role="alert"
+            className="flex items-center gap-2 bg-red-100 border border-red-500 text-red-700 px-4 py-2 rounded-md mb-4"
+          >
+            <span aria-hidden="true" className="text-xl">⚠️</span>
+            <p className="text-sm font-medium">{errorMessage}</p>
+          </div>
+        )}
 
         <Button type="submit" fixedWidth={false}>
           Registrarse

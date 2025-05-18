@@ -14,31 +14,47 @@ export const useRegisterForm = (onSuccess?: () => void) => {
     RegisterFormErrors
   >(initialRegisterFormState, validateRegisterForm, onSuccess);
 
-  const [showPasswordRequirements, setShowPasswordRequirements] =
-    useState(false);
-  const [toastMessage, setToastMessage] = useState<string>("");
+  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handlePasswordFocus = () => setShowPasswordRequirements(true);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMessage("");
+
     const { isValid, errors } = validateRegisterForm(formData);
 
-    if (isValid) {
-      try {
-        await authService.register(formData);
-        if (onSuccess) {
-          onSuccess();
-        }
-      } catch (error: unknown) {
-        setToastMessage(
-          (error as { msg: string }).msg || "Error al registrarse"
-        );
+    if (!isValid) {
+      const requiredFieldsEmpty =
+        !formData.firstName.trim() ||
+        !formData.lastName.trim() ||
+        !formData.email.trim() ||
+        !formData.role.trim() ||
+        !formData.password.trim();
+
+      if (requiredFieldsEmpty) {
+        setErrorMessage("Debes rellenar todos los campos.");
+        return;
       }
-    } else {
+
       const firstError = Object.values(errors).find((error) => error !== "");
       if (firstError) {
-        setToastMessage(firstError);
+        setErrorMessage(firstError);
+        return;
+      }
+    }
+
+    try {
+      await authService.register(formData);
+      if (onSuccess) onSuccess();
+    } catch (error: unknown) {
+      const errMsg = (error as { msg?: string }).msg?.toLowerCase() || "";
+
+      if (errMsg.includes("email") && (errMsg.includes("exist") || errMsg.includes("already"))) {
+        setErrorMessage("Ya existe un usuario registrado con ese correo.");
+      } else {
+        setErrorMessage((error as { msg?: string }).msg || "Error al registrarse.");
       }
     }
   };
@@ -50,7 +66,7 @@ export const useRegisterForm = (onSuccess?: () => void) => {
     handleSubmit,
     showPasswordRequirements,
     handlePasswordFocus,
-    toastMessage,
-    clearToast: () => setToastMessage(""),
+    errorMessage,
+    clearToast: () => setErrorMessage(""),
   };
 };
