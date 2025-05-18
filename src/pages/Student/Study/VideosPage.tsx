@@ -354,7 +354,7 @@ export default function StudentMultipleVideosPage() {
                         <div className="h-4 w-4 rounded-full bg-[#4E81BD] flex items-center justify-center">
                           <span className="text-[10px] text-white font-bold">P</span>
                         </div>
-                        <span className="font-medium">{video.protocol}</span>
+                        <span className="font-medium">{video.protocol.toUpperCase()}</span>
                       </div>
                     </div>
                   </div>
