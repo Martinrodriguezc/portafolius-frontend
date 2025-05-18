@@ -22,6 +22,7 @@ import StudentUploadPage from "./pages/Student/Upload";
 import StudentStudiesPage from "./pages/Student/Study/StudyPage";
 import StudentMultipleVideosPage from "./pages/Student/Study/VideosPage";
 import StudentVideoPage from "./pages/Student/Study/Video";
+import StudentSettingsPage from "./pages/Student/Settings";
 
 import TeacherDashboardPage from "./pages/Teacher/Dashboard";
 import TeacherEvaluationsPage from "./pages/Teacher/allEvaluations";
@@ -57,6 +58,7 @@ function App() {
           <Route path="upload" element={<StudentUploadPage />} />
           <Route path="create_study" element={<StudentCreateStudyPage />} />
           <Route path="comments" element={<CommentsPage />} />
+          <Route path="settings" element={<StudentSettingsPage />} />
 
           <Route
             path="/student/:studyId/videos/:clipId"

@@ -1,4 +1,4 @@
-import { Home, Upload, BarChart, BookOpen, Video, Book } from "lucide-react";
+import { Home, Upload, BarChart, BookOpen, Video, Book, Settings } from "lucide-react";
 
 export const studentMenuItems = [
   { path: "/student", icon: Home, label: "Inicio" },
@@ -7,6 +7,7 @@ export const studentMenuItems = [
   { path: "/student/progress", icon: BarChart, label: "Mi progreso" },
   { path: "/student/studies", icon: Video, label: "Mis Estudios" },
   { path: "/student/materials", icon: BookOpen, label: "Material de estudio" },
+  { path: "/student/settings", icon: Settings, label: "Configuración" },
 ];
 
 export const isActivePath = (
