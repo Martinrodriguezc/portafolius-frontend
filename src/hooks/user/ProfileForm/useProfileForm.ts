@@ -32,6 +32,7 @@ export function useProfileForm(
     setBusy(true);
     setError(null);
     setSaved(false);
+
     try {
       const payload = {
         firstName: form.first_name,
@@ -44,11 +45,8 @@ export function useProfileForm(
       await onSave(form);
       setSaved(true);
     } catch (e: unknown) {
-      if (e instanceof Error) {
-        setError(e.message);
-      } else {
-        setError("Error al guardar");
-      }
+      if (e instanceof Error) setError(e.message);
+      else setError("Error al guardar");
     } finally {
       setBusy(false);
     }
