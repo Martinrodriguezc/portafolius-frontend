@@ -7,30 +7,34 @@ export function useProfileForm(
 ): UseProfileFormReturn {
   const [form, setForm] = useState<Omit<UserProfile, "id">>({
     first_name: profile.first_name,
-    last_name: profile.last_name,
-    email: profile.email,
-    role: profile.role,
+    last_name:  profile.last_name,
+    email:      profile.email,
+    role:       profile.role,
   });
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy]   = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (): Promise<void> => {
     setBusy(true);
     setError(null);
     setSaved(false);
+
     try {
-      await onSave(form);
+      const payload = {
+        firstName: form.first_name,
+        lastName:  form.last_name,
+        email:     form.email,
+      } as unknown as Partial<Omit<UserProfile, "id">>;
+
+      await onSave(payload);
       setSaved(true);
     } catch (e: unknown) {
-      if (e instanceof Error) {
-        setError(e.message);
-      } else {
-        setError("Error al guardar");
-      }
+      if (e instanceof Error) setError(e.message);
+      else setError("Error al guardar");
     } finally {
       setBusy(false);
     }
