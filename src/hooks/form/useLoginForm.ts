@@ -40,6 +40,7 @@ export const useLoginForm = (onSuccess?: () => void) => {
       await authService.login(formData);
       if (onSuccess) onSuccess();
     } catch (error: unknown) {
+      console.error("Error al iniciar sesión:", error);
       setGeneralError("Email o contraseña incorrectos.");
     }
   };
