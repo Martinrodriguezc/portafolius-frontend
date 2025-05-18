@@ -244,7 +244,7 @@ export default function StudentMultipleVideosPage() {
                         </div>
                         <div className="flex items-center gap-1.5">
                           <FileVideo className="h-4 w-4 text-[#4E81BD]" />
-                          <span className="font-medium">{video.protocol}</span>
+                          <span className="font-medium">{video.protocol.toUpperCase()}</span>
                         </div>
                         {video.status === "EVALUADO" && video.size_bytes !== undefined && (
                           <div className="flex items-center gap-1.5">
