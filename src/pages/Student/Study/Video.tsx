@@ -196,7 +196,7 @@ export default function StudentVideoPage() {
                         Protocolo
                       </h4>
                       <p className="text-[14px] text-[#666666]">
-                        {meta?.protocol || "No disponible"}
+                        {meta?.protocol.toUpperCase() || "No disponible"}
                       </p>
                     </div>
                   </div>

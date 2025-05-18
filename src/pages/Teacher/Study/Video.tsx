@@ -244,7 +244,7 @@ export default function TeacherVideoPage() {
                         Protocolo
                       </h4>
                       <p className="text-xs sm:text-sm text-[#666666]">
-                        {meta.protocol || "No disponible"}
+                        {meta.protocol.toUpperCase() || "No disponible"}
                       </p>
                     </div>
                   </div>
