@@ -14,16 +14,27 @@ export default function StudentSettingsLayout() {
     updateProfile,
   } = useUserProfile();
 
+  const PageHeader = () => (
+    <div className="flex items-center gap-3 mb-8">
+      <div className="bg-[#4E81BD]/10 p-2 rounded-full">
+        <User className="h-6 w-6 text-[#4E81BD]" />
+      </div>
+      <div>
+        <h1 className="text-[24px] font-bold text-[#333333]">Mi Perfil</h1>
+        <p className="text-[#666666] text-[14px] mt-1">
+          Actualiza tus datos personales
+        </p>
+      </div>
+    </div>
+  );
+
   if (userLoading) return <p className="p-8">Cargando perfil…</p>;
   if (userError)   return <p className="p-8 text-red-500">Error: {userError}</p>;
   if (!user)       return <p className="p-8 text-red-500">Usuario no encontrado</p>;
 
   return (
     <div className="p-8">
-      <header className="mb-8">
-        <h1 className="text-[20px] font-bold text-[#333333]">Mi Perfil</h1>
-        <p className="text-[#A0A0A0]">Actualiza tus datos personales</p>
-      </header>
+      <PageHeader />
 
       <TabsContainer defaultValue="profile">
         <TabsList className="mb-6">
