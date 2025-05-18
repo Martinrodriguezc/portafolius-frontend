@@ -81,7 +81,6 @@ export default function StudentVideoPage() {
     return (
       <div className="p-8 md:p-10 max-w-7xl mx-auto">
         <PageHeader />
-        {/* estado de carga… */}
       </div>
     );
   }
@@ -90,7 +89,6 @@ export default function StudentVideoPage() {
     return (
       <div className="p-8 md:p-10 max-w-7xl mx-auto">
         <PageHeader />
-        {/* mensaje de error… */}
       </div>
     );
   }
@@ -117,7 +115,7 @@ export default function StudentVideoPage() {
           </Card>
 
           {videos.length > 1 && (
-            <VideoCarousel videos={videos} studyId={studyId!} />
+            <VideoCarousel videos={videos} studyId={studyId!} teacher={false}/>
           )}
 
           <Card className="rounded-[16px] border border-slate-200 shadow-sm overflow-hidden">
