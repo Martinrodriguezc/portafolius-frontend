@@ -166,8 +166,10 @@ export async function notifyUploadCallback(
     try {
       const err = await res.json();
       errorMsg = err.message || errorMsg;
-    } catch {}
+    } catch (err: unknown){
+      console.error("Error al parsear la respuesta de error:", err);
     throw new Error(errorMsg);
+  }
   }
 
   return (await res.json()) as UploadCallbackResponse;
