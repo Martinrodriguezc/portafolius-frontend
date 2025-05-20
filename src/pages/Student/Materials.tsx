@@ -1,57 +1,83 @@
-import { authService } from '../../hooks/auth/authServices';
-import { useStudentMaterials } from '../../hooks/student/Materials/useStudentMaterials';
-import MaterialsHeader       from '../../components/student/materials/MaterialsHeader';
-import MaterialsAuthError    from '../../components/student/materials/MaterialsAuthError';
-import MaterialsLoading      from '../../components/student/materials/MaterialsLoading';
-import MaterialsError        from '../../components/student/materials/MaterialsError';
-import MaterialsSummary      from '../../components/student/materials/MaterialsSummary';
-import MaterialsSearchFilter from '../../components/student/materials/MaterialsSearchFilter';
-import MaterialsTabs         from '../../components/student/materials/MaterialsTabs';
-import { Material }          from '../../types/material';
+import { authService } from "../../hooks/auth/authServices";
+import { useStudentMaterials } from "../../hooks/student/Materials/useStudentMaterials";
+import MaterialsHeader       from "../../components/student/materials/MaterialsHeader";
+import MaterialsAuthError    from "../../components/student/materials/MaterialsAuthError";
+import MaterialsLoading      from "../../components/student/materials/MaterialsLoading";
+import MaterialsError        from "../../components/student/materials/MaterialsError";
+import MaterialsSummary      from "../../components/student/materials/MaterialsSummary";
+import MaterialsSearchFilter from "../../components/student/materials/MaterialsSearchFilter";
+import MaterialsTabs         from "../../components/student/materials/MaterialsTabs";
+
+import type { StudentMaterial } from "../../types/studentMaterial";
+import type { Document }        from "../../components/student/materials/DocumentsTab";
+import type { ResourceVideo }   from "../../components/student/materials/VideosTab";
+import type { Link as LinkType }from "../../components/student/materials/LinksTab";
 
 export default function MaterialsPage() {
-  const user = authService.getCurrentUser();
-  const studentId = Number(user?.id ?? '');
+  const user      = authService.getCurrentUser();
+  const studentId = Number(user?.id ?? "");
   const { data: materials, isLoading, error } = useStudentMaterials(studentId);
 
-  if (!studentId) {
-    return <MaterialsAuthError />;
-  }
-  if (isLoading) {
-    return <MaterialsLoading />;
-  }
-  if (error) {
-    return <MaterialsError message={error.toString()} />;
-  }
+  if (!studentId) return <MaterialsAuthError />;
+  if (isLoading)   return <MaterialsLoading />;
+  if (error)       return <MaterialsError message={error.message} />;
 
-  const items: Material[] = materials!;
+  const docs: Document[] = [];
+  const vids: ResourceVideo[] = [];
+  const links: LinkType[] = [];
 
-  const documents = items
-    .filter((m): m is Material & { documents: NonNullable<Material['documents']> } =>
-      m.type === 'document' && Array.isArray(m.documents)
-    )
-    .flatMap(m => m.documents);
-
-  const videos = items
-    .filter((m): m is Material & { videos: NonNullable<Material['videos']> } =>
-      m.type === 'video' && Array.isArray(m.videos)
-    )
-    .flatMap(m => m.videos);
-
-  const links = items
-    .filter((m): m is Material & { links: NonNullable<Material['links']> } =>
-      m.type === 'link' && Array.isArray(m.links)
-    )
-    .flatMap(m => m.links);
+  (materials as StudentMaterial[]).forEach((m) => {
+    switch (m.type) {
+      case "document":
+        docs.push({
+          id:          m.id,
+          title:       m.title,
+          description: m.description,
+          url:         m.url,
+          created_at:  m.upload_date,
+          updated_at:  m.upload_date,
+          tags:        [],                     
+          file_type:   m.mime_type ?? undefined,
+          file_size:   m.size_bytes
+            ? `${(m.size_bytes / 1024 ** 2).toFixed(1)} MB`
+            : undefined,
+        });
+        break;
+      case "video":
+        vids.push({
+          id:            m.id,
+          title:         m.title,
+          description:   m.description,
+          url:           m.url,
+          thumbnail_url: undefined,
+          created_at:    m.upload_date,
+          updated_at:    m.upload_date,
+          tags:          [],
+          duration:      undefined,
+        });
+        break;
+      case "link":
+        links.push({
+          id:          m.id,
+          title:       m.title,
+          description: m.description,
+          url:         m.url,
+          thumbnail_url: undefined,
+          created_at:  m.upload_date,
+          updated_at:  m.upload_date,
+          tags:        [],
+          domain:      undefined,
+        });
+        break;
+    }
+  });
 
   return (
-    <div className="p-8 md:p-10 max-w-7xl mx-auto">
+    <div className="p-8 md:p-10 max-w-7xl mx-auto space-y-8">
       <MaterialsHeader />
-      <MaterialsSummary counts={{ documents, videos, links }} />
+      <MaterialsSummary counts={{ documents: docs, videos: vids, links }} />
       <MaterialsSearchFilter />
-      <MaterialsTabs documents={documents} videos={videos} links={links} />
+      <MaterialsTabs documents={docs} videos={vids} links={links} />
     </div>
   );
 }
-
-

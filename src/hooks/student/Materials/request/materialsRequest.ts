@@ -1,15 +1,22 @@
 import axios, { AxiosResponse } from "axios";
-import { Material } from "../../../../types/material";
 import { config } from "../../../../config/config";
+import { authService } from "../../../auth/authServices";
+import type { StudentMaterial } from "../../../../types/studentMaterial";
 
-
-export const fetchStudentMaterials = async (
+export async function fetchStudentMaterials(
   studentId: number
-): Promise<Material[]> => {
-  const response: AxiosResponse<Material[]> = await axios.get(
-    `${config.SERVER_URL}/materials/student/${studentId}/`
+): Promise<StudentMaterial[]> {
+  const response: AxiosResponse<StudentMaterial[]> = await axios.get(
+    `${config.SERVER_URL}/materials/${studentId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      },
+      validateStatus: () => true,
+    }
   );
-  console.log(response.data)
+  if (response.status !== 200) {
+    throw new Error(`Error ${response.status} al cargar materiales`);
+  }
   return response.data;
-};
-
+}

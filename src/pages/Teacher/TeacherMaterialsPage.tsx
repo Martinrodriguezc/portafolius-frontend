@@ -38,7 +38,6 @@ export default function TeacherMaterialsPage() {
 
   return (
     <main className="p-8 md:p-10 max-w-7xl mx-auto space-y-8">
-      {/* — Header — */}
       <div className="flex items-center gap-3">
         <div className="bg-[#4E81BD]/10 p-2 rounded-full">
           <FileText className="h-6 w-6 text-[#4E81BD]" />
@@ -51,7 +50,6 @@ export default function TeacherMaterialsPage() {
         </div>
       </div>
 
-      {/* — Estadísticas — */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatsCard
           icon={<Users className="h-6 w-6 text-white" />}
@@ -82,14 +80,12 @@ export default function TeacherMaterialsPage() {
         />
       </div>
 
-      {/* — Formulario — */}
       <Card className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-200">
         {studentsError && <p className="text-red-500 mb-4">{studentsError}</p>}
         {createError   && <p className="text-red-500 mb-4">{createError}</p>}
         {success       && <p className="text-green-600 mb-4">Material creado exitosamente.</p>}
 
         <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl mx-auto">
-          {/* Título */}
           <div>
             <Label htmlFor="title">Título</Label>
             <Input
@@ -101,7 +97,6 @@ export default function TeacherMaterialsPage() {
             />
           </div>
 
-          {/* Tipo */}
           <div>
             <Label htmlFor="type">Tipo</Label>
             <select
@@ -116,7 +111,6 @@ export default function TeacherMaterialsPage() {
             </select>
           </div>
 
-          {/* Descripción */}
           <div>
             <Label htmlFor="description">Descripción</Label>
             <textarea
@@ -127,7 +121,6 @@ export default function TeacherMaterialsPage() {
             />
           </div>
 
-          {/* URL o Archivo */}
           {material.type === "link" ? (
             <div>
               <Label htmlFor="url">URL</Label>
@@ -158,7 +151,6 @@ export default function TeacherMaterialsPage() {
             </div>
           )}
 
-          {/* Selección de estudiantes */}
           <div>
             <Label htmlFor="students">Estudiantes</Label>
             {loadingStudents ? (
@@ -189,7 +181,6 @@ export default function TeacherMaterialsPage() {
             )}
           </div>
 
-          {/* Botón */}
           <div className="flex justify-end">
             <Button
               type="submit"
