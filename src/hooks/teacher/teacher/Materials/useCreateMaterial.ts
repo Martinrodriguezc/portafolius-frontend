@@ -20,6 +20,9 @@ export function useCreateMaterial() {
   const [createError, setCreateError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
+  const [createdCount, setCreatedCount] = useState<number>(0);
+  const [assignedStudents, setAssignedStudents] = useState<Set<number>>(new Set());
+
   useEffect(() => {
     const loadStudents = async () => {
       setLoadingStudents(true);
@@ -34,7 +37,6 @@ export function useCreateMaterial() {
         setLoadingStudents(false);
       }
     };
-
     void loadStudents();
   }, []);
 
@@ -54,6 +56,14 @@ export function useCreateMaterial() {
     try {
       await createMaterialRequest(material);
       setSuccess(true);
+
+      setCreatedCount((c) => c + 1);
+      setAssignedStudents((prev) => {
+        const next = new Set(prev);
+        material.studentIds.forEach((id) => next.add(id));
+        return next;
+      });
+
       setMaterial({
         type: "document",
         title: "",
@@ -73,10 +83,14 @@ export function useCreateMaterial() {
     students,
     loadingStudents,
     studentsError,
+
     material,
     creating,
     createError,
     success,
+
+    createdCount,
+    assignedCount: assignedStudents.size,
     handleChange,
     handleSubmit,
   };

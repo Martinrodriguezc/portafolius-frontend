@@ -3,6 +3,7 @@ import { config } from "../../../../../config/config";
 import { authService } from "../../../../auth/authServices";
 import { CreateMaterialPayload, Material } from "../../../../../types/material";
 import { UserProps } from "../../../../../types/User";
+
 export const fetchStudentsRequest = (): Promise<AxiosResponse<UserProps[]>> =>
   axios.get<UserProps[]>(
     `${config.SERVER_URL}/users?role=estudiante`,
