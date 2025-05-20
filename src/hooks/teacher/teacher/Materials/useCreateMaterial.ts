@@ -5,7 +5,7 @@ import { CreateMaterialPayload } from "../../../../types/material";
 
 export function useCreateMaterial() {
   const [students, setStudents] = useState<UserProps[]>([]);
-  const [loadingStudents, setLoadingStudents] = useState(true);
+  const [loadingStudents, setLoadingStudents] = useState<boolean>(true);
   const [studentsError, setStudentsError] = useState<string | null>(null);
 
   const [material, setMaterial] = useState<CreateMaterialPayload>({
@@ -16,29 +16,33 @@ export function useCreateMaterial() {
     studentIds: [],
   });
 
-  const [creating, setCreating] = useState(false);
+  const [creating, setCreating] = useState<boolean>(false);
   const [createError, setCreateError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   useEffect(() => {
-    (async () => {
+    const loadStudents = async () => {
+      setLoadingStudents(true);
       try {
-        setLoadingStudents(true);
         const { data } = await fetchStudentsRequest();
-        setStudents(data);
-      } catch (err) {
-        setStudentsError((err as Error).message);
+        const onlyStudents = data.filter((u) => u.role === "estudiante");
+        setStudents(onlyStudents);
+      } catch (err: unknown) {
+        if (err instanceof Error) setStudentsError(err.message);
+        else setStudentsError("Error al cargar estudiantes");
       } finally {
         setLoadingStudents(false);
       }
-    })();
+    };
+
+    void loadStudents();
   }, []);
 
   const handleChange = <K extends keyof CreateMaterialPayload>(
     field: K,
     value: CreateMaterialPayload[K]
   ) => {
-    setMaterial(prev => ({ ...prev, [field]: value }));
+    setMaterial((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -57,8 +61,9 @@ export function useCreateMaterial() {
         url: "",
         studentIds: [],
       });
-    } catch (err) {
-      setCreateError((err as Error).message);
+    } catch (err: unknown) {
+      if (err instanceof Error) setCreateError(err.message);
+      else setCreateError("Error al crear material");
     } finally {
       setCreating(false);
     }
