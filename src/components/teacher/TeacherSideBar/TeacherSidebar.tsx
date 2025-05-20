@@ -70,16 +70,16 @@ export default function TeacherSidebar() {
               isActive={isActive(location.pathname, "/teacher/students", true)}
             />
             <SidebarNavLink
-              to="/teacher/settings"
-              icon={<Settings className="h-5 w-5" />}
-              label="Configuración"
-              isActive={isActive(location.pathname, "/teacher/settings", true)}
-            />
-            <SidebarNavLink
               to="/teacher/materials"
               icon={<FileText className="h-5 w-5" />}
               label="Subir Materiales"
               isActive={isActive(location.pathname, "/teacher/materials", true)}
+            />
+            <SidebarNavLink
+              to="/teacher/settings"
+              icon={<Settings className="h-5 w-5" />}
+              label="Configuración"
+              isActive={isActive(location.pathname, "/teacher/settings", true)}
             />
           </ul>
         </nav>

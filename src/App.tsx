@@ -28,6 +28,7 @@ import TeacherDashboardPage from "./pages/Teacher/Dashboard";
 import TeacherEvaluationsPage from "./pages/Teacher/allEvaluations";
 import TeacherStudentsPage from "./pages/Teacher/AllStudents";
 import TeacherSettingsPage from "./pages/Teacher/Settings";
+import TeacherMaterialsPage from "./pages/Teacher/TeacherMaterialsPage";
 
 import CommentsPage from "./pages/Student/Comments";
 import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
@@ -84,10 +85,9 @@ function App() {
           <Route path="evaluations/:id/videos" element={<TeacherMultipleVideosPage />} />
           <Route path="evaluations/:studyId/videos/:clipId" element={<TeacherVideoPage />} />
           <Route path="evaluations/:studyId/videos/:clipId/evaluate" element={<TeacherEvaluateVideoPage />} />
-
-
-          {/* --- ajustes ---------------------------------------------------- */}
           <Route path="settings" element={<TeacherSettingsPage />} />
+          <Route path="materials" element={<TeacherMaterialsPage />} />
+
         </Route>
       </Routes>
     </Router>
