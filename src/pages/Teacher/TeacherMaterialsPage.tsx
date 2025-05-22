@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { FileText, Users, Link as LinkIcon } from "lucide-react";
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
@@ -5,10 +7,13 @@ import Input from "../../components/common/Input/Input";
 import { Label } from "../../components/common/Label/Label";
 import { StatsCard } from "../../components/teacher/allEvaluations/StatsCard";
 import { useCreateMaterial } from "../../hooks/teacher/teacher/Materials/useCreateMaterial";
+import { useMaterialStats } from "../../hooks/teacher/teacher/Materials/useMaterialStats";
 import MaterialUploadSection from "../../components/teacher/materials/MaterialUploadSection";
 import { UserProps } from "../../types/User";
 
 export default function TeacherMaterialsPage() {
+  const queryClient = useQueryClient();
+
   const {
     students,
     loadingStudents,
@@ -17,24 +22,52 @@ export default function TeacherMaterialsPage() {
     creating,
     createError,
     success,
-    createdCount,
-    assignedCount,
     handleChange,
-    handleSubmit,
+    handleSubmit: hookSubmit,
   } = useCreateMaterial();
 
-  const totalStudents   = students.length;
-  const unassignedCount = totalStudents - assignedCount;
-  const totalMaterials  = createdCount;
+  const {
+    data: stats,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useMaterialStats();
+
+  const [formError, setFormError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (success) {
+      queryClient.invalidateQueries({ queryKey: ["materialStats"], exact: true });
+    }
+  }, [success, queryClient]);
+
+  const isFormValid =
+    material.title.trim() !== "" &&
+    material.url.trim() !== "" &&
+    material.studentIds.length > 0;
 
   const toggleStudent = (id: number | string) => {
     const idNum = typeof id === "string" ? parseInt(id, 10) : id;
     const isSelected = material.studentIds.includes(idNum);
     const newIds = isSelected
-      ? material.studentIds.filter((sid: number) => sid !== idNum)
+      ? material.studentIds.filter((sid) => sid !== idNum)
       : [...material.studentIds, idNum];
     handleChange("studentIds", newIds);
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid) {
+      setFormError(
+        "Formulario incompleto. Complete todos los campos y seleccione al menos un estudiante."
+      );
+    } else {
+      setFormError(null);
+      hookSubmit(e);
+    }
+  };
+
+  if (statsLoading) return <p className="p-8">Cargando estadísticas…</p>;
+  if (statsError) return <p className="p-8 text-red-500">{statsError.toString()}</p>;
 
   return (
     <main className="p-8 md:p-10 max-w-7xl mx-auto space-y-8">
@@ -54,7 +87,7 @@ export default function TeacherMaterialsPage() {
         <StatsCard
           icon={<Users className="h-6 w-6 text-white" />}
           title="Estudiantes sin materiales"
-          value={unassignedCount}
+          value={stats!.studentsWithout}
           gradientFrom="amber-50"
           gradientTo="amber-100"
           border="border-amber-200"
@@ -63,7 +96,7 @@ export default function TeacherMaterialsPage() {
         <StatsCard
           icon={<Users className="h-6 w-6 text-white" />}
           title="Estudiantes con materiales"
-          value={assignedCount}
+          value={stats!.studentsWith}
           gradientFrom="green-50"
           gradientTo="green-100"
           border="border-green-200"
@@ -71,8 +104,8 @@ export default function TeacherMaterialsPage() {
         />
         <StatsCard
           icon={<FileText className="h-6 w-6 text-white" />}
-          title="Cantidad de materiales subidos"
-          value={totalMaterials}
+          title="Materiales subidos"
+          value={stats!.totalMaterials}
           gradientFrom="blue-50"
           gradientTo="blue-100"
           border="border-blue-200"
@@ -82,8 +115,9 @@ export default function TeacherMaterialsPage() {
 
       <Card className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-200">
         {studentsError && <p className="text-red-500 mb-4">{studentsError}</p>}
-        {createError   && <p className="text-red-500 mb-4">{createError}</p>}
-        {success       && <p className="text-green-600 mb-4">Material creado exitosamente.</p>}
+        {createError && <p className="text-red-500 mb-4">{createError}</p>}
+        {formError && <p className="text-red-500 mb-4">{formError}</p>}
+        {success && <p className="text-green-600 mb-4">Material creado exitosamente.</p>}
 
         <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl mx-auto">
           <div>
@@ -102,7 +136,9 @@ export default function TeacherMaterialsPage() {
             <select
               id="type"
               value={material.type}
-              onChange={(e) => handleChange("type", e.target.value as any)}
+              onChange={(e) =>
+                handleChange("type", e.target.value as "document" | "video" | "link")
+              }
               className="w-full h-10 border rounded px-3 focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]"
             >
               <option value="document">Documento</option>
@@ -158,7 +194,8 @@ export default function TeacherMaterialsPage() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-48 overflow-y-auto border rounded p-2">
                 {students.map((s: UserProps) => {
-                  const sid = typeof s.id === "string" ? parseInt(s.id, 10) : s.id;
+                  const sid =
+                    typeof s.id === "string" ? parseInt(s.id, 10) : s.id;
                   const selected = material.studentIds.includes(sid);
                   return (
                     <label
@@ -182,12 +219,8 @@ export default function TeacherMaterialsPage() {
           </div>
 
           <div className="flex justify-end">
-            <Button
-              type="submit"
-              disabled={creating}
-              className="w-full md:w-auto"
-            >
-              {creating ? "Creando..." : "Crear Material"}
+            <Button type="submit" disabled={creating} className="w-full md:w-auto">
+              {creating ? "Creando…" : "Crear Material"}
             </Button>
           </div>
         </form>

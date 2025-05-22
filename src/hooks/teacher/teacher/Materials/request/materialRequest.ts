@@ -18,3 +18,21 @@ export const createMaterialRequest = (
     payload,
     { headers: { Authorization: `Bearer ${authService.getToken()}` } }
   );
+
+
+export interface MaterialStats {
+  totalStudents: number;
+  studentsWith: number;
+  studentsWithout: number;
+  totalMaterials: number;
+}
+
+export const fetchMaterialStatsRequest = (): Promise<AxiosResponse<MaterialStats>> =>
+  axios.get<MaterialStats>(
+    `${config.SERVER_URL}/materials/summary`,
+    {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      },
+    }
+  );
