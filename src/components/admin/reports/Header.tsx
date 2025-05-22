@@ -6,10 +6,10 @@ interface HeaderProps {
   onRefrescar: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ title, ultimaActualizacion, onRefrescar }) => {
+const Header: React.FC<HeaderProps> = ({ ultimaActualizacion, onRefrescar }) => {
   return (
     <div className="flex justify-between items-center">
-      <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+      <h1 className="text-xl font-semibold text-gray-900"></h1>
       <div className="flex items-center space-x-4">
         <span className="text-sm text-gray-500">
           Última actualización: {ultimaActualizacion.toLocaleTimeString('es-ES')}

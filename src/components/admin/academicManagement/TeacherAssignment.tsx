@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useAssignServices } from '../../../hooks/admin/assignServices';
 import { useUserServices } from '../../../hooks/admin/userServices';
 import { useStudentList } from '../../../hooks/admin/studentListServices';
@@ -8,8 +8,10 @@ import { UserListProps } from '../../../types/Props/Admin/AcademicManagementProp
 
 interface StudentWithAssignment extends User {
   assignedTeacher?: {
-    id: number;
-    fullName: string;
+    id: string | number;
+    firstName?: string;
+    lastName?: string;
+    fullName?: string;
   };
 }
 
@@ -29,9 +31,14 @@ const UserList: React.FC<UserListProps> = ({
   };
 
   const getAssignmentStatus = (user: StudentWithAssignment) => {
-    return user.assignedTeacher 
-      ? `Asignado a: ${user.assignedTeacher.fullName}`
-      : 'No asignado';
+    if (user.assignedTeacher) {
+      return `Asignado a: ${user.assignedTeacher.fullName || 'profesor'}`;
+    }
+    return 'No asignado';
+  };
+
+  const isAssigned = (user: StudentWithAssignment) => {
+    return !!user.assignedTeacher;
   };
 
   return (
@@ -46,8 +53,10 @@ const UserList: React.FC<UserListProps> = ({
         <input
           type="text"
           value={searchTerm}
-          onChange={() => {
-            onSelect(null as unknown as User);
+          onChange={(e) => {
+            if (onSelect && typeof onSelect === 'function') {
+              onSelect(null as unknown as User);
+            }
           }}
           placeholder={placeholder}
           className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -87,7 +96,7 @@ const UserList: React.FC<UserListProps> = ({
                       </p>
                       {showAssignmentStatus && (
                         <span className={`text-xs px-2 py-1 rounded-full ${
-                          'assignedTeacher' in user && (user as StudentWithAssignment).assignedTeacher
+                          isAssigned(user as StudentWithAssignment)
                             ? 'bg-green-100 text-green-800'
                             : 'bg-gray-100 text-gray-800'
                         }`}>
@@ -109,18 +118,21 @@ const UserList: React.FC<UserListProps> = ({
 export const TeacherAssignment: React.FC = () => {
   const { teachers, loading: teachersLoading } = useUserServices();
   const { loading: studentsLoading, getFilteredStudents, refreshList } = useStudentList();
-  const { assignTeacherToStudent, loading: assignLoading, error } = useAssignServices();
+  const { assignTeacherToStudent, loading: assignLoading, error: assignError } = useAssignServices();
+  
   const [selectedStudents, setSelectedStudents] = useState<User[]>([]);
   const [selectedTeacher, setSelectedTeacher] = useState<User | null>(null);
   const [studentSearch, setStudentSearch] = useState('');
   const [teacherSearch, setTeacherSearch] = useState('');
   const [successMessage, setSuccessMessage] = useState<string>('');
+  const [isAssigning, setIsAssigning] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const filteredStudents = useMemo(() => {
     return getFilteredStudents(studentSearch);
-  }, [getFilteredStudents, studentSearch]);
+  }, [getFilteredStudents, studentSearch, refreshTrigger]);
 
-  const handleStudentSelection = (student: User) => {
+  const handleStudentSelection = useCallback((student: User) => {
     setSelectedStudents(prev => {
       const isSelected = prev.some(s => s.id === student.id);
       if (isSelected) {
@@ -129,34 +141,53 @@ export const TeacherAssignment: React.FC = () => {
         return [...prev, student];
       }
     });
-  };
+  }, []);
 
   const handleAssignment = async () => {
     if (selectedStudents.length === 0 || !selectedTeacher) {
       return;
     }
 
-    let allSuccess = true;
-    for (const student of selectedStudents) {
-      const result = await assignTeacherToStudent(selectedTeacher.email, student.email);
-      if (!result.success) {
-        allSuccess = false;
+    setIsAssigning(true);
+    try {
+      let allSuccess = true;
+      for (const student of selectedStudents) {
+        const result = await assignTeacherToStudent(selectedTeacher.email, student.email);
+        if (!result.success) {
+          allSuccess = false;
+        }
       }
-    }
-    
-    if (allSuccess) {
-      setSuccessMessage('Profesor asignado exitosamente a los estudiantes seleccionados');
-      setTimeout(() => setSuccessMessage(''), 3000);
-      setSelectedStudents([]);
-      setSelectedTeacher(null);
-      setStudentSearch('');
-      setTeacherSearch('');
-      refreshList(); 
+      
+      if (allSuccess) {
+        setSuccessMessage('Profesor asignado exitosamente');
+        setTimeout(() => setSuccessMessage(''), 3000);
+        setSelectedStudents([]);
+        setSelectedTeacher(null);
+        setStudentSearch('');
+        setTeacherSearch('');
+        
+        await refreshList();
+        
+        setRefreshTrigger(prev => prev + 1);
+      }
+    } catch (error) {
+      console.error('Error en la asignación:', error);
+    } finally {
+      setIsAssigning(false);
     }
   };
 
-  if (studentsLoading || teachersLoading) {
-    return <div className="text-center">Cargando usuarios...</div>;
+  if (isAssigning || studentsLoading || teachersLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[200px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-2 text-gray-600">
+            {isAssigning ? 'Procesando asignación...' : 'Cargando usuarios...'}
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -199,8 +230,8 @@ export const TeacherAssignment: React.FC = () => {
             </div>
           )}
 
-          {error && (
-            <div className="text-red-600 text-sm">{error}</div>
+          {assignError && (
+            <div className="text-red-600 text-sm">{assignError}</div>
           )}
 
           {successMessage && (
@@ -209,10 +240,10 @@ export const TeacherAssignment: React.FC = () => {
 
           <button
             onClick={handleAssignment}
-            disabled={selectedStudents.length === 0 || !selectedTeacher || assignLoading}
+            disabled={selectedStudents.length === 0 || !selectedTeacher || assignLoading || isAssigning}
             className="w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400"
           >
-            {assignLoading ? 'Asignando...' : 'Asignar Profesor'}
+            {assignLoading || isAssigning ? 'Asignando...' : 'Asignar Profesor'}
           </button>
         </div>
       </div>

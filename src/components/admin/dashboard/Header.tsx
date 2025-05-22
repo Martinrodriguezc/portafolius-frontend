@@ -1,8 +1,11 @@
-interface PageHeaderProps {
-  lastName?: string;
-}
+import { authService } from '../../../hooks/auth/authServices';
 
-export const PageHeader: React.FC<PageHeaderProps> = ({ lastName = 'Administrador' }) => {
+interface PageHeaderProps {}
+
+export const PageHeader: React.FC<PageHeaderProps> = () => {
+  const currentUser = authService.getCurrentUser();
+  const firstName = currentUser?.first_name || 'Administrador';
+
   const date = new Date();
   const formattedDate = new Intl.DateTimeFormat('es-ES', {
     weekday: 'long',
@@ -16,7 +19,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ lastName = 'Administrado
   return (
     <div className="space-y-2">
       <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-        Buenos días, {lastName}
+        Buenos días, {firstName}
       </h1>
       <p className="text-gray-500">{capitalizedDate}</p>
     </div>
