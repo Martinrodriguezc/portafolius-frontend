@@ -1,7 +1,7 @@
 import Card from "../../common/Card/Card";
 import VideoPlayer from "../../../components/student/videos/VideoPlayer";
-import { Video } from "../../../../types/VideoTypes";
-import { StudyWithStatus } from "../../../../types/Study";
+import type { Video } from '../../../types/VideoTypes';
+import type { StudyWithStatus } from '../../../types/Study';
 import {
   FileVideo,
   User,
@@ -12,7 +12,7 @@ import {
 
 interface Props {
   url: string;
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
   isPlaying: boolean;
   togglePlay(): void;
   progress: number;
