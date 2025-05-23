@@ -4,7 +4,7 @@ import TabsButton    from '../../common/Tabs/TabsButton';
 import TabsPanel     from '../../common/Tabs/TabsPanel';
 
 import DocumentsTab   , { Document }      from './DocumentsTab';
-import { VideosTab, ResourceVideo }      from './VideosTab';
+import  VideosTab, { ResourceVideo }      from './VideosTab';
 import { LinksTab, Link as LinkType }     from './LinksTab';
 
 interface MaterialsTabsProps {
