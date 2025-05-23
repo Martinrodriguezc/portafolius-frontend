@@ -20,7 +20,8 @@ export const authService = {
       try {
         localStorage.setItem(TOKEN_KEY, data.token);
         localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-      } catch {
+      } catch (e) {
+        void e;
       }
     }
     return data;
@@ -35,7 +36,8 @@ export const authService = {
     try {
       localStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem(USER_KEY);
-    } catch {
+    } catch (e) {
+      void e;
     }
   },
 
@@ -43,7 +45,8 @@ export const authService = {
     try {
       const str = localStorage.getItem(USER_KEY);
       return str ? (JSON.parse(str) as UserProps) : null;
-    } catch {
+    } catch (e) {
+      void e;
       return null;
     }
   },
@@ -51,7 +54,8 @@ export const authService = {
   getToken(): string | null {
     try {
       return localStorage.getItem(TOKEN_KEY);
-    } catch {
+    } catch (e) {
+      void e;
       return null;
     }
   },
@@ -66,7 +70,8 @@ export const authService = {
       try {
         localStorage.setItem(TOKEN_KEY, data.token);
         localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-      } catch {
+      } catch (e) {
+        void e;
       }
     }
     return data;
@@ -87,7 +92,8 @@ export const authService = {
     );
     try {
       localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-    } catch {
+    } catch (e) {
+      void e;
     }
     return data;
   },
@@ -103,7 +109,8 @@ export const authService = {
     const { data } = await updateUserProfileRequest(user.id, payload, token);
     try {
       localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-    } catch {
+    } catch (e) {
+      void e;
     }
     window.dispatchEvent(new CustomEvent("userUpdated", { detail: data.user }));
     return data.user;
