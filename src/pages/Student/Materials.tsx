@@ -1,4 +1,3 @@
-// src/pages/Materials.tsx
 import { authService } from "../../hooks/auth/authServices";
 import { useStudentMaterials } from "../../hooks/student/Materials/useStudentMaterials";
 import MaterialsHeader from "../../components/student/materials/MaterialsHeader";
@@ -34,7 +33,7 @@ export default function MaterialsPage() {
           id:          m.id,
           title:       m.title,
           description: m.description,
-          url:         m.url,           // <-- aquí
+          url:         m.url,           
           created_at:  m.upload_date,
           updated_at:  m.upload_date,
           file_type:   m.mime_type ?? undefined,
@@ -49,7 +48,7 @@ export default function MaterialsPage() {
           id: m.id,
           title: m.title,
           description: m.description,
-          url: m.url,               // para vídeos/enlaces seguimos usando la URL tal cual
+          url: m.url,               
           thumbnail_url: undefined,
           created_at: m.upload_date,
           updated_at: m.upload_date,

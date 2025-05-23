@@ -5,7 +5,8 @@ import TabsPanel     from '../../common/Tabs/TabsPanel';
 
 import DocumentsTab   , { Document }      from './DocumentsTab';
 import  VideosTab, { ResourceVideo }      from './VideosTab';
-import { LinksTab, Link as LinkType }     from './LinksTab';
+import LinksTab      from './LinksTab'
+import type { Link as LinkType }       from './LinksTab'
 
 interface MaterialsTabsProps {
   documents: Document[];

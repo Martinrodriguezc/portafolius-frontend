@@ -12,8 +12,7 @@ import { useMaterialStats } from "../../hooks/teacher/teacher/Materials/useMater
 import { UserProps } from "../../types/User";
 
 export default function TeacherMaterialsPage() {
-  const queryClient = useQueryClient();
-
+  const qc = useQueryClient();
   const {
     students,
     loadingStudents,
@@ -25,46 +24,39 @@ export default function TeacherMaterialsPage() {
     createError,
     success,
     handleChange,
-    handleSubmit: hookSubmit,
+    handleSubmit,
   } = useCreateMaterial();
-
-  const {
-    data: stats,
-    isLoading: statsLoading,
-    error: statsError,
-  } = useMaterialStats();
-
+  const { data: stats, isLoading: statsLoading, error: statsError } =
+    useMaterialStats();
   const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (success) {
-      queryClient.invalidateQueries({ queryKey: ["materialStats"], exact: true });
-    }
-  }, [success, queryClient]);
+    if (success) qc.invalidateQueries({ queryKey: ["materialStats"], exact: true });
+  }, [success, qc]);
 
   const isFormValid =
     material.title.trim() !== "" &&
-    selectedFile !== null &&
-    material.studentIds.length > 0;
+    material.studentIds.length > 0 &&
+    (material.type === "link"
+      ? material.url.trim() !== ""
+      : selectedFile !== null);
 
   const toggleStudent = (id: number | string) => {
-    const idNum = typeof id === "string" ? parseInt(id, 10) : id;
-    const isSelected = material.studentIds.includes(idNum);
-    const newIds = isSelected
-      ? material.studentIds.filter((sid) => sid !== idNum)
-      : [...material.studentIds, idNum];
-    handleChange("studentIds", newIds);
+    const sid = typeof id === "string" ? parseInt(id, 10) : id;
+    handleChange(
+      "studentIds",
+      material.studentIds.includes(sid)
+        ? material.studentIds.filter((x) => x !== sid)
+        : [...material.studentIds, sid]
+    );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormValid) {
-      setFormError(
-        "Formulario incompleto. Complete todos los campos y seleccione al menos un estudiante."
-      );
-    } else {
+    if (!isFormValid) setFormError("Formulario incompleto");
+    else {
       setFormError(null);
-      hookSubmit(e);
+      handleSubmit(e);
     }
   };
 
@@ -78,7 +70,9 @@ export default function TeacherMaterialsPage() {
           <FileText className="h-6 w-6 text-[#4E81BD]" />
         </div>
         <div>
-          <h1 className="text-[24px] font-bold text-[#333333]">Materiales de estudio</h1>
+          <h1 className="text-[24px] font-bold text-[#333333]">
+            Materiales de estudio
+          </h1>
           <p className="text-[#666666] text-[14px] mt-1">
             Sube y asigna materiales de estudio para tus estudiantes
           </p>
@@ -121,7 +115,7 @@ export default function TeacherMaterialsPage() {
         {formError && <p className="text-red-500 mb-4">{formError}</p>}
         {success && <p className="text-green-600 mb-4">Material creado exitosamente.</p>}
 
-        <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl mx-auto">
+        <form onSubmit={onSubmit} className="space-y-6 max-w-4xl mx-auto">
           <div>
             <Label htmlFor="title">Título</Label>
             <Input
@@ -138,9 +132,7 @@ export default function TeacherMaterialsPage() {
             <select
               id="type"
               value={material.type}
-              onChange={(e) =>
-                handleChange("type", e.target.value as "document" | "video" | "link")
-              }
+              onChange={(e) => handleChange("type", e.target.value as any)}
               className="w-full h-10 border rounded px-3 focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]"
             >
               <option value="document">Documento</option>
@@ -179,7 +171,7 @@ export default function TeacherMaterialsPage() {
               <MaterialUploadSection
                 accept={material.type === "document" ? ".pdf" : ".mp4, .avi, .mov"}
                 maxSizeMb={material.type === "document" ? 10 : 50}
-                selectedFileName={material.url}
+                selectedFileName={selectedFile?.name ?? ""}
                 onFileSelected={(file) => {
                   setSelectedFile(file);
                   handleChange("url", file.name);
@@ -195,8 +187,7 @@ export default function TeacherMaterialsPage() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-48 overflow-y-auto border rounded p-2">
                 {students.map((s: UserProps) => {
-                  const sid =
-                    typeof s.id === "string" ? parseInt(s.id, 10) : s.id;
+                  const sid = typeof s.id === "string" ? parseInt(s.id, 10) : s.id;
                   const selected = material.studentIds.includes(sid);
                   return (
                     <label

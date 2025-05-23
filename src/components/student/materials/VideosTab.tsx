@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Play, Download } from "lucide-react";
+import { Play, Download, Calendar } from "lucide-react";
 import Card from "../../common/Card/Card";
 import { config } from "../../../config/config";
 import { authService } from "../../../hooks/auth/authServices";
@@ -8,7 +8,7 @@ export interface ResourceVideo {
   id: number;
   title: string;
   description: string;
-  url: string;            
+  url: string;
   thumbnail_url?: string;
   created_at: string;
   updated_at: string;
@@ -47,15 +47,12 @@ export default function VideosTab({ videos }: VideosTabProps) {
     try {
       const token = authService.getToken();
       const downloadUrl = new URL(`/materials/download/${video.id}`, config.SERVER_URL).toString();
-
       const res = await fetch(downloadUrl, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
       const blob = await res.blob();
       const blobUrl = URL.createObjectURL(blob);
-
       const a = document.createElement("a");
       a.href = blobUrl;
       const filename = /\.[a-z0-9]+$/i.test(video.title)
@@ -97,6 +94,14 @@ export default function VideosTab({ videos }: VideosTabProps) {
               >
                 <Download className="h-4 w-4" /> Descargar
               </button>
+            </div>
+            <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 text-xs text-[#666666]">
+              <Calendar className="h-4 w-4 mr-1" />
+              {new Date(video.created_at).toLocaleDateString("es-ES", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </div>
           </div>
         </Card>
