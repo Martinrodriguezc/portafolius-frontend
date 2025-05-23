@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckSquare, Home, Settings, Users, Menu, X } from "lucide-react";
+import { CheckSquare, Home, Settings, Users, FileText, Menu, X } from "lucide-react";
 import { SidebarHeader } from "./SidebarHeader";
 import { SidebarNavLink } from "./SidebarNavlink";
 import { SidebarFooter } from "./SidebarFooter";
@@ -68,6 +68,12 @@ export default function TeacherSidebar() {
               icon={<Users className="h-5 w-5" />}
               label="Estudiantes"
               isActive={isActive(location.pathname, "/teacher/students", true)}
+            />
+            <SidebarNavLink
+              to="/teacher/materials"
+              icon={<FileText className="h-5 w-5" />}
+              label="Subir Materiales"
+              isActive={isActive(location.pathname, "/teacher/materials", true)}
             />
             <SidebarNavLink
               to="/teacher/settings"

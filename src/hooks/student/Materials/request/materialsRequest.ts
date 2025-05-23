@@ -1,15 +1,18 @@
-import axios, { AxiosResponse } from "axios";
-import { Material } from "../../../../types/material";
+import axios from "axios";
 import { config } from "../../../../config/config";
+import { authService } from "../../../auth/authServices";
+import type { StudentMaterial } from "../../../../types/studentMaterial";
 
-
-export const fetchStudentMaterials = async (
+export async function fetchStudentMaterials(
   studentId: number
-): Promise<Material[]> => {
-  const response: AxiosResponse<Material[]> = await axios.get(
-    `${config.SERVER_URL}/materials/student/${studentId}/`
-  );
-  console.log(response.data)
+): Promise<StudentMaterial[]> {
+  const url = `${config.SERVER_URL}/materials/student/${studentId}/`;
+  const response = await axios.get<StudentMaterial[]>(url, {
+    headers: { Authorization: `Bearer ${authService.getToken()}` },
+    validateStatus: () => true,
+  });
+  if (response.status !== 200) {
+    throw new Error(`Error ${response.status}`);
+  }
   return response.data;
-};
-
+}
