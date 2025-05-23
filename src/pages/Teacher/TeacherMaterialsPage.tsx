@@ -9,7 +9,6 @@ import { StatsCard } from "../../components/teacher/allEvaluations/StatsCard";
 import MaterialUploadSection from "../../components/teacher/materials/MaterialUploadSection";
 import { useCreateMaterial } from "../../hooks/teacher/teacher/Materials/useCreateMaterial";
 import { useMaterialStats } from "../../hooks/teacher/teacher/Materials/useMaterialStats";
-import { UserProps } from "../../types/User";
 
 export default function TeacherMaterialsPage() {
   const qc = useQueryClient();
@@ -132,7 +131,7 @@ export default function TeacherMaterialsPage() {
             <select
               id="type"
               value={material.type}
-              onChange={(e) => handleChange("type", e.target.value as any)}
+              onChange={(e) => handleChange("type", e.target.value as "document" | "video" | "link")}
               className="w-full h-10 border rounded px-3 focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]"
             >
               <option value="document">Documento</option>
@@ -185,7 +184,7 @@ export default function TeacherMaterialsPage() {
               <p className="py-2">Cargando estudiantes…</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-48 overflow-y-auto border rounded p-2">
-                {students.map((s: UserProps) => {
+                {students.map((s) => {
                   const sid = typeof s.id === "string" ? parseInt(s.id, 10) : s.id;
                   const selected = material.studentIds.includes(sid);
                   return (

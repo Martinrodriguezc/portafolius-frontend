@@ -27,17 +27,19 @@ export function useCreateMaterial() {
 
   useEffect(() => {
     void fetchStudentsRequest()
-      .then(({ data }) =>
-        setStudents((data as UserProps[]).filter((u) => u.role === "estudiante"))
+      .then((response) =>
+        setStudents(response.data.filter((u) => u.role === "estudiante"))
       )
-      .catch((e) => setStudentsError(e.message))
+      .catch((err: Error) => setStudentsError(err.message))
       .finally(() => setLoadingStudents(false));
   }, []);
 
   const handleChange = <K extends keyof CreateMaterialPayload>(
     field: K,
     value: CreateMaterialPayload[K]
-  ) => setMaterial((m) => ({ ...m, [field]: value }));
+  ) => {
+    setMaterial((m) => ({ ...m, [field]: value }));
+  };
 
   const handleSubmit = async (e?: FormEvent) => {
     if (e) e.preventDefault();
@@ -55,13 +57,7 @@ export function useCreateMaterial() {
     setCreateError(null);
     try {
       if (isLink) {
-        await createLinkRequest({
-          type: material.type,
-          title: material.title,
-          description: material.description,
-          url: material.url,
-          studentIds: material.studentIds,
-        });
+        await createLinkRequest(material);
       } else {
         const fd = new FormData();
         fd.append("type", material.type);
@@ -76,8 +72,9 @@ export function useCreateMaterial() {
       qc.invalidateQueries({ queryKey: ["materials"] });
       setMaterial({ type: "document", title: "", description: "", url: "", studentIds: [] });
       setSelectedFile(null);
-    } catch (err: any) {
-      setCreateError(err.message || "Error creando material");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Error creando material";
+      setCreateError(message);
     } finally {
       setCreating(false);
     }
