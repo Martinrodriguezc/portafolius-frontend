@@ -5,7 +5,15 @@ import type { StudentMaterial } from "../../../types/studentMaterial";
 export function useStudentMaterials(studentId: number) {
   return useQuery<StudentMaterial[], Error>({
     queryKey: ["materials", studentId],
-    queryFn: () => fetchStudentMaterials(studentId),
-    staleTime: 5 * 60 * 1000,
+    queryFn: () =>
+      fetchStudentMaterials(studentId).then(res => {
+        if (res.status !== 200) {
+          throw new Error(`Error ${res.status}`);
+        }
+        return res.data;
+      }),
+    staleTime: 5 * 60_000,
+    refetchInterval: 10_000,
+    refetchOnWindowFocus: true,
   });
 }

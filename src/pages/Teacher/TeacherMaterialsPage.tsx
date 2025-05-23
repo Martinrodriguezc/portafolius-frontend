@@ -6,9 +6,9 @@ import Button from "../../components/common/Button/Button";
 import Input from "../../components/common/Input/Input";
 import { Label } from "../../components/common/Label/Label";
 import { StatsCard } from "../../components/teacher/allEvaluations/StatsCard";
+import MaterialUploadSection from "../../components/teacher/materials/MaterialUploadSection";
 import { useCreateMaterial } from "../../hooks/teacher/teacher/Materials/useCreateMaterial";
 import { useMaterialStats } from "../../hooks/teacher/teacher/Materials/useMaterialStats";
-import MaterialUploadSection from "../../components/teacher/materials/MaterialUploadSection";
 import { UserProps } from "../../types/User";
 
 export default function TeacherMaterialsPage() {
@@ -19,6 +19,8 @@ export default function TeacherMaterialsPage() {
     loadingStudents,
     studentsError,
     material,
+    selectedFile,
+    setSelectedFile,
     creating,
     createError,
     success,
@@ -42,7 +44,7 @@ export default function TeacherMaterialsPage() {
 
   const isFormValid =
     material.title.trim() !== "" &&
-    material.url.trim() !== "" &&
+    selectedFile !== null &&
     material.studentIds.length > 0;
 
   const toggleStudent = (id: number | string) => {
@@ -179,9 +181,8 @@ export default function TeacherMaterialsPage() {
                 maxSizeMb={material.type === "document" ? 10 : 50}
                 selectedFileName={material.url}
                 onFileSelected={(file) => {
+                  setSelectedFile(file);
                   handleChange("url", file.name);
-                  handleChange("size_bytes", file.size);
-                  handleChange("mime_type", file.type);
                 }}
               />
             </div>

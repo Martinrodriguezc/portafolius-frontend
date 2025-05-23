@@ -1,5 +1,5 @@
 import { useState, useEffect, FormEvent } from "react";
-import { fetchStudentsRequest, createMaterialRequest } from "./request/materialRequest";
+import { fetchStudentsRequest } from "./request/materialRequest";
 import { UserProps } from "../../../../types/User";
 import { CreateMaterialPayload } from "../../../../types/material";
 
@@ -12,9 +12,11 @@ export function useCreateMaterial() {
     type: "document",
     title: "",
     description: "",
-    url: "",
+    url: "",          
     studentIds: [],
   });
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [creating, setCreating] = useState<boolean>(false);
   const [createError, setCreateError] = useState<string | null>(null);
@@ -53,10 +55,21 @@ export function useCreateMaterial() {
     setCreateError(null);
     setSuccess(false);
 
-    try {
-      await createMaterialRequest(material);
-      setSuccess(true);
+    if (!selectedFile) {
+      setCreateError("Debes seleccionar un archivo antes de enviar");
+      setCreating(false);
+      return;
+    }
 
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("type", material.type);
+      formData.append("title", material.title);
+      formData.append("description", material.description);
+      formData.append("studentIds", JSON.stringify(material.studentIds));
+
+      setSuccess(true);
       setCreatedCount((c) => c + 1);
       setAssignedStudents((prev) => {
         const next = new Set(prev);
@@ -71,6 +84,7 @@ export function useCreateMaterial() {
         url: "",
         studentIds: [],
       });
+      setSelectedFile(null);
     } catch (err: unknown) {
       if (err instanceof Error) setCreateError(err.message);
       else setCreateError("Error al crear material");
@@ -91,6 +105,8 @@ export function useCreateMaterial() {
 
     createdCount,
     assignedCount: assignedStudents.size,
+    selectedFile,
+    setSelectedFile,
     handleChange,
     handleSubmit,
   };

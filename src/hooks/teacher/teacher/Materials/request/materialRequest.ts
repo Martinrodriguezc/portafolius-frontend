@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { config } from "../../../../../config/config";
 import { authService } from "../../../../auth/authServices";
-import { CreateMaterialPayload, Material } from "../../../../../types/material";
+import { Material } from "../../../../../types/material";
 import { UserProps } from "../../../../../types/User";
 
 export const fetchStudentsRequest = (): Promise<AxiosResponse<UserProps[]>> =>
@@ -11,12 +11,17 @@ export const fetchStudentsRequest = (): Promise<AxiosResponse<UserProps[]>> =>
   );
 
 export const createMaterialRequest = (
-  payload: CreateMaterialPayload
+  formData: FormData
 ): Promise<AxiosResponse<{ material: Material }>> =>
   axios.post<{ material: Material }>(
     `${config.SERVER_URL}/materials`,
-    payload,
-    { headers: { Authorization: `Bearer ${authService.getToken()}` } }
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
   );
 
 
