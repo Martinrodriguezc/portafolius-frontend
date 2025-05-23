@@ -1,4 +1,3 @@
-// src/components/student/materials/LinksTab.tsx
 import { useState } from "react";
 import { ExternalLink, Tag, Calendar, Globe } from "lucide-react";
 import Card from "../../common/Card/Card";

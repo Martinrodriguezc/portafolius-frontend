@@ -26,20 +26,22 @@ export default function TeacherMaterialsPage() {
     handleChange,
     handleSubmit,
   } = useCreateMaterial();
-  const { data: stats, isLoading: statsLoading, error: statsError } =
-    useMaterialStats();
+  const { data: stats, isLoading: statsLoading, error: statsError } = useMaterialStats();
   const [formError, setFormError] = useState<string | null>(null);
+  const [touchedSubmit, setTouchedSubmit] = useState(false);
 
   useEffect(() => {
-    if (success) qc.invalidateQueries({ queryKey: ["materialStats"], exact: true });
+    if (success) {
+      qc.invalidateQueries({ queryKey: ["materialStats"], exact: true });
+      setFormError(null);
+      setTouchedSubmit(false);
+    }
   }, [success, qc]);
 
   const isFormValid =
     material.title.trim() !== "" &&
     material.studentIds.length > 0 &&
-    (material.type === "link"
-      ? material.url.trim() !== ""
-      : selectedFile !== null);
+    (material.type === "link" ? material.url.trim() !== "" : selectedFile !== null);
 
   const toggleStudent = (id: number | string) => {
     const sid = typeof id === "string" ? parseInt(id, 10) : id;
@@ -51,13 +53,14 @@ export default function TeacherMaterialsPage() {
     );
   };
 
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isFormValid) setFormError("Formulario incompleto");
-    else {
-      setFormError(null);
-      handleSubmit(e);
+  const onCreateClick = () => {
+    setTouchedSubmit(true);
+    if (!isFormValid) {
+      setFormError("Formulario incompleto");
+      return;
     }
+    setFormError(null);
+    handleSubmit();
   };
 
   if (statsLoading) return <p className="p-8">Cargando estadísticas…</p>;
@@ -70,9 +73,7 @@ export default function TeacherMaterialsPage() {
           <FileText className="h-6 w-6 text-[#4E81BD]" />
         </div>
         <div>
-          <h1 className="text-[24px] font-bold text-[#333333]">
-            Materiales de estudio
-          </h1>
+          <h1 className="text-[24px] font-bold text-[#333333]">Materiales de estudio</h1>
           <p className="text-[#666666] text-[14px] mt-1">
             Sube y asigna materiales de estudio para tus estudiantes
           </p>
@@ -112,17 +113,16 @@ export default function TeacherMaterialsPage() {
       <Card className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-200">
         {studentsError && <p className="text-red-500 mb-4">{studentsError}</p>}
         {createError && <p className="text-red-500 mb-4">{createError}</p>}
-        {formError && <p className="text-red-500 mb-4">{formError}</p>}
+        {touchedSubmit && formError && <p className="text-red-500 mb-4">{formError}</p>}
         {success && <p className="text-green-600 mb-4">Material creado exitosamente.</p>}
 
-        <form onSubmit={onSubmit} className="space-y-6 max-w-4xl mx-auto">
+        <div className="space-y-6 max-w-4xl mx-auto">
           <div>
             <Label htmlFor="title">Título</Label>
             <Input
               id="title"
               value={material.title}
               onChange={(e) => handleChange("title", e.target.value)}
-              required
               className="focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]"
             />
           </div>
@@ -160,7 +160,6 @@ export default function TeacherMaterialsPage() {
                   id="url"
                   value={material.url}
                   onChange={(e) => handleChange("url", e.target.value)}
-                  required
                   className="focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]"
                 />
               </div>
@@ -190,10 +189,7 @@ export default function TeacherMaterialsPage() {
                   const sid = typeof s.id === "string" ? parseInt(s.id, 10) : s.id;
                   const selected = material.studentIds.includes(sid);
                   return (
-                    <label
-                      key={s.id}
-                      className="flex items-center space-x-2 cursor-pointer"
-                    >
+                    <label key={s.id} className="flex items-center space-x-2 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={selected}
@@ -211,11 +207,16 @@ export default function TeacherMaterialsPage() {
           </div>
 
           <div className="flex justify-end">
-            <Button type="submit" disabled={creating} className="w-full md:w-auto">
+            <Button
+              type="button"
+              onClick={onCreateClick}
+              disabled={creating}
+              className="w-full md:w-auto"
+            >
               {creating ? "Creando…" : "Crear Material"}
             </Button>
           </div>
-        </form>
+        </div>
       </Card>
     </main>
   );

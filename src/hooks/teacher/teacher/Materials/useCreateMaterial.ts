@@ -27,7 +27,9 @@ export function useCreateMaterial() {
 
   useEffect(() => {
     void fetchStudentsRequest()
-      .then(({ data }) => setStudents((data as UserProps[]).filter((u) => u.role === "estudiante")))
+      .then(({ data }) =>
+        setStudents((data as UserProps[]).filter((u) => u.role === "estudiante"))
+      )
       .catch((e) => setStudentsError(e.message))
       .finally(() => setLoadingStudents(false));
   }, []);
@@ -37,8 +39,8 @@ export function useCreateMaterial() {
     value: CreateMaterialPayload[K]
   ) => setMaterial((m) => ({ ...m, [field]: value }));
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: FormEvent) => {
+    if (e) e.preventDefault();
     const isLink = material.type === "link";
     if (
       material.title.trim() === "" ||
@@ -51,7 +53,6 @@ export function useCreateMaterial() {
     }
     setCreating(true);
     setCreateError(null);
-
     try {
       if (isLink) {
         await createLinkRequest({
@@ -70,11 +71,9 @@ export function useCreateMaterial() {
         fd.append("file", selectedFile!);
         await createMaterialRequest(fd);
       }
-
       setSuccess(true);
       qc.invalidateQueries({ queryKey: ["materialStats"] });
       qc.invalidateQueries({ queryKey: ["materials"] });
-
       setMaterial({ type: "document", title: "", description: "", url: "", studentIds: [] });
       setSelectedFile(null);
     } catch (err: any) {
