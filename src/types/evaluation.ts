@@ -5,6 +5,7 @@ export interface EvaluationForm {
     submitted_at: string;
     score: number;
     feedback_summary: string;
+    teacher_name: string;
   }
 
 export interface Evaluation {
