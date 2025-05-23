@@ -6,7 +6,7 @@ interface ReturnButtonProps {
   to?: string; 
 }
 
-export function ReturnButton({ to }: ReturnButtonProps) {
+export default function ReturnButton({ to }: ReturnButtonProps) {
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);

@@ -19,7 +19,7 @@ import {
 import { useParams } from "react-router-dom";
 import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
 import VideoCarousel from "../../../components/common/Carousel/VideoCarousel";
-import { ReturnButton } from "../../../components/common/Button/ReturnButton";
+import ReturnButton from "../../../components/common/Button/ReturnButton";
 
 export default function StudentVideoPage() {
   const { studyId } = useParams<{ studyId: string }>();
