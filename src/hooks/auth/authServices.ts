@@ -17,8 +17,12 @@ export const authService = {
   async login(credentials: LoginFormData): Promise<AuthResponse> {
     const { data } = await loginRequest(credentials);
     if (data.token) {
-      localStorage.setItem(TOKEN_KEY, data.token);
-      localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+      try {
+        localStorage.setItem(TOKEN_KEY, data.token);
+        localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+      } catch (e) {
+        void e;
+      }
     }
     return data;
   },
@@ -29,17 +33,31 @@ export const authService = {
   },
 
   logout(): void {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
+    try {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+    } catch (e) {
+      void e;
+    }
   },
 
   getCurrentUser(): UserProps | null {
-    const str = localStorage.getItem(USER_KEY);
-    return str ? (JSON.parse(str) as UserProps) : null;
+    try {
+      const str = localStorage.getItem(USER_KEY);
+      return str ? (JSON.parse(str) as UserProps) : null;
+    } catch (e) {
+      void e;
+      return null;
+    }
   },
 
   getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+    try {
+      return localStorage.getItem(TOKEN_KEY);
+    } catch (e) {
+      void e;
+      return null;
+    }
   },
 
   initiateGoogleLogin(): void {
@@ -49,8 +67,12 @@ export const authService = {
   async handleGoogleCallback(code: string): Promise<AuthResponse> {
     const { data } = await handleGoogleCallbackRequest(code);
     if (data.token) {
-      localStorage.setItem(TOKEN_KEY, data.token);
-      localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+      try {
+        localStorage.setItem(TOKEN_KEY, data.token);
+        localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+      } catch (e) {
+        void e;
+      }
     }
     return data;
   },
@@ -68,7 +90,11 @@ export const authService = {
       },
       token
     );
-    localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+    try {
+      localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+    } catch (e) {
+      void e;
+    }
     return data;
   },
 
@@ -81,7 +107,11 @@ export const authService = {
     if (!user) throw new Error("Sesión vencida");
     const token = this.getToken()!;
     const { data } = await updateUserProfileRequest(user.id, payload, token);
-    localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+    try {
+      localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+    } catch (e) {
+      void e;
+    }
     window.dispatchEvent(new CustomEvent("userUpdated", { detail: data.user }));
     return data.user;
   },

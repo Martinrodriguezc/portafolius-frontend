@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { Material } from "../../../types/material";
 import { fetchStudentMaterials } from "./request/materialsRequest";
+import type { StudentMaterial } from "../../../types/studentMaterial";
 
-export const useStudentMaterials = (studentId: number) => {
-  return useQuery<Material[]>({
+export function useStudentMaterials(studentId: number) {
+  return useQuery<StudentMaterial[], Error>({
     queryKey: ["materials", studentId],
     queryFn: () => fetchStudentMaterials(studentId),
-    staleTime: 5 * 60 * 1000,
+    staleTime: 5 * 60_000,
+    refetchInterval: 10_000,
+    refetchOnWindowFocus: true,
   });
-};
+}
