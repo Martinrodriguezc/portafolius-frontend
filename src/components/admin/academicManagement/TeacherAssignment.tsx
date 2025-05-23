@@ -53,7 +53,7 @@ const UserList: React.FC<UserListProps> = ({
         <input
           type="text"
           value={searchTerm}
-          onChange={(e) => {
+          onChange={() => {
             if (onSelect && typeof onSelect === 'function') {
               onSelect(null as unknown as User);
             }
@@ -126,11 +126,10 @@ export const TeacherAssignment: React.FC = () => {
   const [teacherSearch, setTeacherSearch] = useState('');
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [isAssigning, setIsAssigning] = useState(false);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const filteredStudents = useMemo(() => {
     return getFilteredStudents(studentSearch);
-  }, [getFilteredStudents, studentSearch, refreshTrigger]);
+  }, [getFilteredStudents, studentSearch]);
 
   const handleStudentSelection = useCallback((student: User) => {
     setSelectedStudents(prev => {
@@ -168,7 +167,6 @@ export const TeacherAssignment: React.FC = () => {
         
         await refreshList();
         
-        setRefreshTrigger(prev => prev + 1);
       }
     } catch (error) {
       console.error('Error en la asignación:', error);

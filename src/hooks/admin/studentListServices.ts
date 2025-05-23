@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useUserServices } from './userServices';
 import { useAssignServices } from './assignServices';
 import { User } from '../../types/Admin/UserTypes';
@@ -16,7 +16,6 @@ export const useStudentList = () => {
   const [studentsWithAssignments, setStudentsWithAssignments] = useState<StudentWithAssignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const refreshCounterRef = useRef(0);
 
   const getFilteredStudents = useCallback((searchTerm: string = '') => {
     if (!searchTerm.trim()) return studentsWithAssignments;
@@ -33,10 +32,8 @@ export const useStudentList = () => {
     if (!studentsLoading && !assignmentsLoading) {
       try {
         const updatedStudents = students.map(student => {
-          // Buscar si hay una asignación para este estudiante
           const assignment = assignments.find(a => a.student.id === student.id);
           
-          // Si hay asignación, devolver estudiante con datos del profesor
           if (assignment) {
             return {
               ...student,
@@ -49,7 +46,6 @@ export const useStudentList = () => {
             };
           } 
           
-          // Si no hay asignación, devolver estudiante sin profesor asignado
           return { ...student };
         });
         
@@ -62,19 +58,16 @@ export const useStudentList = () => {
         setLoading(false);
       }
     }
-  }, [students, assignments, studentsLoading, assignmentsLoading, refreshCounterRef.current]);
+  }, [students, assignments, studentsLoading, assignmentsLoading]);
 
   const refreshList = useCallback(async () => {
     setLoading(true);
     try {
-      // Forzar la recarga de usuarios y asignaciones
       await Promise.all([
         fetchUsers(),
         fetchAssignments(true)
       ]);
       
-      // Incrementar el contador para forzar la actualización del efecto
-      refreshCounterRef.current += 1;
     } catch (err) {
       console.error('Error refreshing data:', err);
       setError('Error al actualizar los datos');

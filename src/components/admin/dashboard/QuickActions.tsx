@@ -1,4 +1,4 @@
-import { UserPlus, FileSpreadsheet, Settings } from "lucide-react";
+import { UserPlus, UserCheck, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const QuickActions: React.FC = () => {
@@ -11,10 +11,10 @@ export const QuickActions: React.FC = () => {
       color: "bg-blue-50",
     },
     {
-      title: "Generar Reporte",
-      description: "Crear un nuevo reporte del sistema",
-      icon: <FileSpreadsheet className="h-6 w-6 text-green-500" />,
-      link: "/admin/reports/new",
+      title: "Profesores Pendientes",
+      description: "Revisar solicitudes de profesores",
+      icon: <UserCheck className="h-6 w-6 text-green-500" />,
+      link: "/admin/pending-teachers",
       color: "bg-green-50",
     },
     {

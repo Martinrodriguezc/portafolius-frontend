@@ -33,14 +33,14 @@ export default function Settings(): React.ReactElement {
     role: "admin"
   });
 
-  const handleEvaluationSettingChange = (setting: string, value: any) => {
+  const handleEvaluationSettingChange = (setting: string, value: unknown) => {
     setEvaluationSettings((prev) => ({
       ...prev,
       [setting]: value,
     }));
   };
 
-  const handlePlatformSettingChange = (setting: string, value: any) => {
+  const handlePlatformSettingChange = (setting: string, value: unknown) => {
     setPlatformSettings((prev) => ({
       ...prev,
       [setting]: value,

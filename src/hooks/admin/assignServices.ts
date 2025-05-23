@@ -93,7 +93,7 @@ export const useAssignServices = () => {
         }
       );
 
-      await fetchAssignments(true); // Forzar recarga de asignaciones después de una asignación
+      await fetchAssignments(true); 
       
       setLoading(false);
       return {

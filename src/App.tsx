@@ -28,6 +28,7 @@ import TeacherDashboardPage from "./pages/Teacher/Dashboard";
 import TeacherEvaluationsPage from "./pages/Teacher/allEvaluations";
 import TeacherStudentsPage from "./pages/Teacher/AllStudents";
 import TeacherSettingsPage from "./pages/Teacher/Settings";
+import UnauthorizedTeacherPage from "./pages/Teacher/UnauthorizedPage";
 
 import CommentsPage from "./pages/Student/Comments";
 import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
@@ -39,6 +40,7 @@ import StudentCreateStudyPage from "./pages/Student/Study";
 
 import AdminDashboardPage from "./pages/admin/AdminDashboard";
 import UserManagementPage from "./pages/admin/UserManagement";
+import PendingTeachersPage from "./pages/admin/PendingTeachers";
 import AcademicManagementPage from "./pages/admin/AcademicManagement";
 import ReportsPage from "./pages/admin/Reports";
 import AdminSettingsPage from "./pages/admin/Settings";
@@ -100,10 +102,13 @@ function App() {
           <Route path="settings" element={<TeacherSettingsPage />} />
         </Route>
 
+        <Route path="/teacher/unauthorized" element={<UnauthorizedTeacherPage />} />
+
         {/* --- Admin Routes ---------------------------------------------------- */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboardPage />} />
           <Route path="users" element={<UserManagementPage />} />
+          <Route path="pending-teachers" element={<PendingTeachersPage />} />
           <Route path="academic" element={<AcademicManagementPage />} />
           <Route path="materials" element={<MaterialsManagementPage />} />
           <Route path="evaluations" element={<AdminEvaluationsPage />} />

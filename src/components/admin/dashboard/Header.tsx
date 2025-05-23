@@ -1,8 +1,6 @@
 import { authService } from '../../../hooks/auth/authServices';
 
-interface PageHeaderProps {}
-
-export const PageHeader: React.FC<PageHeaderProps> = () => {
+export const PageHeader = () => {
   const currentUser = authService.getCurrentUser();
   const firstName = currentUser?.first_name || 'Administrador';
 

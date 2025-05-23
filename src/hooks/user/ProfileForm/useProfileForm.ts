@@ -6,12 +6,10 @@ export function useProfileForm(
   profile: UserProfile,
   onSave: (data: Partial<Omit<UserProfile, "id">>) => Promise<void>
 ): UseProfileFormReturn {
-  const currentUser = authService.getCurrentUser();
-  
   const [form, setForm] = useState<Omit<UserProfile, "id">>({
-    first_name: currentUser?.first_name || "",
-    last_name: currentUser?.last_name || "",
-    email: currentUser?.email || "",
+    first_name: "",
+    last_name: "",
+    email: "",
     role: profile.role,
   });
 
@@ -57,6 +55,7 @@ export function useProfileForm(
   };
 
   useEffect(() => {
+    const currentUser = authService.getCurrentUser();
     if (currentUser) {
       setForm(prev => ({
         ...prev,

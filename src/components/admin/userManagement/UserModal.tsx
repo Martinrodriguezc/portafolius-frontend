@@ -55,6 +55,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, userType
         const userData = { ...formData };
         const dataToUpdate = { ...userData };
         if (!formData.password) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { password, ...restData } = dataToUpdate;
           const result = await updateUser(user.id, restData);
           
