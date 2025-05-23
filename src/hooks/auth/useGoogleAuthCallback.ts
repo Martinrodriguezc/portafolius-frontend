@@ -10,9 +10,7 @@ export function useGoogleAuthCallback() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        console.log("Iniciando proceso de callback");
         const urlParams = new URLSearchParams(location.search);
-        console.log("URL params:", Object.fromEntries(urlParams));
 
         const token = urlParams.get("token");
         const userDataBase64 = urlParams.get("userData");

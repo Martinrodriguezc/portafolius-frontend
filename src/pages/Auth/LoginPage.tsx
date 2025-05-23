@@ -12,6 +12,8 @@ export default function LoginPage() {
         navigate("/teacher");
       } else if (user.role === "estudiante") {
         navigate("/student");
+      } else if (user.role === "admin") {
+        navigate("/admin");
       } else {
         console.warn("Rol desconocido:", user.role);
         navigate("/home");
