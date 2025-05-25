@@ -1,5 +1,5 @@
 const ALLOWED_EXTENSIONS = ["mov", "avi", "mp4"];
-const MAX_DURATION_SECONDS = 35; //Ajustar según necesario
+const MAX_DURATION_SECONDS = 35;
 
 export function validateVideo(file: File): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -27,8 +27,9 @@ export function validateVideo(file: File): Promise<void> {
       resolve();
     };
 
-    video.onerror = () => {
+    video.onerror = (e) => {
       URL.revokeObjectURL(url);
+      console.error("Video error event:", e);
       reject(new Error("No se pudo leer el archivo de vídeo"));
     };
   });
