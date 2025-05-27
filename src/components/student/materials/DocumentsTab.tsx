@@ -2,7 +2,6 @@ import { useState } from "react";
 import { FileText, Download, Calendar } from "lucide-react";
 import Card from "../../common/Card/Card";
 import { config } from "../../../config/config";
-import { authService } from "../../../hooks/auth/authServices";
 
 export interface Document {
   id: number;
@@ -42,27 +41,8 @@ export default function DocumentsTab({ documents }: DocumentsTabProps) {
     );
   }
 
-  const handleDownload = async (doc: Document) => {
-    try {
-      const token = authService.getToken();
-      const downloadUrl = new URL(`/materials/download/${doc.id}`, config.SERVER_URL).toString();
-      const res = await fetch(downloadUrl, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const blob = await res.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = doc.title.endsWith(".pdf") ? doc.title : `${doc.title}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (err) {
-      console.error("No se pudo descargar:", err);
-      alert("Error al descargar el archivo");
-    }
+  const handleDownload = (doc: Document) => {
+    window.location.href = `${config.SERVER_URL}/materials/download/${doc.id}`;
   };
 
   return (
@@ -92,7 +72,7 @@ export default function DocumentsTab({ documents }: DocumentsTabProps) {
                 {doc.file_size && <span className="ml-2">{doc.file_size}</span>}
               </div>
               <button
-                onClick={() => void handleDownload(doc)}
+                onClick={() => handleDownload(doc)}
                 className="inline-flex items-center gap-2 text-[#4E81BD] hover:text-[#2c5f9f]"
                 title="Descargar"
               >
