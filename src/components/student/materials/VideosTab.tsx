@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Play, Download, Calendar } from "lucide-react";
 import Card from "../../common/Card/Card";
 import { config } from "../../../config/config";
-import { authService } from "../../../hooks/auth/authServices";
 
 export interface ResourceVideo {
   id: number;
@@ -43,30 +42,8 @@ export default function VideosTab({ videos }: VideosTabProps) {
     );
   }
 
-  const handleDownload = async (video: ResourceVideo) => {
-    try {
-      const token = authService.getToken();
-      const downloadUrl = new URL(`/materials/download/${video.id}`, config.SERVER_URL).toString();
-      const res = await fetch(downloadUrl, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const blob = await res.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      const filename = /\.[a-z0-9]+$/i.test(video.title)
-        ? video.title
-        : `${video.title}.mp4`;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(blobUrl);
-    } catch (err) {
-      console.error("No se pudo descargar:", err);
-      alert("Error al descargar el video");
-    }
+  const handleDownload = (video: ResourceVideo) => {
+    window.location.href = `${config.SERVER_URL}/materials/download/${video.id}`;
   };
 
   return (
@@ -88,7 +65,7 @@ export default function VideosTab({ videos }: VideosTabProps) {
             </p>
             <div className="mt-auto">
               <button
-                onClick={() => void handleDownload(video)}
+                onClick={() => handleDownload(video)}
                 className="inline-flex items-center gap-2 text-[#4E81BD] hover:text-[#2c5f9f]"
                 title="Descargar video"
               >
