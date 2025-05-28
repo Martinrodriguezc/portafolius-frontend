@@ -5,41 +5,41 @@ import { checkAdminStatus } from './adminCheck';
 import { authService } from '../auth/authServices';
 
 // Interfaces para tipos de datos
-export interface DistribucionUsuarios {
+export interface DistribucionUsuarios extends Record<string, unknown> {
   role: string;
   cantidad: number;
 }
 
-export interface DatosPorMes {
+export interface DatosPorMes extends Record<string, unknown> {
   mes: string;
   cantidad: number;
 }
 
-export interface TasaFinalizacion {
+export interface TasaFinalizacion extends Record<string, unknown> {
   estudios_evaluados: number;
   total_estudios: number;
   tasa_finalizacion: number;
 }
 
-export interface Profesor {
+export interface Profesor extends Record<string, unknown> {
   id: number;
   nombre: string;
   evaluaciones: number;
 }
 
-export interface MaterialPorTipo {
+export interface MaterialPorTipo extends Record<string, unknown> {
   tipo: string;
   cantidad: number;
 }
 
-export interface UsuarioConPromedio {
+export interface UsuarioConPromedio extends Record<string, unknown> {
   id: number;
   nombre_completo: string;
   promedio: number;
   cantidad_evaluaciones: number;
 }
 
-export interface PromedioUsuarios {
+export interface PromedioUsuarios extends Record<string, unknown> {
   top_usuarios: UsuarioConPromedio[];
   bottom_usuarios: UsuarioConPromedio[];
 }
