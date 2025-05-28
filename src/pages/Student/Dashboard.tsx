@@ -3,48 +3,31 @@ import {
   MessageSquare,
   BarChart2,
   BookOpen,
-  Calendar
+  Calendar,
+  FileText,
+  Play,
+  Download,
+  ExternalLink,
+  Globe
 } from "lucide-react"
 import Card from "../../components/common/Card/Card"
 import Button from "../../components/common/Button/Button"
 import { authService } from "../../hooks/auth/authServices"
 import { useRecentComments } from "../../hooks/student/RecentComments/useRecentComments"
 import { useDashboardMetrics } from "../../hooks/student/dashboardMetrics/useDashboardMetrics"
+import { useStudentMaterials } from "../../hooks/student/Materials/useStudentMaterials"
+import { config } from "../../config/config"
 import RankingTable from "../../components/student/metrics/tables/RankingTable"
 import ProgressLineChart from "../../components/student/metrics/charts/ProgressLineChart"
 
 export default function StudentDashboard() {
   const user = authService.getCurrentUser()!
+  const studentId = Number(user.id)
   const { comments, loading: commentsLoading, error: commentsError } =
-    useRecentComments(Number(user.id))
+    useRecentComments(studentId)
   const { data: m, isLoading: mLoading, error: mError } =
-    useDashboardMetrics(Number(user.id))
-
-  const upcomingEvents = [
-    { title: "Webinar de Ultrasonido", date: "28 abr · 18:00" },
-    { title: "Mesa redonda de Anatomía", date: "30 abr · 16:00" },
-    { title: "Workshop interactivo", date: "02 may · 10:00" }
-  ]
-  const resources = [
-    {
-      icon: <BookOpen className="h-6 w-6 text-blue-500" />,
-      title: "Guía de anatomía",
-      desc: "Repasa las estructuras clave antes de continuar.",
-      link: "/student/resources/anatomy"
-    },
-    {
-      icon: <BookOpen className="h-6 w-6 text-green-500" />,
-      title: "Tutorial en video",
-      desc: "Aprende técnicas de evaluación paso a paso.",
-      link: "/student/resources/video"
-    },
-    {
-      icon: <BarChart2 className="h-6 w-6 text-purple-500" />,
-      title: "Estadísticas",
-      desc: "Consulta tu rendimiento histórico.",
-      link: "/student/resources/stats"
-    }
-  ]
+    useDashboardMetrics(studentId)
+  const { data: materials = [] } = useStudentMaterials(studentId)
 
   let destacados: { study_id: number; title: string; score: number }[] = []
   let oportunidad: { study_id: number; title: string; score: number }[] = []
@@ -66,16 +49,39 @@ export default function StudentDashboard() {
       nota: s.score
     })) ?? []
 
-  // calcular promedio y variación
   const notas = progressData.map((p) => p.nota)
   const promedio =
     notas.length > 0
       ? (notas.reduce((sum, x) => sum + x, 0) / notas.length).toFixed(2)
       : "—"
-  const variacion =
-    notas.length > 1
-      ? (((notas[notas.length - 1] - notas[0]) / notas[0]) * 100).toFixed(1)
-      : "0.0"
+
+  const totalMaterials = materials.length
+  const lastThree = [...materials]
+    .sort((a, b) => new Date(b.upload_date).getTime() - new Date(a.upload_date).getTime())
+    .slice(0, 3)
+
+  const extractDomain = (url: string) => {
+    try {
+      const u = new URL(url.startsWith("http") ? url : `https://${url}`)
+      return u.hostname.replace("www.", "")
+    } catch {
+      return url
+    }
+  }
+  const makeHref = (url: string) =>
+    url.startsWith("http://") || url.startsWith("https://")
+      ? url
+      : `https://${url}`
+
+  const upcomingEvents = [
+    { title: "Webinar de Ultrasonido", date: "28 abr · 18:00" },
+    { title: "Mesa redonda de Anatomía", date: "30 abr · 16:00" },
+    { title: "Workshop interactivo", date: "02 may · 10:00" }
+  ]
+
+
+  const hasMetrics =
+    !!m && (m.topStudies.length > 0 || m.bottomStudies.length > 0)
 
   return (
     <div className="p-8 space-y-12 max-w-7xl mx-auto">
@@ -110,8 +116,10 @@ export default function StudentDashboard() {
         </Card>
         <Card className="flex flex-col items-center p-6">
           <BookOpen className="h-8 w-8 text-blue-500 mb-2" />
-          <p className="text-lg font-semibold text-gray-800">–</p>
-          <p className="text-sm text-gray-500">Recursos</p>
+          <p className="text-lg font-semibold text-gray-800">
+            {totalMaterials}
+          </p>
+          <p className="text-sm text-gray-500">Materiales</p>
         </Card>
         <Card className="flex flex-col items-center p-6">
           <Calendar className="h-8 w-8 text-teal-500 mb-2" />
@@ -126,46 +134,113 @@ export default function StudentDashboard() {
         </h2>
         {mLoading && <p>Cargando reportes…</p>}
         {mError && <p className="text-red-500">Error al cargar reportes</p>}
-        {m && (
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="w-full md:w-1/2">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">
-                Estudios con mejor evaluación
-              </h3>
-              <RankingTable
-                data={destacados.map((x) => ({
-                  id: x.study_id,
-                  nombre: x.title,
-                  valor: x.score
-                }))}
-              />
+        {!mLoading && !mError && !hasMetrics && (
+          <Card className="bg-white p-6">
+            <p className="text-gray-500">No hay datos para mostrar</p>
+          </Card>
+        )}
+        {hasMetrics && (
+          <Card className="bg-white p-6">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="w-full md:w-1/2">
+                <h3 className="text-lg font-medium text-gray-800 mb-2">
+                  Estudios con mejor evaluación
+                </h3>
+                <RankingTable
+                  data={destacados.map((x) => ({
+                    id: x.study_id,
+                    nombre: x.title,
+                    valor: x.score
+                  }))}
+                />
+              </div>
+              <div className="w-full md:w-1/2">
+                <h3 className="text-lg font-medium text-gray-800 mb-2">
+                  Estudios con oportunidad de mejora
+                </h3>
+                <RankingTable
+                  data={oportunidad.map((x) => ({
+                    id: x.study_id,
+                    nombre: x.title,
+                    valor: x.score
+                  }))}
+                />
+              </div>
             </div>
-            <div className="w-full md:w-1/2">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">
-                Estudios con oportunidad de mejora
-              </h3>
-              <RankingTable
-                data={oportunidad.map((x) => ({
-                  id: x.study_id,
-                  nombre: x.title,
-                  valor: x.score
-                }))}
-              />
-            </div>
-          </div>
+          </Card>
         )}
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-gray-800 flex items-center justify-between">
-          <span className="flex items-center">
-            <BarChart2 className="mr-2 text-gray-600" /> Curva de aprendizaje
-          </span>
-          
+        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+          <BarChart2 className="mr-2 text-gray-600" /> Curva de aprendizaje
         </h2>
-        <Card className="h-64 p-4">
+        <Card className="h-64 p-4 bg-white">
           <ProgressLineChart data={progressData} />
         </Card>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+          <BookOpen className="mr-2 text-gray-600" /> Recursos recomendados
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {lastThree.map((m) => {
+            if (m.type === "document" || m.type === "video") {
+              const Icon = m.type === "document" ? FileText : Play
+              return (
+                <Card key={m.id} className="p-6">
+                  <Icon className="h-6 w-6 text-gray-600 mb-2" />
+                  <h3 className="mt-2 font-medium text-gray-800">{m.title}</h3>
+                  <p className="text-gray-500 mt-1 line-clamp-2">{m.description}</p>
+                  <button
+                    onClick={() =>
+                      (window.location.href = `${config.SERVER_URL}/materials/download/${m.id}`)
+                    }
+                    className="inline-flex items-center gap-2 text-[#4E81BD] hover:text-[#2c5f9f] mt-4"
+                  >
+                    <Download className="h-4 w-4" /> Descargar
+                  </button>
+                </Card>
+              )
+            }
+            const href = makeHref(m.url)
+            const domain = extractDomain(m.url)
+            return (
+              <Card key={m.id} className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className="text-lg font-medium text-gray-800 line-clamp-2 flex-1">
+                    {m.title}
+                  </h3>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-full hover:bg-[#4E81BD]/10 text-[#4E81BD] transition-colors ml-2"
+                    title="Abrir enlace"
+                  >
+                    <ExternalLink className="h-5 w-5" />
+                  </a>
+                </div>
+                <div className="flex items-center mb-2 text-xs text-[#666666]">
+                  <Globe className="h-3 w-3 mr-1 text-[#4E81BD]" />
+                  <span>{domain}</span>
+                </div>
+                <p className="text-sm text-[#666666] mb-4 line-clamp-3">{m.description}</p>
+                <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs text-[#666666]">
+                  <Calendar className="h-3 w-3 mr-1" />
+                  <span>
+                    {new Date(m.upload_date).toLocaleDateString("es-ES", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric"
+                    })}
+                  </span>
+                </div>
+              </Card>
+            )
+          })}
+        </div>
       </section>
 
       <section className="space-y-4">
@@ -198,26 +273,6 @@ export default function StudentDashboard() {
             ))}
           </div>
         </Card>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
-          <BookOpen className="mr-2 text-gray-600" /> Recursos recomendados
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {resources.map(({ icon, title, desc, link }) => (
-            <Card key={title} className="p-6">
-              {icon}
-              <h3 className="mt-2 font-medium text-gray-800">{title}</h3>
-              <p className="text-gray-500 mt-1">{desc}</p>
-              <Link to={link} className="mt-4 inline-block">
-                <Button size="sm" variant="outline">
-                  Ver recurso
-                </Button>
-              </Link>
-            </Card>
-          ))}
-        </div>
       </section>
 
       <section className="space-y-4">
