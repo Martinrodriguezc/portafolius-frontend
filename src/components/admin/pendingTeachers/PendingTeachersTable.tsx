@@ -14,16 +14,34 @@ export default function PendingTeachersTable() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleApprove = async (teacherId: number) => {
+    const teacher = pendingTeachers.find(t => t.id === teacherId);
+    const teacherName = teacher ? `${teacher.first_name} ${teacher.last_name}` : 'este profesor';
+    
+    const confirmed = window.confirm(
+      `¿Estás seguro de que deseas aprobar a ${teacherName}?\n\nEsta acción no se puede deshacer.`
+    );
+    
+    if (!confirmed) return;
+    
     const success = await approveTeacher(teacherId);
-    if (!success) {
-      // El error ya se maneja en el hook
+    if (success) {
+      alert(`${teacherName} ha sido aprobado exitosamente.`);
     }
   };
 
   const handleReject = async (teacherId: number) => {
+    const teacher = pendingTeachers.find(t => t.id === teacherId);
+    const teacherName = teacher ? `${teacher.first_name} ${teacher.last_name}` : 'este profesor';
+    
+    const confirmed = window.confirm(
+      `¿Estás seguro de que deseas rechazar a ${teacherName}?\n\nEsta acción no se puede deshacer y el profesor no podrá acceder al sistema.`
+    );
+    
+    if (!confirmed) return;
+    
     const success = await rejectTeacher(teacherId);
-    if (!success) {
-      // El error ya se maneja en el hook
+    if (success) {
+      alert(`${teacherName} ha sido rechazado.`);
     }
   };
 

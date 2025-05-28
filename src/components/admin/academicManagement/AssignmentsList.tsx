@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useAssignServices } from '../../../hooks/admin/assignServices';
-import { Search } from 'lucide-react';
+import { Search, RefreshCw } from 'lucide-react';
 
 export const AssignmentsList: React.FC = () => {
   const { assignments, loading, error, fetchAssignments } = useAssignServices();
@@ -25,12 +25,6 @@ export const AssignmentsList: React.FC = () => {
 
   // Paginación por scroll
   const displayed = useMemo(() => filtered.slice(0, displayCount), [filtered, displayCount]);
-
-  const handleRefresh = useCallback(() => {
-    fetchAssignments();
-    setDisplayCount(10);
-  }, [fetchAssignments]);
-
   const handleScroll = useCallback(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -74,11 +68,12 @@ export const AssignmentsList: React.FC = () => {
           <h2 className="text-lg font-semibold">Asignaciones Actuales</h2>
           <div className="flex items-center space-x-4">
             <button
-              onClick={handleRefresh}
+              onClick={() => window.location.reload()}
               disabled={loading}
-              className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition"
+              className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              title="Actualizar página"
             >
-              🔄
+              <RefreshCw className="h-5 w-5" />
             </button>
             <div className="relative w-72">
               <Search className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />

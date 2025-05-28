@@ -15,7 +15,7 @@ export function useTeacherAuthorization() {
     }
 
     // Si el usuario no es profesor, redirigir a la página principal
-    if (user.role !== "profesor") {
+    if (user.role !== "profesor" && user.role !== "admin") {
       navigate("/home");
       return;
     }
