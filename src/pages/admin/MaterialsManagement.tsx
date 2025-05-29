@@ -37,9 +37,7 @@ export default function MaterialsManagement() {
     refetch 
   } = useAdminMaterials(selectedType);
   
-  // Mutaciones para crear, actualizar y eliminar materiales
-  const createMutation = useCreateMaterial();
-  const updateMutation = useUpdateMaterial();
+
   const deleteMutation = useDeleteMaterial();
 
 
