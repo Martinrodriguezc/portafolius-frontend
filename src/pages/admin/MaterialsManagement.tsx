@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAdminMaterials, useCreateMaterial, useUpdateMaterial, useDeleteMaterial } from '../../hooks/admin/Materials/useAdminMaterials';
+import { useAdminMaterials, useDeleteMaterial } from '../../hooks/admin/Materials/useAdminMaterials';
 import { Material} from '../../types/material';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../hooks/auth/authServices';
