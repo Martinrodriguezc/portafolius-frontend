@@ -13,7 +13,7 @@ import { RawStudy } from "../../types/Study";
 import { fetchStudentStudies } from "../student/Studies/request/studiesRequest";
 import { config } from "../../config/config";
 import { FileWithMetadata } from "../../types/File";
-import { Condition, Organ, Structure } from "../../types/tag";
+import { Condition, Organ, Structure, Tag } from "../../types/tag";
 
 export function useUploadPage() {
   const userId = authService.getCurrentUser()?.id;
@@ -125,7 +125,7 @@ export function useUploadPage() {
     setUploadProgress(0);
 
     try {
-      const anonymizedFiles: { file: File; tags: any[]; protocol: string }[] = [];
+      const anonymizedFiles: { file: File; tags: { id: number, text: string }[]; protocol: string }[] = [];
       for (const { file, tags, protocol } of files) {
         const anonymizedFile = await anonymizeVideoLocally(file);
         await validateVideo(anonymizedFile);
