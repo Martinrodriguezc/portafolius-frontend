@@ -5,6 +5,7 @@ import {
   uploadVideo,
   assignTagsToClip,
   notifyUploadCallback,
+  anonymizeVideoLocally,
 } from "./uploadRequests/requests";
 import { validateVideo } from "./validations/validations";
 import { authService } from "../auth/authServices";
@@ -124,22 +125,26 @@ export function useUploadPage() {
     setUploadProgress(0);
 
     try {
-      for (const { file } of files) {
-        await validateVideo(file);
+      const anonymizedFiles: { file: File; tags: { id: number, text: string }[]; protocol: string }[] = [];
+      for (const { file, tags, protocol } of files) {
+        const anonymizedFile = await anonymizeVideoLocally(file);
+        await validateVideo(anonymizedFile);
+        anonymizedFiles.push({ file: anonymizedFile, tags, protocol });
       }
 
-      for (let i = 0; i < files.length; i++) {
-        const { file, tags } = files[i];
+      for (let i = 0; i < anonymizedFiles.length; i++) {
+        const { file, tags, protocol } = anonymizedFiles[i];
         const tagIds = tags.map(t => t.id);
+
         const { uploadUrl, clipId, key } = await generateUploadUrl(
           file,
           selectedStudy,
-          files[i].protocol,
+          protocol,
           tagIds
         );
 
         await uploadVideo(uploadUrl, file, (percent) => {
-          const totalPercent = Math.round(((i + percent / 100) / files.length) * 100);
+          const totalPercent = Math.round(((i + percent / 100) / anonymizedFiles.length) * 100);
           setUploadProgress(totalPercent);
         });
 
@@ -162,6 +167,7 @@ export function useUploadPage() {
       setIsUploading(false);
     }
   };
+
 
 
   return {

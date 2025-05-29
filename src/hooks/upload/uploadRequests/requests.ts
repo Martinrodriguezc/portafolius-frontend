@@ -174,3 +174,24 @@ export async function notifyUploadCallback(
 
   return (await res.json()) as UploadCallbackResponse;
 }
+
+export async function anonymizeVideoLocally(file: File): Promise<File> {
+  const endpoint = `${config.ANONYMIZE_URL}/anonimize-video`;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await axios.post(endpoint, formData, {
+    responseType: 'blob', 
+  });
+
+  if (response.status !== 200) throw new Error("Error al anonimizar el video");
+
+  const anonymizedFile = new File(
+    [response.data],
+    `anonymized_${file.name}`,
+    { type: file.type }
+  );
+
+  return anonymizedFile;
+}

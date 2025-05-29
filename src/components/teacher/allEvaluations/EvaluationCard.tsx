@@ -8,10 +8,19 @@ import { Button } from "@headlessui/react";
 interface EvaluationCardProps {
     study: StudyWithStatus;
     variant: "pending" | "completed";
+    context?: "teacher" | "admin";
 }
 
-export const EvaluationCard: React.FC<EvaluationCardProps> = ({ study, variant }) => {
+export const EvaluationCard: React.FC<EvaluationCardProps> = ({ 
+    study, 
+    variant, 
+    context = "teacher"
+}) => {
     const isPending = variant === "pending";
+    
+    const basePath = context === "admin" ? "/admin" : "/teacher";
+    const videoLink = `${basePath}/evaluations/${study.study_id}/videos`;
+    
     return (
         <Card className="rounded-[12px] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-slate-200 hover:shadow-md transition-all">
             <div className="flex items-start gap-4">
@@ -43,7 +52,7 @@ export const EvaluationCard: React.FC<EvaluationCardProps> = ({ study, variant }
                     </div>
                 </div>
             </div>
-            <Link to={`/teacher/evaluations/${study.study_id}/videos`}>
+            <Link to={videoLink}>
                 <Button className="w-full sm:w-auto bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white px-6 py-2.5 rounded-[8px] shadow-sm hover:shadow transition-all">
                     Ver videos
                 </Button>

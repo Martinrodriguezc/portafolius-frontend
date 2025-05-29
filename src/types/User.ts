@@ -28,6 +28,7 @@ export interface UserProps {
   last_name: string;
   email: string;
   role?: string;
+  autorizado?: boolean;
 }
 
 export interface AuthResponse {
