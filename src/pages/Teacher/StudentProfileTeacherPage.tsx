@@ -9,14 +9,13 @@ import { StudentInfoCard }   from "../../components/teacher/StudentProfile/Stude
 import { QuickActions }      from "../../components/teacher/StudentProfile/QuickActions"
 import { TopMetrics }        from "../../components/teacher/StudentProfile/TopMetrics"
 import { StudentTabs }       from "../../components/teacher/StudentProfile/StudentTabs"
-import { RecommendedResources } from "../../components/teacher/StudentProfile/RecommendedResources"
 import { HelpSection }       from "../../components/teacher/StudentProfile/HelpSection"
 import StatisticsTable       from "../../components/teacher/StudentProfile/StatisticsTable"
 import { Calendar }          from "lucide-react"
 
 export default function StudentProfileTeacherPage() {
   const { id } = useParams<{ id: string }>()
-  const StudentId = Number(id)
+  const studentId = Number(id)
 
   const {
     student,
@@ -31,29 +30,27 @@ export default function StudentProfileTeacherPage() {
     data: stats,
     isLoading: statsLoading,
     error: statsError,
-  } = useStudentStats(StudentId)
+  } = useStudentStats(studentId)
 
-  const [searchTerm, setSearchTerm] = useState("")
-  const [sortBy, setSortBy]       = useState("date")
-  const [statusFilter, setStatusFilter] = useState("all")
-  const [activeTab, setActiveTab] = useState("studies")
+  const [searchTerm, setSearchTerm]         = useState("")
+  const [sortBy, setSortBy]                 = useState("date")
+  const [statusFilter, setStatusFilter]     = useState("all")
+  const [activeTab, setActiveTab]           = useState("studies")
 
   const total = studies.length
-  const completedCount = studies.filter((s) => s.status === "EVALUADO").length
-  const average =
-    completedCount > 0
-      ? (
-          studies
-            .filter((s) => s.status === "EVALUADO")
-            .reduce((sum, s) => sum + (s.score || 0), 0) /
-          completedCount
-        ).toFixed(1)
-      : "—"
+  const completedCount = studies.filter(s => s.status === "EVALUADO").length
+  const average = completedCount > 0
+    ? (
+        studies
+          .filter(s => s.status === "EVALUADO")
+          .reduce((sum, s) => sum + (s.score || 0), 0) /
+        completedCount
+      ).toFixed(1)
+    : "—"
 
-  // sorting & filtering studies...
-  const filtered = studies.filter((s) => {
-    const matchSearch =
-      !searchTerm ||
+  // Filtrado y ordenamiento de estudios
+  const filtered = studies.filter(s => {
+    const matchSearch = !searchTerm ||
       s.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       s.description?.toLowerCase().includes(searchTerm.toLowerCase())
     const matchStatus =
@@ -62,6 +59,7 @@ export default function StudentProfileTeacherPage() {
       (statusFilter === "pending"   && s.status !== "EVALUADO")
     return matchSearch && matchStatus
   })
+
   const sortedStudies = filtered.slice().sort((a, b) => {
     if (sortBy === "date")
       return Date.parse(b.created_at) - Date.parse(a.created_at)
@@ -78,10 +76,9 @@ export default function StudentProfileTeacherPage() {
     return 0
   })
 
-  // placeholders para otras secciones...
+  // Placeholders
   const recentActivity      = [{ id: 1, type: "login", date: new Date() }]
   const teacherNotes        = [{ id: 1, text: "Nota de ejemplo", date: new Date() }]
-  const recommendedResources = [{ id: 1, title: "Recurso PDF", type: "pdf" }]
 
   if (studentLoading || studiesLoading) {
     return (
@@ -96,9 +93,7 @@ export default function StudentProfileTeacherPage() {
     return (
       <div className="p-8">
         <PageHeader studentName="" studentEmail="" />
-        <ErrorState
-          message={(studentError || studiesError)?.toString() || ""}
-        />
+        <ErrorState message={(studentError || studiesError)?.toString() || ""} />
       </div>
     )
   }
@@ -149,7 +144,6 @@ export default function StudentProfileTeacherPage() {
         teacherNotes={teacherNotes}
       />
 
-      <RecommendedResources resources={recommendedResources} />
       <HelpSection />
     </div>
   )
