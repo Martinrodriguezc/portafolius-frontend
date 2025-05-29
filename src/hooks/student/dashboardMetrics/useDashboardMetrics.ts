@@ -4,7 +4,7 @@ import { fetchDashboardMetrics, StudentDashboardMetrics } from './requests/dashb
 export function useDashboardMetrics(userId: number) {
   return useQuery<StudentDashboardMetrics>({
     queryKey: ['studentDashboard', userId],
-    queryFn: () => fetchDashboardMetrics(userId),
+    queryFn:   () => fetchDashboardMetrics(userId),
     staleTime: 300_000,
   })
 }

@@ -19,6 +19,8 @@ import { useStudentMaterials } from "../../hooks/student/Materials/useStudentMat
 import { config } from "../../config/config"
 import RankingTable from "../../components/student/metrics/tables/RankingTable"
 import ProgressLineChart from "../../components/student/metrics/charts/ProgressLineChart"
+import StatisticsTable, { ProtocolCount } from "../../components/student/metrics/tables/StatisticsTable"
+
 
 export default function StudentDashboard() {
   const user = authService.getCurrentUser()!
@@ -130,6 +132,13 @@ export default function StudentDashboard() {
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+          <Calendar className="mr-2 text-gray-600" /> Estadísticas
+        </h2>
+        <StatisticsTable data={(m?.protocolCounts ?? []) as ProtocolCount[]} />
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
           <BarChart2 className="mr-2 text-gray-600" /> Reportes
         </h2>
         {mLoading && <p>Cargando reportes…</p>}
@@ -143,7 +152,7 @@ export default function StudentDashboard() {
           <Card className="bg-white p-6">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="w-full md:w-1/2">
-                <h3 className="text-lg font-medium text-gray-800 mb-2">
+                <h3 className="text-lg font-bold text-gray-800 mb-2">
                   Estudios con mejor evaluación
                 </h3>
                 <RankingTable
@@ -155,7 +164,7 @@ export default function StudentDashboard() {
                 />
               </div>
               <div className="w-full md:w-1/2">
-                <h3 className="text-lg font-medium text-gray-800 mb-2">
+                <h3 className="text-lg font-bold text-gray-800 mb-2">
                   Estudios con oportunidad de mejora
                 </h3>
                 <RankingTable
