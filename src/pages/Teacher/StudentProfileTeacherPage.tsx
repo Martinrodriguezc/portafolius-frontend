@@ -15,8 +15,8 @@ import StatisticsTable       from "../../components/teacher/StudentProfile/Stati
 import { Calendar }          from "lucide-react"
 
 export default function StudentProfileTeacherPage() {
-  const { studentId } = useParams<{ studentId: string }>()
-  const id = Number(studentId)
+  const { id } = useParams<{ id: string }>()
+  const StudentId = Number(id)
 
   const {
     student,
@@ -31,7 +31,7 @@ export default function StudentProfileTeacherPage() {
     data: stats,
     isLoading: statsLoading,
     error: statsError,
-  } = useStudentStats(id)
+  } = useStudentStats(StudentId)
 
   const [searchTerm, setSearchTerm] = useState("")
   const [sortBy, setSortBy]       = useState("date")
@@ -135,7 +135,7 @@ export default function StudentProfileTeacherPage() {
       />
 
       <StudentTabs
-        studentId={studentId!}
+        studentId={id!}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         searchTerm={searchTerm}

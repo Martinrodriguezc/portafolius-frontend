@@ -8,6 +8,6 @@ export function useStudentStats(studentId: number) {
   return useQuery<TeacherStudentStats>({
     queryKey: ['studentStats', studentId],
     queryFn: () => fetchStudentStats(studentId),
-    enabled: studentId > 0
+    enabled: studentId > 0,
   })
 }
