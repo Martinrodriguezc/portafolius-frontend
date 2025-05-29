@@ -7,6 +7,7 @@ import {
 
 import StudentLayout from "./pages/layout/StudentLayout";
 import TeacherLayout from "./pages/layout/TeacherLayout";
+import AdminLayout from "./pages/layout/AdminLayout";
 
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
@@ -28,7 +29,11 @@ import TeacherDashboardPage from "./pages/Teacher/Dashboard";
 import TeacherEvaluationsPage from "./pages/Teacher/allEvaluations";
 import TeacherStudentsPage from "./pages/Teacher/AllStudents";
 import TeacherSettingsPage from "./pages/Teacher/Settings";
+
+import UnauthorizedTeacherPage from "./pages/Teacher/UnauthorizedPage";
+
 import TeacherMaterialsPage from "./pages/Teacher/TeacherMaterialsPage";
+
 
 import CommentsPage from "./pages/Student/Comments";
 import TeacherMultipleVideosPage from "./pages/Teacher/Study/VideosPage";
@@ -37,6 +42,18 @@ import TeacherEvaluateVideoPage from "./pages/Teacher/EvaluateVideoPage";
 import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import LearnMorePage from "./pages/LearnMore";
 import StudentCreateStudyPage from "./pages/Student/Study";
+
+import AdminDashboardPage from "./pages/admin/AdminDashboard";
+import UserManagementPage from "./pages/admin/UserManagement";
+import PendingTeachersPage from "./pages/admin/PendingTeachers";
+import AcademicManagementPage from "./pages/admin/AcademicManagement";
+import ReportsPage from "./pages/admin/Reports";
+import AdminSettingsPage from "./pages/admin/Settings";
+import AdminEvaluationsPage from "./pages/admin/AdminEvaluations";
+import AdminVideosPage from "./pages/admin/AdminVideosPage";
+import AdminVideoPage from "./pages/admin/AdminVideoPage";
+import AdminEvaluateVideoPage from "./pages/admin/AdminEvaluateVideo";
+import MaterialsManagementPage from "./pages/admin/MaterialsManagement";
 
 function App() {
   return (
@@ -88,6 +105,23 @@ function App() {
           <Route path="settings" element={<TeacherSettingsPage />} />
           <Route path="materials" element={<TeacherMaterialsPage />} />
 
+        </Route>
+
+        <Route path="/teacher/unauthorized" element={<UnauthorizedTeacherPage />} />
+
+        {/* --- Admin Routes ---------------------------------------------------- */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="users" element={<UserManagementPage />} />
+          <Route path="pending-teachers" element={<PendingTeachersPage />} />
+          <Route path="academic" element={<AcademicManagementPage />} />
+          <Route path="materials" element={<MaterialsManagementPage />} />
+          <Route path="evaluations" element={<AdminEvaluationsPage />} />
+          <Route path="evaluations/:id/videos" element={<AdminVideosPage />} />
+          <Route path="evaluations/:studyId/videos/:clipId" element={<AdminVideoPage />} />
+          <Route path="evaluations/:studyId/videos/:clipId/evaluate" element={<AdminEvaluateVideoPage />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="settings" element={<AdminSettingsPage />} />
         </Route>
       </Routes>
     </Router>
