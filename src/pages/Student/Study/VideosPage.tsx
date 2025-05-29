@@ -18,7 +18,6 @@ export default function StudentMultipleVideosPage() {
 
   const label = selectedProtocol ? (selectedProtocol === "all" ? "Mostrar todos" : selectedProtocol) : ""
   
-  // Check if there are few videos (3 or less)
   const hasFewVideos = videos.length > 0 && videos.length <= 3
 
   return (
@@ -61,7 +60,7 @@ export default function StudentMultipleVideosPage() {
               </SelectContent>
             </Select>
           </div>
-          <ReturnButton/>
+          <ReturnButton to="/student/studies"/>
         </div>
       </header>
 
