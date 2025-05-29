@@ -13,7 +13,7 @@ import { RawStudy } from "../../types/Study";
 import { fetchStudentStudies } from "../student/Studies/request/studiesRequest";
 import { config } from "../../config/config";
 import { FileWithMetadata } from "../../types/File";
-import { Condition, Organ, Structure, Tag } from "../../types/tag";
+import { Condition, Organ, Structure } from "../../types/tag";
 
 export function useUploadPage() {
   const userId = authService.getCurrentUser()?.id;
