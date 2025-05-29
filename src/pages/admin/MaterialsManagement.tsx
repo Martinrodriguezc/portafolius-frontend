@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useAdminMaterials, useCreateMaterial, useUpdateMaterial, useDeleteMaterial } from '../../hooks/admin/Materials/useAdminMaterials';
-import { Material } from '../../types/material';
+import { Material} from '../../types/material';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../hooks/auth/authServices';
+import { X } from "lucide-react";
 
 import MaterialsHeader from '../../components/admin/materials/MaterialsHeader';
 import MaterialsSearchFilter from '../../components/admin/materials/MaterialsSearchFilter';
 import MaterialsSummary from '../../components/admin/materials/MaterialsSummary';
 import MaterialsTabs from '../../components/admin/materials/MaterialsTabs';
-import MaterialForm from '../../components/admin/materials/MaterialForm';
+import MaterialCreationForm from '../../components/teacher/materials/MaterialCreationForm';
 import MaterialsLoading from '../../components/admin/materials/MaterialsLoading';
 import MaterialsError from '../../components/admin/materials/MaterialsError';
 import MaterialsAuthError from '../../components/admin/materials/MaterialsAuthError';
@@ -41,8 +42,6 @@ export default function MaterialsManagement() {
   const updateMutation = useUpdateMaterial();
   const deleteMutation = useDeleteMaterial();
 
-  // Estado de carga para el formulario
-  const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
   // Verificar si hay un error de autenticación/autorización
   const getAuthError = (error: ErrorWithResponse) => {
@@ -114,35 +113,40 @@ export default function MaterialsManagement() {
     }
   };
 
-  const handleFormSubmit = async (materialData: Partial<Material>) => {
-    try {
-      if (editingMaterial) {
-        // Actualizar material existente
-        await updateMutation.mutateAsync({ 
-          id: editingMaterial.id, 
-          material: materialData 
-        });
-      } else {
-        // Crear nuevo material
-        await createMutation.mutateAsync(materialData);
-      }
-      
-      setIsFormOpen(false);
-      setEditingMaterial(null);
-    } catch (error) {
-      // Verificar si es un error de autenticación
-      const authError = getAuthError(error as ErrorWithResponse);
-      if (authError) {
-        alert(`Error de autorización: ${authError}`);
-      } else {
-        alert(`Error al guardar el material: ${(error as Error).message || 'Error desconocido'}`);
-      }
-    }
+  const handleMaterialCreationSuccess = () => {
+    setIsFormOpen(false);
+    setEditingMaterial(null);
+    refetch();
   };
+
 
   const handleFormCancel = () => {
     setIsFormOpen(false);
     setEditingMaterial(null);
+  };
+
+  // Wrapper para el formulario de teacher en modal de admin
+  const AdminMaterialFormModal = () => {
+    if (!isFormOpen) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-[16px] max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-lg">
+          <div className="p-6 border-b border-slate-200 flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-[#333333]">
+              {editingMaterial ? 'Editar Material' : 'Añadir Nuevo Material'}
+            </h2>
+            <button onClick={handleFormCancel} className="text-[#666666] hover:text-[#333333]">
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          
+          <div className="p-6">
+            <MaterialCreationForm onSuccess={handleMaterialCreationSuccess} />
+          </div>
+        </div>
+      </div>
+    );
   };
 
   // Si está cargando, mostrar el componente de carga
@@ -181,14 +185,7 @@ export default function MaterialsManagement() {
         onDelete={handleDeleteMaterial}
       />
       
-      {isFormOpen && (
-        <MaterialForm
-          material={editingMaterial || undefined}
-          onSubmit={handleFormSubmit}
-          onCancel={handleFormCancel}
-          isSubmitting={isSubmitting}
-        />
-      )}
+      <AdminMaterialFormModal />
     </div>
   );
 } 
