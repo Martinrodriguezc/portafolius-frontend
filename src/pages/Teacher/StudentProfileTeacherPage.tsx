@@ -1,19 +1,23 @@
-import { useState } from "react";
-import { useParams} from "react-router-dom";
+import { useState, useMemo } from "react";
+import { useParams } from "react-router-dom";
 import { useStudentProfile } from "../../hooks/teacher/student/useStudentProfile";
+import { useStudentStats } from "../../hooks/teacher/student/stats/useStudentStats";
 import { PageHeader } from "../../components/teacher/StudentProfile/Header";
 import { LoadingState } from "../../components/teacher/StudentProfile/Loading";
 import { ErrorState } from "../../components/teacher/StudentProfile/Error";
 import { StudentInfoCard } from "../../components/teacher/StudentProfile/StudentInfoCard";
 import { QuickActions } from "../../components/teacher/StudentProfile/QuickActions";
 import { TopMetrics } from "../../components/teacher/StudentProfile/TopMetrics";
-import { StudentTabs } from "../../components/teacher/StudentProfile/StudentTabs";
-import { RecommendedResources } from "../../components/teacher/StudentProfile/RecommendedResources";
+import StudentTabs from "../../components/teacher/StudentProfile/StudentTabs";
 import { HelpSection } from "../../components/teacher/StudentProfile/HelpSection";
-
+import StatisticsTable from "../../components/teacher/StudentProfile/StatisticsTable";
+import { Calendar } from "lucide-react";
+import type { Option } from "../../components/common/SearchFilter/SearchFilter";
 
 export default function StudentProfileTeacherPage() {
-  const { studentId } = useParams<{ studentId: string }>();
+  const { id } = useParams<{ id: string }>();
+  const studentId = Number(id);
+
   const {
     student,
     studentLoading,
@@ -23,54 +27,23 @@ export default function StudentProfileTeacherPage() {
     studiesError,
   } = useStudentProfile();
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("date");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [activeTab, setActiveTab] = useState("studies");
+  const {
+    data: stats,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useStudentStats(studentId);
 
-  const total = studies.length;
-  const completedCount = studies.filter((s) => s.status === "EVALUADO").length;
-  const average =
-    completedCount > 0
-      ? (
-          studies
-            .filter((s) => s.status === "EVALUADO")
-            .reduce((sum, s) => sum + (s.score || 0), 0) / completedCount
-        ).toFixed(1)
-      : "—";
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "evaluated" | "pending">("all");
+  const [sortBy, setSortBy] = useState<"date" | "title" | "score">("date");
+  const [activeTab, setActiveTab] = useState<"studies">("studies");
 
-  const filtered = studies.filter((s) => {
-    const matchSearch =
-      !searchTerm ||
-      s.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (s.description?.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchStatus =
-      statusFilter === "all" ||
-      (statusFilter === "evaluated" && s.status === "EVALUADO") ||
-      (statusFilter === "pending" && s.status !== "EVALUADO");
-    return matchSearch && matchStatus;
-  });
-  const sortedStudies = filtered.slice().sort((a, b) => {
-    if (sortBy === "date")
-      return Date.parse(b.created_at) - Date.parse(a.created_at);
-    if (sortBy === "title") return a.title.localeCompare(b.title);
-    if (sortBy === "status") return a.status === b.status ? 0 : a.status === "EVALUADO" ? -1 : 1;
-    if (sortBy === "score") return (b.score || 0) - (a.score || 0);
-    return 0;
-  });
-
-  const recentActivity = [
-    { id: 1, type: "login", date: new Date() },
-    // ...
-  ];
-  const teacherNotes = [
-    { id: 1, text: "Nota de ejemplo", date: new Date() },
-    // ...
-  ];
-  const recommendedResources = [
-    { id: 1, title: "Recurso PDF", type: "pdf" },
-    // ...
-  ];
+  const statusOptions: Option[] = useMemo(() => {
+    const opts: Option[] = [{ label: "Todos", value: "all" }];
+    if (studies.some((s) => s.has_evaluation)) opts.push({ label: "Evaluados", value: "evaluated" });
+    if (studies.some((s) => !s.has_evaluation)) opts.push({ label: "Pendientes", value: "pending" });
+    return opts;
+  }, [studies]);
 
   if (studentLoading || studiesLoading) {
     return (
@@ -80,6 +53,7 @@ export default function StudentProfileTeacherPage() {
       </div>
     );
   }
+
   if (studentError || studiesError || !student) {
     return (
       <div className="p-8">
@@ -88,6 +62,18 @@ export default function StudentProfileTeacherPage() {
       </div>
     );
   }
+
+  const total = studies.length;
+  const completedCount = studies.filter((s) => s.has_evaluation).length;
+  const average =
+    completedCount > 0
+      ? (
+          studies
+            .filter((s) => s.has_evaluation)
+            .reduce((sum, s) => sum + (s.score || 0), 0) /
+          completedCount
+        ).toFixed(1)
+      : "—";
 
   return (
     <div className="p-8 space-y-8 bg-slate-50">
@@ -99,6 +85,19 @@ export default function StudentProfileTeacherPage() {
       <StudentInfoCard student={student} />
       <QuickActions />
 
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+          <Calendar className="mr-2 text-gray-600" /> Protocolos evaluados
+        </h2>
+        {statsLoading ? (
+          <p className="text-gray-500">Cargando estadísticas…</p>
+        ) : statsError ? (
+          <p className="text-red-500">Error al cargar estadísticas</p>
+        ) : (
+          <StatisticsTable data={stats?.protocolCounts || []} />
+        )}
+      </section>
+
       <TopMetrics
         total={total}
         completedCount={completedCount}
@@ -107,21 +106,19 @@ export default function StudentProfileTeacherPage() {
       />
 
       <StudentTabs
-        studentId={studentId!}
+        studentId={id!}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         statusFilter={statusFilter}
         setStatusFilter={setStatusFilter}
+        statusOptions={statusOptions}
         sortBy={sortBy}
         setSortBy={setSortBy}
-        sortedStudies={sortedStudies}
-        recentActivity={recentActivity}
-        teacherNotes={teacherNotes}
+        studies={studies}
       />
 
-      <RecommendedResources resources={recommendedResources} />
       <HelpSection />
     </div>
   );
