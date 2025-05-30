@@ -1,4 +1,3 @@
-// src/pages/Teacher/NewStudentForm.tsx
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRegisterForm } from "../../hooks/form/useRegisterForm";
@@ -17,17 +16,14 @@ export default function NewStudentForm() {
     handleSubmit,
     errorMessage,
   } = useRegisterForm(() => {
-    // una vez registrado, volvemos al listado
     navigate("/teacher/students");
   });
 
   useEffect(() => {
-    // fijamos role en “estudiante” solo al montar
     handleInputChange({
       target: { id: "role", value: "estudiante" }
     } as React.ChangeEvent<HTMLSelectElement>);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // <<-- vacío, para disparar solo UNA vez
+  }, []); 
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FAFAFB] p-4">
@@ -62,7 +58,6 @@ export default function NewStudentForm() {
             error={formErrors.email}
           />
 
-          {/* select pero solo con opción estudiante */}
           <div className="space-y-1">
             <label htmlFor="role" className="block text-sm font-medium text-[#333333]">
               Tipo de usuario
@@ -96,7 +91,7 @@ export default function NewStudentForm() {
               role="alert"
               className="flex items-center gap-2 bg-red-100 border border-red-500 text-red-700 px-4 py-2 rounded-md"
             >
-              <span className="text-xl">⚠️</span>
+              <span className="text-xl"></span>
               <p className="text-sm font-medium">{errorMessage}</p>
             </div>
           )}
