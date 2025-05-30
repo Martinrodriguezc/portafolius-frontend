@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRegisterForm } from "../../hooks/form/useRegisterForm";
 import Input from "../../components/common/Input/Input";
@@ -18,12 +17,6 @@ export default function NewStudentForm() {
   } = useRegisterForm(() => {
     navigate("/teacher/students");
   });
-
-  useEffect(() => {
-    handleInputChange({
-      target: { id: "role", value: "estudiante" }
-    } as React.ChangeEvent<HTMLSelectElement>);
-  }, []); 
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FAFAFB] p-4">
