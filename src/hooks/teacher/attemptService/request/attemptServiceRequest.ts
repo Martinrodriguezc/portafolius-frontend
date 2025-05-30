@@ -9,6 +9,7 @@ import {
 interface CreateAttemptPayload {
   protocolKey: string;
   responses: { itemKey: string; score: number }[];
+  comment?: string;
 }
 
 export async function createAttemptRequest(

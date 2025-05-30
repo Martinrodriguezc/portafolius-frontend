@@ -1,7 +1,9 @@
 export interface Attempt {
   id: number
   submitted_at: string      
-  total_score: number       
+  total_score: number
+  teacher_name: string         
+  comment: string                    
 }
 
 export interface ResponseItem {
