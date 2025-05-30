@@ -1,18 +1,28 @@
+import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
 import { useTeacherEvaluateVideo } from "../../hooks/teacher/evaluations/useTeacherEvaluateVideo/useTeacherEvaluateVideo";
-import { useAllStudies }     from "../../hooks/teacher/useAllStudies/useAllStudies";
-import LoadingState           from "../../components/teacher/EvaluateVideo/LoadingState";
-import ErrorState             from "../../components/teacher/EvaluateVideo/ErrorState";
-import PageHeader             from "../../components/teacher/EvaluateVideo/PageHeader";
-import VideoSection           from "../../components/teacher/EvaluateVideo/VideoSection";
-import EvaluationForm         from "../../components/teacher/EvaluateVideo/EvaluationForm";
-import ExistingEvaluationCard from "../../components/teacher/EvaluateVideo/ExistingEvaluationCard";
+import LoadingState from "../../components/teacher/EvaluateVideo/LoadingState";
+import ErrorState from "../../components/teacher/EvaluateVideo/ErrorState";
+import PageHeader from "../../components/teacher/EvaluateVideo/PageHeader";
+import VideoSection from "../../components/teacher/EvaluateVideo/VideoSection";
+import ProtocolEvaluationForm from "../../components/teacher/EvaluateVideo/ProtocolEvaluationForm";
 
 export default function EvaluateVideoPage() {
   const {
-    videoRef, url, meta, existing, loading, error,
-    score, feedback, setScore, setFeedback,
-    submitting, isPlaying, progress, isFullscreen,
-    togglePlay, handleSeek, toggleFullscreen, onSubmit
+    videoRef,
+    url,
+    meta,
+    loading,
+    error,
+    protocol,
+    responses,
+    updateScore,
+    onSubmit,
+    isPlaying,
+    togglePlay,
+    progress,
+    handleSeek,
+    isFullscreen,
+    toggleFullscreen,
   } = useTeacherEvaluateVideo();
 
   const { pending, completed } = useAllStudies();
@@ -22,7 +32,8 @@ export default function EvaluateVideoPage() {
     : undefined;
 
   if (loading || !meta) return <LoadingState />;
-  if (error)           return <ErrorState error={error} />;
+  if (error) return <ErrorState error={error} />;
+  if (!protocol) return <div className="p-8">Cargando protocolo…</div>;
 
   return (
     <div className="p-8 md:p-10 max-w-7xl mx-auto">
@@ -30,22 +41,26 @@ export default function EvaluateVideoPage() {
 
       <div className="flex flex-col lg:flex-row gap-6">
         <VideoSection
-          url={url} videoRef={videoRef}
-          isPlaying={isPlaying} togglePlay={togglePlay}
-          progress={progress} handleSeek={handleSeek}
-          isFullscreen={isFullscreen} toggleFullscreen={toggleFullscreen}
-          meta={meta} currentStudy={currentStudy}
+          url={url}
+          videoRef={videoRef}
+          isPlaying={isPlaying}
+          togglePlay={togglePlay}
+          progress={progress}
+          handleSeek={handleSeek}
+          isFullscreen={isFullscreen}
+          toggleFullscreen={toggleFullscreen}
+          meta={meta}
+          currentStudy={currentStudy}
         />
 
-        <EvaluationForm
-          score={score} feedback={feedback}
-          setScore={setScore} setFeedback={setFeedback}
-          onSubmit={onSubmit} submitting={submitting}
-          existing={!!existing}
+        <ProtocolEvaluationForm
+          protocol={protocol}
+          responses={responses}
+          updateScore={updateScore}
+          onSubmit={onSubmit}
         />
-
-        {existing && <ExistingEvaluationCard existing={existing} />}
       </div>
     </div>
   );
 }
+
