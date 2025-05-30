@@ -8,10 +8,10 @@ export interface Option {
 export interface SearchFilterProps {
   searchTerm: string;
   setSearchTerm: (s: string) => void;
-  statusFilter: string;
-  setStatusFilter: (f: string) => void;
-  sortBy: string;
-  setSortBy: (s: string) => void;
+  statusFilter: "all" | "evaluated" | "pending";
+  setStatusFilter: (f: "all" | "evaluated" | "pending") => void;
+  sortBy: "date" | "title" | "score";
+  setSortBy: (s: "date" | "title" | "score") => void;
   total: number;
   statusOptions?: Option[];
   sortOptions?: Option[];
@@ -59,7 +59,7 @@ export default function SearchFilter({
           <SlidersHorizontal className="text-gray-500 ml-3 mr-2" size={16} />
           <select
             value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value as "all" | "evaluated" | "pending")}
             className="appearance-none bg-transparent w-full px-3 py-2 text-sm focus:outline-none"
           >
             {statusOpts.map(o => (
@@ -74,7 +74,7 @@ export default function SearchFilter({
           <ArrowDownUpIcon className="text-gray-500 ml-3 mr-2" size={16} />
           <select
             value={sortBy}
-            onChange={e => setSortBy(e.target.value)}
+            onChange={e => setSortBy(e.target.value as "date" | "title" | "score")}
             className="appearance-none bg-transparent w-full px-3 py-2 text-sm focus:outline-none"
           >
             {sortOpts.map(o => (
