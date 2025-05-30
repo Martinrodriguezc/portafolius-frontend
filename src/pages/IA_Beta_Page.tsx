@@ -29,6 +29,10 @@ export interface Material {
   quiz: QuizItem[];
 }
 
+interface ErrorResponse {
+  detail?: string;
+}
+
 
 export default function BetaPage() {
     const [feedback, setFeedback] = useState<string>("");
@@ -49,7 +53,7 @@ export default function BetaPage() {
                 body: JSON.stringify({ feedback }),
             });
             const data = (await res.json()) as Material;
-            if (!res.ok) throw new Error((data as any).detail || "Error generando material");
+            if (!res.ok) throw new Error((data as ErrorResponse).detail || "Error generando material");
             setMaterial(data);
         } catch (err) {
             setError(err instanceof Error ? err.message : String(err));
