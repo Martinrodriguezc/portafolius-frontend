@@ -7,8 +7,13 @@ import {
   Legend,
   ChartOptions,
   TooltipItem,
+  TooltipOptions,
+  LegendOptions
 } from "chart.js";
-import ChartDataLabels, { Context as DatalabelsContext } from "chartjs-plugin-datalabels";
+import ChartDataLabels, {
+  Context as DatalabelsContext,
+  ChartDataLabelsOptions
+} from "chartjs-plugin-datalabels";
 import { Pie } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
@@ -36,27 +41,33 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
       "rgba(199,199,199,0.8)",
     ];
     return {
-      role:       item.role,
-      cantidad:   n,
+      role: item.role,
+      cantidad: n,
       percentage: pct,
-      color:      palette[i % palette.length],
+      color: palette[i % palette.length],
     };
   });
 
   const chartData = {
-    labels: processed.map(p => p.role),
+    labels: processed.map((p) => p.role),
     datasets: [
       {
-        data:            processed.map(p => p.cantidad),
-        backgroundColor: processed.map(p => p.color),
-        borderColor:     processed.map(p => p.color.replace("0.8", "1")),
-        borderWidth:     1,
+        data: processed.map((p) => p.cantidad),
+        backgroundColor: processed.map((p) => p.color),
+        borderColor: processed.map((p) => p.color.replace("0.8", "1")),
+        borderWidth: 1,
       },
     ],
   };
 
-  const options: Partial<ChartOptions<"pie">> = {
-    responsive:          true,
+  const options: ChartOptions<"pie"> & {
+    plugins: {
+      legend: Partial<LegendOptions<"pie">>;
+      tooltip: Partial<TooltipOptions<"pie">>;
+      datalabels: ChartDataLabelsOptions;
+    };
+  } = {
+    responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
@@ -74,13 +85,11 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
       },
       datalabels: {
         color: "#fff",
-        font:  { weight: "bold", size: 10 },
+        font: { weight: "bold", size: 10 },
         formatter(value: number, ctx: DatalabelsContext) {
           const vals = ctx.chart.data.datasets[0].data as number[];
-          const sum  = vals.reduce((a, b) => a + b, 0);
-          return sum > 0
-            ? ((value / sum) * 100).toFixed(1) + "%"
-            : "0%";
+          const sum = vals.reduce((a, b) => a + b, 0);
+          return sum > 0 ? ((value / sum) * 100).toFixed(1) + "%" : "0%";
         },
       },
     },
@@ -93,10 +102,9 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
           <Pie data={chartData} options={options} />
         </div>
       </div>
-
       <div className="w-full md:w-[35%] overflow-y-auto px-2">
         <div className="space-y-2">
-          {processed.map(item => (
+          {processed.map((item) => (
             <div key={item.role} className="flex items-center space-x-2">
               <div
                 className="w-3 h-3 rounded-full"

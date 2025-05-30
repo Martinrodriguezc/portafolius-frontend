@@ -43,6 +43,7 @@ import TeacherEvaluateVideoPage from "./pages/Teacher/EvaluateVideoPage";
 import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import LearnMorePage from "./pages/LearnMore";
 import StudentCreateStudyPage from "./pages/Student/Study";
+import BetaPage from "./pages/IA_Beta_Page";
 
 import AdminDashboardPage from "./pages/admin/AdminDashboard";
 import UserManagementPage from "./pages/admin/UserManagement";
@@ -89,6 +90,7 @@ function App() {
             element={<StudentMultipleVideosPage />}
           />
         </Route>
+        <Route path="/ia_beta" element={<BetaPage />}/>
 
         <Route path="/teacher" element={<TeacherLayout />}>
           <Route index element={<TeacherDashboardPage />} />
