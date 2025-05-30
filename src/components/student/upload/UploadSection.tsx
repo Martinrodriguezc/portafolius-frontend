@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../common/Button/Button";
 import Input from "../../common/Input/Input";
-import { FileVideo, Upload, Trash2, Plus, TagIcon, X } from 'lucide-react';
+import {
+  FileVideo,
+  Upload,
+  Trash2,
+  Plus,
+  TagIcon,
+  X,
+} from "lucide-react";
 import { Label } from "../../common/Label/Label";
 import { Select, SelectValue } from "../../common/Select/SelectBase";
 import { SelectTrigger, SelectContent } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
 import { UploadSectionProps } from "../../../types/Props/Video/UploadSectionProps";
 import { useTagOptions } from "../../../hooks/upload/TagUtils";
+import { useProtocolOptions } from "../../../hooks/student/protocols/useProtocolOptions";
 
 export const UploadSection: React.FC<UploadSectionProps> = ({
   files,
@@ -21,6 +29,20 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
   removeTagFromFile,
 }) => {
   const { organs, structures, conditions } = useTagOptions();
+  const {
+    protocols,
+    loadingProtocols,
+    protocolsError,
+    createProtocol,
+    creating: creatingProtocol,
+    createError: protocolCreationError,
+    reset: resetProtocol,
+  } = useProtocolOptions();
+
+  // Estado para edición inline de protocolo
+  const [editingProtocolIndex, setEditingProtocolIndex] = useState<number | null>(null);
+  const [newProtocolName, setNewProtocolName] = useState("");
+  const [inlineError, setInlineError] = useState<string | null>(null);
 
   return (
     <div className="mt-8 mb-8 space-y-6">
@@ -47,7 +69,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
           />
         </div>
         <p className="text-xs sm:text-[12px] text-[#666666] mt-3">
-          Formatos soportados: .mp4, .avi, .mov (máx. 50MB por archivo)
+          Formatos soportados: .mp4, .avi, .mov (máx. 50 MB por archivo)
         </p>
       </div>
 
@@ -97,32 +119,111 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
 
                 {/* File details */}
                 <div className="p-4 sm:p-5 bg-white space-y-5">
-                  {/* Protocolo */}
+                  {/* Protocolo dinámico */}
                   <div>
-                    <Label htmlFor={`protocol-${index}`} className="text-sm sm:text-[14px] font-medium text-[#333333] mb-1 block">
+                    <Label
+                      htmlFor={`protocol-${index}`}
+                      className="text-sm sm:text-[14px] font-medium text-[#333333] mb-1 block"
+                    >
                       Protocolo para este video
                     </Label>
-                    <Select
-                      value={fileItem.protocol}
-                      onValueChange={(val) => updateFileProtocol(index, val)}
-                    >
-                      <SelectTrigger
-                        id={`protocol-${index}`}
-                        className="h-10 sm:h-[42px] text-sm sm:text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]"
+
+                    {editingProtocolIndex === index ? (
+                      <div className="flex items-center gap-2">
+                        <Input
+                          value={newProtocolName}
+                          onChange={(e) => {
+                            setInlineError(null);
+                            setNewProtocolName(e.target.value.toUpperCase())
+                          }}
+                          placeholder="Nuevo protocolo"
+                          className="flex-1"
+                        />
+                        <Button
+                          onClick={async () => {
+                            if (!newProtocolName.trim()) return;
+                            try {
+                              await createProtocol(newProtocolName.trim());
+                              updateFileProtocol(index, newProtocolName.trim());
+                              setEditingProtocolIndex(null);
+                            } catch (err: any) {
+                              if (err.response?.status === 409) {
+                                setInlineError("Ya existe ese protocolo");
+                              } else {
+                                setInlineError("Error creando protocolo");
+                              }
+                            }
+                          }}
+                          disabled={creatingProtocol || !newProtocolName.trim()}
+                          className="px-3 py-1 bg-[#4E81BD] text-white rounded"
+                        >
+                          Guardar
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setInlineError(null);
+                            resetProtocol();
+                            setEditingProtocolIndex(null);
+                          }}
+                          className="px-3 py-1 rounded"
+                        >
+                          Cancelar
+                        </Button>
+                        {inlineError && (
+                          <p className="text-sm text-red-500 w-full mt-1">
+                            {inlineError}
+                          </p>
+                        )}
+                      </div>
+                    ) : loadingProtocols ? (
+                      <p className="text-sm text-gray-500">Cargando protocolos…</p>
+                    ) : protocolsError ? (
+                      <p className="text-sm text-red-500">Error cargando</p>
+                    ) : (
+                      <Select
+                        value={fileItem.protocol}
+                        onValueChange={(val) => {
+                          if (val === "__new") {
+                            setNewProtocolName("");
+                            setEditingProtocolIndex(index);
+                          } else {
+                            updateFileProtocol(index, val);
+                          }
+                        }}
                       >
-                        <SelectValue placeholder="Selecciona un protocolo" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="fate">FATE</SelectItem>
-                        <SelectItem value="fast">FAST</SelectItem>
-                        <SelectItem value="rush">RUSH</SelectItem>
-                        <SelectItem value="blue">BLUE</SelectItem>
-                        <SelectItem value="focus">FOCUS</SelectItem>
-                      </SelectContent>
-                    </Select>
+                        <SelectTrigger
+                          id={`protocol-${index}`}
+                          className="h-10 sm:h-[42px] text-sm sm:text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]"
+                        >
+                          <SelectValue placeholder="Selecciona un protocolo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {protocols.map((p) => (
+                            <SelectItem key={p.id} value={p.name}>
+                              {p.name}
+                            </SelectItem>
+                          ))}
+                          <SelectItem value="__new" className="text-[#4E81BD] font-medium">
+                            + Agregar protocolo
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+
+                    {creatingProtocol && (
+                      <p className="text-sm text-[#4E81BD] mt-1">
+                        Creando protocolo…
+                      </p>
+                    )}
+                    {!inlineError && protocolCreationError && (
+                      <p className="text-sm text-red-500 mt-1">
+                        {protocolCreationError.message}
+                      </p>
+                    )}
                   </div>
 
-                  {/* Tags */}
+                  {/* Etiquetas (órgano/estructura/condición) */}
                   <div>
                     <Label className="text-sm sm:text-[14px] font-medium text-[#333333] mb-2 block">
                       Etiquetas para este video
@@ -130,7 +231,10 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                       {/* Órgano */}
                       <div>
-                        <Label htmlFor={`organ-${index}`} className="text-xs sm:text-[13px] text-[#333333] mb-1 block">
+                        <Label
+                          htmlFor={`organ-${index}`}
+                          className="text-xs sm:text-[13px] text-[#333333] mb-1 block"
+                        >
                           Órgano
                         </Label>
                         <Select
@@ -155,7 +259,10 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
 
                       {/* Estructura */}
                       <div>
-                        <Label htmlFor={`structure-${index}`} className="text-xs sm:text-[13px] text-[#333333] mb-1 block">
+                        <Label
+                          htmlFor={`structure-${index}`}
+                          className="text-xs sm:text-[13px] text-[#333333] mb-1 block"
+                        >
                           Estructura
                         </Label>
                         <Select
@@ -182,7 +289,10 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
 
                       {/* Condición */}
                       <div>
-                        <Label htmlFor={`condition-${index}`} className="text-xs sm:text-[13px] text-[#333333] mb-1 block">
+                        <Label
+                          htmlFor={`condition-${index}`}
+                          className="text-xs sm:text-[13px] text-[#333333] mb-1 block"
+                        >
                           Condición
                         </Label>
                         <div className="flex items-center gap-2">
