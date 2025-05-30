@@ -125,7 +125,7 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
       {/* Contenedor del gráfico - 65% del espacio en escritorio */}
       <div className="w-full md:w-[65%] h-48 md:h-full flex justify-center items-center p-2">
         <div className="w-40 h-40 md:w-56 md:h-56 lg:w-64 lg:h-64">
-          <Pie data={chartData} options={options} />
+          <Pie data={chartData} />
         </div>
       </div>
       
