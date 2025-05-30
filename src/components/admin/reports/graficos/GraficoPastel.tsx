@@ -1,6 +1,6 @@
 import React from "react";
 import { DistribucionUsuarios } from "../../../../hooks/admin/metricsServices";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, TooltipItem } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 // Registrar los componentes necesarios de Chart.js
@@ -11,7 +11,7 @@ interface GraficoPastelProps {
 }
 
 // Interfaz para el contexto del datalabels
-interface DataLabelsContext {
+/*interface DataLabelsContext {
   chart: {
     data: {
       datasets: {
@@ -19,7 +19,7 @@ interface DataLabelsContext {
       }[];
     };
   };
-}
+}*/
 
 const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
   // Paleta de colores para los segmentos
@@ -75,7 +75,7 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
   };
 
   // Opciones del gráfico
-  const options = {
+  /*const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -118,14 +118,14 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
         }
       }
     },
-  };
+  };*/
 
   return (
     <div className="flex flex-col md:flex-row h-full">
       {/* Contenedor del gráfico - 65% del espacio en escritorio */}
       <div className="w-full md:w-[65%] h-48 md:h-full flex justify-center items-center p-2">
         <div className="w-40 h-40 md:w-56 md:h-56 lg:w-64 lg:h-64">
-          <Pie data={chartData} options={options} />
+          <Pie data={chartData} />
         </div>
       </div>
       
