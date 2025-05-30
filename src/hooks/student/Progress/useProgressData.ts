@@ -29,6 +29,7 @@ export function useProgressData(userId: number) {
           description: s.description,
           created_at: s.created_at,
           status: s.has_evaluation ? "EVALUADO" : "PENDIENTE",
+          has_evaluation: s.has_evaluation,
           score: s.score ?? null,
         }));
 
@@ -38,17 +39,17 @@ export function useProgressData(userId: number) {
           (s): s is Study & { score: number } => s.score !== null
         );
 
-        const totalStudies = studies.length;
+        const totalStudies     = studies.length;
         const evaluatedStudies = scored.length;
-        const pendingStudies = totalStudies - evaluatedStudies;
-        const averageScore =
+        const pendingStudies   = totalStudies - evaluatedStudies;
+        const averageScore     =
           evaluatedStudies > 0
             ? Number(
-              (
-                scored.reduce((sum, s) => sum + s.score, 0) /
-                evaluatedStudies
-              ).toFixed(1)
-            )
+                (
+                  scored.reduce((sum, s) => sum + s.score, 0) /
+                  evaluatedStudies
+                ).toFixed(1)
+              )
             : 0;
 
         const monthMap = new Map<string, { sum: number; count: number }>();

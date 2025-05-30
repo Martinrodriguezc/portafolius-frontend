@@ -33,6 +33,7 @@ import TeacherSettingsPage from "./pages/Teacher/Settings";
 import UnauthorizedTeacherPage from "./pages/Teacher/UnauthorizedPage";
 
 import TeacherMaterialsPage from "./pages/Teacher/TeacherMaterialsPage";
+import NewStudentForm from "./pages/Teacher/NewStudentForm";
 
 
 import CommentsPage from "./pages/Student/Comments";
@@ -42,6 +43,7 @@ import TeacherEvaluateVideoPage from "./pages/Teacher/EvaluateVideoPage";
 import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import LearnMorePage from "./pages/LearnMore";
 import StudentCreateStudyPage from "./pages/Student/Study";
+import BetaPage from "./pages/IA_Beta_Page";
 
 import AdminDashboardPage from "./pages/admin/AdminDashboard";
 import UserManagementPage from "./pages/admin/UserManagement";
@@ -88,13 +90,14 @@ function App() {
             element={<StudentMultipleVideosPage />}
           />
         </Route>
+        <Route path="/ia_beta" element={<BetaPage />}/>
 
         <Route path="/teacher" element={<TeacherLayout />}>
           <Route index element={<TeacherDashboardPage />} />
 
           {/* --- estudiantes ------------------------------------------------ */}
           <Route path="students" element={<TeacherStudentsPage />} />
-          <Route path="students/new" element={<StudentProfileTeacherPage />} />
+          <Route path="students/new" element={<NewStudentForm />} />
           <Route path="students/:id" element={<StudentProfileTeacherPage />} />
 
           {/* --- evaluaciones ---------------------------------------------- */}

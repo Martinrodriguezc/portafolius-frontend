@@ -294,10 +294,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@esbuild/linux-x64@0.25.2":
+"@esbuild/darwin-arm64@0.25.2":
   version "0.25.2"
-  resolved "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.25.2.tgz"
-  integrity sha512-QInHERlqpTTZ4FRB0fROQWXcYRD64lAoiegezDunLpalZMjcUcld3YzZmVJ2H/Cp0wJRZ8Xtjtj0cEHhYc/uUg==
+  resolved "https://registry.npmjs.org/@esbuild/darwin-arm64/-/darwin-arm64-0.25.2.tgz"
+  integrity sha512-MpM6LUVTXAzOvN4KbjzU/q5smzryuoNjlriAIx+06RpecwCkL9JpenNzpKd2YMzLJFOdPqBpuub6eVRP5IgiSA==
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
   version "4.5.1"
@@ -721,15 +721,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@parcel/watcher-linux-x64-glibc@2.5.1":
+"@parcel/watcher-darwin-arm64@2.5.1":
   version "2.5.1"
-  resolved "https://registry.npmjs.org/@parcel/watcher-linux-x64-glibc/-/watcher-linux-x64-glibc-2.5.1.tgz"
-  integrity sha512-GcESn8NZySmfwlTsIur+49yDqSny2IhPeZfXunQi48DMugKeZ7uy1FX83pO0X22sHntJ4Ub+9k34XQCX+oHt2A==
-
-"@parcel/watcher-linux-x64-musl@2.5.1":
-  version "2.5.1"
-  resolved "https://registry.npmjs.org/@parcel/watcher-linux-x64-musl/-/watcher-linux-x64-musl-2.5.1.tgz"
-  integrity sha512-n0E2EQbatQ3bXhcH2D1XIAANAcTZkQICBPVaxMeaCVBtOpBZpWJuf7LwyWPSBDITb7In8mqQgJ7gH8CILCURXg==
+  resolved "https://registry.npmjs.org/@parcel/watcher-darwin-arm64/-/watcher-darwin-arm64-2.5.1.tgz"
+  integrity sha512-eAzPv5osDmZyBhou8PoF4i6RQXAfeKL9tjb3QzYuccXFMQU0ruIc/POh30ePnaOyD1UXdlKguHBmsTs53tVoPw==
 
 "@parcel/watcher@^2.5.1":
   version "2.5.1"
@@ -1074,34 +1069,10 @@
   resolved "https://registry.npmjs.org/@react-types/shared/-/shared-3.29.0.tgz"
   integrity sha512-IDQYu/AHgZimObzCFdNl1LpZvQW/xcfLt3v20sorl5qRucDVj4S9os98sVTZ4IRIBjmS+MkjqpR5E70xan7ooA==
 
-"@rollup/rollup-linux-x64-gnu@4.39.0":
+"@rollup/rollup-darwin-arm64@4.39.0":
   version "4.39.0"
-  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.39.0.tgz"
-  integrity sha512-t9jqYw27R6Lx0XKfEFe5vUeEJ5pF3SGIM6gTfONSMb7DuG6z6wfj2yjcoZxHg129veTqU7+wOhY6GX8wmf90dA==
-
-"@rollup/rollup-linux-x64-musl@4.39.0":
-  version "4.39.0"
-  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.39.0.tgz"
-  integrity sha512-ThFdkrFDP55AIsIZDKSBWEt/JcWlCzydbZHinZ0F/r1h83qbGeenCt/G/wG2O0reuENDD2tawfAj2s8VK7Bugg==
-
-"@sinclair/typebox@^0.27.8":
-  version "0.27.8"
-  resolved "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.27.8.tgz"
-  integrity sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==
-
-"@sinonjs/commons@^3.0.0":
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/@sinonjs/commons/-/commons-3.0.1.tgz"
-  integrity sha512-K3mCHKQ9sVh8o1C9cxkwxaOmXoAMlDxC1mYyHrjqOWEcBjYr76t96zL2zlj5dUGZ3HSw240X1qgH3Mjf1yJWpQ==
-  dependencies:
-    type-detect "4.0.8"
-
-"@sinonjs/fake-timers@^10.0.2":
-  version "10.3.0"
-  resolved "https://registry.npmjs.org/@sinonjs/fake-timers/-/fake-timers-10.3.0.tgz"
-  integrity sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==
-  dependencies:
-    "@sinonjs/commons" "^3.0.0"
+  resolved "https://registry.npmjs.org/@rollup/rollup-darwin-arm64/-/rollup-darwin-arm64-4.39.0.tgz"
+  integrity sha512-lXQnhpFDOKDXiGxsU9/l8UEGGM65comrQuZ+lDcGUx+9YQ9dKpF3rSEGepyeR5AHZ0b5RgiligsBhWZfSSQh8Q==
 
 "@swc/helpers@^0.5.0":
   version "0.5.17"
@@ -1133,15 +1104,10 @@
     lightningcss "1.29.2"
     tailwindcss "4.1.3"
 
-"@tailwindcss/oxide-linux-x64-gnu@4.1.3":
+"@tailwindcss/oxide-darwin-arm64@4.1.3":
   version "4.1.3"
-  resolved "https://registry.npmjs.org/@tailwindcss/oxide-linux-x64-gnu/-/oxide-linux-x64-gnu-4.1.3.tgz"
-  integrity sha512-LMdTmGe/NPtGOaOfV2HuO7w07jI3cflPrVq5CXl+2O93DCewADK0uW1ORNAcfu2YxDUS035eY2W38TxrsqngxA==
-
-"@tailwindcss/oxide-linux-x64-musl@4.1.3":
-  version "4.1.3"
-  resolved "https://registry.npmjs.org/@tailwindcss/oxide-linux-x64-musl/-/oxide-linux-x64-musl-4.1.3.tgz"
-  integrity sha512-aalNWwIi54bbFEizwl1/XpmdDrOaCjRFQRgtbv9slWjmNPuJJTIKPHf5/XXDARc9CneW9FkSTqTbyvNecYAEGw==
+  resolved "https://registry.npmjs.org/@tailwindcss/oxide-darwin-arm64/-/oxide-darwin-arm64-4.1.3.tgz"
+  integrity sha512-mqkf2tLR5VCrjBvuRDwzKNShRu99gCAVMkVsaEOFvv6cCjlEKXRecPu9DEnxp6STk5z+Vlbh1M5zY3nQCXMXhw==
 
 "@tailwindcss/oxide@4.1.3":
   version "4.1.3"
@@ -1741,12 +1707,18 @@ char-regex@^1.0.2:
   resolved "https://registry.npmjs.org/char-regex/-/char-regex-1.0.2.tgz"
   integrity sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==
 
-chart.js@^4.1.1, chart.js@^4.4.9:
+
+chart.js@^4.1.1, chart.js@^4.4.9, chart.js@>=3.0.0:
   version "4.4.9"
   resolved "https://registry.npmjs.org/chart.js/-/chart.js-4.4.9.tgz"
   integrity sha512-EyZ9wWKgpAU0fLJ43YAEIF8sr5F2W3LqbS40ZJyHIner2lY14ufqv2VMp69MAiZ2rpwxEUxEhIH/0U3xyRynxg==
   dependencies:
     "@kurkle/color" "^0.3.0"
+
+chartjs-plugin-datalabels@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.npmjs.org/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-2.2.0.tgz"
+  integrity sha512-14ZU30lH7n89oq+A4bWaJPnAG8a7ZTk7dKf48YAzMvJjQtjrgg5Dpk9f+LbjCF6bpx3RAGTeL13IXpKQYyRvlw==
 
 ci-info@^3.2.0:
   version "3.9.0"
@@ -2316,6 +2288,21 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
+
+fsevents@^2.3.2:
+  version "2.3.3"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
+
+fsevents@~2.3.2:
+  version "2.3.3"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
+
+fsevents@~2.3.3:
+  version "2.3.3"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:
   version "1.1.2"
@@ -3067,15 +3054,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-lightningcss-linux-x64-gnu@1.29.2:
+lightningcss-darwin-arm64@1.29.2:
   version "1.29.2"
-  resolved "https://registry.npmjs.org/lightningcss-linux-x64-gnu/-/lightningcss-linux-x64-gnu-1.29.2.tgz"
-  integrity sha512-0v6idDCPG6epLXtBH/RPkHvYx74CVziHo6TMYga8O2EiQApnUPZsbR9nFNrg2cgBzk1AYqEd95TlrsL7nYABQg==
-
-lightningcss-linux-x64-musl@1.29.2:
-  version "1.29.2"
-  resolved "https://registry.npmjs.org/lightningcss-linux-x64-musl/-/lightningcss-linux-x64-musl-1.29.2.tgz"
-  integrity sha512-rMpz2yawkgGT8RULc5S4WiZopVMOFWjiItBT7aSfDX4NQav6M44rhn5hjtkKzB+wMTRlLLqxkeYEtQ3dd9696w==
+  resolved "https://registry.npmjs.org/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.29.2.tgz"
+  integrity sha512-cK/eMabSViKn/PG8U/a7aCorpeKLMlK0bQeNHmdb7qUnBkNPnL+oV5DjJUo0kqWsJUapZsM4jCfYItbqBDvlcA==
 
 lightningcss@^1.21.0, lightningcss@1.29.2:
   version "1.29.2"
@@ -3504,16 +3486,16 @@ react-remove-scroll@^2.6.3:
     use-sidecar "^1.1.3"
 
 react-router-dom@^7.5.1:
-  version "7.6.0"
-  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-7.6.0.tgz"
-  integrity sha512-DYgm6RDEuKdopSyGOWZGtDfSm7Aofb8CCzgkliTjtu/eDuB0gcsv6qdFhhi8HdtmA+KHkt5MfZ5K2PdzjugYsA==
+  version "7.6.1"
+  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-7.6.1.tgz"
+  integrity sha512-vxU7ei//UfPYQ3iZvHuO1D/5fX3/JOqhNTbRR+WjSBWxf9bIvpWK+ftjmdfJHzPOuMQKe2fiEdG+dZX6E8uUpA==
   dependencies:
-    react-router "7.6.0"
+    react-router "7.6.1"
 
-react-router@7.6.0:
-  version "7.6.0"
-  resolved "https://registry.npmjs.org/react-router/-/react-router-7.6.0.tgz"
-  integrity sha512-GGufuHIVCJDbnIAXP3P9Sxzq3UUsddG3rrI3ut1q6m0FI6vxVBF3JoPQ38+W/blslLH4a5Yutp8drkEpXoddGQ==
+react-router@7.6.1:
+  version "7.6.1"
+  resolved "https://registry.npmjs.org/react-router/-/react-router-7.6.1.tgz"
+  integrity sha512-hPJXXxHJZEsPFNVbtATH7+MMX43UDeOauz+EAU4cgqTn7ojdI9qQORqS8Z0qmDlL1TclO/6jLRYUEtbWidtdHQ==
   dependencies:
     cookie "^1.0.1"
     set-cookie-parser "^2.6.0"
@@ -3809,9 +3791,9 @@ test-exclude@^6.0.0:
     minimatch "^3.0.4"
 
 tinyglobby@^0.2.13:
-  version "0.2.13"
-  resolved "https://registry.npmjs.org/tinyglobby/-/tinyglobby-0.2.13.tgz"
-  integrity sha512-mEwzpUgrLySlveBwEVDMKk5B57bhLPYovRfPAXD5gA/98Opn0rCDj3GtLwFvCvH5RK9uPCExUROW5NjDwvqkxw==
+  version "0.2.14"
+  resolved "https://registry.npmjs.org/tinyglobby/-/tinyglobby-0.2.14.tgz"
+  integrity sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==
   dependencies:
     fdir "^6.4.4"
     picomatch "^4.0.2"

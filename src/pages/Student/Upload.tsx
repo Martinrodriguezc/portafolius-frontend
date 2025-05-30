@@ -14,7 +14,7 @@ export default function UploadPage() {
   const {
     studies,
     files,
-    uploadProgress,
+    uploadProgress, 
     isUploading,
     selectedStudy,
     setSelectedStudy,
