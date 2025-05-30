@@ -2,7 +2,7 @@ export interface Attempt {
   id: number
   submitted_at: string      
   total_score: number
-  teacher_name: string         
+  evaluator_name: string         
   comment: string                    
 }
 

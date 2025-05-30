@@ -5,6 +5,9 @@ import ErrorState from "../../components/teacher/EvaluateVideo/ErrorState"
 import VideoSection from "../../components/teacher/EvaluateVideo/VideoSection"
 import { RUBRICS } from "../../utils/rubrics/rubrics"
 import { useState } from "react"
+import { useEffect } from "react"
+import { attemptService } from "../../hooks/teacher/attemptService/attemptService"
+import type { Attempt } from "../../types/attempt"
 import {
   ChevronDown,
   ChevronUp,
@@ -33,60 +36,30 @@ import {
 import type { RubricLevel, RubricItem, RubricSection, ProtocolRubric } from "../../utils/rubrics/rubrics"
 import AttemptList from "../../components/teacher/EvaluateVideo/AttemptList" // Import AttemptList component
 
-// Mock data para los intentos previos - reemplazar con datos reales
-const mockAttempts = [
-  {
-    id: 1,
-    date: "2025-05-04",
-    time: "14:30",
-    score: 17,
-    maxScore: 29,
-    status: "completed",
-    evaluator: "Dr. García",
-    comments: "Excelente técnica en la mayoría de las vistas",
-  },
-  {
-    id: 2,
-    date: "2025-05-04",
-    time: "09:15",
-    score: 20,
-    maxScore: 29,
-    status: "completed",
-    evaluator: "Dr. Martínez",
-    comments: "Buena adquisición, mejorar calidad de imagen",
-  },
-  {
-    id: 3,
-    date: "2024-05-04",
-    time: "16:45",
-    score: 22,
-    maxScore: 29,
-    status: "completed",
-    evaluator: "Dr. López",
-    comments: "Necesita práctica en vista subcostal",
-  },
-]
+
 
 interface AttemptsPanelProps {
-  clipId: string
+  attempts: Attempt[]
 }
 
-function AttemptsPanel({ clipId }: AttemptsPanelProps) {
-  const getScoreColor = (score: number, maxScore: number) => {
-    const percentage = (score / maxScore) * 100
-    if (percentage >= 90) return "text-green-600 bg-green-50 border-green-200"
-    if (percentage >= 80) return "text-blue-600 bg-blue-50 border-blue-200"
-    if (percentage >= 70) return "text-yellow-600 bg-yellow-50 border-yellow-200"
-    return "text-red-600 bg-red-50 border-red-200"
-  }
+function AttemptsPanel({ attempts }: AttemptsPanelProps) {
+  const MAX_SCORE = 29; // Usa el valor real si varía por protocolo
 
-  const getScoreIcon = (score: number, maxScore: number) => {
-    const percentage = (score / maxScore) * 100
-    if (percentage >= 90) return <Award className="w-4 h-4" />
-    if (percentage >= 80) return <TrendingUp className="w-4 h-4" />
-    if (percentage >= 70) return <Star className="w-4 h-4" />
-    return <FileText className="w-4 h-4" />
-  }
+  const getScoreColor = (score: number) => {
+    const percentage = (score / MAX_SCORE) * 100;
+    if (percentage >= 90) return "text-green-600 bg-green-50 border-green-200";
+    if (percentage >= 80) return "text-blue-600 bg-blue-50 border-blue-200";
+    if (percentage >= 70) return "text-yellow-600 bg-yellow-50 border-yellow-200";
+    return "text-red-600 bg-red-50 border-red-200";
+  };
+
+  const getScoreIcon = (score: number) => {
+    const percentage = (score / MAX_SCORE) * 100;
+    if (percentage >= 90) return <Award className="w-4 h-4" />;
+    if (percentage >= 80) return <TrendingUp className="w-4 h-4" />;
+    if (percentage >= 70) return <Star className="w-4 h-4" />;
+    return <FileText className="w-4 h-4" />;
+  };
 
   return (
     <div className="w-80 bg-white border-r border-gray-200 h-full flex flex-col">
@@ -96,74 +69,80 @@ function AttemptsPanel({ clipId }: AttemptsPanelProps) {
           <History className="w-5 h-5 text-gray-600" />
           <h3 className="font-semibold text-gray-900">Intentos Previos</h3>
           <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-            {mockAttempts.length}
+            {attempts.length}
           </span>
         </div>
       </div>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4">
-        {mockAttempts.length === 0 ? (
+        {attempts.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
             <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
             <p className="text-sm">No hay intentos previos</p>
           </div>
         ) : (
           <div className="space-y-3">
-            {mockAttempts.map((attempt) => (
-              <div
-                key={attempt.id}
-                className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div
-                    className={`flex items-center gap-2 px-2 py-1 rounded-full border text-xs font-medium ${getScoreColor(
-                      attempt.score,
-                      attempt.maxScore,
-                    )}`}
-                  >
-                    {getScoreIcon(attempt.score, attempt.maxScore)}
-                    <span>
-                      {attempt.score}/{attempt.maxScore}
-                    </span>
-                  </div>
-                  <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Completado</span>
-                </div>
+            {attempts.map((attempt) => {
+              const submitted = new Date(attempt.submitted_at);
+              const date = submitted.toLocaleDateString();
+              const time = submitted.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-                <div className="space-y-2 text-xs text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <CalendarDays className="w-3 h-3" />
-                    <span>{attempt.date}</span>
-                    <Timer className="w-3 h-3 ml-2" />
-                    <span>{attempt.time}</span>
+              return (
+                <div
+                  key={attempt.id}
+                  className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div
+                      className={`flex items-center gap-2 px-2 py-1 rounded-full border text-xs font-medium ${getScoreColor(
+                        attempt.total_score,
+                      )}`}
+                    >
+                      {getScoreIcon(attempt.total_score)}
+                      <span>
+                        {attempt.total_score}/{MAX_SCORE}
+                      </span>
+                    </div>
+                    <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Completado</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <User className="w-3 h-3" />
-                    <span>{attempt.evaluator}</span>
-                  </div>
-                </div>
 
-                {attempt.comments && (
-                  <div className="mt-2 bg-gray-50 rounded p-2">
-                    <div className="flex items-start gap-2">
-                      <MessageSquare className="w-3 h-3 text-gray-500 mt-0.5 flex-shrink-0" />
-                      <p className="text-xs text-gray-700">{attempt.comments}</p>
+                  <div className="space-y-2 text-xs text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <CalendarDays className="w-3 h-3" />
+                      <span>{date}</span>
+                      <Timer className="w-3 h-3 ml-2" />
+                      <span>{time}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <User className="w-3 h-3" />
+                      <span>{attempt.evaluator_name}</span>
                     </div>
                   </div>
-                )}
 
-                <button className="w-full mt-2 text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center justify-center gap-1">
-                  <Eye className="w-3 h-3" />
-                  Ver detalles
-                </button>
-              </div>
-            ))}
+                  {attempt.comment && (
+                    <div className="mt-2 bg-gray-50 rounded p-2">
+                      <div className="flex items-start gap-2">
+                        <MessageSquare className="w-3 h-3 text-gray-500 mt-0.5 flex-shrink-0" />
+                        <p className="text-xs text-gray-700">{attempt.comment}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <button className="w-full mt-2 text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center justify-center gap-1">
+                    <Eye className="w-3 h-3" />
+                    Ver detalles
+                  </button>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }
+
 
 interface GraderPanelProps {
   rubric: ProtocolRubric
@@ -359,15 +338,22 @@ export default function EvaluateVideoPage() {
     handleSeek,
     isFullscreen,
     toggleFullscreen,
-  } = useTeacherEvaluateVideo()
+  } = useTeacherEvaluateVideo();
 
-  const { pending, completed } = useAllStudies()
-  const allStudies = [...pending, ...completed]
-  const currentStudy = meta ? allStudies.find((s) => s.study_id === meta.study_id) : undefined
+  const [attempts, setAttempts] = useState<Attempt[]>([]);
 
-  if (loading || !meta) return <LoadingState />
-  if (error) return <ErrorState error={error} />
-  if (!protocol) return <div className="p-8">Cargando protocolo…</div>
+  useEffect(() => {
+    if (!meta?.id) return;
+    attemptService.list(meta.id).then(setAttempts).catch(console.error);
+  }, [meta?.id]);
+
+  const { pending, completed } = useAllStudies();
+  const allStudies = [...pending, ...completed];
+  const currentStudy = meta ? allStudies.find((s) => s.study_id === meta.study_id) : undefined;
+
+  if (loading || !meta) return <LoadingState />;
+  if (error) return <ErrorState error={error} />;
+  if (!protocol) return <div className="p-8">Cargando protocolo…</div>;
 
   return (
     <div className="h-screen bg-gray-100 flex flex-col">
@@ -379,29 +365,18 @@ export default function EvaluateVideoPage() {
               <ArrowLeft className="w-5 h-5 text-gray-600" />
             </button>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">Evaluación de Video - {protocol.name}</h1>
-              <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
-                <div className="flex items-center gap-1">
-                  <User className="w-4 h-4" />
-                  <span>Estudiante: {meta.student_name || "N/A"}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" />
-                  <span>Estudio: {currentStudy?.name || "N/A"}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="w-4 h-4" />
-                  <span>Duración: {meta.duration || "N/A"}</span>
-                </div>
-              </div>
+              <h1 className="text-xl font-semibold text-gray-900">
+                Evaluación de Video - {protocol.name}
+              </h1>
             </div>
           </div>
         </div>
       </header>
 
+
       {/* Main content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left side - Video with details below */}
+        {/* Left side - Video */}
         <div className="flex-1 bg-gray-50 flex flex-col">
           <div className="flex-1 flex items-center justify-center">
             <VideoSection
@@ -418,14 +393,10 @@ export default function EvaluateVideoPage() {
             />
           </div>
 
-          {/* Video details at bottom - keeping the original AttemptList component */}
-          <div className="bg-white border-t border-gray-200 p-4">
-            <AttemptList clipId={meta.id} />
-          </div>
         </div>
 
         {/* Center - Previous Attempts */}
-        <AttemptsPanel clipId={meta.id} />
+        <AttemptsPanel attempts={attempts} />
 
         {/* Right side - Grader Panel */}
         <div className="w-96 flex-shrink-0">
@@ -433,10 +404,10 @@ export default function EvaluateVideoPage() {
             rubric={RUBRICS[protocol.key]}
             responses={responses.reduce(
               (acc, { itemKey, score }) => {
-                acc[itemKey] = score
-                return acc
+                acc[itemKey] = score;
+                return acc;
               },
-              {} as Record<string, number>,
+              {} as Record<string, number>
             )}
             onChange={updateScore}
             onSubmit={onSubmit}
@@ -444,8 +415,9 @@ export default function EvaluateVideoPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
+
 
 
 
