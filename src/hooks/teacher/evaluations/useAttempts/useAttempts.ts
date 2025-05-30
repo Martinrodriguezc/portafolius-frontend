@@ -12,8 +12,12 @@ export function useAttempts(clipId: number) {
       try {
         const data = await attemptService.list(clipId);
         setAttempts(data);
-      } catch (e: any) {
-        setError(e.message || "Error cargando intentos");
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          setError(e.message);
+        } else {
+          setError("Error cargando intentos");
+        }
       } finally {
         setLoading(false);
       }
@@ -22,4 +26,5 @@ export function useAttempts(clipId: number) {
 
   return { attempts, loading, error };
 }
+
 
