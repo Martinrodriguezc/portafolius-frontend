@@ -56,10 +56,10 @@ export default function AdminSidebar() {
             isActive={isActive(location.pathname, "/admin/settings", true)}
           />
           <SidebarNavLink
-            to="/admin/Protocol"
+            to="/admin/protocols"
             icon={<ShieldAlertIcon className="h-5 w-5" />}
             label="Protocolos"
-            isActive={isActive(location.pathname, "/admin/Protocol", true)}
+            isActive={isActive(location.pathname, "/admin/protocols", true)}
           />
         </ul>
       </nav>
