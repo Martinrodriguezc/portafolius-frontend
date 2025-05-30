@@ -75,7 +75,7 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
   };
 
   // Opciones del gráfico
-  const options = {
+  /*const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -118,7 +118,7 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
         }
       }
     },
-  };
+  };*/
 
   return (
     <div className="flex flex-col md:flex-row h-full">
