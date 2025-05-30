@@ -33,10 +33,10 @@ export default function StudentProfileTeacherPage() {
     error: statsError,
   } = useStudentStats(studentId);
 
-  const [searchTerm,   setSearchTerm]   = useState<string>("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [sortBy,       setSortBy]       = useState<string>("date");
-  const [activeTab,    setActiveTab]    = useState<string>("studies");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<"all"|"evaluated"|"pending">("all");
+  const [sortBy, setSortBy] = useState<"date"|"title"|"score">("date");
+  const [activeTab, setActiveTab] = useState<"studies">("studies");
 
   const total = studies.length;
   const completedCount = studies.filter(s => s.has_evaluation).length;
@@ -50,9 +50,9 @@ export default function StudentProfileTeacherPage() {
     : "—";
 
   const statusOptions: Option[] = useMemo(() => {
-    const opts: Option[] = [{ label: "Todos",    value: "all"    }];
+    const opts: Option[] = [{ label: "Todos",    value: "all" }];
     if (studies.some(s => s.has_evaluation))  opts.push({ label: "Evaluados",  value: "evaluated" });
-    if (studies.some(s => !s.has_evaluation)) opts.push({ label: "Pendientes", value: "pending"   });
+    if (studies.some(s => !s.has_evaluation)) opts.push({ label: "Pendientes", value: "pending"  });
     return opts;
   }, [studies]);
 

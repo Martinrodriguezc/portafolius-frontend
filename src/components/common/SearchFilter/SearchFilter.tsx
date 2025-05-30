@@ -1,7 +1,7 @@
 import { Search, SlidersHorizontal, ArrowDownUpIcon } from "lucide-react";
 
 export interface Option {
-  value: string;
+  value: "all" | "evaluated" | "pending" | "date" | "title" | "score";
   label: string;
 }
 
