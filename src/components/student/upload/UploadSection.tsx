@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import Button from "../../common/Button/Button";
 import Input from "../../common/Input/Input";
 import {
@@ -146,8 +147,11 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
                               await createProtocol(newProtocolName.trim());
                               updateFileProtocol(index, newProtocolName.trim());
                               setEditingProtocolIndex(null);
-                            } catch (err: any) {
-                              if (err.response?.status === 409) {
+                            } catch (err) {
+                              if (
+                                axios.isAxiosError(err) &&
+                                err.response?.status === 409
+                              ) {
                                 setInlineError("Ya existe ese protocolo");
                               } else {
                                 setInlineError("Error creando protocolo");
