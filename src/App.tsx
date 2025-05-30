@@ -33,6 +33,7 @@ import TeacherSettingsPage from "./pages/Teacher/Settings";
 import UnauthorizedTeacherPage from "./pages/Teacher/UnauthorizedPage";
 
 import TeacherMaterialsPage from "./pages/Teacher/TeacherMaterialsPage";
+import NewStudentForm from "./pages/Teacher/NewStudentForm";
 
 
 import CommentsPage from "./pages/Student/Comments";
@@ -96,7 +97,7 @@ function App() {
 
           {/* --- estudiantes ------------------------------------------------ */}
           <Route path="students" element={<TeacherStudentsPage />} />
-          <Route path="students/new" element={<StudentProfileTeacherPage />} />
+          <Route path="students/new" element={<NewStudentForm />} />
           <Route path="students/:id" element={<StudentProfileTeacherPage />} />
 
           {/* --- evaluaciones ---------------------------------------------- */}

@@ -12,9 +12,10 @@ export interface Study {
   id: number;
   title: string;
   description: string;
-  status: "EVALUADO" | "PENDIENTE";
+  status: string;      
   created_at: string;
-  score: number | null;
+  has_evaluation: boolean;  
+  score: number | null;      
 }
 
 export interface StudyWithStatus {

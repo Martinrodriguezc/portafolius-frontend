@@ -6,7 +6,7 @@ interface TopMetricsProps {
   total: number;
   completedCount: number;
   average: string;
-  studies: { created_at: string; score: number | null }[];
+  studies: { created_at: string; score: number | null; has_evaluation: boolean }[];
 }
 
 export const TopMetrics: React.FC<TopMetricsProps> = ({
@@ -22,7 +22,14 @@ export const TopMetrics: React.FC<TopMetricsProps> = ({
             .slice()
             .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))[0]
             .created_at
-        ).toLocaleDateString()
+        ).toLocaleDateString("es-ES")
+      : "N/A";
+
+  const rate = total > 0 ? `${Math.round((completedCount / total) * 100)}%` : "N/A";
+
+  const best =
+    studies.some((s) => s.score !== null)
+      ? `${Math.max(...studies.map((s) => s.score || 0)).toFixed(1)}/10`
       : "N/A";
 
   return (
@@ -53,7 +60,7 @@ export const TopMetrics: React.FC<TopMetricsProps> = ({
           </div>
         </div>
         <div className="mt-4 pt-4 border-t border-green-200/50 text-sm text-[#333333]">
-          Tasa: {total > 0 ? `${Math.round((completedCount / total) * 100)}%` : "N/A"}
+          Tasa: {rate}
         </div>
       </Card>
 
@@ -68,10 +75,7 @@ export const TopMetrics: React.FC<TopMetricsProps> = ({
           </div>
         </div>
         <div className="mt-4 pt-4 border-t border-amber-200/50 text-sm text-[#333333]">
-          Mejor:{" "}
-          {studies.some((s) => s.score !== null)
-            ? `${Math.max(...studies.map((s) => s.score || 0))}/10`
-            : "N/A"}
+          Mejor: {best}
         </div>
       </Card>
     </div>
