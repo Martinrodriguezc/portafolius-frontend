@@ -11,17 +11,15 @@ export function useTeacherEvaluateVideo() {
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // estado para reproducir video
   const [url, setUrl] = useState<string>("");
   const [meta, setMeta] = useState<Video | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
-  // estado protocolo + respuestas
   const [protocol, setProtocol] = useState<Protocol | null>(null);
   const [responses, setResponses] = useState<{ itemKey: string; score: number }[]>([]);
 
-  // carga del vídeo
+  // Carga del video
   useEffect(() => {
     const loadMedia = async () => {
       if (!clipId) {
@@ -36,8 +34,12 @@ export function useTeacherEvaluateVideo() {
         ]);
         setUrl(videoUrl);
         setMeta(videoMeta);
-      } catch (err: any) {
-        setError(err.message || "Error al cargar vídeo");
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Error al cargar vídeo");
+        }
       } finally {
         setLoading(false);
       }
@@ -45,32 +47,39 @@ export function useTeacherEvaluateVideo() {
     loadMedia();
   }, [clipId]);
 
-  // una vez tenemos meta.protocol, traemos el protocolo
+  // Carga del protocolo
   useEffect(() => {
     if (!meta?.protocol) return;
     (async () => {
       try {
         const proto = await protocolService.get(meta.protocol);
         setProtocol(proto);
-        // inicializamos todas las respuestas a 0
         const initial = proto.sections.flatMap(sec =>
           sec.items.map(item => ({ itemKey: item.key, score: 0 }))
         );
         setResponses(initial);
-      } catch (err: any) {
-        setError(err.message || "No se pudo cargar protocolo");
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("No se pudo cargar protocolo");
+        }
       }
     })();
   }, [meta]);
 
-  // actualización de score local
+  // Actualización de puntaje local
   const updateScore = (itemKey: string, score: number) => {
     setResponses(rs =>
       rs.map(r => (r.itemKey === itemKey ? { ...r, score } : r))
     );
   };
 
-  // handlers de video
+  // Estado del reproductor
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
@@ -78,17 +87,23 @@ export function useTeacherEvaluateVideo() {
       if (vid.duration) setProgress((vid.currentTime / vid.duration) * 100);
     };
     vid.addEventListener("timeupdate", onTime);
-    return () => void vid.removeEventListener("timeupdate", onTime);
+    return () => {
+      vid.removeEventListener("timeupdate", onTime);
+    };
   }, []);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+
   const togglePlay = () => {
     const vid = videoRef.current;
     if (!vid) return;
-    if (vid.paused) { vid.play(); setIsPlaying(true); }
-    else { vid.pause(); setIsPlaying(false); }
+    if (vid.paused) {
+      vid.play();
+      setIsPlaying(true);
+    } else {
+      vid.pause();
+      setIsPlaying(false);
+    }
   };
+
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const vid = videoRef.current;
     if (!vid?.duration) return;
@@ -96,14 +111,19 @@ export function useTeacherEvaluateVideo() {
     vid.currentTime = (val / 100) * vid.duration;
     setProgress(val);
   };
+
   const toggleFullscreen = () => {
     const cont = videoRef.current?.parentElement;
     if (!cont) return;
-    if (!isFullscreen) cont.requestFullscreen?.(), setIsFullscreen(true);
-    else document.exitFullscreen?.(), setIsFullscreen(false);
+    if (!isFullscreen) {
+      cont.requestFullscreen?.();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen?.();
+      setIsFullscreen(false);
+    }
   };
 
-  // envío del intento
   const onSubmit = async () => {
     if (!clipId || !protocol) return;
     try {
@@ -137,4 +157,5 @@ export function useTeacherEvaluateVideo() {
     toggleFullscreen,
   };
 }
+
 
