@@ -23,6 +23,7 @@ export function useStudentStudies() {
           description: s.description,
           created_at: s.created_at,
           status: s.has_evaluation ? "EVALUADO" : "PENDIENTE",
+          has_evaluation: s.has_evaluation,
           score: s.score ?? null,
         }));
         setStudies(transformed);
