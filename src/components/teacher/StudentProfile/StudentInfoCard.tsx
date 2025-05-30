@@ -1,16 +1,11 @@
 import React from "react";
 import { Calendar, Mail, Clock, Award, Layers, Zap, User } from "lucide-react";
 import Card from "../../common/Card/Card";
+import { TeacherStudent } from "../../../types/student";
 
-export interface Student {
-  first_name: string;
-  last_name: string;
-  email: string;
-  created_at: string;      
-  last_activity: string | null;
-}
-
-export const StudentInfoCard: React.FC<{ student: Student }> = ({ student }) => {
+export const StudentInfoCard: React.FC<{ student: TeacherStudent }> = ({
+  student,
+}) => {
   const formatOrNA = (dateStr: string | null | undefined) => {
     if (!dateStr) return "N/A";
     const d = new Date(dateStr);
