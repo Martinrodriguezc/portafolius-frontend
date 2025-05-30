@@ -1,6 +1,6 @@
 import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
-import { Protocol, ProtocolItem } from "../../../../types/protocol";
+import { Protocol, ProtocolItem } from "../../../types/protocol";
 
 interface Props {
   protocol: Protocol;

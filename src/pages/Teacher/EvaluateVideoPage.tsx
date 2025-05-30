@@ -1,3 +1,4 @@
+// src/pages/Teacher/EvaluateVideoPage.tsx
 import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
 import { useTeacherEvaluateVideo } from "../../hooks/teacher/evaluations/useTeacherEvaluateVideo/useTeacherEvaluateVideo";
 import LoadingState from "../../components/teacher/EvaluateVideo/LoadingState";
@@ -5,6 +6,7 @@ import ErrorState from "../../components/teacher/EvaluateVideo/ErrorState";
 import PageHeader from "../../components/teacher/EvaluateVideo/PageHeader";
 import VideoSection from "../../components/teacher/EvaluateVideo/VideoSection";
 import ProtocolEvaluationForm from "../../components/teacher/EvaluateVideo/ProtocolEvaluationForm";
+import AttemptList from "../../components/teacher/EvaluateVideo/AttemptList";
 
 export default function EvaluateVideoPage() {
   const {
@@ -28,7 +30,7 @@ export default function EvaluateVideoPage() {
   const { pending, completed } = useAllStudies();
   const allStudies = [...pending, ...completed];
   const currentStudy = meta
-    ? allStudies.find(s => s.study_id === meta.study_id)
+    ? allStudies.find((s) => s.study_id === meta.study_id)
     : undefined;
 
   if (loading || !meta) return <LoadingState />;
@@ -53,14 +55,20 @@ export default function EvaluateVideoPage() {
           currentStudy={currentStudy}
         />
 
-        <ProtocolEvaluationForm
-          protocol={protocol}
-          responses={responses}
-          updateScore={updateScore}
-          onSubmit={onSubmit}
-        />
+        <div className="flex-1 space-y-6">
+          <ProtocolEvaluationForm
+            protocol={protocol}
+            responses={responses}
+            updateScore={updateScore}
+            onSubmit={onSubmit}
+          />
+
+          {/* Lista de intentos previos */}
+          <AttemptList clipId={meta.id} />
+        </div>
       </div>
     </div>
   );
 }
+
 
