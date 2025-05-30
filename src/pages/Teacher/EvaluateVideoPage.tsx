@@ -16,8 +16,6 @@ import {
   Save,
   ArrowLeft,
   User,
-  Calendar,
-  Clock,
   MessageSquare,
   Bold,
   Italic,
@@ -34,7 +32,7 @@ import {
   Eye,
 } from "lucide-react"
 import type { RubricLevel, RubricItem, RubricSection, ProtocolRubric } from "../../utils/rubrics/rubrics"
-import AttemptList from "../../components/teacher/EvaluateVideo/AttemptList" // Import AttemptList component
+//import AttemptList from "../../components/teacher/EvaluateVideo/AttemptList" // Import AttemptList component
 
 
 

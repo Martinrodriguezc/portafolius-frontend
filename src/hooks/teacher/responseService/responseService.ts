@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { config } from '../../../config/config';
 import {
-  ResponseItem,
   ListResponsesResponse
 } from '../../../types/attempt';
 
