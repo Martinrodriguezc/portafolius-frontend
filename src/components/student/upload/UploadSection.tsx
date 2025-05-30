@@ -16,6 +16,7 @@ import { SelectItem } from "../../common/Select/SelectItems";
 import { UploadSectionProps } from "../../../types/Props/Video/UploadSectionProps";
 import { useTagOptions } from "../../../hooks/upload/TagUtils";
 import { useProtocolOptions } from "../../../hooks/student/protocols/useProtocolOptions";
+import axios from "axios";
 
 export const UploadSection: React.FC<UploadSectionProps> = ({
   files,
@@ -143,15 +144,19 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
                           onClick={async () => {
                             if (!newProtocolName.trim()) return;
                             try {
-                                await addProtocol(newProtocolName.trim());
-                                updateFileProtocol(index, newProtocolName.trim());
-                                setEditingProtocolIndex(null);
-                              } catch (e: any) {
-                                setInlineError(e.message);
+                              await addProtocol(newProtocolName.trim());
+                              updateFileProtocol(index, newProtocolName.trim());
+                              setEditingProtocolIndex(null);
+                            } catch (err: unknown) {
+                              if (axios.isAxiosError(err)) {
+                                setInlineError(err.message);
+                              } else if (err instanceof Error) {
+                                setInlineError(err.message);
+                              } else {
+                                setInlineError("Error desconocido creando protocolo");
                               }
+                            }
                           }}
-                          disabled={creatingProtocol || !newProtocolName.trim()}
-                          className="px-3 py-1 bg-[#4E81BD] text-white rounded"
                         >
                           Guardar
                         </Button>
