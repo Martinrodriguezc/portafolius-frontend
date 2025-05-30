@@ -17,23 +17,26 @@ export const SummaryCard: React.FC<SummaryCardProps> = ({ students }) => {
             <Users className="h-8 w-8 text-[#4E81BD]" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-[#333333]">Resumen de estudiantes</h2>
+            <h2 className="text-lg font-semibold text-[#333333]">
+              Resumen de estudiantes
+            </h2>
             <p className="text-[#666666]">
               Tienes{" "}
-              <span className="font-medium text-[#4E81BD]">{students.length}</span>{" "}
+              <span className="font-medium text-[#4E81BD]">
+                {students.length}
+              </span>{" "}
               {students.length === 1 ? "estudiante" : "estudiantes"} en tu cohorte
             </p>
           </div>
         </div>
 
-        <Link to="/teacher/students/new">
-          <Button
-            className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white px-4 py-2 rounded-lg shadow-sm transition-all flex items-center gap-2"
-            as="a"
-          >
-            <UserPlus className="h-4 w-4" /> Añadir
-          </Button>
-        </Link>
+        <Button
+          as={Link}
+          to="/teacher/students/new"
+          className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white px-4 py-2 rounded-lg shadow-sm transition-all flex items-center gap-2"
+        >
+          <UserPlus className="h-4 w-4" /> Añadir
+        </Button>
       </div>
     </div>
   );
