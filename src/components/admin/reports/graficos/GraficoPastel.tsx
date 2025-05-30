@@ -7,8 +7,13 @@ import {
   Legend,
   ChartOptions,
   TooltipItem,
+  TooltipOptions,
+  LegendOptions
 } from "chart.js";
-import ChartDataLabels, { Context as DatalabelsContext } from "chartjs-plugin-datalabels";
+import ChartDataLabels, {
+  Context as DatalabelsContext,
+  ChartDataLabelsOptions
+} from "chartjs-plugin-datalabels";
 import { Pie } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
@@ -44,18 +49,34 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
   });
 
   const chartData = {
-    labels: processed.map(p => p.role),
+    labels: processed.map((p) => p.role),
     datasets: [
       {
+<<<<<<< HEAD
         data: processed.map(p => p.cantidad),
         backgroundColor: processed.map(p => p.color),
         borderColor: processed.map(p => p.color.replace("0.8", "1")),
+=======
+        data: processed.map((p) => p.cantidad),
+        backgroundColor: processed.map((p) => p.color),
+        borderColor: processed.map((p) => p.color.replace("0.8", "1")),
+>>>>>>> 704a74bebc91700ccdcda5626687959c652e434f
         borderWidth: 1,
       },
     ],
   };
 
+<<<<<<< HEAD
   const options: Partial<ChartOptions<"pie">> = {
+=======
+  const options: ChartOptions<"pie"> & {
+    plugins: {
+      legend: Partial<LegendOptions<"pie">>;
+      tooltip: Partial<TooltipOptions<"pie">>;
+      datalabels: ChartDataLabelsOptions;
+    };
+  } = {
+>>>>>>> 704a74bebc91700ccdcda5626687959c652e434f
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -93,7 +114,7 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
       </div>
       <div className="w-full md:w-[35%] overflow-y-auto px-2">
         <div className="space-y-2">
-          {processed.map(item => (
+          {processed.map((item) => (
             <div key={item.role} className="flex items-center space-x-2">
               <div
                 className="w-3 h-3 rounded-full"
