@@ -103,6 +103,8 @@ const PlatformSettings: React.FC<PlatformSettingsProps> = ({
             <option value="FATE">FATE</option>
             <option value="FAST">FAST</option>
             <option value="RUSH">RUSH</option>
+            <option value="RUSH">BLUE</option>
+            <option value="RUSH">FOCUS</option>
           </select>
         </div>
         <div className="pt-4">

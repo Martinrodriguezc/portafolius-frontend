@@ -54,6 +54,11 @@ import AdminVideosPage from "./pages/admin/AdminVideosPage";
 import AdminVideoPage from "./pages/admin/AdminVideoPage";
 import AdminEvaluateVideoPage from "./pages/admin/AdminEvaluateVideo";
 import MaterialsManagementPage from "./pages/admin/MaterialsManagement";
+import ProtocolSettings from "./pages/admin/protocols"; 
+import EditProtocol from "./pages/admin/EditProtocol";
+
+
+
 
 function App() {
   return (
@@ -122,6 +127,12 @@ function App() {
           <Route path="evaluations/:studyId/videos/:clipId/evaluate" element={<AdminEvaluateVideoPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="settings" element={<AdminSettingsPage />} />
+          <Route path="/admin/protocols" element={<ProtocolSettings />} />
+          <Route path="/admin/protocols/edit/:id" element={<EditProtocol />} />
+          
+
+
+          
         </Route>
       </Routes>
     </Router>

@@ -1,4 +1,4 @@
-import { BarChart, Home, Settings, Users, BookOpen, CheckSquare, Files } from "lucide-react";
+import { BarChart, Home, Settings, Users, BookOpen, CheckSquare, Files, ShieldAlertIcon } from "lucide-react";
 import { SidebarHeader } from "./SidebarHeader";
 import { SidebarNavLink } from "./SidebarNavlink";
 import { SidebarFooter } from "./SidebarFooter";
@@ -54,6 +54,12 @@ export default function AdminSidebar() {
             icon={<Settings className="h-5 w-5" />}
             label="Configuración"
             isActive={isActive(location.pathname, "/admin/settings", true)}
+          />
+          <SidebarNavLink
+            to="/admin/Protocol"
+            icon={<ShieldAlertIcon className="h-5 w-5" />}
+            label="Protocolos"
+            isActive={isActive(location.pathname, "/admin/Protocol", true)}
           />
         </ul>
       </nav>
