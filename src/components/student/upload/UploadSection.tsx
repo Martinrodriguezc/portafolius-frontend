@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Button from "../../common/Button/Button";
 import Input from "../../common/Input/Input";
 import {
@@ -34,7 +33,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
     protocols,
     loadingProtocols,
     protocolsError,
-    createProtocol,
+    addProtocol,
     creating: creatingProtocol,
     createError: protocolCreationError,
     reset: resetProtocol,
@@ -144,19 +143,12 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
                           onClick={async () => {
                             if (!newProtocolName.trim()) return;
                             try {
-                              await createProtocol(newProtocolName.trim());
-                              updateFileProtocol(index, newProtocolName.trim());
-                              setEditingProtocolIndex(null);
-                            } catch (err) {
-                              if (
-                                axios.isAxiosError(err) &&
-                                err.response?.status === 409
-                              ) {
-                                setInlineError("Ya existe ese protocolo");
-                              } else {
-                                setInlineError("Error creando protocolo");
+                                await addProtocol(newProtocolName.trim());
+                                updateFileProtocol(index, newProtocolName.trim());
+                                setEditingProtocolIndex(null);
+                              } catch (e: any) {
+                                setInlineError(e.message);
                               }
-                            }
                           }}
                           disabled={creatingProtocol || !newProtocolName.trim()}
                           className="px-3 py-1 bg-[#4E81BD] text-white rounded"

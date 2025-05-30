@@ -28,6 +28,9 @@ export default function MaterialCreationForm({
     success,
     handleChange,
     handleSubmit,
+    toggleStudent,
+    selectAllStudents,
+    clearAllStudents,
   } = useCreateMaterial();
 
   const [formError, setFormError] = useState<string | null>(null);
@@ -47,27 +50,6 @@ export default function MaterialCreationForm({
     (material.type === "link"
       ? selectedLinks.length > 0
       : selectedFiles.length > 0);
-
-  const toggleStudent = (id: number | string) => {
-    const sid = typeof id === "string" ? parseInt(id, 10) : id;
-    handleChange(
-      "studentIds",
-      material.studentIds.includes(sid)
-        ? material.studentIds.filter((x) => x !== sid)
-        : [...material.studentIds, sid]
-    );
-  };
-
-  const handleSelectAll = () => {
-    const all = students.map((u) =>
-      typeof u.id === "string" ? parseInt(u.id, 10) : u.id
-    );
-    handleChange("studentIds", all);
-  };
-
-  const handleClearAll = () => {
-    handleChange("studentIds", []);
-  };
 
   const onCreateClick = () => {
     setTouchedSubmit(true);
@@ -200,8 +182,8 @@ export default function MaterialCreationForm({
           isLoading={loadingStudents}
           error={studentsError}
           onToggleStudent={toggleStudent}
-          onSelectAll={handleSelectAll}
-          onClearAll={handleClearAll}
+          onSelectAll={selectAllStudents}
+          onClearAll={clearAllStudents}
         />
 
         <div className="flex justify-end pt-6">

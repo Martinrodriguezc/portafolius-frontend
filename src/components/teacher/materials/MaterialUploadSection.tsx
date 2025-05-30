@@ -1,14 +1,8 @@
 import React, { useRef } from "react";
 import { Upload as UploadIcon } from "lucide-react";
 import Button from "../../common/Button/Button";
+import { MaterialUploadSectionProps } from "../../../types/Props/Teacher/MaterialUploadSectionProps";
 
-export interface MaterialUploadSectionProps {
-  accept: string;
-  onFilesSelected: (files: FileList) => void;
-  selectedFileNames?: string[];
-  onRemoveFile?: (index: number) => void;
-  maxSizeMb?: number;
-}
 
 export default function MaterialUploadSection({
   accept,

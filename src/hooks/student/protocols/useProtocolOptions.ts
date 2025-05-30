@@ -4,6 +4,7 @@ import {
   createProtocolRequest,
   Protocol,
 } from './request/protocolRequest'
+import axios from 'axios'
 
 export function useProtocolOptions() {
   const qc = useQueryClient()
@@ -25,11 +26,22 @@ export function useProtocolOptions() {
     },
   })
 
+  const addProtocol = async (name: string): Promise<void> => {
+    try {
+      await mutation.mutateAsync(name)
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 409) {
+        throw new Error('Ya existe ese protocolo')
+      }
+      throw new Error('Error creando protocolo')
+    }
+  }
+
   return {
     protocols,
     loadingProtocols,
     protocolsError,
-    createProtocol: mutation.mutateAsync,
+    addProtocol,
     creating: mutation.status === 'pending',
     createError: mutation.error,
     reset: mutation.reset, 

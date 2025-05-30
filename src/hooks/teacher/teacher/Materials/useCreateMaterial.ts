@@ -97,6 +97,29 @@ export function useCreateMaterial() {
     }
   };
 
+  const toggleStudent = (id: number | string) => {
+    const sid = typeof id === "string" ? parseInt(id, 10) : id;
+    handleChange(
+      "studentIds",
+      material.studentIds.includes(sid)
+        ? material.studentIds.filter((x) => x !== sid)
+        : [...material.studentIds, sid]
+    );
+  };
+
+  const selectAllStudents = () => {
+    const all = students.map((u) =>
+      typeof u.id === "string" ? parseInt(u.id, 10) : u.id
+    );
+    handleChange("studentIds", all);
+  };
+
+
+  const clearAllStudents = () => {
+    handleChange("studentIds", []);
+  };
+
+
   return {
     students,
     loadingStudents,
@@ -104,6 +127,9 @@ export function useCreateMaterial() {
     material,
     selectedFiles,
     setSelectedFiles,
+    toggleStudent,
+    selectAllStudents,
+    clearAllStudents,
     selectedLinks,
     setSelectedLinks,
     creating,

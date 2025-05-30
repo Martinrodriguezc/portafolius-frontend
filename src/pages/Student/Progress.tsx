@@ -145,7 +145,7 @@ export default function ProgressPage() {
             </TabsButton>
             <TabsButton value="protocols">
               <ClipboardList className="h-4 w-4" />
-              Protocolos
+              Calificaciones
             </TabsButton>
             <TabsButton value="feedback">
               <MessageSquare className="h-4 w-4" />

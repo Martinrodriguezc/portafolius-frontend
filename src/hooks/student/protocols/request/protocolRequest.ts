@@ -1,9 +1,6 @@
 import axios from 'axios'
+import { Protocol } from '../../../../types/protocolRequestProps'
 
-export interface Protocol {
-  id: number
-  name: string
-}
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
 })
@@ -19,3 +16,5 @@ export const createProtocolRequest = async (
   const { data } = await api.post<Protocol>('/protocols', { name })
   return data
 }
+
+export type { Protocol }

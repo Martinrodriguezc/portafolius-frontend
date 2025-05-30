@@ -1,15 +1,6 @@
 import { Label } from "../../common/Label/Label";
-import { UserProps } from "../../../types/User";
-
-interface StudentSelectionListProps {
-  students: UserProps[];
-  selectedStudentIds: number[];
-  isLoading: boolean;
-  error: string | null;
-  onToggleStudent: (id: number | string) => void;
-  onSelectAll: () => void;
-  onClearAll: () => void;
-}
+import { StudentSelectionListProps } from "../../../types/Props/Students/StudentSelectionListProps";
+import { normalizeId, areAllStudentsSelected } from "../../../utils/studentUtils";
 
 export default function StudentSelectionList({
   students,
@@ -24,11 +15,7 @@ export default function StudentSelectionList({
     return <p className="text-red-500 mb-4">{error}</p>;
   }
 
-  const allSelected =
-    students.length > 0 &&
-    students.every((u) =>
-      selectedStudentIds.includes(typeof u.id === "string" ? parseInt(u.id, 10) : u.id)
-    );
+  const allSelected = areAllStudentsSelected(students, selectedStudentIds);
 
   return (
     <div>
@@ -58,9 +45,8 @@ export default function StudentSelectionList({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-48 overflow-y-auto border rounded p-2">
           {students.map((student) => {
-            const studentId =
-              typeof student.id === "string" ? parseInt(student.id, 10) : student.id;
-            const isSelected = selectedStudentIds.includes(studentId);
+            const id = normalizeId(student.id);
+            const isSelected = selectedStudentIds.includes(id);
 
             return (
               <label
