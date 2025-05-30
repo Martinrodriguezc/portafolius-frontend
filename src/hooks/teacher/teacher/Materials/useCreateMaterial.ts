@@ -20,16 +20,15 @@ export function useCreateMaterial() {
     url: "",
     studentIds: [],
   });
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [selectedLinks, setSelectedLinks] = useState<string[]>([]);
 
   useEffect(() => {
     void fetchStudentsRequest()
-      .then((response) =>
-        setStudents(response.data.filter((u) => u.role === "estudiante"))
-      )
+      .then((res) => setStudents(res.data.filter((u) => u.role === "estudiante")))
       .catch((err: Error) => setStudentsError(err.message))
       .finally(() => setLoadingStudents(false));
   }, []);
@@ -47,34 +46,52 @@ export function useCreateMaterial() {
     if (
       material.title.trim() === "" ||
       material.studentIds.length === 0 ||
-      (!isLink && !selectedFile) ||
-      (isLink && material.url.trim() === "")
+      (isLink
+        ? selectedLinks.length === 0
+        : selectedFiles.length === 0)
     ) {
       setCreateError("Debes completar todos los campos requeridos");
       return;
     }
+
     setCreating(true);
     setCreateError(null);
     try {
       if (isLink) {
-        await createLinkRequest(material);
+        const total = selectedLinks.length;
+        for (let i = 0; i < total; i++) {
+          const link = selectedLinks[i];
+          await createLinkRequest({
+            type: material.type,
+            title: `${material.title} (${i + 1}/${total})`,
+            description: material.description,
+            url: link,
+            studentIds: material.studentIds,
+          });
+        }
       } else {
-        const fd = new FormData();
-        fd.append("type", material.type);
-        fd.append("title", material.title);
-        fd.append("description", material.description);
-        fd.append("studentIds", JSON.stringify(material.studentIds));
-        fd.append("file", selectedFile!);
-        await createMaterialRequest(fd);
+        const total = selectedFiles.length;
+        for (let i = 0; i < total; i++) {
+          const file = selectedFiles[i];
+          const fd = new FormData();
+          fd.append("type", material.type);
+          fd.append("title", `${material.title} (${i+1}/${total})`);
+          fd.append("description", material.description);
+          fd.append("studentIds", JSON.stringify(material.studentIds));
+          fd.append("file", file);
+          await createMaterialRequest(fd);
+        }
       }
+
       setSuccess(true);
       qc.invalidateQueries({ queryKey: ["materialStats"] });
       qc.invalidateQueries({ queryKey: ["materials"] });
       setMaterial({ type: "document", title: "", description: "", url: "", studentIds: [] });
-      setSelectedFile(null);
+      setSelectedFiles([]);
+      setSelectedLinks([]);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Error creando material";
-      setCreateError(message);
+      const msg = err instanceof Error ? err.message : "Error creando material";
+      setCreateError(msg);
     } finally {
       setCreating(false);
     }
@@ -85,8 +102,10 @@ export function useCreateMaterial() {
     loadingStudents,
     studentsError,
     material,
-    selectedFile,
-    setSelectedFile,
+    selectedFiles,
+    setSelectedFiles,
+    selectedLinks,
+    setSelectedLinks,
     creating,
     createError,
     success,
