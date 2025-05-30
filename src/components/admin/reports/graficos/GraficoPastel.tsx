@@ -7,13 +7,8 @@ import {
   Legend,
   ChartOptions,
   TooltipItem,
-  TooltipOptions,
-  LegendOptions
 } from "chart.js";
-import ChartDataLabels, {
-  Context as DatalabelsContext,
-  ChartDataLabelsOptions
-} from "chartjs-plugin-datalabels";
+import ChartDataLabels, { Context as DatalabelsContext } from "chartjs-plugin-datalabels";
 import { Pie } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
@@ -30,7 +25,7 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
 
   const processed = data.map((item, i) => {
     const n = Number(item.cantidad) || 0;
-    const pct = total > 0 ? (n / total) * 100 : 0;
+    const percentage = total > 0 ? (n / total) * 100 : 0;
     const palette = [
       "rgba(54,162,235,0.8)",
       "rgba(75,192,192,0.8)",
@@ -43,7 +38,7 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
     return {
       role: item.role,
       cantidad: n,
-      percentage: pct,
+      percentage,
       color: palette[i % palette.length],
     };
   });
@@ -52,45 +47,29 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
     labels: processed.map((p) => p.role),
     datasets: [
       {
-<<<<<<< HEAD
-        data: processed.map(p => p.cantidad),
-        backgroundColor: processed.map(p => p.color),
-        borderColor: processed.map(p => p.color.replace("0.8", "1")),
-=======
         data: processed.map((p) => p.cantidad),
         backgroundColor: processed.map((p) => p.color),
         borderColor: processed.map((p) => p.color.replace("0.8", "1")),
->>>>>>> 704a74bebc91700ccdcda5626687959c652e434f
         borderWidth: 1,
       },
     ],
   };
 
-<<<<<<< HEAD
   const options: Partial<ChartOptions<"pie">> = {
-=======
-  const options: ChartOptions<"pie"> & {
-    plugins: {
-      legend: Partial<LegendOptions<"pie">>;
-      tooltip: Partial<TooltipOptions<"pie">>;
-      datalabels: ChartDataLabelsOptions;
-    };
-  } = {
->>>>>>> 704a74bebc91700ccdcda5626687959c652e434f
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: ((context: TooltipItem<"pie">) => {
+          label(context: TooltipItem<"pie">) {
             const label = context.label ?? "";
             const value = Number(context.raw) || 0;
             const ds = context.dataset.data as number[];
             const sum = ds.reduce((a, b) => a + b, 0);
             const pct = sum > 0 ? Math.round((value / sum) * 100) : 0;
             return `${label}: ${value} (${pct}%)`;
-          }) as any,
+          },
         },
       },
       datalabels: {
@@ -101,7 +80,7 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
           const sum = vals.reduce((a, b) => a + b, 0);
           return sum > 0 ? ((value / sum) * 100).toFixed(1) + "%" : "0%";
         },
-      },
+      } as any,
     },
   };
 
@@ -112,6 +91,7 @@ const GraficoPastel: React.FC<GraficoPastelProps> = ({ data }) => {
           <Pie data={chartData} options={options} />
         </div>
       </div>
+
       <div className="w-full md:w-[35%] overflow-y-auto px-2">
         <div className="space-y-2">
           {processed.map((item) => (
