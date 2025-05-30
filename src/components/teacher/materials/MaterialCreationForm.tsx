@@ -12,7 +12,9 @@ interface MaterialCreationFormProps {
   onSuccess: () => void;
 }
 
-export default function MaterialCreationForm({ onSuccess }: MaterialCreationFormProps) {
+export default function MaterialCreationForm({
+  onSuccess,
+}: MaterialCreationFormProps) {
   const {
     students,
     loadingStudents,
@@ -53,6 +55,17 @@ export default function MaterialCreationForm({ onSuccess }: MaterialCreationForm
     );
   };
 
+  const handleSelectAll = () => {
+    const allIds = students.map((u) =>
+      typeof u.id === "string" ? parseInt(u.id, 10) : u.id
+    );
+    handleChange("studentIds", allIds);
+  };
+
+  const handleClearAll = () => {
+    handleChange("studentIds", []);
+  };
+
   const onCreateClick = () => {
     setTouchedSubmit(true);
     if (!isFormValid) {
@@ -85,7 +98,9 @@ export default function MaterialCreationForm({ onSuccess }: MaterialCreationForm
           <select
             id="type"
             value={material.type}
-            onChange={(e) => handleChange("type", e.target.value as "document" | "video" | "link")}
+            onChange={(e) =>
+              handleChange("type", e.target.value as "document" | "video" | "link")
+            }
             className="w-full h-10 border rounded px-3 focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]"
           >
             <option value="document">Documento</option>
@@ -138,6 +153,8 @@ export default function MaterialCreationForm({ onSuccess }: MaterialCreationForm
           isLoading={loadingStudents}
           error={studentsError}
           onToggleStudent={toggleStudent}
+          onSelectAll={handleSelectAll}
+          onClearAll={handleClearAll}
         />
 
         <div className="flex justify-end pt-6">
@@ -147,7 +164,7 @@ export default function MaterialCreationForm({ onSuccess }: MaterialCreationForm
             disabled={creating}
             className="
               w-full md:w-auto px-8 py-3
-              bg-[#4E81BD] hover:bg-[#3B6CA5] 
+              bg-[#4E81BD] hover:bg-[#3B6CA5]
               text-white font-semibold text-sm
               border-2 border-[#4E81BD] hover:border-[#3B6CA5]
               rounded-xl
@@ -164,4 +181,4 @@ export default function MaterialCreationForm({ onSuccess }: MaterialCreationForm
       </div>
     </Card>
   );
-} 
+}
