@@ -11,9 +11,9 @@ export const fetchProtocolsRequest = async (): Promise<Protocol[]> => {
 }
 
 export const createProtocolRequest = async (
-  name: string
+  payload: { key: string; name: string }
 ): Promise<Protocol> => {
-  const { data } = await api.post<Protocol>('/protocols', { name })
+  const { data } = await api.post<Protocol>('/protocols', payload)
   return data
 }
 

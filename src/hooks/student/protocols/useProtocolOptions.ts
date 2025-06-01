@@ -19,16 +19,16 @@ export function useProtocolOptions() {
     staleTime: 5 * 60_000,
   })
 
-  const mutation = useMutation<Protocol, Error, string>({
+  const mutation = useMutation<Protocol, Error, { key: string; name: string }>({
     mutationFn: createProtocolRequest,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['protocols'] })
     },
   })
 
-  const addProtocol = async (name: string): Promise<void> => {
+  const addProtocol = async (payload: { key: string; name: string }): Promise<void> => {
     try {
-      await mutation.mutateAsync(name)
+      await mutation.mutateAsync(payload)
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 409) {
         throw new Error('Ya existe ese protocolo')
@@ -44,6 +44,6 @@ export function useProtocolOptions() {
     addProtocol,
     creating: mutation.status === 'pending',
     createError: mutation.error,
-    reset: mutation.reset, 
+    reset: mutation.reset,
   }
 }
