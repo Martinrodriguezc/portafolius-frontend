@@ -40,7 +40,6 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
     reset: resetProtocol,
   } = useProtocolOptions();
 
-  // Estado para edición inline de protocolo
   const [editingProtocolIndex, setEditingProtocolIndex] = useState<number | null>(null);
   const [newProtocolName, setNewProtocolName] = useState("");
   const [inlineError, setInlineError] = useState<string | null>(null);
@@ -143,13 +142,15 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
                         <Button
                           onClick={async () => {
                             if (!newProtocolName.trim()) return;
+                            const raw = newProtocolName.trim();
+                            const key = raw.toLowerCase().replace(/\s+/g, "_");
                             try {
-                              await addProtocol(newProtocolName.trim());
-                              updateFileProtocol(index, newProtocolName.trim());
+                              await addProtocol({ key, name: raw });
+                              updateFileProtocol(index, key);
                               setEditingProtocolIndex(null);
                             } catch (err: unknown) {
                               if (axios.isAxiosError(err)) {
-                                setInlineError(err.message);
+                                setInlineError(err.response?.data?.error ?? err.message);
                               } else if (err instanceof Error) {
                                 setInlineError(err.message);
                               } else {
@@ -201,7 +202,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
                         </SelectTrigger>
                         <SelectContent>
                           {protocols.map((p) => (
-                            <SelectItem key={p.id} value={p.name}>
+                            <SelectItem key={p.id} value={p.key}>
                               {p.name}
                             </SelectItem>
                           ))}

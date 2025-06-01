@@ -16,7 +16,6 @@ export default function ProgressPage() {
   const userId = user?.id ?? 0
   const { data, loading, error } = useProgressData(Number(userId))
 
-  // Page header component - extracted for reuse in all states
   const PageHeader = () => (
     <header className="mb-10">
       <div className="flex items-center gap-3 mb-2">
