@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { authService } from '../hooks/auth/authServices';
 
 export interface AuthError {
@@ -6,13 +7,19 @@ export interface AuthError {
   message: string;
 }
 
+interface ErrorWithResponse {
+  response?: {
+    status: number;
+  };
+}
+
 /**
  * Maneja errores de autenticación de manera centralizada
  * @param error - Error de axios o cualquier error con response.status
  * @returns AuthError con información sobre cómo manejar el error
  */
-export const handleAuthError = (error: any): AuthError => {
-  const status = error?.response?.status;
+export const handleAuthError = (error: AxiosError | ErrorWithResponse | Error): AuthError => {
+  const status = (error as ErrorWithResponse)?.response?.status;
   
   switch (status) {
     case 401:
@@ -36,7 +43,7 @@ export const handleAuthError = (error: any): AuthError => {
       return {
         isAuthError: false,
         shouldRedirect: false,
-        message: error?.message || 'Error desconocido'
+        message: (error as Error)?.message || 'Error desconocido'
       };
   }
 };
@@ -44,7 +51,7 @@ export const handleAuthError = (error: any): AuthError => {
 /**
  * Ejecuta redirección al login de manera segura
  */
-export const redirectToLogin = () => {
+export const redirectToLogin = (): void => {
   // Usar setTimeout para evitar problemas con React state updates
   setTimeout(() => {
     window.location.href = '/login';
@@ -64,7 +71,7 @@ export const isAuthenticated = (): boolean => {
  * Crea headers estándar para peticiones autenticadas
  * @returns Headers con Authorization y Content-Type
  */
-export const createAuthHeaders = () => {
+export const createAuthHeaders = (): Record<string, string> => {
   const token = authService.getToken();
   
   if (!token) {

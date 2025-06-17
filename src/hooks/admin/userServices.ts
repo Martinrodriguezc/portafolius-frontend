@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useCallback } from 'react';
+import axios, { AxiosError } from 'axios';
 import { User, UserFormData } from '../../types/Admin/UserTypes';
 import { ServiceResponse } from '../../types/Admin/ServiceTypes';
 import { config } from '../../config/config';
@@ -12,7 +12,7 @@ export const useUserServices = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const handleUserServiceError = (error: any) => {
+  const handleUserServiceError = (error: Error | AxiosError) => {
     const authErrorInfo = handleAuthError(error);
     
     if (authErrorInfo.isAuthError) {
@@ -27,7 +27,7 @@ export const useUserServices = () => {
     setError('Error al conectar con el servidor');
   };
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -45,14 +45,13 @@ export const useUserServices = () => {
       
       setStudents(studentsList);
       setTeachers(teachersList);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      handleUserServiceError(err);
+      handleUserServiceError(err as AxiosError);
     } finally {
       setLoading(false);
     }
-  };
-
+  }, []);
 
   const addUser = async (newUser: Omit<UserFormData, 'id' | 'createdAt'>): Promise<ServiceResponse<User>> => {
     try {
@@ -111,9 +110,9 @@ export const useUserServices = () => {
       }
       
       return { success: true, data: updatedUser };
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      const authErrorInfo = handleAuthError(err);
+      const authErrorInfo = handleAuthError(err as AxiosError);
       
       if (authErrorInfo.isAuthError) {
         if (authErrorInfo.shouldRedirect) {
@@ -144,9 +143,9 @@ export const useUserServices = () => {
       }
       
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      const authErrorInfo = handleAuthError(err);
+      const authErrorInfo = handleAuthError(err as AxiosError);
       
       if (authErrorInfo.isAuthError) {
         if (authErrorInfo.shouldRedirect) {
@@ -163,7 +162,7 @@ export const useUserServices = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   return {
     students,

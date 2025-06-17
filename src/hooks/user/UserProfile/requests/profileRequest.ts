@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import { config } from '../../../../config/config';
 import { UserProfile } from '../../../../types/User';
 import { authService } from '../../../auth/authServices';
@@ -50,8 +50,8 @@ export async function updateUserProfileRequest(
       id: typeof updated.id === 'string' ? Number(updated.id) : updated.id,
       role: updated.role as UserProfile['role'],
     };
-  } catch (error: any) {
-    const authErrorInfo = handleAuthError(error);
+  } catch (error) {
+    const authErrorInfo = handleAuthError(error as AxiosError);
     if (authErrorInfo.isAuthError) {
       if (authErrorInfo.shouldRedirect) {
         redirectToLogin();
