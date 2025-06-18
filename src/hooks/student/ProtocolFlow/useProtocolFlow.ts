@@ -58,7 +58,6 @@ export function useProtocolFlow(clipId: number) {
   fetchSubdiagnoses(protocolKey, diagnosisId)
     .then(res => {
       const data = Array.isArray(res.data) ? res.data : [];
-      console.log(`Subdiagnósticos cargados para diagnosisId=${diagnosisId}:`, data);
       setSubdiagnoses(data);
     })
     .catch(err => {
