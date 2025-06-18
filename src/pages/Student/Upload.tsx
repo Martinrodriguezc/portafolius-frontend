@@ -21,12 +21,13 @@ export default function UploadPage() {
     handleFileChange,
     removeFile,
     updateFileProtocol,
-    updateFileOrgan,
-    updateFileStructure,
-    updateFileCondition,
-    addTagToFile,
-    removeTagFromFile,
     handleSubmit,
+    updateFileWindow,
+    updateFileFinding,
+    updateFileDiagnosis,
+    updateFileSubdiagnosis,
+    updateFileSubSub,
+    updateFileThirdOrder,
     loading,
     error,
   } = useUploadPage()
@@ -232,14 +233,15 @@ export default function UploadPage() {
           {selectedStudy && (
             <UploadSection
               files={files}
-              handleFileChange={handleFileChange}
-              removeFile={removeFile}
-              updateFileProtocol={updateFileProtocol}
-              updateFileOrgan={updateFileOrgan}
-              updateFileStructure={updateFileStructure}
-              updateFileCondition={updateFileCondition}
-              addTagToFile={addTagToFile}
-              removeTagFromFile={removeTagFromFile}
+                handleFileChange={handleFileChange}
+                removeFile={removeFile}
+                updateFileProtocol={updateFileProtocol}
+                updateFileWindow={updateFileWindow}
+                updateFileFinding={updateFileFinding}
+                updateFileDiagnosis={updateFileDiagnosis}
+                updateFileSubdiagnosis={updateFileSubdiagnosis}
+                updateFileSubSub={updateFileSubSub}
+                updateFileThirdOrder={updateFileThirdOrder}
             />
           )}
 

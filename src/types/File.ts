@@ -1,8 +1,10 @@
 export interface FileWithMetadata {
   file: File;
-  protocol: string;
-  selectedOrgan: string;
-  selectedStructure: string;
-  selectedCondition: string;
-  tags: { id: number; text: string }[];
+  protocolKey: string;
+  windowId?: number;
+  findingId?: number;
+  diagnosisId?: number;
+  subdiagnosisId?: number;
+  subSubId?: number;
+  thirdOrderId?: number;
 }
