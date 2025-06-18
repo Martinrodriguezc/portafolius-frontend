@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import Button from "../../common/Button/Button";
 import {
@@ -110,89 +108,83 @@ export const FileUploadRow: React.FC<FileUploadRowProps> = ({
                 Etiquetas para este video
               </Label>
 
-              {/* Ventana */}
-              {windows.length > 0 && (
-                <div className="mt-2">
-                  <Label htmlFor={`window-${index}`} className="text-sm sm:text-[14px] font-medium text-[#333333] mb-1 block">
-                    Seleccionar Ventana
-                  </Label>
-                  <Select
-                    value={fileItem.windowId != null ? String(fileItem.windowId) : ""}
-                    onValueChange={(val) => {
-                      const winId = Number(val);
-                      updateFileWindow(index, winId);
-                      loadFindings(fileItem.protocolKey, winId);
-                    }}
-                  >
-                    <SelectTrigger id={`window-${index}`} className="h-10 sm:h-[42px] text-sm sm:text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
-                      <SelectValue placeholder="Selecciona una ventana" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {windows.map((w) => (
-                        <SelectItem key={w.id} value={String(w.id)}>
-                          {w.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
+              <div className="mt-2">
+                <Label htmlFor={`window-${index}`} className="text-sm sm:text-[14px] font-medium text-[#333333] mb-1 block">
+                  Seleccionar Ventana
+                </Label>
+                <Select
+                  value={fileItem.windowId != null ? String(fileItem.windowId) : ""}
+                  onValueChange={(val) => {
+                    const winId = Number(val);
+                    updateFileWindow(index, winId);
+                    loadFindings(fileItem.protocolKey, winId);
+                  }}
+                  disabled={windows.length === 0}
+                >
+                  <SelectTrigger id={`window-${index}`} className="h-10 sm:h-[42px] text-sm sm:text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
+                    <SelectValue placeholder="Selecciona una ventana" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {windows.map((w) => (
+                      <SelectItem key={w.id} value={String(w.id)}>
+                        {w.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-              {/* Hallazgo */}
-              {fileItem.windowId != null && findings.length > 0 && (
-                <div className="mt-2">
-                  <Label htmlFor={`finding-${index}`} className="text-sm sm:text-[14px] font-medium text-[#333333] mb-1 block">
-                    Seleccionar Hallazgo
-                  </Label>
-                  <Select
-                    value={fileItem.findingId != null ? String(fileItem.findingId) : ""}
-                    onValueChange={(val) => {
-                      const fId = Number(val);
-                      updateFileFinding(index, fId);
-                      loadDiagnoses(fileItem.protocolKey, fileItem.windowId!, fId);
-                    }}
-                  >
-                    <SelectTrigger id={`finding-${index}`} className="h-10 sm:h-[42px] text-sm sm;text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
-                      <SelectValue placeholder="Selecciona Hallazgo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {findings.map((f) => (
-                        <SelectItem key={f.id} value={String(f.id)}>
-                          {f.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
+              <div className="mt-2">
+                <Label htmlFor={`finding-${index}`} className="text-sm sm:text-[14px] font-medium text-[#333333] mb-1 block">
+                  Seleccionar Hallazgo
+                </Label>
+                <Select
+                  value={fileItem.findingId != null ? String(fileItem.findingId) : ""}
+                  onValueChange={(val) => {
+                    const fId = Number(val);
+                    updateFileFinding(index, fId);
+                    loadDiagnoses(fileItem.protocolKey, fileItem.windowId!, fId);
+                  }}
+                  disabled={findings.length === 0}
+                >
+                  <SelectTrigger id={`finding-${index}`} className="h-10 sm:h-[42px] text-sm sm:text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
+                    <SelectValue placeholder="Selecciona Hallazgo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {findings.map((f) => (
+                      <SelectItem key={f.id} value={String(f.id)}>
+                        {f.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-              {/* Diagnósticos posibles */}
-              {fileItem.findingId != null && diagnoses.length > 0 && (
-                <div className="mt-2">
-                  <Label htmlFor={`diagnosis-${index}`} className="text-sm sm:text-[14px] font-medium text-[#333333] mb-1 block">
-                    Seleccionar Diagnóstico posible
-                  </Label>
-                  <Select
-                    value={fileItem.diagnosisId != null ? String(fileItem.diagnosisId) : ""}
-                    onValueChange={(val) => {
-                      const dId = Number(val);
-                      updateFileDiagnosis(index, dId);
-                      loadSubdiagnoses(fileItem.protocolKey, dId);
-                    }}
-                  >
-                    <SelectTrigger id={`diagnosis-${index}`} className="h-10 sm:h-[42px] text-sm sm;text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
-                      <SelectValue placeholder="Selecciona diagnóstico" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {diagnoses.map((d) => (
-                        <SelectItem key={d.id} value={String(d.id)}>
-                          {d.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
+              <div className="mt-2">
+                <Label htmlFor={`diagnosis-${index}`} className="text-sm sm:text-[14px] font-medium text-[#333333] mb-1 block">
+                  Seleccionar Diagnóstico posible
+                </Label>
+                <Select
+                  value={fileItem.diagnosisId != null ? String(fileItem.diagnosisId) : ""}
+                  onValueChange={(val) => {
+                    const dId = Number(val);
+                    updateFileDiagnosis(index, dId);
+                    loadSubdiagnoses(fileItem.protocolKey, dId);
+                  }}
+                  disabled={diagnoses.length === 0}
+                >
+                  <SelectTrigger id={`diagnosis-${index}`} className="h-10 sm:h-[42px] text-sm sm:text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
+                    <SelectValue placeholder="Selecciona diagnóstico" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {diagnoses.map((d) => (
+                      <SelectItem key={d.id} value={String(d.id)}>
+                        {d.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
               {/* Subdiagnósticos */}
               {fileItem.diagnosisId != null && subdiagnoses.length > 0 && (
@@ -208,7 +200,7 @@ export const FileUploadRow: React.FC<FileUploadRowProps> = ({
                       loadSubSubs(fileItem.protocolKey, sdId);
                     }}
                   >
-                    <SelectTrigger id={`subdiagnosis-${index}`} className="h-10 sm:h-[42px] text-sm sm;text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
+                    <SelectTrigger id={`subdiagnosis-${index}`} className="h-10 sm:h-[42px] text-sm sm:text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
                       <SelectValue placeholder="Selecciona subdiagnóstico" />
                     </SelectTrigger>
                     <SelectContent>
@@ -225,7 +217,7 @@ export const FileUploadRow: React.FC<FileUploadRowProps> = ({
               {/* Sub-Subdiagnósticos */}
               {fileItem.subdiagnosisId != null && subSubs.length > 0 && (
                 <div className="mt-2">
-                  <Label htmlFor={`subsub-${index}`} className="text-sm sm;text-[14px] font-medium text-[#333333] mb-1 block">
+                  <Label htmlFor={`subsub-${index}`} className="text-sm sm:text-[14px] font-medium text-[#333333] mb-1 block">
                     Seleccionar Sub-Subdiagnóstico
                   </Label>
                   <Select
@@ -236,7 +228,7 @@ export const FileUploadRow: React.FC<FileUploadRowProps> = ({
                       loadThirdOrders(fileItem.protocolKey, ssId);
                     }}
                   >
-                    <SelectTrigger id={`subsub-${index}`} className="h-10 sm:h-[42px] text-sm sm;text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
+                    <SelectTrigger id={`subsub-${index}`} className="h-10 sm:h-[42px] text-sm sm:text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
                       <SelectValue placeholder="Selecciona sub-subdiagnóstico" />
                     </SelectTrigger>
                     <SelectContent>
@@ -253,7 +245,7 @@ export const FileUploadRow: React.FC<FileUploadRowProps> = ({
               {/* Third order */}
               {fileItem.subSubId != null && thirdOrders.length > 0 && (
                 <div className="mt-2">
-                  <Label htmlFor={`thirdorder-${index}`} className="text-sm sm;text-[14px] font-medium text-[#333333] mb-1 block">
+                  <Label htmlFor={`thirdorder-${index}`} className="text-sm sm:text-[14px] font-medium text-[#333333] mb-1 block">
                     Seleccionar Diagnóstico de 3er orden
                   </Label>
                   <Select
@@ -263,7 +255,7 @@ export const FileUploadRow: React.FC<FileUploadRowProps> = ({
                       updateFileThirdOrder(index, tId);
                     }}
                   >
-                    <SelectTrigger id={`thirdorder-${index}`} className="h-10 sm:h-[42px] text-sm sm;text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
+                    <SelectTrigger id={`thirdorder-${index}`} className="h-10 sm:h-[42px] text-sm sm:text-[14px] border-[#A0A0A0] rounded-[8px] bg-white focus:ring-2 focus:ring-[#4E81BD]/30 focus:border-[#4E81BD]">
                       <SelectValue placeholder="Selecciona diagnóstico de 3er orden" />
                     </SelectTrigger>
                     <SelectContent>
