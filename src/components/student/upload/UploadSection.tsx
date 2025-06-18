@@ -19,6 +19,8 @@ export function UploadSection ({
   updateFileSubdiagnosis,
   updateFileSubSub,
   updateFileThirdOrder,
+  updateFileComment,
+  updateFileReady,
 }: UploadSectionProps) {
 
   const {
@@ -81,6 +83,8 @@ export function UploadSection ({
                 updateFileSubdiagnosis={updateFileSubdiagnosis}
                 updateFileSubSub={updateFileSubSub}
                 updateFileThirdOrder={updateFileThirdOrder}
+                updateFileComment={updateFileComment}
+                updateFileReady={updateFileReady}
                 removeFile={removeFile}
               />
             ))}

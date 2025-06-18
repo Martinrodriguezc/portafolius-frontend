@@ -46,6 +46,8 @@ export function useUploadPage() {
     const newFiles: FileWithMetadata[] = Array.from(e.target.files).map((file) => ({
       file,
       protocolKey: "",
+      comment: "",
+      isReady: false,
     }));
     setFiles((prev) => [...prev, ...newFiles]);
   };
@@ -96,6 +98,20 @@ export function useUploadPage() {
     setFiles((prev) =>
       prev.map((f, i) =>
         i === idx ? { ...f, thirdOrderId } : f
+      )
+    );
+
+  const updateFileComment = (idx: number, comment: string) =>
+    setFiles(prev =>
+      prev.map((f, i) =>
+        i === idx ? { ...f, comment } : f
+      )
+    );
+
+  const updateFileReady = (idx: number, isReady: boolean) =>
+    setFiles(prev =>
+      prev.map((f, i) =>
+        i === idx ? { ...f, isReady } : f
       )
     );
 
@@ -164,6 +180,8 @@ export function useUploadPage() {
     updateFileSubdiagnosis,
     updateFileSubSub,
     updateFileThirdOrder,
+    updateFileComment,
+    updateFileReady,
     handleSubmit,
     loading,
     error,

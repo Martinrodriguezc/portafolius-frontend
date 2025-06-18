@@ -12,4 +12,6 @@ export interface UploadSectionProps {
   updateFileSubdiagnosis: (index: number, subdiagnosisId: number) => void;
   updateFileSubSub: (index: number, subSubId: number) => void;
   updateFileThirdOrder: (index: number, thirdOrderId: number) => void;
+  updateFileReady: (idx: number, isReady: boolean) => void;
+  updateFileComment: (idx: number, comment: string) => void;
 }

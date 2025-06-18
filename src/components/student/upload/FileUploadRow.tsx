@@ -11,19 +11,14 @@ import { Select, SelectValue } from "../../common/Select/SelectBase";
 import { SelectTrigger, SelectContent } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
 import { FileWithMetadata } from "../../../types/File";
+import { UploadSectionProps } from "../../../types/Props/Video/UploadSectionProps";
 import { useProtocolOptions } from "../../../hooks/student/protocols/useProtocolOptions";
 import { useProtocolFlow } from "../../../hooks/student/ProtocolFlow/useProtocolFlow";
 
-export interface FileUploadRowProps {
+export interface FileUploadRowProps
+  extends Omit<UploadSectionProps, "files" | "handleFileChange"> {
   fileItem: FileWithMetadata;
   index: number;
-  updateFileProtocol: (idx: number, protocolKey: string) => void;
-  updateFileWindow: (idx: number, windowId: number) => void;
-  updateFileFinding: (idx: number, findingId: number) => void;
-  updateFileDiagnosis: (idx: number, diagnosisId: number) => void;
-  updateFileSubdiagnosis: (idx: number, subdiagnosisId: number) => void;
-  updateFileSubSub: (idx: number, subSubId: number) => void;
-  updateFileThirdOrder: (idx: number, thirdOrderId: number) => void;
   removeFile: (idx: number) => void;
 }
 
@@ -37,6 +32,8 @@ export const FileUploadRow: React.FC<FileUploadRowProps> = ({
   updateFileSubdiagnosis,
   updateFileSubSub,
   updateFileThirdOrder,
+  updateFileComment,
+  updateFileReady,
   removeFile,
 }) => {
   const { protocols } = useProtocolOptions();
@@ -281,6 +278,33 @@ export const FileUploadRow: React.FC<FileUploadRowProps> = ({
               )}
             </div>
           )}
+          {/* Comentario opcional */}
+          <div className="mt-4">
+            <Label htmlFor={`comment-${index}`} className="text-sm font-medium text-[#333333] mb-1 block">
+              Comentario opcional
+            </Label>
+            <textarea
+              id={`comment-${index}`}
+              value={fileItem.comment || ''}
+              onChange={(e) => updateFileComment(index, e.target.value)}
+              className="w-full border border-slate-300 rounded-[8px] p-2 text-sm"
+              rows={2}
+              placeholder="Agrega un comentario..."
+            />
+          </div>
+          {/* Visto bueno */}
+          <div className="mt-2 flex items-center gap-2">
+            <input
+              id={`ready-${index}`}
+              type="checkbox"
+              checked={fileItem.isReady || false}
+              onChange={(e) => updateFileReady(index, e.target.checked)}
+              className="h-4 w-4 text-[#4E81BD] border-[#A0A0A0] rounded"
+            />
+            <Label htmlFor={`ready-${index}`} className="text-sm text-[#333333]">
+              Listo
+            </Label>
+          </div>
         </div>
       </div>
     </div>

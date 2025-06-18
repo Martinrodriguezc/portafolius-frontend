@@ -7,4 +7,6 @@ export interface FileWithMetadata {
   subdiagnosisId?: number;
   subSubId?: number;
   thirdOrderId?: number;
+  comment?: string;
+  isReady?: boolean;
 }
