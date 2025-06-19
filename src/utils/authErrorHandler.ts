@@ -1,23 +1,8 @@
 import { AxiosError } from 'axios';
 import { authService } from '../hooks/auth/authServices';
+import { AuthError, ErrorWithResponse } from '../types/Auth';
 
-export interface AuthError {
-  isAuthError: boolean;
-  shouldRedirect: boolean;
-  message: string;
-}
 
-interface ErrorWithResponse {
-  response?: {
-    status: number;
-  };
-}
-
-/**
- * Maneja errores de autenticación de manera centralizada
- * @param error - Error de axios o cualquier error con response.status
- * @returns AuthError con información sobre cómo manejar el error
- */
 export const handleAuthError = (error: AxiosError | ErrorWithResponse | Error): AuthError => {
   const status = (error as ErrorWithResponse)?.response?.status;
   
@@ -48,9 +33,7 @@ export const handleAuthError = (error: AxiosError | ErrorWithResponse | Error): 
   }
 };
 
-/**
- * Ejecuta redirección al login de manera segura
- */
+
 export const redirectToLogin = (): void => {
   // Usar setTimeout para evitar problemas con React state updates
   setTimeout(() => {
@@ -58,19 +41,13 @@ export const redirectToLogin = (): void => {
   }, 100);
 };
 
-/**
- * Verifica si el token JWT está presente y es válido
- * @returns true si hay token, false si no
- */
+
 export const isAuthenticated = (): boolean => {
   const token = authService.getToken();
   return !!token;
 };
 
-/**
- * Crea headers estándar para peticiones autenticadas
- * @returns Headers con Authorization y Content-Type
- */
+
 export const createAuthHeaders = (): Record<string, string> => {
   const token = authService.getToken();
   
