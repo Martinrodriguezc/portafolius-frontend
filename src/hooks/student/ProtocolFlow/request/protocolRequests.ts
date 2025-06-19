@@ -6,7 +6,9 @@ import {
   DiagnosisOption,
   SubdiagnosisOption,
   SubSubOption,
-  ThirdOrderOption
+  ThirdOrderOption,
+  ImageQualityOption,
+  FinalDiagnosisOption
 } from '../../../../types/protocol';
 
 const api = axios.create({
@@ -47,6 +49,13 @@ export const fetchThirdOrders = (protocolKey: string, subSubId: number) =>
   api.get<ThirdOrderOption[]>(
     `/protocols/${protocolKey}/subsub/${subSubId}/thirdorder`
   );
+
+// Nuevas rutas para profesor
+export const fetchImageQualities = () =>
+  api.get<ImageQualityOption[]>('/protocols/image-qualities');
+
+export const fetchFinalDiagnoses = () =>
+  api.get<FinalDiagnosisOption[]>('/protocols/final-diagnoses');
 
 export const saveSelection = (clipId: number, payload: any) =>
   api.post(`/protocols/video/${clipId}/selection`, payload);

@@ -11,11 +11,19 @@ export interface StudentInteractionPayload {
 }
 
 export interface ProfessorInteractionPayload {
-  imageQualityId: number;
-  finalDiagnosisId: number;
-  professorComment?: string;
-}
+  protocolKey?: string;
+  windowId?: number;
+  findingId?: number;
+  diagnosisId?: number;
+  subdiagnosisId?: number;
+  subSubId?: number;
+  thirdOrderId?: number;
 
+  imageQualityId?: number;
+  finalDiagnosisId?: number;
+  professorComment?: string;
+  isReady?: boolean;
+}
 export interface Interaction {
   id: number;
   clipId: number;

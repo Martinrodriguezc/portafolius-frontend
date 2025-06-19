@@ -8,6 +8,8 @@ export interface DiagnosisOption{ id: number; key: string; name: string; }
 export interface SubdiagnosisOption { id: number; key: string; name: string; }
 export interface SubSubOption   { id: number; key: string; name: string; }
 export interface ThirdOrderOption { id: number; key: string; name: string; }
+export interface ImageQualityOption { id: number; name: string }
+export interface FinalDiagnosisOption { id: number; name: string }
 export interface ProtocolItem {
   key: string
   label: string

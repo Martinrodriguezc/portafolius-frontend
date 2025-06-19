@@ -9,4 +9,6 @@ export interface FileWithMetadata {
   thirdOrderId?: number;
   comment?: string;
   isReady?: boolean;
+  imageQualityId?: number;
+  finalDiagnosisId?: number;
 }
