@@ -9,22 +9,29 @@ import {
   ThirdOrderOption,
   ImageQualityOption,
   FinalDiagnosisOption
-} from '../../../../types/protocol';
+} from '../../../../types/protocol'
+import type {
+  Interaction,
+  StudentInteractionPayload,
+  ProfessorInteractionPayload
+} from '../../../../types/interaction'
+
+type SelectionPayload = StudentInteractionPayload | ProfessorInteractionPayload
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
-});
+})
 
 export const fetchProtocols = () =>
-  api.get<ProtocolOption[]>('/protocols');
+  api.get<ProtocolOption[]>('/protocols')
 
 export const fetchWindows = (protocolKey: string) =>
-  api.get<WindowOption[]>(`/protocols/${protocolKey}/windows`);
+  api.get<WindowOption[]>(`/protocols/${protocolKey}/windows`)
 
 export const fetchFindings = (protocolKey: string, windowId: number) =>
   api.get<FindingOption[]>(
     `/protocols/${protocolKey}/windows/${windowId}/findings`
-  );
+  )
 
 export const fetchDiagnoses = (
   protocolKey: string,
@@ -33,32 +40,34 @@ export const fetchDiagnoses = (
 ) =>
   api.get<DiagnosisOption[]>(
     `/protocols/${protocolKey}/windows/${windowId}/findings/${findingId}/diagnoses`
-  );
+  )
 
 export const fetchSubdiagnoses = (protocolKey: string, diagnosisId: number) =>
   api.get<SubdiagnosisOption[]>(
     `/protocols/${protocolKey}/diagnoses/${diagnosisId}/subdiagnoses`
-  );
+  )
 
 export const fetchSubSubs = (protocolKey: string, subId: number) =>
   api.get<SubSubOption[]>(
     `/protocols/${protocolKey}/subdiagnoses/${subId}/subsub`
-  );
+  )
 
 export const fetchThirdOrders = (protocolKey: string, subSubId: number) =>
   api.get<ThirdOrderOption[]>(
     `/protocols/${protocolKey}/subsub/${subSubId}/thirdorder`
-  );
+  )
 
-// Nuevas rutas para profesor
 export const fetchImageQualities = () =>
-  api.get<ImageQualityOption[]>('/protocols/image-qualities');
+  api.get<ImageQualityOption[]>('/protocols/image-qualities')
 
 export const fetchFinalDiagnoses = () =>
-  api.get<FinalDiagnosisOption[]>('/protocols/final-diagnoses');
+  api.get<FinalDiagnosisOption[]>('/protocols/final-diagnoses')
 
-export const saveSelection = (clipId: number, payload: any) =>
-  api.post(`/protocols/video/${clipId}/selection`, payload);
+export const saveSelection = (
+  clipId: number,
+  payload: SelectionPayload
+) =>
+  api.post<Interaction>(`/protocols/video/${clipId}/selection`, payload)
 
 export const fetchSelection = (clipId: number) =>
-  api.get(`/protocols/video/${clipId}/selection`);
+  api.get<Interaction>(`/protocols/video/${clipId}/selection`)

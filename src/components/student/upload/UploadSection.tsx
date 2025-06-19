@@ -6,7 +6,6 @@ import {
 } from "lucide-react";
 import { Label } from "../../common/Label/Label";
 import { UploadSectionProps } from "../../../types/Props/Video/UploadSectionProps";
-import { useProtocolOptions } from "../../../hooks/student/protocols/useProtocolOptions";
 
 export function UploadSection ({
   files,
@@ -22,11 +21,6 @@ export function UploadSection ({
   updateFileComment,
   updateFileReady,
 }: UploadSectionProps) {
-
-  const {
-  } = useProtocolOptions();
-
-
 
   return (
     <div className="mt-8 mb-8 space-y-6">
