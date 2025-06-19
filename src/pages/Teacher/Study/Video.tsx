@@ -4,6 +4,7 @@ import Card from "../../../components/common/Card/Card"
 import VideoPlayer from "../../../components/student/videos/VideoPlayer"
 import { useVideoPage } from "../../../hooks/video/useVideoPage"
 import { useAllStudies } from "../../../hooks/teacher/useAllStudies/useAllStudies"
+import { useInteractions } from "../../../hooks/upload/useInteractions"
 import {
   AlertCircle,
   Calendar,
@@ -12,6 +13,7 @@ import {
   FileVideo,
   RefreshCw,
   User,
+  Info,
   Video,
   ClipboardList,
   ArrowRight,
@@ -19,6 +21,7 @@ import {
 import ReturnButton from "../../../components/common/Button/ReturnButton"
 import VideoCarousel from "../../../components/common/Carousel/VideoCarousel"
 import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos"
+import { useEffect } from "react";
 
 export default function TeacherVideoPage() {
   const {
@@ -37,6 +40,13 @@ export default function TeacherVideoPage() {
 
   const { studyId } = useParams<{ studyId: string }>();
   const { videos } = useStudyVideos(studyId)
+
+  const { interactions, loadInteractions } = useInteractions();
+    useEffect(() => {
+      if (meta?.id) {
+        loadInteractions(meta.id);
+      }
+    }, [meta, loadInteractions]);
 
   const { pending, completed, loading: studiesLoading } = useAllStudies()
   const allStudies = [...pending, ...completed]
@@ -288,8 +298,56 @@ export default function TeacherVideoPage() {
                 </div>
               </div>
             </div>
+
+          </Card>
+
+          {/* Evaluación del estudiante */}
+          <Card className="rounded-[16px] border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-gradient-to-r from-slate-50 to-blue-50 p-4 border-b border-slate-200">
+              <div className="flex items-center gap-2">
+                <Info className="h-5 w-5 text-[#4E81BD]" />
+                <h3 className="text-[16px] font-semibold text-[#333333]">Evaluación del estudiante</h3>
+              </div>
+            </div>
+            <div className="p-6 space-y-6">
+              {/* Etiquetas del protocolo */}
+              {interactions.length > 0 ? (
+                <div className="space-y-1">
+                  <p><strong>Protocolo:</strong> {interactions[0].protocolKey}</p>
+                  <p><strong>Ventana:</strong> {interactions[0].windowName}</p>
+                  <p><strong>Hallazgo:</strong> {interactions[0].findingName}</p>
+                  <p><strong>Diagnóstico:</strong> {interactions[0].possibleDiagnosisName}</p>
+                  {interactions[0].subdiagnosisName && (
+                    <p><strong>Subdiagnóstico:</strong> {interactions[0].subdiagnosisName}</p>
+                  )}
+                  {interactions[0].subSubName && (
+                    <p><strong>Sub-Sub:</strong> {interactions[0].subSubName}</p>
+                  )}
+                  {interactions[0].thirdOrderName && (
+                    <p><strong>3er orden:</strong> {interactions[0].thirdOrderName}</p>
+                  )}
+                </div>
+              ) : (
+                <p className="text-[14px] text-[#666666]">No hay etiquetas registradas.</p>
+              )}
+              {/* Comentarios */}
+              {interactions.length > 0 ? (
+                interactions.map((i) => (
+                  <div key={i.id}>
+                    <p>
+                      <strong>{i.role === 'estudiante' ? 'Comentario estudiante' : 'Profesor'}:</strong>{' '}
+                      {i.role === 'estudiante' ? i.comment : i.professorComment}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-[14px] text-[#666666]">No hay comentarios.</p>
+              )}
+            </div>
           </Card>
         </div>
+
+        
 
         {/* Right Column */}
         <div className="w-full md:w-1/3">

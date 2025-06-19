@@ -1,9 +1,6 @@
 import { FC } from "react";
 import { useAttempts } from "../../../hooks/teacher/evaluations/useAttempts/useAttempts";
-
-interface Props {
-  clipId: number;
-}
+import { Props } from "../../../types/Props/Teacher/AttemptListProps";
 
 const AttemptList: FC<Props> = ({ clipId }) => {
   const { attempts, loading, error } = useAttempts(clipId);

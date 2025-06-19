@@ -1,14 +1,13 @@
-export interface FileWithMetadata {
-  file: File;
-  protocolKey: string;
+export interface TeacherSelectionPayload {
+  protocolKey?: string;
   windowId?: number;
   findingId?: number;
   diagnosisId?: number;
   subdiagnosisId?: number;
   subSubId?: number;
   thirdOrderId?: number;
-  comment?: string;
-  isReady?: boolean;
   imageQualityId?: number;
   finalDiagnosisId?: number;
+  comment?: string;
+  isReady?: boolean;
 }

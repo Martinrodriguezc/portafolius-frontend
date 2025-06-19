@@ -1,22 +1,17 @@
 import React from "react";
-
-export interface FileWithMetadata {
-  file: File;
-  protocol: string;
-  selectedOrgan: string;
-  selectedStructure: string;
-  selectedCondition: string;
-  tags: { id: number; text: string }[];
-}
+import { FileWithMetadata } from "../../../types/File";
 
 export interface UploadSectionProps {
   files: FileWithMetadata[];
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   removeFile: (index: number) => void;
-  updateFileProtocol: (index: number, protocol: string) => void;
-  updateFileOrgan: (index: number, organId: string) => void;
-  updateFileStructure: (index: number, structureId: string) => void;
-  updateFileCondition: (index: number, conditionId: string) => void;
-  addTagToFile: (index: number) => void;
-  removeTagFromFile: (fileIndex: number, tagIndex: number) => void;
+  updateFileProtocol: (index: number, protocolKey: string) => void;
+  updateFileWindow: (index: number, windowId: number) => void;
+  updateFileFinding: (index: number, findingId: number) => void;
+  updateFileDiagnosis: (index: number, diagnosisId: number) => void;
+  updateFileSubdiagnosis: (index: number, subdiagnosisId: number) => void;
+  updateFileSubSub: (index: number, subSubId: number) => void;
+  updateFileThirdOrder: (index: number, thirdOrderId: number) => void;
+  updateFileReady: (idx: number, isReady: boolean) => void;
+  updateFileComment: (idx: number, comment: string) => void;
 }

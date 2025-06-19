@@ -21,12 +21,15 @@ export default function UploadPage() {
     handleFileChange,
     removeFile,
     updateFileProtocol,
-    updateFileOrgan,
-    updateFileStructure,
-    updateFileCondition,
-    addTagToFile,
-    removeTagFromFile,
     handleSubmit,
+    updateFileWindow,
+    updateFileFinding,
+    updateFileDiagnosis,
+    updateFileSubdiagnosis,
+    updateFileSubSub,
+    updateFileThirdOrder,
+    updateFileComment,
+    updateFileReady,
     loading,
     error,
   } = useUploadPage()
@@ -235,11 +238,14 @@ export default function UploadPage() {
               handleFileChange={handleFileChange}
               removeFile={removeFile}
               updateFileProtocol={updateFileProtocol}
-              updateFileOrgan={updateFileOrgan}
-              updateFileStructure={updateFileStructure}
-              updateFileCondition={updateFileCondition}
-              addTagToFile={addTagToFile}
-              removeTagFromFile={removeTagFromFile}
+              updateFileWindow={updateFileWindow}
+              updateFileFinding={updateFileFinding}
+              updateFileDiagnosis={updateFileDiagnosis}
+              updateFileSubdiagnosis={updateFileSubdiagnosis}
+              updateFileSubSub={updateFileSubSub}
+              updateFileThirdOrder={updateFileThirdOrder}
+              updateFileComment={updateFileComment}
+              updateFileReady={updateFileReady}
             />
           )}
 
@@ -273,7 +279,11 @@ export default function UploadPage() {
           <Button
             onClick={handleSubmit}
             className="w-full bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white text-[15px] font-medium py-[14px] rounded-[8px] mt-8 shadow-sm hover:shadow transition-all flex items-center justify-center gap-2"
-            disabled={!selectedStudy || files.length === 0}
+            disabled={
+              !selectedStudy ||
+              files.length === 0 ||
+              files.some((f) => !f.isReady)
+            }
           >
             <Upload className="h-5 w-5" />
             {files.length > 0
