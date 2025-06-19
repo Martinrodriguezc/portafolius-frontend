@@ -20,6 +20,8 @@ import { useParams } from "react-router-dom";
 import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
 import VideoCarousel from "../../../components/common/Carousel/VideoCarousel";
 import ReturnButton from "../../../components/common/Button/ReturnButton";
+import { useEffect } from "react";
+import { useInteractions } from "../../../hooks/upload/useInteractions";
 
 export default function StudentVideoPage() {
   const { studyId } = useParams<{ studyId: string }>();
@@ -39,6 +41,13 @@ export default function StudentVideoPage() {
     isFullscreen,
     toggleFullscreen,
   } = useStudentVideoPage();
+
+  const { interactions, loadInteractions } = useInteractions();
+  useEffect(() => {
+    if (meta?.id) {
+      loadInteractions(meta.id);
+    }
+  }, [meta, loadInteractions]);
 
   const { studies, loading: studiesLoading } = useStudentStudies();
   const study = studies.find((s) => s.id === meta?.study_id);
@@ -250,6 +259,85 @@ export default function StudentVideoPage() {
               </div>
             </div>
           </Card>
+
+          {/* Protocol Tags and Comments */}
+          <div className="space-y-6">
+            {/* Etiquetas del protocolo */}
+            {interactions.length > 0 && (
+              <Card className="rounded-[16px] border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-slate-50 to-blue-50 p-4 border-b border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <Info className="h-5 w-5 text-[#4E81BD]" />
+                    <h3 className="text-[16px] font-semibold text-[#333333]">Etiquetas del protocolo</h3>
+                  </div>
+                </div>
+                <div className="p-6 space-y-2">
+                  <div className="space-y-1">
+                    <p><strong>Protocolo:</strong> {interactions[0].protocolKey}</p>
+                    <p><strong>Ventana:</strong> {interactions[0].windowName}</p>
+                    <p><strong>Hallazgo:</strong> {interactions[0].findingName}</p>
+                    <p><strong>Diagnóstico:</strong> {interactions[0].possibleDiagnosisName}</p>
+                    {interactions[0].subdiagnosisName && (
+                      <p><strong>Subdiagnóstico:</strong> {interactions[0].subdiagnosisName}</p>
+                    )}
+                    {interactions[0].subSubName && (
+                      <p><strong>Sub-Sub:</strong> {interactions[0].subSubName}</p>
+                    )}
+                    {interactions[0].thirdOrderName && (
+                      <p><strong>3er orden:</strong> {interactions[0].thirdOrderName}</p>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            )}
+            {interactions.length === 0 && (
+              <Card className="rounded-[16px] border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-slate-50 to-blue-50 p-4 border-b border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <Info className="h-5 w-5 text-[#4E81BD]" />
+                    <h3 className="text-[16px] font-semibold text-[#333333]">Etiquetas del protocolo</h3>
+                  </div>
+                </div>
+                <div className="p-6 space-y-2">
+                  <p className="text-[14px] text-[#666666]">No hay etiquetas registradas.</p>
+                </div>
+              </Card>
+            )}
+            {/* Comentarios */}
+            {interactions.length > 0 && (
+              <Card className="rounded-[16px] border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-slate-50 to-blue-50 p-4 border-b border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="h-5 w-5 text-[#4E81BD]" />
+                    <h3 className="text-[16px] font-semibold text-[#333333]">Comentarios</h3>
+                  </div>
+                </div>
+                <div className="p-6 space-y-2">
+                  {interactions.map((i) => (
+                    <div key={i.id}>
+                      <p>
+                        <strong>{i.role === "estudiante" ? "Estudiante" : "Profesor"}:</strong>{" "}
+                        {i.role === "estudiante" ? i.comment : i.professorComment}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+            {interactions.length === 0 && (
+              <Card className="rounded-[16px] border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-slate-50 to-blue-50 p-4 border-b border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="h-5 w-5 text-[#4E81BD]" />
+                    <h3 className="text-[16px] font-semibold text-[#333333]">Comentarios</h3>
+                  </div>
+                </div>
+                <div className="p-6 space-y-2">
+                  <p className="text-[14px] text-[#666666]">No hay comentarios.</p>
+                </div>
+              </Card>
+            )}
+          </div>
         </div>
 
         {/* Right Column - Evaluation */}

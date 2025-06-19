@@ -235,17 +235,17 @@ export default function UploadPage() {
           {selectedStudy && (
             <UploadSection
               files={files}
-                handleFileChange={handleFileChange}
-                removeFile={removeFile}
-                updateFileProtocol={updateFileProtocol}
-                updateFileWindow={updateFileWindow}
-                updateFileFinding={updateFileFinding}
-                updateFileDiagnosis={updateFileDiagnosis}
-                updateFileSubdiagnosis={updateFileSubdiagnosis}
-                updateFileSubSub={updateFileSubSub}
-                updateFileThirdOrder={updateFileThirdOrder}
-                updateFileComment={updateFileComment}
-                updateFileReady={updateFileReady}
+              handleFileChange={handleFileChange}
+              removeFile={removeFile}
+              updateFileProtocol={updateFileProtocol}
+              updateFileWindow={updateFileWindow}
+              updateFileFinding={updateFileFinding}
+              updateFileDiagnosis={updateFileDiagnosis}
+              updateFileSubdiagnosis={updateFileSubdiagnosis}
+              updateFileSubSub={updateFileSubSub}
+              updateFileThirdOrder={updateFileThirdOrder}
+              updateFileComment={updateFileComment}
+              updateFileReady={updateFileReady}
             />
           )}
 

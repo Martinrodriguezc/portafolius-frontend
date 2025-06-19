@@ -11,9 +11,11 @@ import { authService } from "../auth/authServices";
 import { RawStudy } from "../../types/Study";
 import { fetchStudentStudies } from "../student/Studies/request/studiesRequest";
 import { FileWithMetadata } from "../../types/File";
+import { useInteractions } from "./useInteractions";
 
 export function useUploadPage() {
   const userId = authService.getCurrentUser()?.id;
+  const { createInteraction } = useInteractions();
   if (!userId) throw new Error("Debes iniciar sesión para subir videos");
 
   const [studies, setStudies] = useState<RawStudy[]>([]);
@@ -119,6 +121,8 @@ export function useUploadPage() {
     if (!selectedStudy) return alert("Selecciona un estudio.");
     if (files.length < 0 || files.length > 8) return alert("Selecciona entre 4 y 8 videos.");
     if (files.some((f) => !f.protocolKey)) return alert("Asigna protocolo a cada video.");
+    if (files.some((f) => !f.isReady)) return alert("Marca cada video como listo antes de subir.");
+    console.log("Preparando interacciones para estos vídeos:", files);
 
     setIsUploading(true);
     setUploadProgress(0);
@@ -150,6 +154,19 @@ export function useUploadPage() {
 
         const { thumbnailKey } = await notifyUploadCallback(key, String(clipId));
         console.log("Miniatura generada en:", thumbnailKey);
+        // Crear interacción para este clip con protocolo, etiquetas y comentario
+        await createInteraction(clipId, {
+          protocolKey: files[i].protocolKey,
+          windowId: files[i].windowId!,
+          findingId: files[i].findingId!,
+          diagnosisId: files[i].diagnosisId!,
+          subdiagnosisId: files[i].subdiagnosisId,
+          subSubId: files[i].subSubId,
+          thirdOrderId: files[i].thirdOrderId,
+          comment: files[i].comment!,
+          isReady: files[i].isReady!,
+        });
+        console.log(`Interacción creada para clip ${clipId}`);
       }
 
       setUploadProgress(100);
