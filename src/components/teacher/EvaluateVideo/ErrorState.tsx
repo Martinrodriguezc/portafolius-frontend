@@ -1,8 +1,7 @@
 import { AlertCircle, RefreshCw } from "lucide-react";
 import PageHeader from "./PageHeader";
-
-interface Props { error: string; }
-export default function ErrorState({ error }: Props) {
+import { ErrorStateProps } from "../../../types/Props/Teacher/ErrorState";
+export default function ErrorState({ error }: ErrorStateProps) {
   return (
     <div className="p-8 md:p-10 max-w-7xl mx-auto">
       <PageHeader meta={null} />

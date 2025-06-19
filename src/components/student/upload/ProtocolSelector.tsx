@@ -2,13 +2,7 @@ import React from "react";
 import { Select, SelectValue } from "../../common/Select/SelectBase";
 import { SelectTrigger, SelectContent } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
-import { ProtocolOption } from "../../../types/protocol";
-
-interface ProtocolSelectorProps {
-  options: ProtocolOption[];
-  value: string;
-  onChange: (key: string) => void;
-}
+import { ProtocolSelectorProps } from "../../../types/Props/Upload/ProtocolSelectorProps";
 
 export const ProtocolSelector: React.FC<ProtocolSelectorProps> = ({
   options,

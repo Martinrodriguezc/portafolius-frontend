@@ -20,18 +20,9 @@ import {
   fetchThirdOrders,
   fetchImageQualities,
   fetchFinalDiagnoses,
-  saveSelection,
-  fetchSelection
 } from './request/protocolRequests'
-import type {
-  Interaction,
-  StudentInteractionPayload,
-  ProfessorInteractionPayload
-} from '../../../types/interaction'
 
-type SelectionPayload = StudentInteractionPayload | ProfessorInteractionPayload
-
-export function useProtocolFlow(clipId: number) {
+export function useProtocolFlow() {
   const [protocols, setProtocols] = useState<ProtocolOption[]>([])
   const [windows, setWindows] = useState<WindowOption[]>([])
   const [findings, setFindings] = useState<FindingOption[]>([])
@@ -41,7 +32,6 @@ export function useProtocolFlow(clipId: number) {
   const [thirdOrders, setThirdOrders] = useState<ThirdOrderOption[]>([])
   const [imageQualities, setImageQualities] = useState<ImageQualityOption[]>([])
   const [finalDiagnoses, setFinalDiagnoses] = useState<FinalDiagnosisOption[]>([])
-  const [selection, setSelection] = useState<Interaction | null>(null)
 
   useEffect(() => {
     fetchProtocols()
@@ -163,32 +153,6 @@ export function useProtocolFlow(clipId: number) {
       })
   }
 
-  const saveClipSelection = (payload: SelectionPayload): Promise<Interaction> => {
-    return saveSelection(clipId, payload)
-      .then(res => {
-        const interaction = res.data
-        setSelection(interaction)
-        return interaction
-      })
-      .catch(err => {
-        console.error('Error saving selection:', err)
-        throw err
-      })
-  }
-
-  const getClipSelection = (): Promise<Interaction | null> => {
-    return fetchSelection(clipId)
-      .then(res => {
-        const interaction = res.data
-        setSelection(interaction)
-        return interaction
-      })
-      .catch(err => {
-        console.error('Error fetching saved selection:', err)
-        return null
-      })
-  }
-
   return {
     protocols,
     windows,
@@ -199,7 +163,6 @@ export function useProtocolFlow(clipId: number) {
     thirdOrders,
     imageQualities,
     finalDiagnoses,
-    selection,
     loadWindows,
     loadFindings,
     loadDiagnoses,
@@ -208,7 +171,5 @@ export function useProtocolFlow(clipId: number) {
     loadThirdOrders,
     loadImageQualities,
     loadFinalDiagnoses,
-    saveClipSelection,
-    getClipSelection,
   }
 }

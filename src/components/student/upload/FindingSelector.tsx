@@ -2,13 +2,7 @@ import React from "react";
 import { Select, SelectValue } from "../../common/Select/SelectBase";
 import { SelectTrigger, SelectContent } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
-import { FindingOption } from "../../../types/protocol";
-
-interface FindingSelectorProps {
-  options: FindingOption[];
-  value?: number;
-  onChange: (id: number) => void;
-}
+import { FindingSelectorProps } from "../../../types/Props/Upload/FindingSelectorProps";
 
 export const FindingSelector: React.FC<FindingSelectorProps> = ({
   options,

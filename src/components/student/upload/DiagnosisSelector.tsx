@@ -2,13 +2,7 @@ import React from "react";
 import { Select, SelectValue } from "../../common/Select/SelectBase";
 import { SelectTrigger, SelectContent } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
-import { DiagnosisOption } from "../../../types/protocol";
-
-interface DiagnosisSelectorProps {
-  options: DiagnosisOption[];
-  value?: number;
-  onChange: (id: number) => void;
-}
+import { DiagnosisSelectorProps } from "../../../types/Props/Upload/DiagnosisSelectorProps";
 
 export const DiagnosisSelector: React.FC<DiagnosisSelectorProps> = ({
   options,

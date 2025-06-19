@@ -2,16 +2,7 @@ import Card from "../../common/Card/Card";
 import Button from "../../common/Button/Button";
 import { Textarea } from "../../common/Textarea/Textarea";
 import { RefreshCw, CheckCircle, Star } from "lucide-react";
-
-interface Props {
-  score: number;
-  feedback: string;
-  setScore(n: number): void;
-  setFeedback(s: string): void;
-  onSubmit(): void;
-  submitting: boolean;
-  existing: boolean;
-}
+import { EvaluationFormProps } from "../../../types/Props/Teacher/EvaluationForm";
 
 export default function EvaluationForm({
   score,
@@ -21,7 +12,7 @@ export default function EvaluationForm({
   onSubmit,
   submitting,
   existing,
-}: Props) {
+}: EvaluationFormProps) {
   return (
     <div className="w-full lg:w-1/3 space-y-6">
       <Card className="rounded-[16px] border border-slate-200 shadow-sm overflow-hidden">

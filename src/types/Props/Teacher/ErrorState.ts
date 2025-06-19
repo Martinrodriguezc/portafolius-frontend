@@ -1,0 +1,1 @@
+export interface ErrorStateProps { error: string; }

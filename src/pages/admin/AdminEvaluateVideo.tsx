@@ -7,7 +7,7 @@ import { Video } from "../../types/VideoTypes";
 import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
 import LoadingState from "../../components/teacher/EvaluateVideo/LoadingState";
 import ErrorState from "../../components/teacher/EvaluateVideo/ErrorState";
-import VideoSection from "../../components/teacher/EvaluateVideo/VideoSection";
+import VideoSection from "../../components/teacher/EvaluateVideo/VideoSection/VideoSection";
 import EvaluationFormComponent from "../../components/teacher/EvaluateVideo/EvaluationForm";
 import ExistingEvaluationCard from "../../components/teacher/EvaluateVideo/ExistingEvaluationCard";
 import { ClipboardList, ArrowLeft } from "lucide-react";

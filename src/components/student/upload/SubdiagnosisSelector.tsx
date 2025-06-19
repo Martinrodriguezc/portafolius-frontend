@@ -2,13 +2,7 @@ import React from "react";
 import { Select, SelectValue } from "../../common/Select/SelectBase";
 import { SelectTrigger, SelectContent } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
-import { SubdiagnosisOption } from "../../../types/protocol";
-
-interface SubdiagnosisSelectorProps {
-  options: SubdiagnosisOption[];
-  value?: number;
-  onChange: (id: number) => void;
-}
+import { SubdiagnosisSelectorProps } from "../../../types/Props/Upload/SubdiagnosisSelectorProps";
 
 export const SubdiagnosisSelector: React.FC<SubdiagnosisSelectorProps> = ({
   options,

@@ -2,13 +2,7 @@ import React from "react";
 import { Select, SelectValue } from "../../common/Select/SelectBase";
 import { SelectTrigger, SelectContent } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
-import { WindowOption } from "../../../types/protocol";
-
-interface WindowSelectorProps {
-  options: WindowOption[];
-  value?: number;
-  onChange: (id: number) => void;
-}
+import { WindowSelectorProps } from "../../../types/Props/Upload/WindowSelectorProps";
 
 export const WindowSelector: React.FC<WindowSelectorProps> = ({
   options,

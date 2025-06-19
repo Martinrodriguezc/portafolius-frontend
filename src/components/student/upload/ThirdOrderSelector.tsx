@@ -2,13 +2,7 @@ import React from "react";
 import { Select, SelectValue } from "../../common/Select/SelectBase";
 import { SelectTrigger, SelectContent } from "../../common/Select/SelectInteraction";
 import { SelectItem } from "../../common/Select/SelectItems";
-import { ThirdOrderOption } from "../../../types/protocol";
-
-interface ThirdOrderSelectorProps {
-  options: ThirdOrderOption[];
-  value?: number;
-  onChange: (id: number) => void;
-}
+import { ThirdOrderSelectorProps } from "../../../types/Props/Upload/ThirdOrderSelectorProps";
 
 export const ThirdOrderSelector: React.FC<ThirdOrderSelectorProps> = ({
   options,
