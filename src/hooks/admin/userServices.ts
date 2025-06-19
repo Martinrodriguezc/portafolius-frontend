@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useCallback } from 'react';
+import axios, { AxiosError } from 'axios';
 import { User, UserFormData } from '../../types/Admin/UserTypes';
 import { ServiceResponse } from '../../types/Admin/ServiceTypes';
 import { config } from '../../config/config';
 import { checkAdminStatus } from './adminCheck';
+import { handleAuthError, redirectToLogin, createAuthHeaders } from '../../utils/authErrorHandler';
 
 export const useUserServices = () => {
   const [students, setStudents] = useState<User[]>([]);
@@ -11,11 +12,28 @@ export const useUserServices = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchUsers = async () => {
+  const handleUserServiceError = (error: Error | AxiosError) => {
+    const authErrorInfo = handleAuthError(error);
+    
+    if (authErrorInfo.isAuthError) {
+      setError(authErrorInfo.message);
+      if (authErrorInfo.shouldRedirect) {
+        redirectToLogin();
+      }
+      return;
+    }
+    
+    // Otros errores
+    setError('Error al conectar con el servidor');
+  };
+
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`${config.SERVER_URL}/users`);
+      const response = await axios.get(`${config.SERVER_URL}/users`, {
+        headers: createAuthHeaders()
+      });
       const allUsers = response.data;
       
       const studentsList = allUsers.filter((user: User) => 
@@ -28,13 +46,12 @@ export const useUserServices = () => {
       setStudents(studentsList);
       setTeachers(teachersList);
     } catch (err) {
-      setError('Error al obtener los usuarios');
       console.error(err);
+      handleUserServiceError(err as AxiosError);
     } finally {
       setLoading(false);
     }
-  };
-
+  }, []);
 
   const addUser = async (newUser: Omit<UserFormData, 'id' | 'createdAt'>): Promise<ServiceResponse<User>> => {
     try {
@@ -69,7 +86,9 @@ export const useUserServices = () => {
 
   const updateUser = async (id: string, userData: Partial<UserFormData>): Promise<ServiceResponse<User>> => {
     try {
-      const response = await axios.put(`${config.SERVER_URL}/users/${id}`, userData);
+      const response = await axios.put(`${config.SERVER_URL}/users/${id}`, userData, {
+        headers: createAuthHeaders()
+      });
       const updatedUser = response.data as User;
       
       const isStudent = 
@@ -92,15 +111,27 @@ export const useUserServices = () => {
       
       return { success: true, data: updatedUser };
     } catch (err) {
-      setError('Error al actualizar usuario');
       console.error(err);
+      const authErrorInfo = handleAuthError(err as AxiosError);
+      
+      if (authErrorInfo.isAuthError) {
+        if (authErrorInfo.shouldRedirect) {
+          redirectToLogin();
+          return { success: false, error: authErrorInfo.message };
+        }
+        return { success: false, error: authErrorInfo.message };
+      }
+      
+      setError('Error al actualizar usuario');
       return { success: false, error: 'Error al actualizar usuario' };
     }
   };
 
   const deleteUser = async (id: string, role: string): Promise<ServiceResponse> => {
     try {
-      await axios.delete(`${config.SERVER_URL}/users/${id}`);
+      await axios.delete(`${config.SERVER_URL}/users/${id}`, {
+        headers: createAuthHeaders()
+      });
       
       const isStudent = role === 'estudiante' || role === 'student';
       const isTeacher = role === 'profesor' || role === 'teacher';
@@ -113,15 +144,25 @@ export const useUserServices = () => {
       
       return { success: true };
     } catch (err) {
-      setError('Error al eliminar usuario');
       console.error(err);
+      const authErrorInfo = handleAuthError(err as AxiosError);
+      
+      if (authErrorInfo.isAuthError) {
+        if (authErrorInfo.shouldRedirect) {
+          redirectToLogin();
+          return { success: false, error: authErrorInfo.message };
+        }
+        return { success: false, error: authErrorInfo.message };
+      }
+      
+      setError('Error al eliminar usuario');
       return { success: false, error: 'Error al eliminar usuario' };
     }
   };
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   return {
     students,
