@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { anonymizeVideoLocally } from "../upload/uploadRequests/requests";
 
 interface UsePreUploadPlayerProps {
   file?: File;
@@ -11,16 +12,34 @@ export const usePreUploadPlayer = ({ file, previewUrl }: UsePreUploadPlayerProps
   const [progress, setProgress] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [localUrl, setLocalUrl] = useState<string | null>(null);
+  const [isAnonymizing, setIsAnonymizing] = useState(false);
+  const [anonymizationError, setAnonymizationError] = useState<string | null>(null);
 
-  // Generate previewUrl if file is provided
   useEffect(() => {
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setLocalUrl(url);
-      return () => URL.revokeObjectURL(url);
-    }
-    // If using previewUrl prop, don't need to manage object URL
-    setLocalUrl(previewUrl || null);
+    const fetchLocalUrl = async () => {
+      if (file) {
+        try {
+          setIsAnonymizing(true);
+          setAnonymizationError(null);
+          const cleanedFile = await anonymizeVideoLocally(file);
+          const url = URL.createObjectURL(cleanedFile);
+          setLocalUrl(url);
+          return () => URL.revokeObjectURL(url);
+        } catch (error) {
+          console.error("Error anonymizing video:", error);
+          setAnonymizationError(error instanceof Error ? error.message : "Error al anonimizar el video");
+          // Fallback to original file if anonymization fails
+          const url = URL.createObjectURL(file);
+          setLocalUrl(url);
+          return () => URL.revokeObjectURL(url);
+        } finally {
+          setIsAnonymizing(false);
+        }
+      }
+      // If using previewUrl prop, don't need to manage object URL
+      setLocalUrl(previewUrl || null);
+    };
+    fetchLocalUrl();
   }, [file, previewUrl]);
 
   // Play/pause logic
@@ -81,6 +100,8 @@ export const usePreUploadPlayer = ({ file, previewUrl }: UsePreUploadPlayerProps
     progress,
     isFullscreen,
     localUrl,
+    isAnonymizing,
+    anonymizationError,
     togglePlay,
     toggleFullscreen,
     handleTimeUpdate,

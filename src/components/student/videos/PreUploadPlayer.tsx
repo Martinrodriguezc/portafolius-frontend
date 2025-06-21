@@ -1,5 +1,5 @@
 import React from "react";
-import { Play, Pause, Maximize2, Minimize2 } from "lucide-react";
+import { Play, Pause, Maximize2, Minimize2, Loader2, AlertCircle } from "lucide-react";
 import Button from "../../common/Button/Button";
 import { PreUploadPlayerProps } from "../../../types/VideoPlayer";
 import { usePreUploadPlayer } from "../../../hooks/video/usePreUploadPlayer";
@@ -11,6 +11,8 @@ const PreUploadPlayer: React.FC<PreUploadPlayerProps> = ({ file, previewUrl, cla
         progress,
         isFullscreen,
         localUrl,
+        isAnonymizing,
+        anonymizationError,
         togglePlay,
         toggleFullscreen,
         handleTimeUpdate,
@@ -19,13 +21,31 @@ const PreUploadPlayer: React.FC<PreUploadPlayerProps> = ({ file, previewUrl, cla
         stopPropagation,
     } = usePreUploadPlayer({ file, previewUrl });
 
-    if (!localUrl) return null; // No file to preview
+    if (!localUrl && !isAnonymizing) return null; 
 
     return (
-        <div className={`relative bg-black rounded-lg overflow-hidden ${className ?? ""}`}>            
+        <div className={`relative bg-black rounded-lg overflow-hidden ${className ?? ""}`}>
+            {/* Loading Overlay */}
+            {isAnonymizing && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
+                    <div className="text-center text-white">
+                        <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2" />
+                        <p className="text-sm">Anonimizando video...</p>
+                    </div>
+                </div>
+            )}
+
+            {/* Error Overlay */}
+            {anonymizationError && (
+                <div className="absolute top-2 left-2 right-2 bg-red-500/90 text-white p-2 rounded text-xs flex items-center gap-2 z-10">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    <span>{anonymizationError}</span>
+                </div>
+            )}
+            
             <video
                 ref={videoRef}
-                src={localUrl}
+                src={localUrl || undefined}
                 className="w-full h-auto max-h-[340px] bg-black"
                 controls={false}
                 onTimeUpdate={handleTimeUpdate}
@@ -45,6 +65,7 @@ const PreUploadPlayer: React.FC<PreUploadPlayerProps> = ({ file, previewUrl, cla
                         onClick={(e) => { stopPropagation(e); togglePlay(); }}
                         aria-label={isPlaying ? "Pausar video" : "Reproducir video"}
                         className="text-white hover:bg-white/20"
+                        disabled={isAnonymizing}
                     >
                         {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                     </Button>
@@ -57,8 +78,9 @@ const PreUploadPlayer: React.FC<PreUploadPlayerProps> = ({ file, previewUrl, cla
                         value={progress}
                         onChange={handleSeek}
                         onClick={stopPropagation}
-                        className="flex-1 h-1.5 rounded-lg bg-white/30 accent-white cursor-pointer"
+                        className="flex-1 h-1.5 rounded-lg bg-white/30 accent-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         aria-label="Barra de progreso del video"
+                        disabled={isAnonymizing}
                     />
 
                     <Button
@@ -67,6 +89,7 @@ const PreUploadPlayer: React.FC<PreUploadPlayerProps> = ({ file, previewUrl, cla
                         onClick={toggleFullscreen}
                         aria-label={isFullscreen ? "Salir de pantalla completa" : "Expandir video"}
                         className="text-white hover:bg-white/20"
+                        disabled={isAnonymizing}
                     >
                         {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                     </Button>
