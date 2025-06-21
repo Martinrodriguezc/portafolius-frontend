@@ -159,11 +159,11 @@ export function useUploadPage() {
           protocolKey: files[i].protocolKey,
           windowId: files[i].windowId!,
           findingId: files[i].findingId!,
-          diagnosisId: files[i].diagnosisId!,
+          possibleDiagnosisId: files[i].diagnosisId!,
           subdiagnosisId: files[i].subdiagnosisId,
           subSubId: files[i].subSubId,
           thirdOrderId: files[i].thirdOrderId,
-          comment: files[i].comment!,
+          studentComment: files[i].comment!,
           isReady: files[i].isReady!,
         });
         console.log(`Interacción creada para clip ${clipId}`);

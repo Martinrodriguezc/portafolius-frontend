@@ -49,7 +49,6 @@ const PreUploadPlayer: React.FC<PreUploadPlayerProps> = ({ file, previewUrl, cla
                         {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                     </Button>
 
-                    {/* Progress Bar */}
                     <input
                         type="range"
                         min={0}
@@ -62,7 +61,6 @@ const PreUploadPlayer: React.FC<PreUploadPlayerProps> = ({ file, previewUrl, cla
                         aria-label="Barra de progreso del video"
                     />
 
-                    {/* Fullscreen Button */}
                     <Button
                         variant="ghost"
                         size="icon"

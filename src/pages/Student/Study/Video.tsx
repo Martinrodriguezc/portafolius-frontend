@@ -43,6 +43,7 @@ export default function StudentVideoPage() {
   } = useStudentVideoPage();
 
   const { interactions, loadInteractions } = useInteractions();
+  console.log("interactions", interactions)
   useEffect(() => {
     if (meta?.id) {
       loadInteractions(meta.id);
