@@ -60,7 +60,7 @@ function AttemptsPanel({ attempts }: AttemptsPanelProps) {
   };
 
   return (
-    <div className="w-80 bg-white border-r border-gray-200 h-full flex flex-col">
+    <div className="w-full md:w-80 bg-white border-r border-gray-200 h-full flex flex-col">
       {/* Header */}
       <div className="p-4 border-b border-gray-200 bg-gray-50">
         <div className="flex items-center gap-2">
@@ -221,11 +221,10 @@ function ModernGraderPanel({ rubric, responses, onChange, onSubmit }: GraderPane
                               <button
                                 key={level.value}
                                 onClick={() => onChange(item.key, level.value)}
-                                className={`p-3 rounded-lg border-2 transition-all text-left ${
-                                  isSelected
-                                    ? "border-blue-500 bg-blue-50 shadow-sm"
-                                    : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                                }`}
+                                className={`p-3 rounded-lg border-2 transition-all text-left ${isSelected
+                                  ? "border-blue-500 bg-blue-50 shadow-sm"
+                                  : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                                  }`}
                               >
                                 <div className="flex items-center gap-3">
                                   {isSelected ? (
@@ -354,9 +353,9 @@ export default function EvaluateVideoPage() {
   if (!protocol) return <div className="p-8">Cargando protocolo…</div>;
 
   return (
-    <div className="h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
+      <header className="bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -373,10 +372,10 @@ export default function EvaluateVideoPage() {
 
 
       {/* Main content */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex flex-col md:flex-row flex-1 overflow-y-auto md:overflow-hidden">
         {/* Left side - Video */}
-        <div className="flex-1 bg-gray-50 flex flex-col">
-          <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 bg-gray-50 flex flex-col min-h-0 overflow-y-auto">
+          <div className="flex-1 flex justify-center">
             <VideoSection
               url={url}
               videoRef={videoRef}
@@ -397,7 +396,7 @@ export default function EvaluateVideoPage() {
         <AttemptsPanel attempts={attempts} />
 
         {/* Right side - Grader Panel */}
-        <div className="w-96 flex-shrink-0">
+        <div className="w-full md:w-96 flex-shrink-0">
           <ModernGraderPanel
             rubric={RUBRICS[protocol.key]}
             responses={responses.reduce(
