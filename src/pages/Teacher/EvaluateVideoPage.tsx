@@ -8,6 +8,7 @@ import { useState } from "react"
 import { useEffect } from "react"
 import { attemptService } from "../../hooks/teacher/attemptService/attemptService"
 import type { Attempt } from "../../types/attempt"
+import { postProfessorInteraction } from "../../hooks/upload/interactionsRequests/interactionRequest"
 import {
   ChevronDown,
   ChevronUp,
@@ -143,22 +144,23 @@ function AttemptsPanel({ attempts }: AttemptsPanelProps) {
 
 
 interface GraderPanelProps {
-  rubric: ProtocolRubric
-  responses: Record<string, number>
-  onChange(itemKey: string, value: number): void
-  onSubmit(): void
+  rubric: ProtocolRubric;
+  responses: Record<string, number>;
+  onChange(itemKey: string, value: number): void;
+  professorComment: string;
+  setProfessorComment: (value: string) => void;
+  onSave: () => void;
 }
 
-function ModernGraderPanel({ rubric, responses, onChange, onSubmit }: GraderPanelProps) {
+function ModernGraderPanel({ rubric, responses, onChange, professorComment, setProfessorComment, onSave }: GraderPanelProps) {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(
-    Object.fromEntries(rubric.sections.map((s) => [s.key, true])),
-  )
-  const [comments, setComments] = useState("")
+    Object.fromEntries(rubric.sections.map((s) => [s.key, true]))
+  );
 
-  const toggleSection = (key: string) => setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }))
+  const toggleSection = (key: string) => setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
 
-  const totalScore = Object.values(responses).reduce((a, b) => a + b, 0)
-  const percentage = Math.round((totalScore / rubric.totalStudyMaxScore) * 100)
+  const totalScore = Object.values(responses).reduce((a, b) => a + b, 0);
+  const percentage = Math.round((totalScore / rubric.totalStudyMaxScore) * 100);
 
   return (
     <div className="bg-white h-full flex flex-col">
@@ -216,7 +218,7 @@ function ModernGraderPanel({ rubric, responses, onChange, onSubmit }: GraderPane
 
                         <div className="grid grid-cols-1 gap-2">
                           {item.levels.map((level: RubricLevel) => {
-                            const isSelected = responses[item.key] === level.value
+                            const isSelected = responses[item.key] === level.value;
                             return (
                               <button
                                 key={level.value}
@@ -246,7 +248,7 @@ function ModernGraderPanel({ rubric, responses, onChange, onSubmit }: GraderPane
                                   </div>
                                 </div>
                               </button>
-                            )
+                            );
                           })}
                         </div>
                       </div>
@@ -256,58 +258,24 @@ function ModernGraderPanel({ rubric, responses, onChange, onSubmit }: GraderPane
               )}
             </div>
           ))}
-
-          {/* Comments Section */}
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
-              <div className="flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-gray-600" />
-                <h3 className="font-semibold text-gray-900">Comentarios para este intento</h3>
-              </div>
-            </div>
-
-            <div className="p-4">
-              {/* Toolbar */}
-              <div className="flex items-center gap-1 mb-3 pb-3 border-b border-gray-200">
-                <button className="p-2 hover:bg-gray-100 rounded transition-colors" title="Negrita">
-                  <Bold className="w-4 h-4 text-gray-600" />
-                </button>
-                <button className="p-2 hover:bg-gray-100 rounded transition-colors" title="Cursiva">
-                  <Italic className="w-4 h-4 text-gray-600" />
-                </button>
-                <button className="p-2 hover:bg-gray-100 rounded transition-colors" title="Subrayado">
-                  <Underline className="w-4 h-4 text-gray-600" />
-                </button>
-                <div className="w-px h-6 bg-gray-300 mx-1" />
-                <button className="p-2 hover:bg-gray-100 rounded transition-colors" title="Lista">
-                  <List className="w-4 h-4 text-gray-600" />
-                </button>
-                <button className="p-2 hover:bg-gray-100 rounded transition-colors" title="Enlace">
-                  <Link2 className="w-4 h-4 text-gray-600" />
-                </button>
-              </div>
-
-              {/* Text Area */}
-              <textarea
-                value={comments}
-                onChange={(e) => setComments(e.target.value)}
-                placeholder="Escribe tus comentarios sobre la evaluación aquí..."
-                className="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              />
-
-              <div className="flex items-center justify-between mt-3 text-sm text-gray-500">
-                <span>Todos los comentarios se envían al estudiante</span>
-                <span>{comments.length} caracteres</span>
-              </div>
-            </div>
-          </div>
         </div>
+      </div>
+
+      {/* — Feedback del profesor — */}
+      <div className="mb-4 px-6">
+        <h3 className="font-medium text-gray-700 mb-1">Comentarios para este intento</h3>
+        <textarea
+          value={professorComment}
+          onChange={e => setProfessorComment(e.target.value)}
+          placeholder="Escribe tus comentarios para el estudiante…"
+          className="w-full border border-gray-300 rounded p-2 h-24 resize-none focus:ring-2 focus:ring-blue-500"
+        />
       </div>
 
       {/* Footer con botón de guardar */}
       <div className="p-6 border-t border-gray-200 bg-gray-50">
         <button
-          onClick={onSubmit}
+          onClick={onSave}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
         >
           <Save className="w-5 h-5" />
@@ -315,7 +283,7 @@ function ModernGraderPanel({ rubric, responses, onChange, onSubmit }: GraderPane
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 export default function EvaluateVideoPage() {
@@ -338,6 +306,7 @@ export default function EvaluateVideoPage() {
   } = useTeacherEvaluateVideo();
 
   const [attempts, setAttempts] = useState<Attempt[]>([]);
+  const [professorComment, setProfessorComment] = useState<string>("");
 
   useEffect(() => {
     if (!meta?.id) return;
@@ -347,6 +316,27 @@ export default function EvaluateVideoPage() {
   const { pending, completed } = useAllStudies();
   const allStudies = [...pending, ...completed];
   const currentStudy = meta ? allStudies.find((s) => s.study_id === meta.study_id) : undefined;
+
+  const handleSubmit = async () => {
+    try {
+      // 1) guardo el attempt + respuestas + comment
+      const payload: { protocolKey: string; responses: { itemKey: string; score: number }[]; comment?: string } = {
+        protocolKey: protocol!.key,
+        responses,
+      };
+      if (professorComment) payload.comment = professorComment;
+      await attemptService.create(Number(meta!.id), payload);
+
+      await postProfessorInteraction(Number(meta!.id), {
+        professorComment: professorComment.trim() || undefined,
+      });
+
+      alert("Evaluación y feedback guardados correctamente");
+    } catch (err) {
+      console.error(err);
+      alert("Error al guardar la evaluación");
+    }
+  };
 
   if (loading || !meta) return <LoadingState />;
   if (error) return <ErrorState error={error} />;
@@ -407,7 +397,9 @@ export default function EvaluateVideoPage() {
               {} as Record<string, number>
             )}
             onChange={updateScore}
-            onSubmit={onSubmit}
+            professorComment={professorComment}
+            setProfessorComment={setProfessorComment}
+            onSave={handleSubmit}
           />
         </div>
       </div>
