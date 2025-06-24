@@ -18,11 +18,6 @@ import {
   ArrowLeft,
   User,
   MessageSquare,
-  Bold,
-  Italic,
-  Underline,
-  List,
-  Link2,
   History,
   Star,
   FileText,
@@ -296,7 +291,6 @@ export default function EvaluateVideoPage() {
     protocol,
     responses,
     updateScore,
-    onSubmit,
     isPlaying,
     togglePlay,
     progress,
@@ -328,6 +322,7 @@ export default function EvaluateVideoPage() {
       await attemptService.create(Number(meta!.id), payload);
 
       await postProfessorInteraction(Number(meta!.id), {
+        
         professorComment: professorComment.trim() || undefined,
       });
 

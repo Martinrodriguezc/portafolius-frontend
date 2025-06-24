@@ -20,9 +20,15 @@ export const postProfessorInteraction = async (
   clipId: number,
   payload: ProfessorInteractionPayload
 ): Promise<Interaction> => {
+  const token = localStorage.getItem('auth_token');
   const res: AxiosResponse<Interaction> = await api.post(
     `/interactions/${clipId}/interaction/review`,
-    payload
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    }
   );
   return res.data;
 };
@@ -30,8 +36,14 @@ export const postProfessorInteraction = async (
 export const fetchInteractions = async (
   clipId: number
 ): Promise<Interaction[]> => {
+  const token = localStorage.getItem('auth_token');
   const res: AxiosResponse<Interaction[]> = await api.get(
-    `/interactions/${clipId}/interaction`
+    `/interactions/${clipId}/interaction`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    }
   );
   return res.data;
 };
