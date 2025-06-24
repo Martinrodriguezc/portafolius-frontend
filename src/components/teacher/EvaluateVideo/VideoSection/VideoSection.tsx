@@ -1,10 +1,10 @@
-import Card from '../../../common/Card/Card';
-import VideoPlayer from '../../../student/videos/VideoPlayer';
-// now VideoSectionProps must include interactions, teacherSelection, setTeacherSelection, loadWindows, loadFindings, loadDiagnoses, loadSubdiagnoses, loadSubSubs, loadThirdOrders, loadImageQualities, loadFinalDiagnoses
-import { VideoSectionProps } from '../../../../types/Props/Video/VideoSectionProps';
-import VideoDetailsCard from './VideoDetailsCard';
-import StudentEvaluationCard from './StudentEvaluationCard';
-import TeacherFeedbackCard from './TeacherFeedbackCard';
+import Card from "../../../common/Card/Card";
+import VideoPlayer from "../../../student/videos/VideoPlayer";
+import { VideoSectionProps } from "../../../../types/Props/Video/VideoSectionProps";
+
+import VideoDetailsCard from "./VideoDetailsCard";
+import StudentEvaluationCard from "./StudentEvaluationCard";
+import TeacherFeedbackCard from "./TeacherFeedbackCard";
 
 export default function VideoSection({
   url,
@@ -28,6 +28,7 @@ export default function VideoSection({
   loadThirdOrders,
   loadImageQualities,
   loadFinalDiagnoses,
+  onSendInteraction,
 }: VideoSectionProps) {
   return (
     <div className="w-full lg:w-2/3 space-y-6">
@@ -56,6 +57,7 @@ export default function VideoSection({
         loadThirdOrders={loadThirdOrders}
         loadImageQualities={loadImageQualities}
         loadFinalDiagnoses={loadFinalDiagnoses}
+        onSendInteraction={onSendInteraction}
       />
     </div>
   );

@@ -1,20 +1,22 @@
-import React from 'react';
-import Button from '../../common/Button/Button';
-import { FileVideo, Trash2 } from 'lucide-react';
-import { useProtocolOptions } from '../../../hooks/student/protocols/useProtocolOptions';
-import { useProtocolFlow } from '../../../hooks/student/ProtocolFlow/useProtocolFlow';
-import { FileUploadRowTeacherProps } from '../../../types/Props/Video/FileUploadRowTeacherProps';
-import { ProtocolSelectorTeacher } from './SelectorPages/ProtocolSelectorTeacher';
-import { WindowSelectorTeacher } from './SelectorPages/WindowSelectorTeacher';
-import { FindingSelectorTeacher } from './SelectorPages/FindingSelectorTeacher';
-import { DiagnosisSelectorTeacher } from './SelectorPages/DiagnosisSelectorTeacher';
-import { SubdiagnosisSelectorTeacher } from './SelectorPages/SubdiagnosisSelectorTeacher';
-import { SubSubSelectorTeacher } from './SelectorPages/SubSubSelectorTeacher';
-import { ThirdOrderSelectorTeacher } from './SelectorPages/ThirdOrderSelectorTeacher';
-import { ImageQualitySelectorTeacher } from './SelectorPages/ImageQualitySelectorTeacher';
-import { FinalDiagnosisSelectorTeacher } from './SelectorPages/FinalDiagnosisSelectorTeacher';
-import { CommentSectionTeacher } from './SelectorPages/CommentSectionTeacher';
-import { ReadyCheckboxTeacher } from './SelectorPages/ReadyCheckboxTeacher';
+import React, { useEffect } from "react";
+import Button from "../../common/Button/Button";
+import { FileVideo, Trash2 } from "lucide-react";
+
+import { useProtocolOptions } from "../../../hooks/student/protocols/useProtocolOptions";
+import { useProtocolFlow } from "../../../hooks/student/ProtocolFlow/useProtocolFlow";
+import { FileUploadRowTeacherProps } from "../../../types/Props/Video/FileUploadRowTeacherProps";
+
+import { ProtocolSelectorTeacher }       from "./SelectorPages/ProtocolSelectorTeacher";
+import { WindowSelectorTeacher }         from "./SelectorPages/WindowSelectorTeacher";
+import { FindingSelectorTeacher }        from "./SelectorPages/FindingSelectorTeacher";
+import { DiagnosisSelectorTeacher }      from "./SelectorPages/DiagnosisSelectorTeacher";
+import { SubdiagnosisSelectorTeacher }   from "./SelectorPages/SubdiagnosisSelectorTeacher";
+import { SubSubSelectorTeacher }         from "./SelectorPages/SubSubSelectorTeacher";
+import { ThirdOrderSelectorTeacher }     from "./SelectorPages/ThirdOrderSelectorTeacher";
+import { ImageQualitySelectorTeacher }   from "./SelectorPages/ImageQualitySelectorTeacher";
+import { FinalDiagnosisSelectorTeacher } from "./SelectorPages/FinalDiagnosisSelectorTeacher";
+import { CommentSectionTeacher }         from "./SelectorPages/CommentSectionTeacher";
+import { ReadyCheckboxTeacher }          from "./SelectorPages/ReadyCheckboxTeacher";
 
 export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
   fileItem,
@@ -33,13 +35,81 @@ export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
   updateFileReady,
 }) => {
   const { protocols } = useProtocolOptions();
+  const flow = useProtocolFlow();
   const {
-    windows, findings, diagnoses, subdiagnoses, subSubs, thirdOrders,
-    imageQualities, finalDiagnoses,
-    loadWindows, loadFindings, loadDiagnoses,
-    loadSubdiagnoses, loadSubSubs, loadThirdOrders,
-    loadImageQualities, loadFinalDiagnoses,
-  } = useProtocolFlow();
+    windows,
+    findings,
+    diagnoses,
+    subdiagnoses,
+    subSubs,
+    thirdOrders,
+    imageQualities,
+    finalDiagnoses,
+    loadWindows,
+    loadFindings,
+    loadDiagnoses,
+    loadSubdiagnoses,
+    loadSubSubs,
+    loadThirdOrders,
+    loadImageQualities,
+    loadFinalDiagnoses,
+  } = flow;
+
+  useEffect(() => {
+    if (!fileItem.protocolKey) return;
+    loadWindows(fileItem.protocolKey);
+    loadImageQualities();
+    loadFinalDiagnoses();
+  }, [fileItem.protocolKey]);
+
+  useEffect(() => {
+    if (
+      !fileItem.protocolKey ||
+      fileItem.windowId === undefined
+    )
+      return;
+    loadFindings(fileItem.protocolKey, fileItem.windowId);
+  }, [fileItem.protocolKey, fileItem.windowId]);
+
+  useEffect(() => {
+    if (
+      !fileItem.protocolKey ||
+      fileItem.windowId === undefined ||
+      fileItem.findingId === undefined
+    )
+      return;
+    loadDiagnoses(
+      fileItem.protocolKey,
+      fileItem.windowId,
+      fileItem.findingId
+    );
+  }, [fileItem.protocolKey, fileItem.windowId, fileItem.findingId]);
+
+  useEffect(() => {
+    if (
+      !fileItem.protocolKey ||
+      fileItem.diagnosisId === undefined
+    )
+      return;
+    loadSubdiagnoses(fileItem.protocolKey, fileItem.diagnosisId);
+  }, [fileItem.protocolKey, fileItem.diagnosisId]);
+
+  useEffect(() => {
+    if (
+      !fileItem.protocolKey ||
+      fileItem.subdiagnosisId === undefined
+    )
+      return;
+    loadSubSubs(fileItem.protocolKey, fileItem.subdiagnosisId);
+  }, [fileItem.protocolKey, fileItem.subdiagnosisId]);
+  useEffect(() => {
+    if (
+      !fileItem.protocolKey ||
+      fileItem.subSubId === undefined
+    )
+      return;
+    loadThirdOrders(fileItem.protocolKey, fileItem.subSubId);
+  }, [fileItem.protocolKey, fileItem.subSubId]);
 
   return (
     <div className="border border-slate-200 rounded-[12px] shadow-sm hover:shadow-md">
@@ -61,7 +131,7 @@ export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
         <ProtocolSelectorTeacher
           index={index}
           protocols={protocols}
-          value={fileItem.protocolKey}
+          value={fileItem.protocolKey ?? ""}
           onChange={(val) => {
             updateFileProtocol(index, val);
             loadWindows(val);
@@ -126,9 +196,7 @@ export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
               index={index}
               options={thirdOrders}
               value={fileItem.thirdOrderId}
-              onChange={(to) => {
-                updateFileThirdOrder(index, to);
-              }}
+              onChange={(to) => updateFileThirdOrder(index, to)}
             />
 
             <ImageQualitySelectorTeacher
@@ -149,13 +217,13 @@ export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
 
         <CommentSectionTeacher
           index={index}
-          value={fileItem.comment}
+          value={fileItem.comment ?? ""}
           onChange={(val) => updateFileComment(index, val)}
         />
 
         <ReadyCheckboxTeacher
           index={index}
-          checked={fileItem.isReady}
+          checked={fileItem.isReady ?? false}
           onChange={(val) => updateFileReady(index, val)}
         />
       </div>

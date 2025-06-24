@@ -31,4 +31,5 @@ export interface VideoSectionProps {
   loadThirdOrders: (protocolKey: string, subSubId: number) => void;
   loadImageQualities: () => void;
   loadFinalDiagnoses: () => void;
+  onSendInteraction: () => void;
 }
