@@ -23,6 +23,8 @@ export default function TeacherFeedbackCard({
   loadSubdiagnoses,
   loadSubSubs,
   loadThirdOrders,
+  loadImageQualities,
+  loadFinalDiagnoses,
 }: Props) {
   return (
     <FileUploadRowTeacher
@@ -43,6 +45,8 @@ export default function TeacherFeedbackCard({
           };
           // Cargar ventanas, calidades, diagnósticos finales (si aplica)
           loadWindows(protocolKey);
+          loadImageQualities();
+          loadFinalDiagnoses();
           return newSelection;
         });
       }}
@@ -158,13 +162,13 @@ export default function TeacherFeedbackCard({
           thirdOrderId,
         }));
       }}
-      updateFileImageQuality={(imageQualityId) => {
+      updateFileImageQuality={(_, imageQualityId) => {
         setTeacherSelection(prev => ({
           ...prev,
           imageQualityId,
         }));
       }}
-      updateFileFinalDiagnosis={(finalDiagnosisId) => {
+      updateFileFinalDiagnosis={(_, finalDiagnosisId) => {
         setTeacherSelection(prev => ({
           ...prev,
           finalDiagnosisId,

@@ -1,5 +1,6 @@
 import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies"
 import { useTeacherEvaluateVideo } from "../../hooks/teacher/evaluations/useTeacherEvaluateVideo/useTeacherEvaluateVideo"
+import { useVideoSection } from "../../hooks/teacher/VideoSection/useVideoSection"
 import LoadingState from "../../components/teacher/EvaluateVideo/LoadingState"
 import ErrorState from "../../components/teacher/EvaluateVideo/ErrorState"
 import VideoSection from "../../components/teacher/EvaluateVideo/VideoSection/VideoSection"
@@ -9,6 +10,8 @@ import { useEffect } from "react"
 import { attemptService } from "../../hooks/teacher/attemptService/attemptService"
 import type { Attempt } from "../../types/attempt"
 import { postProfessorInteraction } from "../../hooks/upload/interactionsRequests/interactionRequest"
+import type { ProfessorInteractionPayload } from "../../types/interaction"
+
 import {
   ChevronDown,
   ChevronUp,
@@ -299,6 +302,21 @@ export default function EvaluateVideoPage() {
     toggleFullscreen,
   } = useTeacherEvaluateVideo();
 
+  // Teacher feedback state and loaders
+  const {
+    interactions,
+    teacherSelection,
+    setTeacherSelection,
+    loadWindows,
+    loadFindings,
+    loadDiagnoses,
+    loadSubdiagnoses,
+    loadSubSubs,
+    loadThirdOrders,
+    loadImageQualities,
+    loadFinalDiagnoses,
+  } = useVideoSection(meta?.id ?? 0);
+
   const [attempts, setAttempts] = useState<Attempt[]>([]);
   const [professorComment, setProfessorComment] = useState<string>("");
 
@@ -312,26 +330,39 @@ export default function EvaluateVideoPage() {
   const currentStudy = meta ? allStudies.find((s) => s.study_id === meta.study_id) : undefined;
 
   const handleSubmit = async () => {
-    try {
-      // 1) guardo el attempt + respuestas + comment
-      const payload: { protocolKey: string; responses: { itemKey: string; score: number }[]; comment?: string } = {
-        protocolKey: protocol!.key,
-        responses,
-      };
-      if (professorComment) payload.comment = professorComment;
-      await attemptService.create(Number(meta!.id), payload);
+  try {
+    // 1) guardo el attempt + respuestas + comment
+    const payloadAttempt: {
+      protocolKey: string;
+      responses: { itemKey: string; score: number }[];
+      comment?: string;
+    } = {
+      protocolKey: protocol!.key,
+      responses,
+      ...(professorComment ? { comment: professorComment } : {}),
+    };
+    await attemptService.create(Number(meta!.id), payloadAttempt);
 
-      await postProfessorInteraction(Number(meta!.id), {
-        
-        professorComment: professorComment.trim() || undefined,
-      });
+    // 2) preparo sólo los campos válidos para el feedback del profe
+    const profPayload: ProfessorInteractionPayload = {
+      // sólo incluimos el campo si está definido y > 0
+      ...(teacherSelection.imageQualityId && teacherSelection.imageQualityId > 0
+        ? { imageQualityId: teacherSelection.imageQualityId }
+        : {}),
+      ...(teacherSelection.finalDiagnosisId && teacherSelection.finalDiagnosisId > 0
+        ? { finalDiagnosisId: teacherSelection.finalDiagnosisId }
+        : {}),
+      professorComment: professorComment.trim() || undefined,
+    };
 
-      alert("Evaluación y feedback guardados correctamente");
-    } catch (err) {
-      console.error(err);
-      alert("Error al guardar la evaluación");
-    }
-  };
+    await postProfessorInteraction(Number(meta!.id), profPayload);
+
+    alert("Evaluación y feedback guardados correctamente");
+  } catch (err) {
+    console.error(err);
+    alert("Error al guardar la evaluación");
+  }
+};
 
   if (loading || !meta) return <LoadingState />;
   if (error) return <ErrorState error={error} />;
@@ -372,6 +403,17 @@ export default function EvaluateVideoPage() {
               toggleFullscreen={toggleFullscreen}
               meta={meta}
               currentStudy={currentStudy}
+              interactions={interactions}
+              teacherSelection={teacherSelection}
+              setTeacherSelection={setTeacherSelection}
+              loadWindows={loadWindows}
+              loadFindings={loadFindings}
+              loadDiagnoses={loadDiagnoses}
+              loadSubdiagnoses={loadSubdiagnoses}
+              loadSubSubs={loadSubSubs}
+              loadThirdOrders={loadThirdOrders}
+              loadImageQualities={loadImageQualities}
+              loadFinalDiagnoses={loadFinalDiagnoses}
             />
           </div>
 
