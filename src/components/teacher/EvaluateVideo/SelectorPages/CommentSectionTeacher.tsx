@@ -1,6 +1,6 @@
-import React from "react";
-import { Label } from "../../../common/Label/Label";
-import { Props } from "../../../../types/Props/Teacher/CommentSectionProps";
+import React from "react"
+import { Label } from "../../../common/Label/Label"
+import { Props } from "../../../../types/Props/Teacher/CommentSectionProps"
 
 export const CommentSectionTeacher: React.FC<Props> = ({
   index, value, onChange
@@ -12,8 +12,8 @@ export const CommentSectionTeacher: React.FC<Props> = ({
       className="w-full border rounded p-2"
       rows={2}
       placeholder="Comentario opcional"
-      value={value || ''}
+      value={value || ""}
       onChange={e => onChange(e.target.value)}
     />
   </div>
-);
+)

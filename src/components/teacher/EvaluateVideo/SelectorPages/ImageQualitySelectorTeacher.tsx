@@ -1,9 +1,9 @@
-import React from "react";
-import { Label } from "../../../common/Label/Label";
-import { Select, SelectValue } from "../../../common/Select/SelectBase";
-import { SelectTrigger, SelectContent } from "../../../common/Select/SelectInteraction";
-import { SelectItem } from "../../../common/Select/SelectItems";
-import { ImageQualityProps } from "../../../../types/Props/Teacher/ImageQualityProps";
+import React from "react"
+import { Label } from "../../../common/Label/Label"
+import { Select, SelectValue } from "../../../common/Select/SelectBase"
+import { SelectTrigger, SelectContent } from "../../../common/Select/SelectInteraction"
+import { SelectItem } from "../../../common/Select/SelectItems"
+import { ImageQualityProps } from "../../../../types/Props/Teacher/ImageQualityProps"
 
 export const ImageQualitySelectorTeacher: React.FC<ImageQualityProps> = ({
   index, options, value, onChange
@@ -11,11 +11,10 @@ export const ImageQualitySelectorTeacher: React.FC<ImageQualityProps> = ({
   <div>
     <Label htmlFor={`imageQuality-${index}`}>Calidad de imagen</Label>
     <Select
-      value={value != null ? String(value) : ''}
+      value={value != null ? String(value) : ""}
       onValueChange={v => onChange(Number(v))}
-      disabled={!options.length}
     >
-      <SelectTrigger id={`imageQuality-${index}`} className="w-full">
+      <SelectTrigger id={`imageQuality-${index}`} className="h-10 border-[#A0A0A0] rounded-[8px] bg-white">
         <SelectValue placeholder="Selecciona calidad" />
       </SelectTrigger>
       <SelectContent>
@@ -27,4 +26,4 @@ export const ImageQualitySelectorTeacher: React.FC<ImageQualityProps> = ({
       </SelectContent>
     </Select>
   </div>
-);
+)
