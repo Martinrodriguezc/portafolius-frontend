@@ -66,7 +66,7 @@ describe('useLoginForm Hook', () => {
     
     const { result } = renderHook(() => useLoginForm(mockOnSuccess));
 
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);
@@ -93,7 +93,7 @@ describe('useLoginForm Hook', () => {
 
     const { result } = renderHook(() => useLoginForm());
 
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);
@@ -108,7 +108,7 @@ describe('useLoginForm Hook', () => {
 
     const { result } = renderHook(() => useLoginForm());
 
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);
@@ -123,7 +123,7 @@ describe('useLoginForm Hook', () => {
 
     // Primero simular un error
     mockLogin.mockRejectedValueOnce(new Error('Login failed'));
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);

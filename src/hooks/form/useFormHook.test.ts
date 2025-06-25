@@ -140,7 +140,7 @@ describe('useFormHook', () => {
 
     const mockEvent = {
       preventDefault: jest.fn(),
-    } as any;
+    } as React.FormEvent<HTMLFormElement>;
 
     act(() => {
       result.current.handleSubmit(mockEvent);
@@ -167,7 +167,7 @@ describe('useFormHook', () => {
 
     const mockEvent = {
       preventDefault: jest.fn(),
-    } as any;
+    } as React.FormEvent<HTMLFormElement>;
 
     act(() => {
       result.current.handleSubmit(mockEvent);
@@ -198,7 +198,7 @@ describe('useFormHook', () => {
 
     const mockEvent = {
       preventDefault: jest.fn(),
-    } as any;
+    } as React.FormEvent<HTMLFormElement>;
 
     act(() => {
       result.current.handleSubmit(mockEvent);
@@ -214,7 +214,7 @@ describe('useFormHook', () => {
 
     const mockEvent = {
       preventDefault: jest.fn(),
-    } as any;
+    } as React.FormEvent<HTMLFormElement>;
 
     act(() => {
       result.current.handleSubmit(mockEvent);
@@ -268,7 +268,7 @@ describe('useFormHook', () => {
     });
 
     // Enviar formulario
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     act(() => {
       result.current.handleSubmit(mockEvent);

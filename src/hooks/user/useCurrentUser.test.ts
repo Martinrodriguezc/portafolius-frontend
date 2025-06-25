@@ -176,9 +176,11 @@ describe('useCurrentUser Hook', () => {
     
     const { rerender } = renderHook(() => useCurrentUser());
     
-    // Obtener el primer handler
-    const firstCalls = (window.addEventListener as jest.Mock).mock.calls;
-    const firstHandler = firstCalls.find(call => call[0] === 'userUpdated')?.[1];
+    // Verificar que se agregó el listener inicial
+    expect(window.addEventListener).toHaveBeenCalledWith(
+      'userUpdated',
+      expect.any(Function)
+    );
     
     // Limpiar mocks y re-renderizar
     jest.clearAllMocks();

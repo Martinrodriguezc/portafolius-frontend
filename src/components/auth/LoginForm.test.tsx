@@ -1,10 +1,9 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent } from '@testing-library/react';
 import LoginForm from './LoginForm';
 
 // Mock del hook useLoginForm
 jest.mock('../../hooks/form/useLoginForm', () => ({
-  useLoginForm: (onLoginSuccess: () => void) => ({
+  useLoginForm: () => ({
     email: '',
     password: '',
     emailError: '',

@@ -109,7 +109,7 @@ describe('useRegisterForm Hook', () => {
     
     const { result } = renderHook(() => useRegisterForm(mockOnSuccess));
 
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);
@@ -146,7 +146,7 @@ describe('useRegisterForm Hook', () => {
 
     const { result } = renderHook(() => useRegisterForm());
 
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);
@@ -181,7 +181,7 @@ describe('useRegisterForm Hook', () => {
 
     const { result } = renderHook(() => useRegisterForm());
 
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);
@@ -198,7 +198,7 @@ describe('useRegisterForm Hook', () => {
 
     const { result } = renderHook(() => useRegisterForm());
 
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);
@@ -214,7 +214,7 @@ describe('useRegisterForm Hook', () => {
 
     const { result } = renderHook(() => useRegisterForm());
 
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);
@@ -228,7 +228,7 @@ describe('useRegisterForm Hook', () => {
 
     const { result } = renderHook(() => useRegisterForm());
 
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);
@@ -242,7 +242,7 @@ describe('useRegisterForm Hook', () => {
 
     // Primero simular error
     mockRegister.mockRejectedValueOnce({ msg: 'Test error' });
-    const mockEvent = { preventDefault: jest.fn() } as any;
+    const mockEvent = { preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>;
 
     await act(async () => {
       await result.current.handleSubmit(mockEvent);
