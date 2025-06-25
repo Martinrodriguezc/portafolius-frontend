@@ -1,21 +1,6 @@
-import { FileUploadRowTeacher } from "../FileUploadRowTeacher"
-import { TeacherSelectionPayload } from "../../../../types/Props/Video/TeacherSelectionPayload"
-
-interface Props {
-  teacherSelection: TeacherSelectionPayload
-  setTeacherSelection: React.Dispatch<React.SetStateAction<TeacherSelectionPayload>>
-
-  loadWindows:      (protocolKey: string) => void
-  loadFindings:     (protocolKey: string, windowId: number) => void
-  loadDiagnoses:    (protocolKey: string, windowId: number, findingId: number) => void
-  loadSubdiagnoses: (protocolKey: string, diagnosisId: number) => void
-  loadSubSubs:      (protocolKey: string, subId: number) => void
-  loadThirdOrders:  (protocolKey: string, subSubId: number) => void
-  loadImageQualities: () => void
-  loadFinalDiagnoses: () => void
-
-  onSendInteraction: () => void
-}
+import { FileUploadRowTeacher } from "../FileUploadRowTeacher";
+import { TeacherSelectionPayload } from "../../../../types/Props/Video/TeacherSelectionPayload";
+import { TeacherFeedbackCardProps } from "../../../../types/Props/Video/TeacherFeedbackCardProps";
 
 export default function TeacherFeedbackCard({
   teacherSelection,
@@ -29,8 +14,8 @@ export default function TeacherFeedbackCard({
   loadImageQualities,
   loadFinalDiagnoses,
   onSendInteraction,
-}: Props) {
-  const canSend = Boolean(teacherSelection.protocolKey && teacherSelection.isReady)
+}: TeacherFeedbackCardProps) {
+  const canSend = Boolean(teacherSelection.protocolKey && teacherSelection.isReady);
 
   return (
     <div className="space-y-4">
@@ -38,9 +23,8 @@ export default function TeacherFeedbackCard({
         fileItem={teacherSelection}
         index={0}
         removeFile={() => setTeacherSelection({} as TeacherSelectionPayload)}
-
-        updateFileProtocol={protocolKey => {
-          setTeacherSelection(prev => ({
+        updateFileProtocol={(protocolKey) => {
+          setTeacherSelection((prev) => ({
             ...prev,
             protocolKey,
             windowId: undefined,
@@ -49,14 +33,13 @@ export default function TeacherFeedbackCard({
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          }))
-          loadWindows(protocolKey)
-          loadImageQualities()
-          loadFinalDiagnoses()
+          }));
+          loadWindows(protocolKey);
+          loadImageQualities();
+          loadFinalDiagnoses();
         }}
-
-        updateFileWindow={windowId => {
-          setTeacherSelection(prev => ({
+        updateFileWindow={(windowId) => {
+          setTeacherSelection((prev) => ({
             ...prev,
             windowId,
             findingId: undefined,
@@ -64,89 +47,90 @@ export default function TeacherFeedbackCard({
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          }))
-          if (teacherSelection.protocolKey) loadFindings(teacherSelection.protocolKey, windowId)
+          }));
+          if (teacherSelection.protocolKey) {
+            loadFindings(teacherSelection.protocolKey, windowId);
+          }
         }}
-
-        updateFileFinding={findingId => {
-          setTeacherSelection(prev => ({
+        updateFileFinding={(findingId) => {
+          setTeacherSelection((prev) => ({
             ...prev,
             findingId,
             diagnosisId: undefined,
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          }))
-          if (teacherSelection.protocolKey && teacherSelection.windowId != null)
-            loadDiagnoses(teacherSelection.protocolKey, teacherSelection.windowId, findingId)
+          }));
+          if (teacherSelection.protocolKey && teacherSelection.windowId != null) {
+            loadDiagnoses(
+              teacherSelection.protocolKey,
+              teacherSelection.windowId,
+              findingId
+            );
+          }
         }}
-
-        updateFileDiagnosis={diagnosisId => {
-          setTeacherSelection(prev => ({
+        updateFileDiagnosis={(diagnosisId) => {
+          setTeacherSelection((prev) => ({
             ...prev,
             diagnosisId,
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          }))
+          }));
           if (
             teacherSelection.protocolKey &&
             teacherSelection.windowId != null &&
             teacherSelection.findingId != null
-          )
-            loadSubdiagnoses(teacherSelection.protocolKey, diagnosisId)
+          ) {
+            loadSubdiagnoses(teacherSelection.protocolKey, diagnosisId);
+          }
         }}
-
-        updateFileSubdiagnosis={subdiagnosisId => {
-          setTeacherSelection(prev => ({
+        updateFileSubdiagnosis={(subdiagnosisId) => {
+          setTeacherSelection((prev) => ({
             ...prev,
             subdiagnosisId,
             subSubId: undefined,
             thirdOrderId: undefined,
-          }))
+          }));
           if (
             teacherSelection.protocolKey &&
             teacherSelection.windowId != null &&
             teacherSelection.findingId != null &&
             teacherSelection.diagnosisId != null
-          )
-            loadSubSubs(teacherSelection.protocolKey, subdiagnosisId)
+          ) {
+            loadSubSubs(teacherSelection.protocolKey, subdiagnosisId);
+          }
         }}
-
-        updateFileSubSub={subSubId => {
-          setTeacherSelection(prev => ({
+        updateFileSubSub={(subSubId) => {
+          setTeacherSelection((prev) => ({
             ...prev,
             subSubId,
             thirdOrderId: undefined,
-          }))
+          }));
           if (
             teacherSelection.protocolKey &&
             teacherSelection.windowId != null &&
             teacherSelection.findingId != null &&
             teacherSelection.diagnosisId != null &&
             teacherSelection.subdiagnosisId != null
-          )
-            loadThirdOrders(teacherSelection.protocolKey, subSubId)
+          ) {
+            loadThirdOrders(teacherSelection.protocolKey, subSubId);
+          }
         }}
-
-        updateFileThirdOrder={thirdOrderId =>
-          setTeacherSelection(prev => ({ ...prev, thirdOrderId }))
+        updateFileThirdOrder={(thirdOrderId) =>
+          setTeacherSelection((prev) => ({ ...prev, thirdOrderId }))
         }
-
-        updateFileImageQuality={imageQualityId =>
-          setTeacherSelection(prev => ({ ...prev, imageQualityId }))
+        updateFileImageQuality={(imageQualityId) =>
+          setTeacherSelection((prev) => ({ ...prev, imageQualityId }))
         }
-
-        updateFileFinalDiagnosis={finalDiagnosisId =>
-          setTeacherSelection(prev => ({ ...prev, finalDiagnosisId }))
+        updateFileFinalDiagnosis={(finalDiagnosisId) =>
+          setTeacherSelection((prev) => ({ ...prev, finalDiagnosisId }))
         }
-
-        updateFileComment={comment =>
-          setTeacherSelection(prev => ({ ...prev, comment }))
+        updateFileComment={(comment) =>
+          setTeacherSelection((prev) => ({ ...prev, comment }))
         }
-
-        updateFileReady={isReady =>
-          setTeacherSelection(prev => ({ ...prev, isReady }))
+        updateFileReady={(isReady) =>
+          setTeacherSelection((prev) => ({ ...prev, isReady }))
         }
       />
 
@@ -164,5 +148,5 @@ export default function TeacherFeedbackCard({
         </button>
       </div>
     </div>
-  )
+  );
 }
