@@ -2,12 +2,14 @@ import { renderHook, act } from '@testing-library/react';
 import { useCurrentUser } from './useCurrentUser';
 
 // Mock de authService
-const mockGetCurrentUser = jest.fn();
 jest.mock('../auth/authServices', () => ({
   authService: {
-    getCurrentUser: mockGetCurrentUser,
+    getCurrentUser: jest.fn(),
   },
 }));
+
+import { authService } from '../auth/authServices';
+const mockGetCurrentUser = authService.getCurrentUser as jest.Mock;
 
 describe('useCurrentUser Hook', () => {
   const mockUser = {
@@ -134,7 +136,7 @@ describe('useCurrentUser Hook', () => {
     });
     
     expect(result.current).toEqual(updatedUser);
-    expect(mockGetCurrentUser).toHaveBeenCalledTimes(2); // Una inicial, una en el handler
+    expect(mockGetCurrentUser).toHaveBeenCalledTimes(3); // Una inicial, una en el rerender, una en el handler
   });
 
   it('debe manejar evento userUpdated con detail undefined', () => {
