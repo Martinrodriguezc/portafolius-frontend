@@ -17,7 +17,7 @@ export function useVideoSection(metaId: number | undefined) {
   useEffect(() => {
     protocolFlow.loadImageQualities();
     protocolFlow.loadFinalDiagnoses();
-  }, [protocolFlow.loadImageQualities, protocolFlow.loadFinalDiagnoses]);
+  }, [protocolFlow]);
 
   return {
     interactions,
