@@ -1,22 +1,6 @@
-import type { Video } from '../../VideoTypes';
-import type { StudyWithStatus } from '../../Study';
-import type { Interaction } from '../../../types/interaction';
-import type { TeacherSelectionPayload } from '../../../types/Props/Video/TeacherSelectionPayload';
+import { TeacherSelectionPayload } from "./TeacherSelectionPayload";
 
-export interface VideoSectionProps {
-  url: string;
-  videoRef: React.RefObject<HTMLVideoElement | null>;
-  isPlaying: boolean;
-  togglePlay(): void;
-  progress: number;
-  handleSeek(e: React.ChangeEvent<HTMLInputElement>): void;
-  isFullscreen: boolean;
-  toggleFullscreen(): void;
-
-  meta: Video;
-  currentStudy?: StudyWithStatus;
-
-  interactions: Interaction[];
+export interface TeacherFeedbackCardProps {
   teacherSelection: TeacherSelectionPayload;
   setTeacherSelection: React.Dispatch<React.SetStateAction<TeacherSelectionPayload>>;
 
@@ -28,5 +12,6 @@ export interface VideoSectionProps {
   loadThirdOrders: (protocolKey: string, subSubId: number) => void;
   loadImageQualities: () => void;
   loadFinalDiagnoses: () => void;
+
   onSendInteraction: () => void;
 }

@@ -1,20 +1,20 @@
-import { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { EvaluationForm } from "../../types/evaluation";
-import { fetchVideoMeta, fetchVideoUrl } from "../../hooks/video/utils/requests";
-import { evaluationService } from "../../hooks/teacher/evaluations/evaluationService/evaluationService";
-import { Video } from "../../types/VideoTypes";
-import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { ClipboardList, ArrowLeft } from "lucide-react";
+import Button from "../../components/common/Button/Button";
 import LoadingState from "../../components/teacher/EvaluateVideo/LoadingState";
 import ErrorState from "../../components/teacher/EvaluateVideo/ErrorState";
 import VideoSection from "../../components/teacher/EvaluateVideo/VideoSection/VideoSection";
 import EvaluationFormComponent from "../../components/teacher/EvaluateVideo/EvaluationForm";
 import ExistingEvaluationCard from "../../components/teacher/EvaluateVideo/ExistingEvaluationCard";
-import { ClipboardList, ArrowLeft } from "lucide-react";
-import Button from "../../components/common/Button/Button";
-import { Link } from "react-router-dom";
+import { fetchVideoMeta, fetchVideoUrl } from "../../hooks/video/utils/requests";
+import { evaluationService } from "../../hooks/teacher/evaluations/evaluationService/evaluationService";
+import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
+import { Video } from "../../types/VideoTypes";
+import type { EvaluationForm } from "../../types/evaluation";
+import type { TeacherSelectionPayload } from "../../types/Props/Video/TeacherSelectionPayload";
+import type { Interaction } from "../../types/interaction";
 
-// Custom hook for admin context
 function useAdminEvaluateVideo() {
   const { studyId, clipId } = useParams<{ studyId: string; clipId: string }>();
   const navigate = useNavigate();
@@ -41,7 +41,6 @@ function useAdminEvaluateVideo() {
         setLoading(false);
         return;
       }
-
       try {
         const [videoUrl, videoMeta] = await Promise.all([
           fetchVideoUrl(clipId),
@@ -50,13 +49,11 @@ function useAdminEvaluateVideo() {
         setUrl(videoUrl);
         setMeta(videoMeta);
       } catch (err: unknown) {
-        if (err instanceof Error) setError(err.message);
-        else setError("Error al cargar vídeo");
+        setError(err instanceof Error ? err.message : "Error al cargar vídeo");
       } finally {
         setLoading(false);
       }
     };
-
     loadMedia();
   }, [clipId]);
 
@@ -72,10 +69,9 @@ function useAdminEvaluateVideo() {
           setFeedback(evalFor.feedback_summary);
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
-
     loadExisting();
   }, [studyId]);
 
@@ -88,9 +84,7 @@ function useAdminEvaluateVideo() {
       }
     };
     vid.addEventListener("timeupdate", onTime);
-    return () => {
-      vid.removeEventListener("timeupdate", onTime);
-    };
+    return () => vid.removeEventListener("timeupdate", onTime);
   }, []);
 
   const togglePlay = () => {
@@ -136,8 +130,8 @@ function useAdminEvaluateVideo() {
       }
       alert("Evaluación enviada exitosamente");
       navigate("/admin/evaluations");
-    } catch (err: unknown) {
-      console.log(err);
+    } catch (err) {
+      console.error(err);
     } finally {
       setSubmitting(false);
     }
@@ -165,7 +159,6 @@ function useAdminEvaluateVideo() {
   };
 }
 
-// Custom PageHeader for admin context
 function AdminPageHeader({ meta }: { meta: Video | null }) {
   return (
     <header className="mb-8 flex flex-col md:flex-row justify-between md:items-center gap-4">
@@ -179,7 +172,9 @@ function AdminPageHeader({ meta }: { meta: Video | null }) {
           </h1>
           <p className="text-[#666666]">
             {meta
-              ? `Protocolo: ${meta.protocol} • Subido: ${new Date(meta.upload_date).toLocaleDateString()}`
+              ? `Protocolo: ${meta.protocol} • Subido: ${new Date(
+                  meta.upload_date
+                ).toLocaleDateString()}`
               : "Cargando información del video..."}
           </p>
         </div>
@@ -199,17 +194,33 @@ function AdminPageHeader({ meta }: { meta: Video | null }) {
 
 export default function AdminEvaluateVideo() {
   const {
-    videoRef, url, meta, existing, loading, error,
-    score, feedback, setScore, setFeedback,
-    submitting, isPlaying, progress, isFullscreen,
-    togglePlay, handleSeek, toggleFullscreen, onSubmit
+    videoRef,
+    url,
+    meta,
+    existing,
+    loading,
+    error,
+    score,
+    feedback,
+    setScore,
+    setFeedback,
+    submitting,
+    isPlaying,
+    progress,
+    isFullscreen,
+    togglePlay,
+    handleSeek,
+    toggleFullscreen,
+    onSubmit,
   } = useAdminEvaluateVideo();
 
   const { pending, completed } = useAllStudies();
   const allStudies = [...pending, ...completed];
-  const currentStudy = meta
-    ? allStudies.find(s => s.study_id === meta.study_id)
-    : undefined;
+  const currentStudy = meta ? allStudies.find((s) => s.study_id === meta.study_id) : undefined;
+
+  const [teacherSelection, setTeacherSelection] = useState<TeacherSelectionPayload>({} as TeacherSelectionPayload);
+  const emptyInteractions: Interaction[] = [];
+  const noop = () => {};
 
   if (loading || !meta) return <LoadingState />;
   if (error) return <ErrorState error={error} />;
@@ -220,17 +231,37 @@ export default function AdminEvaluateVideo() {
 
       <div className="flex flex-col lg:flex-row gap-6">
         <VideoSection
-          url={url} videoRef={videoRef}
-          isPlaying={isPlaying} togglePlay={togglePlay}
-          progress={progress} handleSeek={handleSeek}
-          isFullscreen={isFullscreen} toggleFullscreen={toggleFullscreen}
-          meta={meta} currentStudy={currentStudy}
+          url={url}
+          videoRef={videoRef}
+          isPlaying={isPlaying}
+          togglePlay={togglePlay}
+          progress={progress}
+          handleSeek={handleSeek}
+          isFullscreen={isFullscreen}
+          toggleFullscreen={toggleFullscreen}
+          meta={meta}
+          currentStudy={currentStudy}
+          interactions={emptyInteractions}
+          teacherSelection={teacherSelection}
+          setTeacherSelection={setTeacherSelection}
+          loadWindows={noop}
+          loadFindings={noop}
+          loadDiagnoses={noop}
+          loadSubdiagnoses={noop}
+          loadSubSubs={noop}
+          loadThirdOrders={noop}
+          loadImageQualities={noop}
+          loadFinalDiagnoses={noop}
+          onSendInteraction={noop}
         />
 
         <EvaluationFormComponent
-          score={score} feedback={feedback}
-          setScore={setScore} setFeedback={setFeedback}
-          onSubmit={onSubmit} submitting={submitting}
+          score={score}
+          feedback={feedback}
+          setScore={setScore}
+          setFeedback={setFeedback}
+          onSubmit={onSubmit}
+          submitting={submitting}
           existing={!!existing}
         />
 
@@ -238,4 +269,4 @@ export default function AdminEvaluateVideo() {
       </div>
     </div>
   );
-} 
+}

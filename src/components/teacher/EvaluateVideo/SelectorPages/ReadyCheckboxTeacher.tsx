@@ -1,6 +1,6 @@
-import React from "react";
-import { Label } from "../../../common/Label/Label";
-import { ReadyCheckboxProps } from "../../../../types/Props/Teacher/ReadyCheckboxProps";
+import React from "react"
+import { Label } from "../../../common/Label/Label"
+import { ReadyCheckboxProps } from "../../../../types/Props/Teacher/ReadyCheckboxProps"
 
 export const ReadyCheckboxTeacher: React.FC<ReadyCheckboxProps> = ({
   index, checked, onChange
@@ -14,4 +14,4 @@ export const ReadyCheckboxTeacher: React.FC<ReadyCheckboxProps> = ({
     />
     <Label htmlFor={`ready-${index}`}>Listo</Label>
   </div>
-);
+)
