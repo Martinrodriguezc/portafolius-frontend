@@ -12,7 +12,6 @@ export default function HomePage() {
   const handleLogin = () => navigate("/login");
   const handleSignup = () => navigate("/register");
   const handleLearnMore = () => navigate('/learn_more');
-  const handleBeta = () => navigate("/ia_beta");
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
@@ -33,19 +32,6 @@ export default function HomePage() {
               <Button variant="outline" onClick={handleSignup}>
                 Registrarse
               </Button>
-              <button
-                onClick={handleBeta}
-                className="relative border-2 border-blue-500 text-blue-600 hover:text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-3 group overflow-hidden hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] cursor-pointer"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                <div className="relative flex items-center gap-2">
-                  <span className="text-[10px] font-bold bg-blue-500 text-white rounded-full px-2 py-1 group-hover:bg-white group-hover:text-blue-500 transition-colors duration-300">
-                    BETA
-                  </span>
-                  <Zap className="w-4 h-4 group-hover:animate-bounce" />
-                  <span>Prueba IA</span>
-                </div>
-              </button>
             </div>
 
             <button

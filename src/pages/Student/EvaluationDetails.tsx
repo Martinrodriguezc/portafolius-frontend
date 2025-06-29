@@ -121,7 +121,7 @@ export default function EvaluationDetails() {
               <span className="text-lg text-[#666666]">/ 10</span>
             </div>
           </div>
-          
+
           {/* Progress bar */}
           <div className="w-full bg-slate-200 rounded-full h-3 mb-4">
             <div
@@ -129,12 +129,12 @@ export default function EvaluationDetails() {
               style={{ width: `${(evaluationData.evaluation!.score / 10) * 100}%` }}
             ></div>
           </div>
-          
+
           <p className="text-sm text-[#666666]">
             {evaluationData.evaluation!.score >= 8 ? "Excelente trabajo" :
-             evaluationData.evaluation!.score >= 6 ? "Buen trabajo" :
-             evaluationData.evaluation!.score >= 4 ? "Trabajo aceptable" :
-             "Necesita mejorar"}
+              evaluationData.evaluation!.score >= 6 ? "Buen trabajo" :
+                evaluationData.evaluation!.score >= 4 ? "Trabajo aceptable" :
+                  "Necesita mejorar"}
           </p>
         </Card>
 
@@ -200,23 +200,25 @@ export default function EvaluationDetails() {
             Material de Estudio Personalizado
           </h2>
           <p className="text-[#666666] mb-6">
-            Basándonos en tu evaluación, podemos generar material de estudio personalizado 
+            Basándonos en tu evaluación, podemos generar material de estudio personalizado
             para ayudarte a mejorar en las áreas identificadas.
           </p>
-          <Link to="/ia_beta">
-            <Button className="w-full bg-gradient-to-r from-[#4E81BD] to-[#3B82F6] hover:from-[#4E81BD]/90 hover:to-[#3B82F6]/90 text-white px-6 py-3 rounded-[8px] shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 text-lg">
-              <Sparkles className="h-5 w-5" />
-              GENERAR MATERIAL DE ESTUDIO CON IA (beta)
-            </Button>
-          </Link>
+          <div className="flex justify-center">
+            <Link to={`/ia_beta/${clipId}`}>
+              <Button className="w-full bg-gradient-to-r from-[#4E81BD] to-[#3B82F6] hover:from-[#4E81BD]/90 hover:to-[#3B82F6]/90 text-white px-6 py-3 rounded-[8px] shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 text-lg">
+                <Sparkles className="h-5 w-5" />
+                GENERAR MATERIAL DE ESTUDIO CON IA (beta)
+              </Button>
+            </Link>
+          </div>
         </Card>
 
         {/* Back to Video Button */}
         <div className="flex justify-center">
           <Link
-            to={`/student/studies/${evaluationData?.studyId}/videos/${clipId}`}
+            to={`/student/${evaluationData?.studyId}/videos/${clipId}`}
           >
-            <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-2.5 rounded-[8px] transition-all">
+            <Button variant="outline">
               Volver al video
             </Button>
           </Link>

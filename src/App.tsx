@@ -92,7 +92,7 @@ function App() {
             element={<StudentMultipleVideosPage />}
           />
         </Route>
-        <Route path="/ia_beta" element={<BetaPage />}/>
+        <Route path="/ia_beta/:clipId" element={<BetaPage />}/>
 
         <Route path="/teacher" element={<TeacherLayout />}>
           <Route index element={<TeacherDashboardPage />} />

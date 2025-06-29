@@ -151,9 +151,9 @@ const VideoEvaluation: React.FC<VideoEvaluationProps> = ({ clipId }) => {
             </div>
 
             {/* Check Evaluation Details Button */}
-            <div className="pt-4 border-t border-slate-100">
+            <div className="pt-4 border-t border-slate-100 text-center">
               <Link to={`/student/evaluation/${clipId}/details`}>
-                <Button className="w-full bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white px-4 py-2.5 rounded-[8px] shadow-sm hover:shadow transition-all flex items-center justify-center gap-2">
+                <Button className="inline-flex bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white px-4 py-2.5 rounded-[8px] shadow-sm hover:shadow transition-all items-center justify-center gap-2">
                   Ver detalles de evaluación
                   <ArrowRight className="h-4 w-4" />
                 </Button>

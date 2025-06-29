@@ -1,243 +1,117 @@
-import { useState } from "react";
-import Button from "../components/common/Button/Button";
-import { config } from "../config/config";
-import { LearnMoreNavbar } from "../components/learnMore/LearnMoreNavbar";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { EvaluationInfoSection } from '../components/ai/EvaluationInfoSection';
+import { PromptPreview } from '../components/ai/PromptPreview';
+import AdditionalInfoInput from '../components/ai/AdditionalInfoInput';
+import MaterialSummary from '../components/ai/MaterialSummary';
+import MaterialObjectives from '../components/ai/MaterialObjectives';
+import MaterialResources from '../components/ai/MaterialResources';
+import InteractiveQuiz from '../components/ai/InteractiveQuiz';
+import { useAIMaterialGeneration } from '../hooks/ai/useAIMaterialGeneration';
 
-//Hoja temporal para mostrar version beta del generador de material de estudio
-export type Summary = string[];
+const IA_Beta_Page: React.FC = () => {
+    const { clipId } = useParams<{ clipId: string }>();
+    const [additionalInfo, setAdditionalInfo] = useState('');
 
-export type Objectives = string[];
+    if (!clipId) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold text-gray-800 mb-4">Error</h1>
+                    <p className="text-gray-600">No se proporcionó un ID de video válido</p>
+                </div>
+            </div>
+        );
+    }
 
-export interface Resource {
-  title: string;    
-  link: string;    
-  source: string;   
-}
+    const clipIdNumber = parseInt(clipId, 10);
 
-export interface QuizItem {
-  question: string;       
-  options: string[];      
-  answer: string;         
-  explanation: string;   
-}
+    const {
+        material,
+        isLoading,
+        error,
+        generateMaterial,
+        detailedFeedback,
+        videoInfoLoading,
+        videoInfoError
+    } = useAIMaterialGeneration({
+        clipId: clipIdNumber,
+        additionalInfo
+    });
 
-export interface Material {
-  summary: Summary;
-  objectives: Objectives;
-  resources: Resource[];
-  quiz: QuizItem[];
-}
-
-interface ErrorResponse {
-  detail?: string;
-}
-
-
-export default function BetaPage() {
-    const [feedback, setFeedback] = useState<string>("");
-    const [material, setMaterial] = useState<Material | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>("");
-    const navigate = useNavigate();
-
-    const handleGenerate = async () => {
-        if (!feedback.trim()) return;
-        setLoading(true);
-        setError("");
-        setMaterial(null);
-        try {
-            const res = await fetch(`${config.IA_SERVICE_URL}/generate-material`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ feedback }),
-            });
-            const data = (await res.json()) as Material;
-            if (!res.ok) throw new Error((data as ErrorResponse).detail || "Error generando material");
-            setMaterial(data);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : String(err));
-        } finally {
-            setLoading(false);
-        }
+    const handleGenerateMaterial = async () => {
+        await generateMaterial();
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-            <LearnMoreNavbar handleBack={() => navigate("/home")} />
-
-            <div className="max-w-6xl mx-auto p-6 md:p-8 lg:p-12">
+        <div className="min-h-screen bg-gray-50 py-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
-                <div className="text-center mb-12">
-                    <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">
-                        <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                        Beta Version
-                    </div>
-                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Generador de Material de Estudio</h1>
-                    <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-                        Transforma el feedback de tu profesor en material de estudio personalizado con IA
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                        Generar Material de Estudio con IA (Beta)
+                    </h1>
+                    <p className="text-gray-600">
+                        Genera material de estudio personalizado basado en tu evaluación
                     </p>
                 </div>
 
-                {/* Input Section */}
-                <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 mb-8">
-                    <div className="mb-6">
-                        <label htmlFor="feedback" className="block text-lg font-semibold text-slate-900 mb-3">
-                            Feedback del Profesor
-                        </label>
-                        <textarea
-                            id="feedback"
-                            className="w-full p-6 border-2 border-slate-200 rounded-xl mb-6 h-48 resize-none focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-slate-700 placeholder-slate-400"
-                            placeholder="Pega aquí el feedback del profesor para generar material de estudio personalizado..."
-                            value={feedback}
-                            onChange={(e) => setFeedback(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-4 items-center">
-                        <Button
-                            onClick={handleGenerate}
-                            disabled={!feedback.trim() || loading}
-                            className="w-full sm:w-auto px-8 py-4 text-lg font-semibold"
-                        >
-                            {loading ? (
-                                <div className="flex items-center">
-                                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                                    Generando Material...
-                                </div>
-                            ) : (
-                                "Generar Material de Estudio"
-                            )}
-                        </Button>
-
-                        {feedback.trim() && <span className="text-sm text-slate-500">{feedback.length} caracteres</span>}
-                    </div>
-
-                    {error && (
-                        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                            <div className="flex items-center">
-                                <div className="w-5 h-5 text-red-500 mr-3">⚠️</div>
-                                <p className="text-red-700 font-medium">{error}</p>
-                            </div>
+                {/* Loading state for video info */}
+                {videoInfoLoading && (
+                    <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                        <div className="animate-pulse">
+                            <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
+                            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                            <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+                            <div className="h-4 bg-gray-200 rounded w-2/3"></div>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
 
-                {/* Results Section */}
+                {/* Error state for video info */}
+                {videoInfoError && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
+                        <h3 className="text-lg font-semibold text-red-800 mb-2">
+                            Error al cargar información del video
+                        </h3>
+                        <p className="text-red-600">{videoInfoError}</p>
+                    </div>
+                )}
+
+                {/* Evaluation Information */}
+                <EvaluationInfoSection clipId={clipIdNumber} />
+
+                {/* Information Preview */}
+                <PromptPreview detailedFeedback={detailedFeedback} />
+
+                {/* Additional Info Input */}
+                <AdditionalInfoInput
+                    additionalInfo={additionalInfo}
+                    setAdditionalInfo={setAdditionalInfo}
+                    onGenerate={handleGenerateMaterial}
+                    loading={isLoading}
+                    error={error || ''}
+                />
+
+                {/* Generated Material */}
                 {material && (
-                    <div className="space-y-8">
-                        {/* Summary Section */}
-                        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-                            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6">
-                                <h2 className="text-2xl font-bold text-white flex items-center">
-                                    <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mr-3">📋</div>
-                                    Resumen
-                                </h2>
-                            </div>
-                            <div className="p-8">
-                                <ul className="space-y-3">
-                                    {material.summary.map((s, i) => (
-                                        <li key={i} className="flex items-start">
-                                            <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                                            <span className="text-slate-700 leading-relaxed">{s}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
+                    <div className="space-y-6">
+                        {/* Material Summary */}
+                        <MaterialSummary summary={material.summary} />
 
-                        {/* Objectives Section */}
-                        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-                            <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 px-8 py-6">
-                                <h2 className="text-2xl font-bold text-white flex items-center">
-                                    <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mr-3">🎯</div>
-                                    Objetivos de Aprendizaje
-                                </h2>
-                            </div>
-                            <div className="p-8">
-                                <ol className="space-y-4">
-                                    {material.objectives.map((o, i) => (
-                                        <li key={i} className="flex items-start">
-                                            <div className="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
-                                                {i + 1}
-                                            </div>
-                                            <span className="text-slate-700 leading-relaxed pt-1">{o}</span>
-                                        </li>
-                                    ))}
-                                </ol>
-                            </div>
-                        </div>
+                        {/* Material Objectives */}
+                        <MaterialObjectives objectives={material.objectives} />
 
-                        {/* Resources Section */}
-                        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-                            <div className="bg-gradient-to-r from-purple-600 to-purple-700 px-8 py-6">
-                                <h2 className="text-2xl font-bold text-white flex items-center">
-                                    <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mr-3">📚</div>
-                                    Recursos Recomendados
-                                </h2>
-                            </div>
-                            <div className="p-8">
-                                <div className="grid gap-4">
-                                    {material.resources.map((r: Resource, i: number) => (
-                                        <div
-                                            key={i}
-                                            className="p-4 bg-slate-50 rounded-xl border border-slate-200 hover:shadow-md transition-shadow duration-200"
-                                        >
-                                            <a href={r.link} target="_blank" rel="noopener noreferrer" className="block group">
-                                                <div className="flex items-start justify-between">
-                                                    <div className="flex-1">
-                                                        <h3 className="font-semibold text-slate-900 group-hover:text-purple-600 transition-colors duration-200">
-                                                            {r.title}
-                                                        </h3>
-                                                        <p className="text-sm text-slate-500 mt-1">{r.source}</p>
-                                                    </div>
-                                                    <div className="ml-4 text-purple-500 group-hover:text-purple-700 transition-colors duration-200">
-                                                        🔗
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
+                        {/* Material Resources */}
+                        <MaterialResources resources={material.resources} />
 
-                        {/* Quiz Section */}
-                        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-                            <div className="bg-gradient-to-r from-orange-600 to-orange-700 px-8 py-6">
-                                <h2 className="text-2xl font-bold text-white flex items-center">
-                                    <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mr-3">❓</div>
-                                    Preguntas de Autoevaluación
-                                </h2>
-                            </div>
-                            <div className="p-8">
-                                <div className="space-y-8">
-                                    {material.quiz.map((q: QuizItem, i: number) => (
-                                        <div key={i} className="p-6 bg-slate-50 rounded-xl border border-slate-200">
-                                            <div className="flex items-start mb-4">
-                                                <div className="w-8 h-8 bg-orange-100 text-orange-700 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
-                                                    {i + 1}
-                                                </div>
-                                                <p className="font-semibold text-slate-900 leading-relaxed pt-1">{q.question}</p>
-                                            </div>
-                                            <div className="ml-12">
-                                                <ul className="space-y-2">
-                                                    {q.options.map((opt: string, j: number) => (
-                                                        <li key={j} className="flex items-center">
-                                                            <div className="w-6 h-6 border-2 border-slate-300 rounded-full mr-3 flex-shrink-0"></div>
-                                                            <span className="text-slate-700">{opt}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
+                        {/* Interactive Quiz */}
+                        <InteractiveQuiz quizItems={material.quiz} />
                     </div>
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
+
+export default IA_Beta_Page;
