@@ -35,7 +35,6 @@ export default function StudentVideoPage() {
     toggleFullscreen,
   } = useStudentVideoPage();
 
-  // Get evaluation data for the current video
   const { evaluationData } = useVideoEvaluation(Number(meta?.id));
 
   const { interactions, loadInteractions } = useInteractions();
