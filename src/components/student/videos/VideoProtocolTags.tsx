@@ -43,6 +43,10 @@ const VideoProtocolTags: React.FC<VideoProtocolTagsProps> = ({ interactions }) =
           <p className="text-[14px] text-[#666666]">No hay etiquetas registradas por el estudiante.</p>
         )}
 
+        {student && professor && (
+          <div className="border-t border-slate-200 opacity-50" />
+        )}
+
         {professor ? (
           <div>
             <h4 className="text-[15px] font-semibold text-[#333333]">Etiquetas del Profesor</h4>
