@@ -92,21 +92,17 @@ const VideoEvaluation: React.FC<VideoEvaluationProps> = ({ clipId }) => {
               </div>
               <div className="flex items-center gap-2">
                 <div className="bg-[#4E81BD] text-white text-[16px] font-bold h-10 w-10 rounded-full flex items-center justify-center">
-                  {evaluationData.evaluation!.score}
+                  {evaluationData.evaluation!.score.toFixed(1)}
                 </div>
                 <span className="text-[14px] text-[#666666]">/ 10</span>
               </div>
             </div>
-
-            {/* Progress bar */}
             <div className="w-full bg-slate-200 rounded-full h-2">
               <div
                 className="bg-[#4E81BD] h-2 rounded-full"
                 style={{ width: `${(evaluationData.evaluation!.score / 10) * 100}%` }}
               ></div>
             </div>
-
-            {/* Feedback */}
             <div className="space-y-3">
               <h4 className="text-[15px] font-medium text-[#333333] flex items-center gap-2">
                 <MessageSquare className="h-4 w-4 text-[#4E81BD]" />
