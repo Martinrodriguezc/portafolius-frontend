@@ -26,7 +26,6 @@ export const useAIMaterialGeneration = ({
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Get comprehensive video information
     const {
         comprehensivePrompt,
         isLoading: videoInfoLoading,
@@ -43,7 +42,6 @@ export const useAIMaterialGeneration = ({
         setError(null);
 
         try {
-            // Combine comprehensive info with additional info as feedback
             const detailedFeedback = `${comprehensivePrompt}\n\nINFORMACIÓN ADICIONAL DEL ESTUDIANTE:\n${additionalInfo}`;
             
             const generatedMaterial = await generateAIMaterial(clipId, detailedFeedback, '');
