@@ -21,7 +21,6 @@ import RankingTable from "../../components/student/metrics/tables/RankingTable"
 import ProgressLineChart from "../../components/student/metrics/charts/ProgressLineChart"
 import StatisticsTable, { ProtocolCount } from "../../components/student/metrics/tables/StatisticsTable"
 
-
 export default function StudentDashboard() {
   const user = authService.getCurrentUser()!
   const studentId = Number(user.id)
@@ -80,7 +79,6 @@ export default function StudentDashboard() {
     { title: "Mesa redonda de Anatomía", date: "30 abr · 16:00" },
     { title: "Workshop interactivo", date: "02 may · 10:00" }
   ]
-
 
   const hasMetrics =
     !!m && (m.topStudies.length > 0 || m.bottomStudies.length > 0)
@@ -159,7 +157,7 @@ export default function StudentDashboard() {
                   data={destacados.map((x) => ({
                     id: x.study_id,
                     nombre: x.title,
-                    valor: x.score
+                    valor: parseFloat(x.score.toFixed(1))
                   }))}
                 />
               </div>
@@ -171,7 +169,7 @@ export default function StudentDashboard() {
                   data={oportunidad.map((x) => ({
                     id: x.study_id,
                     nombre: x.title,
-                    valor: x.score
+                    valor: parseFloat(x.score.toFixed(1))
                   }))}
                 />
               </div>
@@ -193,63 +191,72 @@ export default function StudentDashboard() {
         <h2 className="text-xl font-semibold text-gray-800 flex items-center">
           <BookOpen className="mr-2 text-gray-600" /> Recursos recomendados
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {lastThree.map((m) => {
-            if (m.type === "document" || m.type === "video") {
-              const Icon = m.type === "document" ? FileText : Play
+
+        {lastThree.length === 0 ? (
+          <Card className="bg-white p-6">
+            <p className="text-gray-500">
+              Aún no tienes recursos asignados. Espera a que tu profesor los asigne.
+            </p>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {lastThree.map((m) => {
+              if (m.type === "document" || m.type === "video") {
+                const Icon = m.type === "document" ? FileText : Play
+                return (
+                  <Card key={m.id} className="p-6">
+                    <Icon className="h-6 w-6 text-gray-600 mb-2" />
+                    <h3 className="mt-2 font-medium text-gray-800">{m.title}</h3>
+                    <p className="text-gray-500 mt-1 line-clamp-2">{m.description}</p>
+                    <button
+                      onClick={() =>
+                        (window.location.href = `${config.SERVER_URL}/materials/download/${m.id}`)
+                      }
+                      className="inline-flex items-center gap-2 text-[#4E81BD] hover:text-[#2c5f9f] mt-4"
+                    >
+                      <Download className="h-4 w-4" /> Descargar
+                    </button>
+                  </Card>
+                )
+              }
+              const href = makeHref(m.url)
+              const domain = extractDomain(m.url)
               return (
                 <Card key={m.id} className="p-6">
-                  <Icon className="h-6 w-6 text-gray-600 mb-2" />
-                  <h3 className="mt-2 font-medium text-gray-800">{m.title}</h3>
-                  <p className="text-gray-500 mt-1 line-clamp-2">{m.description}</p>
-                  <button
-                    onClick={() =>
-                      (window.location.href = `${config.SERVER_URL}/materials/download/${m.id}`)
-                    }
-                    className="inline-flex items-center gap-2 text-[#4E81BD] hover:text-[#2c5f9f] mt-4"
-                  >
-                    <Download className="h-4 w-4" /> Descargar
-                  </button>
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className="text-lg font-medium text-gray-800 line-clamp-2 flex-1">
+                      {m.title}
+                    </h3>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-full hover:bg-[#4E81BD]/10 text-[#4E81BD] transition-colors ml-2"
+                      title="Abrir enlace"
+                    >
+                      <ExternalLink className="h-5 w-5" />
+                    </a>
+                  </div>
+                  <div className="flex items-center mb-2 text-xs text-[#666666]">
+                    <Globe className="h-3 w-3 mr-1 text-[#4E81BD]" />
+                    <span>{domain}</span>
+                  </div>
+                  <p className="text-sm text-[#666666] mb-4 line-clamp-3">{m.description}</p>
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs text-[#666666]">
+                    <Calendar className="h-3 w-3 mr-1" />
+                    <span>
+                      {new Date(m.upload_date).toLocaleDateString("es-ES", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric"
+                      })}
+                    </span>
+                  </div>
                 </Card>
               )
-            }
-            const href = makeHref(m.url)
-            const domain = extractDomain(m.url)
-            return (
-              <Card key={m.id} className="p-6">
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-lg font-medium text-gray-800 line-clamp-2 flex-1">
-                    {m.title}
-                  </h3>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-full hover:bg-[#4E81BD]/10 text-[#4E81BD] transition-colors ml-2"
-                    title="Abrir enlace"
-                  >
-                    <ExternalLink className="h-5 w-5" />
-                  </a>
-                </div>
-                <div className="flex items-center mb-2 text-xs text-[#666666]">
-                  <Globe className="h-3 w-3 mr-1 text-[#4E81BD]" />
-                  <span>{domain}</span>
-                </div>
-                <p className="text-sm text-[#666666] mb-4 line-clamp-3">{m.description}</p>
-                <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs text-[#666666]">
-                  <Calendar className="h-3 w-3 mr-1" />
-                  <span>
-                    {new Date(m.upload_date).toLocaleDateString("es-ES", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric"
-                    })}
-                  </span>
-                </div>
-              </Card>
-            )
-          })}
-        </div>
+            })}
+          </div>
+        )}
       </section>
 
       <section className="space-y-4">
