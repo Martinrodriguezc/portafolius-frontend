@@ -1,5 +1,5 @@
 import { Users, BookOpen, GraduationCap } from "lucide-react";
-import { DashboardStats } from "../../../hooks/admin/dashboardServices";
+import { DashboardStats } from "../../../types/Admin/DashboardTypes";
 import { StatCardProps } from "../../../types/Admin/StatCardTypes";
 
 type StatsPanelProps = Pick<DashboardStats, 'users' | 'evaluations' | 'studies'>;
