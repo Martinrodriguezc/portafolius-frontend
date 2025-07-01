@@ -148,7 +148,7 @@ export const TeacherAssignment: React.FC = () => {
     setSuccessMessage('');
     try {
       let allSuccess = true;
-      let errorMessages: string[] = [];
+      const errorMessages: string[] = [];
       
       for (const student of selectedStudents) {
         try {

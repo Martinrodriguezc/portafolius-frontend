@@ -57,7 +57,7 @@ const GraficoGauge: React.FC<GraficoGaugeProps> = ({ data }) => {
             tickLabels: {
               type: 'outer',
               defaultTickValueConfig: { 
-                formatTextValue: (value: any) => `${value}%`,
+                formatTextValue: (value: number) => `${value}%`,
                 style: { fontSize: '12px', fill: '#6b7280' }
               },
               ticks: [
