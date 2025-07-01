@@ -10,4 +10,5 @@ export interface UserListProps {
   label: string;
   multiSelect?: boolean;
   showAssignmentStatus?: boolean;
+  onSearchChange: (value: string) => void;
 } 

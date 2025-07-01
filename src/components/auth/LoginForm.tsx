@@ -14,6 +14,7 @@ export default function LoginForm({
     passwordError,
     generalError,
     formIncompleteError,
+    unauthorizedTeacherMessage,
     handleInputChange,
     handleSubmit,
     handleGoogleLogin,
@@ -67,6 +68,16 @@ export default function LoginForm({
           >
             <span aria-hidden="true" className="text-xl">⚠️</span>
             <p className="text-sm font-medium">{generalError}</p>
+          </div>
+        )}
+
+        {unauthorizedTeacherMessage && (
+          <div
+            role="alert"
+            className="flex items-center gap-2 bg-green-100 border border-green-500 text-green-700 px-4 py-2 rounded-md mb-4"
+          >
+            <span aria-hidden="true" className="text-xl">✅</span>
+            <p className="text-sm font-medium">{unauthorizedTeacherMessage}</p>
           </div>
         )}
 

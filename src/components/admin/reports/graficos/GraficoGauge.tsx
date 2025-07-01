@@ -1,4 +1,5 @@
 import React from "react";
+import GaugeComponent from 'react-gauge-component';
 import { TasaFinalizacion } from "../../../../hooks/admin/metricsServices";
 
 interface GraficoGaugeProps {
@@ -7,63 +8,77 @@ interface GraficoGaugeProps {
 
 const GraficoGauge: React.FC<GraficoGaugeProps> = ({ data }) => {
   const { tasa_finalizacion, estudios_evaluados, total_estudios } = data;
-  
-  // Calculamos el ángulo para el indicador del gauge
-  const angle = (tasa_finalizacion / 100) * 180;
-  
-  // Determinamos el color basado en el porcentaje
-  let color = "text-red-500";
-  if (tasa_finalizacion >= 70) {
-    color = "text-green-500";
-  } else if (tasa_finalizacion >= 40) {
-    color = "text-yellow-500";
-  }
 
   return (
-    <div className="h-full flex flex-col items-center justify-center">
-      <div className="relative w-48 h-24 overflow-hidden">
-        {/* Fondo del gauge */}
-        <div className="absolute w-48 h-48 rounded-full border-8 border-gray-200 bottom-0" />
-        
-        {/* Relleno del gauge basado en el porcentaje */}
-        <div 
-          className={`absolute w-48 h-48 rounded-full border-8 border-transparent bottom-0`}
-          style={{ 
-            borderTopColor: color.replace('text-', ''), 
-            borderRightColor: color.replace('text-', ''),
-            borderLeftColor: color.replace('text-', ''),
-            transform: `rotate(${angle - 180}deg)`,
-            transformOrigin: 'center bottom',
-            transition: 'transform 1s ease-out'
+    <div className="h-full flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <GaugeComponent
+          type="semicircle"
+          arc={{
+            width: 0.2,
+            padding: 0.005,
+            cornerRadius: 3,
+            subArcs: [
+              {
+                limit: 40,
+                color: '#ef4444',
+                showTick: true,
+                tooltip: {
+                  text: 'Nivel bajo'
+                }
+              },
+              {
+                limit: 70,
+                color: '#eab308',
+                showTick: true,
+                tooltip: {
+                  text: 'Nivel medio'
+                }
+              },
+              {
+                color: '#22c55e',
+                tooltip: {
+                  text: 'Nivel alto'
+                }
+              }
+            ]
           }}
+          pointer={{
+            color: '#374151',
+            length: 0.80,
+            width: 15,
+            elastic: true,
+          }}
+          labels={{
+            valueLabel: { 
+              formatTextValue: value => `${value}%`,
+              style: { fontSize: '28px', fill: '#374151' }
+            },
+            tickLabels: {
+              type: 'outer',
+              defaultTickValueConfig: { 
+                formatTextValue: (value: any) => `${value}%`,
+                style: { fontSize: '12px', fill: '#6b7280' }
+              },
+              ticks: [
+                { value: 0 },
+                { value: 25 },
+                { value: 50 },
+                { value: 75 },
+                { value: 100 }
+              ],
+            }
+          }}
+          value={tasa_finalizacion}
+          minValue={0}
+          maxValue={100}
         />
         
-        {/* Indicador central */}
-        <div className="absolute bottom-0 left-1/2 w-1 h-20 bg-gray-800 -ml-0.5 origin-bottom" 
-          style={{ 
-            transform: `rotate(${angle - 90}deg)`,
-            transformOrigin: 'center bottom',
-            transition: 'transform 1s ease-out'
-          }}
-        />
-        
-        {/* Círculo central */}
-        <div className="absolute bottom-0 left-1/2 w-4 h-4 bg-gray-800 rounded-full -ml-2 -mb-2" />
-      </div>
-      
-      <div className="mt-6 text-center">
-        <div className={`text-3xl font-bold ${color}`}>
-          {tasa_finalizacion}%
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-600">
+            {estudios_evaluados} de {total_estudios} estudios evaluados
+          </p>
         </div>
-        <p className="text-sm text-gray-600 mt-1">
-          {estudios_evaluados} de {total_estudios} estudios evaluados
-        </p>
-      </div>
-      
-      <div className="w-48 flex justify-between mt-2">
-        <span className="text-xs text-gray-500">0%</span>
-        <span className="text-xs text-gray-500">50%</span>
-        <span className="text-xs text-gray-500">100%</span>
       </div>
     </div>
   );

@@ -3,32 +3,7 @@ import axios from 'axios';
 import { config } from '../../config/config';
 import { checkAdminStatus } from './adminCheck';
 import { authService } from '../auth/authServices';
-
-export interface DashboardStats {
-  users: {
-    total: number;
-    newLastWeek: number;
-    growthPercentage: number;
-    roleDistribution: {
-      role: string;
-      count: number;
-    }[];
-  };
-  evaluations: {
-    total: number;
-    newLastWeek: number;
-    growthPercentage: number;
-  };
-  studies: {
-    total: number;
-    newLastWeek: number;
-    growthPercentage: number;
-    statusDistribution: {
-      status: string;
-      count: number;
-    }[];
-  };
-}
+import { DashboardStats } from '../../types/Admin/DashboardTypes';
 
 export const useDashboardStats = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);

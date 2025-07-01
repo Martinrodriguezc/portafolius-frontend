@@ -40,8 +40,8 @@ const SeccionEstadisticasGenerales: React.FC<SeccionEstadisticasGeneralesProps> 
     <div className="flex flex-col">
       <h2 className="text-xl font-semibold text-gray-900 mb-4">Estadísticas Generales</h2>
       
-      {/* Contenedor principal con layout flex-col en móviles y grid en pantallas medianas y grandes */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Contenedor principal optimizado para ocupar mejor el ancho */}
+      <div className="grid gap-4 auto-rows-fr" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))' }}>
         {/* Tarjeta 1 - Distribución de Usuarios por Rol */}
         <div className="flex flex-col h-auto">
           <TarjetaMetrica 

@@ -34,4 +34,5 @@ export interface UserProps {
 export interface AuthResponse {
   token: string;
   user: UserProps;
+  msg: string;
 }

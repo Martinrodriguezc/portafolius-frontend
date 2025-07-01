@@ -11,16 +11,19 @@ export const AssignmentsList: React.FC = () => {
   // Al montar, traemos las asignaciones
   useEffect(() => {
     fetchAssignments();
-  }, [fetchAssignments]);
+  }, []);
 
   // Filtrado por búsqueda
   const filtered = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
     if (!term) return assignments;
-    return assignments.filter(({ student, teacher }) =>
-      student.fullName.toLowerCase().includes(term) ||
-      teacher.fullName.toLowerCase().includes(term)
-    );
+    return assignments.filter(({ student, teacher }) => {
+      // Validación defensiva para evitar errores con datos undefined
+      const studentName = student?.fullName || '';
+      const teacherName = teacher?.fullName || '';
+      return studentName.toLowerCase().includes(term) ||
+             teacherName.toLowerCase().includes(term);
+    });
   }, [assignments, searchTerm]);
 
   // Paginación por scroll
@@ -111,8 +114,8 @@ export const AssignmentsList: React.FC = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {displayed.map(a => (
                   <tr key={a.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4">{a.student.fullName}</td>
-                    <td className="px-6 py-4">{a.teacher.fullName}</td>
+                    <td className="px-6 py-4">{a.student?.fullName || 'Estudiante no disponible'}</td>
+                    <td className="px-6 py-4">{a.teacher?.fullName || 'Profesor no disponible'}</td>
                     <td className="px-6 py-4">{formatDate(a.assignedAt)}</td>
                   </tr>
                 ))}

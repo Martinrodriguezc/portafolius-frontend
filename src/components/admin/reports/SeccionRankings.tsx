@@ -59,7 +59,7 @@ const SeccionRankings: React.FC<SeccionRankingsProps> = ({
   return (
     <div className="flex flex-col">
       <h2 className="text-xl font-semibold text-gray-900 mb-4">Rankings y Distribuciones</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid gap-4 auto-rows-fr" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))' }}>
         <div className="flex flex-col h-auto">
           <TarjetaMetrica 
             title="Top Profesores con Más Evaluaciones" 

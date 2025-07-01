@@ -125,6 +125,18 @@ function App() {
           <Route path="evaluations/:studyId/videos/:clipId/evaluate" element={<AdminEvaluateVideoPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="settings" element={<AdminSettingsPage />} />
+          
+          {/* Rutas de profesor disponibles para admin en modo profesor */}
+          <Route path="teacher" element={<TeacherDashboardPage />} />
+          <Route path="teacher/students" element={<TeacherStudentsPage />} />
+          <Route path="teacher/students/new" element={<NewStudentForm />} />
+          <Route path="teacher/students/:id" element={<StudentProfileTeacherPage />} />
+          <Route path="teacher/evaluations" element={<TeacherEvaluationsPage />} />
+          <Route path="teacher/evaluations/:id/videos" element={<TeacherMultipleVideosPage />} />
+          <Route path="teacher/evaluations/:studyId/videos/:clipId" element={<TeacherVideoPage />} />
+          <Route path="teacher/evaluations/:studyId/videos/:clipId/evaluate" element={<TeacherEvaluateVideoPage />} />
+          <Route path="teacher/settings" element={<TeacherSettingsPage />} />
+          <Route path="teacher/materials" element={<TeacherMaterialsPage />} />
         </Route>
       </Routes>
     </Router>

@@ -62,6 +62,7 @@ export const useStudentList = () => {
 
   const refreshList = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
       await Promise.all([
         fetchUsers(),
