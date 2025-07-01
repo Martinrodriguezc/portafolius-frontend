@@ -1,22 +1,8 @@
 import { useState } from 'react';
-import { generateAIMaterial } from '../../services/aiMaterialService';
+import { generateAIMaterial } from './requests/aiMaterialRequests';
 import { Material } from '../../types/aiMaterial';
 import { useDetailedVideoInfo } from './useDetailedVideoInfo';
-
-interface UseAIMaterialGenerationProps {
-    clipId: number;
-    additionalInfo: string;
-}
-
-interface UseAIMaterialGenerationReturn {
-    material: Material | null;
-    isLoading: boolean;
-    error: string | null;
-    generateMaterial: () => Promise<void>;
-    detailedFeedback: string;
-    videoInfoLoading: boolean;
-    videoInfoError: string | null;
-}
+import { UseAIMaterialGenerationProps, UseAIMaterialGenerationReturn } from '../../types/ai';
 
 export const useAIMaterialGeneration = ({
     clipId,

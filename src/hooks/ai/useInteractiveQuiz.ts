@@ -8,7 +8,15 @@ export function useInteractiveQuiz(quizItems: QuizItem[]) {
 
     const selectAnswer = (questionIndex: number, selectedAnswer: string) => {
         const question = quizItems[questionIndex];
-        const isCorrect = selectedAnswer === question.answer;
+        
+        let isCorrect = false;
+        if (typeof question.options === 'object' && question.options !== null && !Array.isArray(question.options)) {
+            const answerMapping = question.options as { [key: string]: string };
+            const correctAnswerText = answerMapping[question.answer];
+            isCorrect = selectedAnswer === correctAnswerText;
+        } else {
+            isCorrect = selectedAnswer === question.answer;
+        }
         
         const newAnswer: QuizAnswer = {
             questionIndex,

@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Star, MessageSquare, User, Calendar, Sparkles } from "lucide-react";
 import Card from "../../components/common/Card/Card";
@@ -14,7 +13,7 @@ export default function EvaluationDetails() {
       <div className="p-8 md:p-10 max-w-4xl mx-auto">
         <div className="flex items-center gap-4 mb-8">
           <Link
-            to={`/student/studies/${evaluationData?.studyId}/videos/${clipId}`}
+            to={`/student/${evaluationData?.studyId}/videos/${clipId}`}
             className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
           >
             <ArrowLeft className="h-5 w-5 text-slate-600" />
@@ -40,7 +39,7 @@ export default function EvaluationDetails() {
       <div className="p-8 md:p-10 max-w-4xl mx-auto">
         <div className="flex items-center gap-4 mb-8">
           <Link
-            to={`/student/studies/${evaluationData?.studyId}/videos/${clipId}`}
+            to={`/student/${evaluationData?.studyId}/videos/${clipId}`}
             className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
           >
             <ArrowLeft className="h-5 w-5 text-slate-600" />
@@ -66,7 +65,7 @@ export default function EvaluationDetails() {
       <div className="p-8 md:p-10 max-w-4xl mx-auto">
         <div className="flex items-center gap-4 mb-8">
           <Link
-            to={`/student/studies/${evaluationData?.studyId}/videos/${clipId}`}
+            to={`/student/${evaluationData?.studyId}/videos/${clipId}`}
             className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
           >
             <ArrowLeft className="h-5 w-5 text-slate-600" />
@@ -96,7 +95,7 @@ export default function EvaluationDetails() {
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <Link
-          to={`/student/studies/${evaluationData?.studyId}/videos/${clipId}`}
+          to={`/student/${evaluationData?.studyId}/videos/${clipId}`}
           className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
         >
           <ArrowLeft className="h-5 w-5 text-slate-600" />
