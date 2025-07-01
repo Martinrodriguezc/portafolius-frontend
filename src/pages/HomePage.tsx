@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, BookOpen, Menu, Stethoscope, Users, Wand2, X, Zap } from 'lucide-react';
+import { ArrowRight, BookOpen, Menu, Stethoscope, Users, Wand2, X } from 'lucide-react';
 import { useState } from "react";
 
 import Button from "../components/common/Button/Button";

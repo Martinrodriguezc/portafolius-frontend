@@ -1,5 +1,3 @@
-import React from "react";
-import { Summary } from "../../types/aiMaterial";
 import { MaterialSummaryProps } from "../../types/ai";
 
 export default function MaterialSummary({ summary }: MaterialSummaryProps) {
@@ -17,7 +15,7 @@ export default function MaterialSummary({ summary }: MaterialSummaryProps) {
             </div>
             <div className="p-8">
                 <ul className="space-y-4">
-                    {summary.map((s, i) => (
+                    {summary.map((s: string, i: number) => (
                         <li key={i} className="flex items-start">
                             <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-teal-500 rounded-full mt-2 mr-4 flex-shrink-0"></div>
                             <span className="text-slate-700 leading-relaxed">{s}</span>

@@ -1,4 +1,3 @@
-import React from "react";
 import { Resource } from "../../types/aiMaterial";
 import { MaterialResourcesProps } from "../../types/ai";
 

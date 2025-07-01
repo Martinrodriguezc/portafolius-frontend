@@ -2,7 +2,6 @@ import React from 'react';
 import { useDetailedVideoInfo } from '../../hooks/ai/useDetailedVideoInfo';
 import { EvaluationInfoSectionProps } from '../../types/ai';
 
-// Sub-components for better organization
 const LoadingSkeleton: React.FC = () => (
     <div className="bg-white rounded-xl shadow-lg p-6 mb-6 border border-slate-200">
         <h3 className="text-lg font-semibold text-slate-800 mb-4">
@@ -120,7 +119,6 @@ export const EvaluationInfoSection: React.FC<EvaluationInfoSectionProps> = ({ cl
         protocol,
         isLoading,
         error,
-        comprehensivePrompt
     } = useDetailedVideoInfo(clipId);
 
     if (isLoading) {

@@ -1,7 +1,5 @@
-import React from "react";
 import { ChevronLeft, ChevronRight, CheckCircle, XCircle, RotateCcw, Trophy } from "lucide-react";
 import Button from "../common/Button/Button";
-import { QuizItem } from "../../types/aiMaterial";
 import { useInteractiveQuiz } from "../../hooks/ai/useInteractiveQuiz";
 import { InteractiveQuizProps } from "../../types/ai";
 

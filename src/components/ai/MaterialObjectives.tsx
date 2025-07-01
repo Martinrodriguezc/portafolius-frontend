@@ -1,4 +1,3 @@
-import { Objectives } from "../../types/aiMaterial";
 import { MaterialObjectivesProps } from "../../types/ai";
 
 export default function MaterialObjectives({ objectives }: MaterialObjectivesProps) {
@@ -16,7 +15,7 @@ export default function MaterialObjectives({ objectives }: MaterialObjectivesPro
             </div>
             <div className="p-8">
                 <ol className="space-y-4">
-                    {objectives.map((o, i) => (
+                    {objectives.map((o: string, i: number) => (
                         <li key={i} className="flex items-start">
                             <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-teal-100 text-blue-700 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
                                 {i + 1}
