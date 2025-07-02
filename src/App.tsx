@@ -43,7 +43,7 @@ import TeacherEvaluateVideoPage from "./pages/Teacher/EvaluateVideoPage";
 import StudentProfileTeacherPage from "./pages/Teacher/StudentProfileTeacherPage";
 import LearnMorePage from "./pages/LearnMore";
 import StudentCreateStudyPage from "./pages/Student/Study";
-import BetaPage from "./pages/IA_Beta_Page";
+import BetaPage from "./pages/Student/IA_Beta_Page";
 
 import AdminDashboardPage from "./pages/admin/AdminDashboard";
 import UserManagementPage from "./pages/admin/UserManagement";

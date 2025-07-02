@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Button from "../components/common/Button/Button";
-import { config } from "../config/config";
-import { LearnMoreNavbar } from "../components/learnMore/LearnMoreNavbar";
+import Button from "../../components/common/Button/Button";
+import { config } from "../../config/config";
+import { LearnMoreNavbar } from "../../components/learnMore/LearnMoreNavbar";
 import { useNavigate } from "react-router-dom";
 
 //Hoja temporal para mostrar version beta del generador de material de estudio
@@ -69,10 +69,6 @@ export default function BetaPage() {
             <div className="max-w-6xl mx-auto p-6 md:p-8 lg:p-12">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">
-                        <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                        Beta Version
-                    </div>
                     <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Generador de Material de Estudio</h1>
                     <p className="text-xl text-slate-600 max-w-2xl mx-auto">
                         Transforma el feedback de tu profesor en material de estudio personalizado con IA
