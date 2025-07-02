@@ -17,6 +17,7 @@ const extractJsonFromMarkdown = (text: string): Material => {
             }
         }
         
+        
         const jsonStart = text.indexOf('{');
         const jsonEnd = text.lastIndexOf('}');
         if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
