@@ -13,7 +13,6 @@ import LoadingState from "../../components/teacher/EvaluateVideo/LoadingState";
 // import ErrorState from "../../components/teacher/EvaluateVideo/ErrorState";
 
 export default function EvaluateVideoPage() {
-  const { clipId } = useParams<{ clipId: string }>();
   const {
     url,
     videoRef,
