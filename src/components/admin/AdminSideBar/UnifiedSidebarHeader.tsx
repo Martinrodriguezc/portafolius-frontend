@@ -1,5 +1,5 @@
 import React from "react";
-import { useAdminMode } from "../../../contexts/AdminModeContext";
+import { useAdminMode } from "../../../contexts/AdminModeContextUtils";
 import { RoleSwitcher } from "../../common/RoleSwitcher/RoleSwitcher";
 
 export const UnifiedSidebarHeader: React.FC = () => {

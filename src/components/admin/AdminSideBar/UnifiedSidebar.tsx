@@ -12,7 +12,7 @@ import {
   Files
 } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { useAdminMode } from "../../../contexts/AdminModeContext";
+import { useAdminMode } from "../../../contexts/AdminModeContextUtils";
 import { SidebarNavLink } from "./SidebarNavlink";
 import { SidebarFooter } from "./SidebarFooter";
 import { UnifiedSidebarHeader } from "./UnifiedSidebarHeader";

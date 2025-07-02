@@ -1,18 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCurrentUser } from '../hooks/user/useCurrentUser';
-
-interface AdminModeContextType {
-  isTeacherMode: boolean;
-  toggleMode: () => void;
-  currentViewRole: 'admin' | 'teacher';
-  canSwitchMode: boolean;
-}
-
-const AdminModeContext = createContext<AdminModeContextType | null>(null);
-
-interface AdminModeProviderProps {
-  children: React.ReactNode;
-}
+import { AdminModeContextType, AdminModeProviderProps, AdminModeContext } from './AdminModeContextUtils';
 
 export const AdminModeProvider: React.FC<AdminModeProviderProps> = ({ children }) => {
   const user = useCurrentUser();
@@ -60,12 +48,4 @@ export const AdminModeProvider: React.FC<AdminModeProviderProps> = ({ children }
       {children}
     </AdminModeContext.Provider>
   );
-};
-
-export const useAdminMode = (): AdminModeContextType => {
-  const context = useContext(AdminModeContext);
-  if (!context) {
-    throw new Error('useAdminMode debe ser usado dentro de AdminModeProvider');
-  }
-  return context;
 }; 

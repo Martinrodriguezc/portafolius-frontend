@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch } from '../Switch/Switch';
-import { useAdminMode } from '../../../contexts/AdminModeContext';
+import { useAdminMode } from '../../../contexts/AdminModeContextUtils';
 import { User, Settings } from 'lucide-react';
 
 interface RoleSwitcherProps {

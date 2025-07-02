@@ -67,7 +67,7 @@ export const useAssignServices = () => {
   
   useEffect(() => {
     fetchAssignments();
-  }, []);
+  }, [fetchAssignments]);
 
   const assignTeacherToStudent = async (
     teacherEmail: string,

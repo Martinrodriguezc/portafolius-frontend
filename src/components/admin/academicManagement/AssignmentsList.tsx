@@ -11,7 +11,7 @@ export const AssignmentsList: React.FC = () => {
   // Al montar, traemos las asignaciones
   useEffect(() => {
     fetchAssignments();
-  }, []);
+  }, [fetchAssignments]);
 
   // Filtrado por búsqueda
   const filtered = useMemo(() => {
