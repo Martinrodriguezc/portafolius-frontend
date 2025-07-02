@@ -13,18 +13,33 @@ const DashboardMetricas: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
-      <Header 
-        title="Dashboard de Métricas" 
-        ultimaActualizacion={ultimaActualizacion} 
-        onRefrescar={refrescarDatos} 
-      />
+    <div className="min-h-screen bg-gray-50 p-2 sm:p-4 lg:p-6">
+      {/* Header principal */}
+      <div className="mb-2">
+        <Header 
+          title="Dashboard de Métricas" 
+          ultimaActualizacion={ultimaActualizacion} 
+          onRefrescar={refrescarDatos} 
+        />
+      </div>
       
-      <SeccionEstadisticasGenerales ultimaActualizacion={ultimaActualizacion} />
-      
-      <SeccionTendenciasTiempo ultimaActualizacion={ultimaActualizacion} />
-      
-      <SeccionRankings ultimaActualizacion={ultimaActualizacion} />
+      {/* Container principal optimizado para ocupar más ancho */}
+      <div className="space-y-6 max-w-none">
+        {/* Sección de Rankings - máximo ancho disponible */}
+        <div className="w-full">
+          <SeccionRankings ultimaActualizacion={ultimaActualizacion} />
+        </div>
+        
+        {/* Sección de Estadísticas Generales - ancho completo */}
+        <div className="w-full">
+          <SeccionEstadisticasGenerales ultimaActualizacion={ultimaActualizacion} />
+        </div>
+        
+        {/* Sección de Tendencias de Tiempo - ancho completo */}
+        <div className="w-full">
+          <SeccionTendenciasTiempo ultimaActualizacion={ultimaActualizacion} />
+        </div>
+      </div>
     </div>
   );
 };

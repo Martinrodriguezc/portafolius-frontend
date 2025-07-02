@@ -9,8 +9,12 @@ export const useAssignServices = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
-  const [lastFetchTime, setLastFetchTime] = useState<number>(0);
+  const lastFetchTimeRef = useRef<number>(0);
+  const assignmentsRef = useRef<Assignment[]>([]);
   const isLoadingRef = useRef(false);
+
+  // Mantener refs actualizadas
+  assignmentsRef.current = assignments;
 
   const fetchAssignments = useCallback(async (force = false) => {
     // Usar una referencia para evitar llamadas concurrentes y efectos de re-renderizado
@@ -18,7 +22,7 @@ export const useAssignServices = () => {
     
     // Si no es forzado y la última carga fue hace menos de 30 segundos, usar caché
     const now = Date.now();
-    if (!force && now - lastFetchTime < 30000 && assignments.length > 0) {
+    if (!force && now - lastFetchTimeRef.current < 30000 && assignmentsRef.current.length > 0) {
       return;
     }
 
@@ -46,7 +50,7 @@ export const useAssignServices = () => {
       );
 
       setAssignments(response.data.assignments);
-      setLastFetchTime(now);
+      lastFetchTimeRef.current = now;
     } catch (e: unknown) {
       let errorMessage = 'Error al obtener las asignaciones';
       if (e instanceof AxiosError && e.response?.data?.msg) {
@@ -59,9 +63,8 @@ export const useAssignServices = () => {
       setLoading(false);
       isLoadingRef.current = false;
     }
-  }, [lastFetchTime, assignments.length]); // Eliminado loading de las dependencias
-
-  // Cargar asignaciones al inicializar el hook
+  }, []);
+  
   useEffect(() => {
     fetchAssignments();
   }, [fetchAssignments]);
