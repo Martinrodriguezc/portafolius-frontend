@@ -4,25 +4,9 @@ import { useInteractiveQuiz } from "../../hooks/ai/useInteractiveQuiz";
 import { InteractiveQuizProps } from "../../types/ai";
 
 export default function InteractiveQuiz({ quizItems }: InteractiveQuizProps) {
-    if (!quizItems || quizItems.length === 0) {
-        return (
-            <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-teal-600 px-8 py-6">
-                    <h2 className="text-2xl font-bold text-white flex items-center">
-                        <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mr-3">❓</div>
-                        Preguntas de Autoevaluación
-                    </h2>
-                </div>
-                <div className="p-8 text-center">
-                    <p className="text-slate-600">No hay preguntas de autoevaluación disponibles.</p>
-                </div>
-            </div>
-        );
-    }
-
     const {
-        answers,
         currentQuestion,
+        answers,
         showResults,
         selectAnswer,
         nextQuestion,
@@ -141,7 +125,7 @@ export default function InteractiveQuiz({ quizItems }: InteractiveQuizProps) {
                                             <p className="text-sm text-slate-600 mb-2">
                                                 Respuesta correcta: <span className="font-medium text-green-600">{
                                                     typeof question.options === 'object' && question.options !== null && !Array.isArray(question.options)
-                                                        ? (question.options as any)[question.answer] || question.answer
+                                                        ? (question.options as { [key: string]: string })[question.answer] || question.answer
                                                         : question.answer
                                                 }</span>
                                             </p>

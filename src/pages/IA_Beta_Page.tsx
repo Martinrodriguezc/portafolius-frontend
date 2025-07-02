@@ -14,18 +14,7 @@ const IA_Beta_Page: React.FC = () => {
     const { clipId } = useParams<{ clipId: string }>();
     const [additionalInfo, setAdditionalInfo] = useState('');
 
-    if (!clipId) {
-        return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-                <div className="text-center">
-                    <h1 className="text-2xl font-bold text-slate-800 mb-4">Error</h1>
-                    <p className="text-slate-600">No se proporcionó un ID de video válido</p>
-                </div>
-            </div>
-        );
-    }
-
-    const clipIdNumber = parseInt(clipId, 10);
+    const clipIdNumber = clipId ? parseInt(clipId, 10) : null;
 
     const {
         material,
@@ -36,9 +25,20 @@ const IA_Beta_Page: React.FC = () => {
         videoInfoLoading,
         videoInfoError
     } = useAIMaterialGeneration({
-        clipId: clipIdNumber,
+        clipId: clipIdNumber || 0,
         additionalInfo
     });
+
+    if (!clipId || !clipIdNumber) {
+        return (
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold text-slate-800 mb-4">Error</h1>
+                    <p className="text-slate-600">No se proporcionó un ID de video válido</p>
+                </div>
+            </div>
+        );
+    }
 
     const handleGenerateMaterial = async () => {
         await generateMaterial();

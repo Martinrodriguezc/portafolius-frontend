@@ -57,12 +57,12 @@ export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
     loadWindows(fileItem.protocolKey)
     loadImageQualities()
     loadFinalDiagnoses()
-  }, [fileItem.protocolKey])
+  }, [fileItem.protocolKey, loadWindows, loadImageQualities, loadFinalDiagnoses])
 
   useEffect(() => {
     if (!fileItem.protocolKey || fileItem.windowId == null) return
     loadFindings(fileItem.protocolKey, fileItem.windowId)
-  }, [fileItem.protocolKey, fileItem.windowId])
+  }, [fileItem.protocolKey, fileItem.windowId, loadFindings])
 
   useEffect(() => {
     if (
@@ -72,22 +72,22 @@ export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
     )
       return
     loadDiagnoses(fileItem.protocolKey, fileItem.windowId, fileItem.findingId)
-  }, [fileItem.protocolKey, fileItem.windowId, fileItem.findingId])
+  }, [fileItem.protocolKey, fileItem.windowId, fileItem.findingId, loadDiagnoses])
 
   useEffect(() => {
     if (!fileItem.protocolKey || fileItem.diagnosisId == null) return
     loadSubdiagnoses(fileItem.protocolKey, fileItem.diagnosisId)
-  }, [fileItem.protocolKey, fileItem.diagnosisId])
+  }, [fileItem.protocolKey, fileItem.diagnosisId, loadSubdiagnoses])
 
   useEffect(() => {
     if (!fileItem.protocolKey || fileItem.subdiagnosisId == null) return
     loadSubSubs(fileItem.protocolKey, fileItem.subdiagnosisId)
-  }, [fileItem.protocolKey, fileItem.subdiagnosisId])
+  }, [fileItem.protocolKey, fileItem.subdiagnosisId, loadSubSubs])
 
   useEffect(() => {
     if (!fileItem.protocolKey || fileItem.subSubId == null) return
     loadThirdOrders(fileItem.protocolKey, fileItem.subSubId)
-  }, [fileItem.protocolKey, fileItem.subSubId])
+  }, [fileItem.protocolKey, fileItem.subSubId, loadThirdOrders])
 
   return (
     <div className="border border-slate-200 rounded-[12px] shadow-sm hover:shadow-md">
