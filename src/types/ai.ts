@@ -1,4 +1,4 @@
-import { QuizItem } from './aiMaterial';
+import { QuizItem, Material, Interaction, VideoDetails, Protocol } from './aiMaterial';
 
 export interface InteractiveQuizProps {
     quizItems: QuizItem[];
@@ -22,7 +22,7 @@ export interface UseAIMaterialGenerationProps {
 }
 
 export interface UseAIMaterialGenerationReturn {
-    material: any;
+    material: Material | null;
     isLoading: boolean;
     error: string | null;
     generateMaterial: () => Promise<void>;
@@ -32,24 +32,28 @@ export interface UseAIMaterialGenerationReturn {
 }
 
 export interface DetailedVideoInfo {
-    interactions: any[];
-    videoDetails: any;
-    protocol: any;
+    interactions: Interaction[];
+    videoDetails: VideoDetails | null;
+    protocol: Protocol | null;
     isLoading: boolean;
     error: string | null;
     comprehensivePrompt: string;
 }
 
 export interface MaterialSummaryProps {
-    summary: any;
+    summary: string[];
 }
 
 export interface MaterialObjectivesProps {
-    objectives: any;
+    objectives: string[];
 }
 
 export interface MaterialResourcesProps {
-    resources: any[];
+    resources: Array<{
+        title: string;
+        link: string;
+        source: string;
+    }>;
 }
 
 export interface EvaluationInfoSectionProps {

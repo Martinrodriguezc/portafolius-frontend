@@ -2,12 +2,11 @@ import { Material, ErrorResponse, Interaction, VideoDetails, Protocol } from '..
 import { authService } from '../../auth/authServices';
 import { config } from '../../../config/config';
 
-const API_BASE_URL = 'http://localhost:3000';
 
-const extractJsonFromMarkdown = (text: string): any => {
+const extractJsonFromMarkdown = (text: string): Material => {
     try {
         return JSON.parse(text);
-    } catch (error) {
+    } catch {
         const jsonMatch = text.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
         if (jsonMatch) {
             try {
@@ -79,7 +78,7 @@ export const getVideoInteractions = async (clipId: number): Promise<Interaction[
     const token = authService.getToken();
     if (!token) throw new Error("No autorizado");
 
-    const response = await fetch(`${API_BASE_URL}/interactions/${clipId}/interaction`, {
+    const response = await fetch(`${config.SERVER_URL}/interactions/${clipId}/interaction`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -98,7 +97,7 @@ export const getVideoDetails = async (clipId: number): Promise<VideoDetails> => 
     const token = authService.getToken();
     if (!token) throw new Error("No autorizado");
 
-    const response = await fetch(`${API_BASE_URL}/video/${clipId}/evaluation/details`, {
+    const response = await fetch(`${config.SERVER_URL}/video/${clipId}/evaluation/details`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -117,7 +116,7 @@ export const getProtocol = async (protocolKey: string): Promise<Protocol> => {
     const token = authService.getToken();
     if (!token) throw new Error("No autorizado");
 
-    const response = await fetch(`${API_BASE_URL}/protocols/${protocolKey}`, {
+    const response = await fetch(`${config.SERVER_URL}/protocols/${protocolKey}`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
