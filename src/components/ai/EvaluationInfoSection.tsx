@@ -1,16 +1,18 @@
 import React from 'react';
 import { useDetailedVideoInfo } from '../../hooks/ai/useDetailedVideoInfo';
+import { Interaction, Protocol } from '../../types/aiMaterial';
+import type { ProtocolSection as ProtocolSectionType } from '../../types/aiMaterial';
 import { EvaluationInfoSectionProps } from '../../types/ai';
 
 const LoadingSkeleton: React.FC = () => (
     <div className="bg-white rounded-xl shadow-lg p-6 mb-6 border border-slate-200">
-        <h3 className="text-lg font-semibold text-slate-800 mb-4">
-            Información de Evaluación
-        </h3>
-        <div className="animate-pulse space-y-3">
-            <div className="h-4 bg-slate-200 rounded w-3/4"></div>
-            <div className="h-4 bg-slate-200 rounded w-1/2"></div>
-            <div className="h-4 bg-slate-200 rounded w-2/3"></div>
+        <div className="animate-pulse">
+            <div className="h-8 bg-slate-200 rounded w-1/3 mb-6"></div>
+            <div className="space-y-4">
+                <div className="h-4 bg-slate-200 rounded w-3/4"></div>
+                <div className="h-4 bg-slate-200 rounded w-1/2"></div>
+                <div className="h-4 bg-slate-200 rounded w-2/3"></div>
+            </div>
         </div>
     </div>
 );
@@ -50,7 +52,7 @@ const InfoRow: React.FC<{ label: string; value: string | number | null }> = ({ l
     </div>
 );
 
-const InteractionCard: React.FC<{ interaction: any; index: number }> = ({ interaction, index }) => (
+const InteractionCard: React.FC<{ interaction: Interaction; index: number }> = ({ interaction, index }) => (
     <div className="bg-white border border-slate-200 rounded-xl p-4 mb-3 shadow-sm">
         <div className="flex items-center justify-between mb-3">
             <h5 className="font-semibold text-slate-800">
@@ -86,18 +88,18 @@ const InteractionCard: React.FC<{ interaction: any; index: number }> = ({ intera
     </div>
 );
 
-const ProtocolSection: React.FC<{ protocol: any }> = ({ protocol }) => (
+const ProtocolSectionComponent: React.FC<{ protocol: Protocol }> = ({ protocol }) => (
     <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-xl p-4 mb-4 border border-blue-200">
         <h4 className="font-semibold text-blue-800 mb-3 text-sm uppercase tracking-wide flex items-center gap-2">
             <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
             Protocolo: {protocol.name}
         </h4>
         <div className="space-y-3">
-            {protocol.sections.map((section: any) => (
+            {protocol.sections.map((section: ProtocolSectionType) => (
                 <div key={section.key} className="bg-white rounded-lg p-3 border border-blue-200 shadow-sm">
                     <div className="font-medium text-blue-800 mb-2">{section.name}</div>
                     <div className="space-y-1 text-sm">
-                        {section.items.map((item: any) => (
+                        {section.items.map((item) => (
                             <div key={item.key} className="flex justify-between items-center">
                                 <span className="text-slate-700">{item.label}</span>
                                 <span className="text-slate-500 text-xs">
@@ -219,7 +221,7 @@ export const EvaluationInfoSection: React.FC<EvaluationInfoSectionProps> = ({ cl
                 )}
 
                 {/* Protocol Information */}
-                {protocol && <ProtocolSection protocol={protocol} />}
+                {protocol && <ProtocolSectionComponent protocol={protocol} />}
             </div>
         </div>
     );

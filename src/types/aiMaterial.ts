@@ -86,8 +86,15 @@ export interface VideoDetails {
         name: string;
         email: string;
     };
-    tags: any[];
-    comments: any[];
+    tags: Array<{
+        id: number;
+        name: string;
+    }>;
+    comments: Array<{
+        id: number;
+        content: string;
+        createdAt: string;
+    }>;
     evaluation: {
         id: number;
         score: number;
