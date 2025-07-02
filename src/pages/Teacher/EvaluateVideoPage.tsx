@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
 import { useTeacherEvaluateVideo } from "../../hooks/teacher/evaluations/useTeacherEvaluateVideo/useTeacherEvaluateVideo";
 import { useVideoSection } from "../../hooks/teacher/VideoSection/useVideoSection";
