@@ -17,16 +17,3 @@ export interface Evaluation {
   date: string
   score?: number
 }
-
-export interface EvaluationCheckResponse {
-  clipId: number;
-  studyId: number;
-  hasEvaluation: boolean;
-  evaluation?: {
-    id: number;
-    score: number;
-    feedbackSummary: string | null;
-    submittedAt: string;
-    teacherName: string;
-  };
-}

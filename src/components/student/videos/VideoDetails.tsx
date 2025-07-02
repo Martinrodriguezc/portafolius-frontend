@@ -2,15 +2,16 @@ import React from "react";
 import { Calendar, FileVideo, Info, User, CheckCircle, Clock } from "lucide-react";
 import Card from "../../common/Card/Card";
 import { Video } from "../../../types/VideoTypes";
+import { EvaluationForm } from "../../../types/evaluation";
 
 interface VideoDetailsProps {
   meta?: Video | null;
   study?: { title?: string } | null;
   studentName: string;
-  hasEvaluation?: boolean;
+  evaluation?: EvaluationForm | null;
 }
 
-const VideoDetails: React.FC<VideoDetailsProps> = ({ meta, study, studentName, hasEvaluation }) => {
+const VideoDetails: React.FC<VideoDetailsProps> = ({ meta, study, studentName, evaluation }) => {
   return (
     <Card className="rounded-[16px] border border-slate-200 shadow-sm overflow-hidden">
       <div className="bg-gradient-to-r from-slate-50 to-blue-50 p-4 border-b border-slate-200">
@@ -127,7 +128,7 @@ const VideoDetails: React.FC<VideoDetailsProps> = ({ meta, study, studentName, h
                 <div>
                   <p className="text-[13px] text-[#666666]">Estado</p>
                   <p className="text-[14px] text-[#333333] font-medium flex items-center gap-1">
-                    {hasEvaluation ? (
+                    {evaluation ? (
                       <>
                         <CheckCircle className="h-4 w-4 text-green-500" /> Evaluado
                       </>

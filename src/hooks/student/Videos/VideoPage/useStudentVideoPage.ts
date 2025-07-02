@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { EvaluationForm } from "../../../../types/evaluation";
 import { fetchVideoMeta, fetchVideoUrl } from "../../../video/utils/requests";
 import { Video } from "../../../../types/VideoTypes";
 
@@ -9,6 +10,7 @@ export function useStudentVideoPage() {
 
   const [url, setUrl] = useState("");
   const [meta, setMeta] = useState<Video | null>(null);
+  const [evaluation, setEvaluation] = useState<EvaluationForm | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -83,6 +85,7 @@ export function useStudentVideoPage() {
     videoRef,
     url,
     meta,
+    evaluation,
     loading,
     error,
     isPlaying,
@@ -91,5 +94,6 @@ export function useStudentVideoPage() {
     togglePlay,
     handleSeek,
     toggleFullscreen,
+    setEvaluation,
   };
 }

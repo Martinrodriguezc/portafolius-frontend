@@ -8,7 +8,6 @@ import VideoComments from "../../../components/student/videos/VideoComments";
 import VideoDetails from "../../../components/student/videos/VideoDetails";
 import { useStudentVideoPage } from "../../../hooks/student/Videos/VideoPage/useStudentVideoPage";
 import { useStudentStudies } from "../../../hooks/student/Studies/useStudentStudies";
-import { useVideoEvaluation } from "../../../hooks/student/evaluations/useVideoEvaluation";
 import { authService } from "../../../hooks/auth/authServices";
 import { useParams } from "react-router-dom";
 import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
@@ -25,6 +24,7 @@ export default function StudentVideoPage() {
     videoRef,
     url,
     meta,
+    evaluation,
     loading,
     error,
     isPlaying,
@@ -35,10 +35,8 @@ export default function StudentVideoPage() {
     toggleFullscreen,
   } = useStudentVideoPage();
 
-  const { evaluationData } = useVideoEvaluation(Number(meta?.id));
-
   const { interactions, loadInteractions } = useInteractions();
-
+  console.log("interactions", interactions)
   useEffect(() => {
     if (meta?.id) {
       loadInteractions(meta.id);
@@ -51,6 +49,8 @@ export default function StudentVideoPage() {
   const studentName = currentUser
     ? `${currentUser.first_name} ${currentUser.last_name}`
     : "";
+
+
 
   if (loading || studiesLoading) {
     return (
@@ -67,6 +67,8 @@ export default function StudentVideoPage() {
       </div>
     );
   }
+  console.log(studyId)
+  console.log(videos)
 
   return (
     <div className="p-8 md:p-10 max-w-7xl mx-auto">
@@ -95,17 +97,19 @@ export default function StudentVideoPage() {
             meta={meta} 
             study={study} 
             studentName={studentName} 
-            hasEvaluation={evaluationData?.hasEvaluation} 
+            evaluation={evaluation} 
           />
 
+          {/* Protocol Tags and Comments */}
           <div className="space-y-6">
             <VideoProtocolTags interactions={interactions} />
             <VideoComments interactions={interactions} />
           </div>
         </div>
 
+        {/* Right Column - Evaluation */}
         <div className="w-full lg:w-1/3">
-          <VideoEvaluation clipId={Number(meta?.id)} />
+          <VideoEvaluation evaluation={evaluation} />
         </div>
       </div>
     </div>

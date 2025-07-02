@@ -17,6 +17,7 @@ export const EvaluationCard: React.FC<EvaluationCardProps> = ({
     context = "teacher"
 }) => {
     const isPending = variant === "pending";
+    
     const basePath = context === "admin" ? "/admin" : "/teacher";
     const videoLink = `${basePath}/evaluations/${study.study_id}/videos`;
     

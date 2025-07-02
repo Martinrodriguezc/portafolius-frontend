@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useStudentProfile } from "../../hooks/teacher/student/useStudentProfile";
+import { useStudentStats } from "../../hooks/teacher/student/stats/useStudentStats";
 import { PageHeader } from "../../components/teacher/StudentProfile/Header";
 import { LoadingState } from "../../components/teacher/StudentProfile/Loading";
 import { ErrorState } from "../../components/teacher/StudentProfile/Error";
@@ -26,7 +27,13 @@ export default function StudentProfileTeacherPage() {
     studiesError,
   } = useStudentProfile();
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const {
+    data: stats,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useStudentStats(studentId);
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<"all" | "evaluated" | "pending">("all");
   const [sortBy, setSortBy] = useState<"date" | "title" | "score">("date");
   const [activeTab, setActiveTab] = useState<"studies">("studies");
@@ -46,6 +53,7 @@ export default function StudentProfileTeacherPage() {
       </div>
     );
   }
+
   if (studentError || studiesError || !student) {
     return (
       <div className="p-8">
@@ -81,7 +89,13 @@ export default function StudentProfileTeacherPage() {
         <h2 className="text-xl font-semibold text-gray-800 flex items-center">
           <Calendar className="mr-2 text-gray-600" /> Protocolos evaluados
         </h2>
-        <StatisticsTable studentId={studentId} />
+        {statsLoading ? (
+          <p className="text-gray-500">Cargando estadísticas…</p>
+        ) : statsError ? (
+          <p className="text-red-500">Error al cargar estadísticas</p>
+        ) : (
+          <StatisticsTable data={stats?.protocolCounts || []} />
+        )}
       </section>
 
       <TopMetrics

@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
+
 import { useAllStudies } from "../../hooks/teacher/useAllStudies/useAllStudies";
 import { useTeacherEvaluateVideo } from "../../hooks/teacher/evaluations/useTeacherEvaluateVideo/useTeacherEvaluateVideo";
 import { useVideoSection } from "../../hooks/teacher/VideoSection/useVideoSection";
+
 import LoadingState from "../../components/teacher/EvaluateVideo/LoadingState";
 import ErrorState from "../../components/teacher/EvaluateVideo/ErrorState";
 import VideoSection from "../../components/teacher/EvaluateVideo/VideoSection/VideoSection";
+
 import { RUBRICS } from "../../utils/rubrics/rubrics";
 import { attemptService } from "../../hooks/teacher/attemptService/attemptService";
 import { postProfessorInteraction } from "../../hooks/upload/interactionsRequests/interactionRequest";
+
 import type { Attempt } from "../../types/attempt";
 import type { ProfessorInteractionPayload } from "../../types/interaction";
 import type {
