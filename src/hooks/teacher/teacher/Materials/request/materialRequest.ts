@@ -36,7 +36,7 @@ export const createLinkRequest = (
   };
   
   return axios.post<{ material: Material }>(
-    `${config.SERVER_URL}/material/upload-url`,
+    `${config.SERVER_URL}/materials/upload-url`,
     requestPayload,
     {
       headers: {

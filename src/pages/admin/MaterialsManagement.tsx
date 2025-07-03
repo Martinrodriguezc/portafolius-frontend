@@ -140,24 +140,24 @@ export default function MaterialsManagement() {
           </div>
           
           <div className="p-6">
-            <MaterialCreationForm onSuccess={handleMaterialCreationSuccess} />
+            <MaterialCreationForm 
+              onSuccess={handleMaterialCreationSuccess} 
+              editingMaterial={editingMaterial}
+            />
           </div>
         </div>
       </div>
     );
   };
 
-  // Si está cargando, mostrar el componente de carga
   if (isLoading) {
     return <MaterialsLoading />;
   }
 
-  // Si hay un error de autenticación, mostrar el componente de error de autenticación
   if (authErrorMessage) {
     return <MaterialsAuthError message={authErrorMessage} />;
   }
 
-  // Si hay un error, mostrar el componente de error
   if (isError) {
     return <MaterialsError onRetry={refetch} />;
   }
