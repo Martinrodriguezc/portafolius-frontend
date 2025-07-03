@@ -2,7 +2,7 @@ import { Link as LinkIcon, ExternalLink, Pencil, Trash2, User, Users } from 'luc
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 import Card from '../../common/Card/Card';
-import { Material } from '../../../types/material';
+import { Material, GroupedMaterial } from '../../../types/material';
 
 interface LinksTabProps {
   links: Material[];
@@ -14,7 +14,7 @@ const normalizeTitle = (title: string): string => {
   return title.replace(/\s*\(\d+\/\d+\)\s*$/, '').trim();
 };
 
-const groupSimilarMaterials = (materials: Material[]) => {
+const groupSimilarMaterials = (materials: Material[]): GroupedMaterial[] => {
   const groups = new Map<string, Material[]>();
   
   materials.forEach(material => {
@@ -38,7 +38,7 @@ const groupSimilarMaterials = (materials: Material[]) => {
       _groupedMaterials: group,
       _allStudentIds: allStudentIds,
       _isGroup: group.length > 1
-    };
+    } as GroupedMaterial;
   });
 };
 
@@ -119,15 +119,15 @@ export default function LinksTab({ links, onEdit, onDelete }: LinksTabProps) {
               </div>
               
               <div className="flex items-center gap-2 mb-3 text-sm text-[#666666]">
-                {(link as any)._allStudentIds.length === 0 ? (
+                {link._allStudentIds.length === 0 ? (
                   <>
                     <Users className="h-4 w-4" />
                     <span className="text-blue-600 font-medium">Material Global</span>
                   </>
-                ) : (link as any)._isGroup ? (
+                ) : link._isGroup ? (
                   <>
                     <Users className="h-4 w-4" />
-                    <span>Asignado a {(link as any)._allStudentIds.length} estudiantes</span>
+                    <span>Asignado a {link._allStudentIds.length} estudiantes</span>
                   </>
                 ) : (
                   <>
@@ -147,8 +147,8 @@ export default function LinksTab({ links, onEdit, onDelete }: LinksTabProps) {
                       })}
                     </p>
                   )}
-                  {(link as any)._isGroup && (
-                    <p className="text-purple-600">📋 {(link as any)._groupedMaterials.length} copias</p>
+                  {link._isGroup && (
+                    <p className="text-purple-600">📋 {link._groupedMaterials.length} copias</p>
                   )}
                 </div>
                 
@@ -157,14 +157,14 @@ export default function LinksTab({ links, onEdit, onDelete }: LinksTabProps) {
                     <button
                       onClick={() => onEdit(link)}
                       className="p-2 rounded-md hover:bg-purple-100 text-purple-600 transition-colors"
-                      title={`Editar${(link as any)._isGroup ? ' (gestionar todas las copias)' : ''}`}
+                      title={`Editar${link._isGroup ? ' (gestionar todas las copias)' : ''}`}
                     >
                       <Pencil className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => onDelete(link.id)}
                       className="p-2 rounded-md hover:bg-red-100 text-red-500 transition-colors"
-                      title={`Eliminar${(link as any)._isGroup ? ' (eliminará todas las copias)' : ''}`}
+                      title={`Eliminar${link._isGroup ? ' (eliminará todas las copias)' : ''}`}
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>

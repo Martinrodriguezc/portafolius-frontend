@@ -7,11 +7,26 @@ import MaterialUploadSection from "./MaterialUploadSection";
 import StudentSelectionList from "./StudentSelectionList";
 import { useCreateMaterial } from "../../../hooks/teacher/teacher/Materials/useCreateMaterial";
 import { useUpdateMaterial } from "../../../hooks/admin/Materials/useAdminMaterials";
-import { Material } from "../../../types/material";
+import { Material, GroupedMaterial, MaterialType } from "../../../types/material";
+
+type EditableMaterial = Material | GroupedMaterial;
+
+const isGroupedMaterial = (material: EditableMaterial): material is GroupedMaterial => {
+  return '_allStudentIds' in material;
+};
+
+interface UpdateMaterialData {
+  title: string;
+  description: string;
+  type: MaterialType;
+  url?: string;
+  student_id?: number | null;
+  student_ids?: number[];
+}
 
 interface MaterialCreationFormProps {
   onSuccess: () => void;
-  editingMaterial?: Material | null;
+  editingMaterial?: EditableMaterial | null;
 }
 
 export default function MaterialCreationForm({
@@ -50,10 +65,8 @@ export default function MaterialCreationForm({
       handleChange("description", editingMaterial.description || "");
       handleChange("type", editingMaterial.type);
       
-      const isGroupedMaterial = (editingMaterial as any)._allStudentIds;
-      
-      if (isGroupedMaterial && Array.isArray(isGroupedMaterial)) {
-        handleChange("studentIds", isGroupedMaterial);
+      if (isGroupedMaterial(editingMaterial)) {
+        handleChange("studentIds", editingMaterial._allStudentIds);
       } else if (editingMaterial.student_id) {
         handleChange("studentIds", [editingMaterial.student_id]);
       } else {
@@ -85,7 +98,7 @@ export default function MaterialCreationForm({
     if (!editingMaterial) return;
     
     try {
-      const updateData: any = {
+      const updateData: UpdateMaterialData = {
         title: material.title,
         description: material.description,
         type: material.type,
@@ -181,10 +194,10 @@ export default function MaterialCreationForm({
               <div>
                 <span className="font-medium text-slate-700">Asignación:</span>
                 <p className="text-slate-600">
-                  {(editingMaterial as any)._allStudentIds ? (
-                    (editingMaterial as any)._allStudentIds.length === 0 ? 
+                  {isGroupedMaterial(editingMaterial) ? (
+                    editingMaterial._allStudentIds.length === 0 ? 
                       'Material global' : 
-                      `Asignado a ${(editingMaterial as any)._allStudentIds.length} estudiantes`
+                      `Asignado a ${editingMaterial._allStudentIds.length} estudiantes`
                   ) : (
                     editingMaterial.student_id ? 
                       `Estudiante ID: ${editingMaterial.student_id}` : 
@@ -196,11 +209,11 @@ export default function MaterialCreationForm({
                 <span className="font-medium text-slate-700">ID base:</span>
                 <p className="text-slate-600">{editingMaterial.id}</p>
               </div>
-              {(editingMaterial as any)._isGroup && (
+              {isGroupedMaterial(editingMaterial) && editingMaterial._isGroup && (
                 <div className="md:col-span-2">
                   <span className="font-medium text-slate-700">Copias:</span>
                   <p className="text-slate-600">
-                    📋 {(editingMaterial as any)._groupedMaterials.length} copias del material
+                    📋 {editingMaterial._groupedMaterials.length} copias del material
                   </p>
                 </div>
               )}
@@ -334,14 +347,14 @@ export default function MaterialCreationForm({
         <div>
           <div className="flex items-center justify-between mb-2">
             <Label>Asignación de Material</Label>
-            {isEditing && (
+            {isEditing && editingMaterial && (
               <span className="text-sm text-gray-500">
-                {editingMaterial && (editingMaterial as any)._allStudentIds ? (
-                  (editingMaterial as any)._allStudentIds.length === 0 ? 
+                {isGroupedMaterial(editingMaterial) ? (
+                  editingMaterial._allStudentIds.length === 0 ? 
                     'Material global' : 
-                    `Asignado a ${(editingMaterial as any)._allStudentIds.length} estudiantes`
+                    `Asignado a ${editingMaterial._allStudentIds.length} estudiantes`
                 ) : (
-                  editingMaterial?.student_id ? 
+                  editingMaterial.student_id ? 
                     `Estudiante ID: ${editingMaterial.student_id}` : 
                     'Material global'
                 )}
@@ -353,7 +366,7 @@ export default function MaterialCreationForm({
             <div className="space-y-3">
               <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
                 <p className="text-sm text-blue-700">
-                  <strong>Modo Edición:</strong> {editingMaterial && (editingMaterial as any)._isGroup ? 
+                  <strong>Modo Edición:</strong> {editingMaterial && isGroupedMaterial(editingMaterial) && editingMaterial._isGroup ? 
                     'Gestiona todas las copias del material. Selecciona los estudiantes que deben tener el material.' :
                     'Selecciona los estudiantes que quieres que tengan el material, o déjalo global.'
                   }
@@ -396,7 +409,9 @@ export default function MaterialCreationForm({
                       const studentId = typeof student.id === "string" ? parseInt(student.id, 10) : student.id;
                       const isSelected = material.studentIds.includes(studentId);
                       
-                      const hadMaterialBefore = editingMaterial && (editingMaterial as any)._allStudentIds?.includes(studentId);
+                      const hadMaterialBefore = editingMaterial && 
+                        isGroupedMaterial(editingMaterial) && 
+                        editingMaterial._allStudentIds?.includes(studentId);
 
                       return (
                         <label
@@ -433,11 +448,11 @@ export default function MaterialCreationForm({
                       📋 Se asignará a {material.studentIds.length} estudiante{material.studentIds.length !== 1 ? 's' : ''}
                     </p>
                   )}
-                  {editingMaterial && (editingMaterial as any)._allStudentIds && (
+                  {editingMaterial && isGroupedMaterial(editingMaterial) && (
                     <p className="text-sm text-gray-500 mt-1">
-                      Anteriormente: {(editingMaterial as any)._allStudentIds.length === 0 ? 
+                      Anteriormente: {editingMaterial._allStudentIds.length === 0 ? 
                         'Material global' : 
-                        `${(editingMaterial as any)._allStudentIds.length} estudiantes`
+                        `${editingMaterial._allStudentIds.length} estudiantes`
                       }
                     </p>
                   )}

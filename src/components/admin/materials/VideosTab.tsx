@@ -2,7 +2,7 @@ import { Video, ExternalLink, Pencil, Trash2, User, Users, Play } from 'lucide-r
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 import Card from '../../common/Card/Card';
-import { Material } from '../../../types/material';
+import { Material, GroupedMaterial } from '../../../types/material';
 
 interface VideosTabProps {
   videos: Material[];
@@ -14,7 +14,7 @@ const normalizeTitle = (title: string): string => {
   return title.replace(/\s*\(\d+\/\d+\)\s*$/, '').trim();
 };
 
-const groupSimilarMaterials = (materials: Material[]) => {
+const groupSimilarMaterials = (materials: Material[]): GroupedMaterial[] => {
   const groups = new Map<string, Material[]>();
   
   materials.forEach(material => {
@@ -38,7 +38,7 @@ const groupSimilarMaterials = (materials: Material[]) => {
       _groupedMaterials: group,
       _allStudentIds: allStudentIds,
       _isGroup: group.length > 1
-    };
+    } as GroupedMaterial;
   });
 };
 
@@ -108,15 +108,15 @@ export default function VideosTab({ videos, onEdit, onDelete }: VideosTabProps) 
             <p className="text-sm text-[#666666] mb-4 line-clamp-3">{video.description}</p>
             
             <div className="flex items-center gap-2 mb-3 text-sm text-[#666666]">
-                {(video as any)._allStudentIds.length === 0 ? (
+                {video._allStudentIds.length === 0 ? (
                   <>
                     <Users className="h-4 w-4" />
                     <span className="text-blue-600 font-medium">Material Global</span>
                   </>
-                ) : (video as any)._isGroup ? (
+                ) : video._isGroup ? (
                   <>
                     <Users className="h-4 w-4" />
-                    <span>Asignado a {(video as any)._allStudentIds.length} estudiantes</span>
+                    <span>Asignado a {video._allStudentIds.length} estudiantes</span>
                   </>
                 ) : (
                   <>
@@ -136,8 +136,8 @@ export default function VideosTab({ videos, onEdit, onDelete }: VideosTabProps) 
                       })}
                     </p>
                   )}
-                  {(video as any)._isGroup && (
-                    <p className="text-emerald-600">📋 {(video as any)._groupedMaterials.length} copias</p>
+                  {video._isGroup && (
+                    <p className="text-emerald-600">📋 {video._groupedMaterials.length} copias</p>
                   )}
                 </div>
                 
@@ -146,14 +146,14 @@ export default function VideosTab({ videos, onEdit, onDelete }: VideosTabProps) 
                     <button
                       onClick={() => onEdit(video)}
                       className="p-2 rounded-md hover:bg-emerald-100 text-emerald-600 transition-colors"
-                      title={`Editar${(video as any)._isGroup ? ' (gestionar todas las copias)' : ''}`}
+                      title={`Editar${video._isGroup ? ' (gestionar todas las copias)' : ''}`}
                     >
                       <Pencil className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => onDelete(video.id)}
                       className="p-2 rounded-md hover:bg-red-100 text-red-500 transition-colors"
-                      title={`Eliminar${(video as any)._isGroup ? ' (eliminará todas las copias)' : ''}`}
+                      title={`Eliminar${video._isGroup ? ' (eliminará todas las copias)' : ''}`}
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>

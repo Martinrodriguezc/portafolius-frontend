@@ -2,7 +2,7 @@ import { FileText, ExternalLink, Pencil, Trash2, User, Users } from 'lucide-reac
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 import Card from '../../common/Card/Card';
-import { Material } from '../../../types/material';
+import { Material, GroupedMaterial } from '../../../types/material';
 
 interface DocumentsTabProps {
   documents: Material[];
@@ -14,7 +14,7 @@ const normalizeTitle = (title: string): string => {
   return title.replace(/\s*\(\d+\/\d+\)\s*$/, '').trim();
 };
 
-const groupSimilarMaterials = (materials: Material[]) => {
+const groupSimilarMaterials = (materials: Material[]): GroupedMaterial[] => {
   const groups = new Map<string, Material[]>();
   
   materials.forEach(material => {
@@ -38,7 +38,7 @@ const groupSimilarMaterials = (materials: Material[]) => {
       _groupedMaterials: group,
       _allStudentIds: allStudentIds,
       _isGroup: group.length > 1
-    };
+    } as GroupedMaterial;
   });
 };
 
@@ -87,15 +87,15 @@ export default function DocumentsTab({ documents, onEdit, onDelete }: DocumentsT
             <p className="text-sm text-[#666666] mb-4 line-clamp-3">{doc.description}</p>
             
             <div className="flex items-center gap-2 mb-3 text-sm text-[#666666]">
-              {(doc as any)._allStudentIds.length === 0 ? (
+              {doc._allStudentIds.length === 0 ? (
                 <>
                   <Users className="h-4 w-4" />
                   <span className="text-blue-600 font-medium">Material Global</span>
                 </>
-              ) : (doc as any)._isGroup ? (
+              ) : doc._isGroup ? (
                 <>
                   <Users className="h-4 w-4" />
-                  <span>Asignado a {(doc as any)._allStudentIds.length} estudiantes</span>
+                  <span>Asignado a {doc._allStudentIds.length} estudiantes</span>
                 </>
               ) : (
                 <>
@@ -117,8 +117,8 @@ export default function DocumentsTab({ documents, onEdit, onDelete }: DocumentsT
                 )}
                 {doc.mime_type && <p>Tipo: {doc.mime_type}</p>}
                 {doc.size_bytes && <p>Tamaño: {formatFileSize(doc.size_bytes)}</p>}
-                {(doc as any)._isGroup && (
-                  <p className="text-blue-600">📋 {(doc as any)._groupedMaterials.length} copias</p>
+                {doc._isGroup && (
+                  <p className="text-blue-600">📋 {doc._groupedMaterials.length} copias</p>
                 )}
               </div>
               
@@ -127,14 +127,14 @@ export default function DocumentsTab({ documents, onEdit, onDelete }: DocumentsT
                   <button
                     onClick={() => onEdit(doc)}
                     className="p-2 rounded-md hover:bg-[#4E81BD]/10 text-[#4E81BD] transition-colors"
-                    title={`Editar${(doc as any)._isGroup ? ' (gestionar todas las copias)' : ''}`}
+                    title={`Editar${doc._isGroup ? ' (gestionar todas las copias)' : ''}`}
                   >
                     <Pencil className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => onDelete(doc.id)}
                     className="p-2 rounded-md hover:bg-red-100 text-red-500 transition-colors"
-                    title={`Eliminar${(doc as any)._isGroup ? ' (eliminará todas las copias)' : ''}`}
+                    title={`Eliminar${doc._isGroup ? ' (eliminará todas las copias)' : ''}`}
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
