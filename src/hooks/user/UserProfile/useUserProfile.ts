@@ -1,47 +1,50 @@
-import { useEffect, useState, useCallback } from "react";
-import { UserProfile, UseUserProfileReturn } from "../../../types/User";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { authService } from "../../auth/authServices";
-import {
-  fetchUserProfileRequest,
-  updateUserProfileRequest,
-} from "./requests/profileRequest";
+import { UserProfileProps } from "../../../types/Props/UserProfileProps";
 
-export function useUserProfile(): UseUserProfileReturn {
-  const userIdRaw = authService.getCurrentUser()?.id;
-  const userId = typeof userIdRaw === "string" ? Number(userIdRaw) : userIdRaw;
-
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+export function useUserProfile() {
+  const [profile, setProfile] = useState<UserProfileProps | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProfile = useCallback(async () => {
-    if (userId == null) {
-      setError("No has iniciado sesión");
-      setLoading(false);
-      return;
-    }
+  const load = async () => {
+    setLoading(true);
     try {
-      const data = await fetchUserProfileRequest(userId);
+      const user = authService.getCurrentUser();
+      if (!user) throw new Error("Sesión vencida");
+      const { data } = await axios.get<UserProfileProps>(
+        `${import.meta.env.VITE_API_URL}/users/${user.id}`,
+        { headers: { Authorization: `Bearer ${authService.getToken()}` } }
+      );
       setProfile(data);
-    } catch (e: unknown) {
-      if (e instanceof Error) setError(e.message);
-      else setError("Error desconocido al cargar perfil");
+    } catch (e: any) {
+      setError(e.message);
+      setProfile(null);
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  };
 
   useEffect(() => {
-    void fetchProfile();
-  }, [fetchProfile]);
+    load();
+    const handler = () => load(); 
+    window.addEventListener("userUpdated", handler);
+    return () => window.removeEventListener("userUpdated", handler);
+  }, []);
 
-  const updateProfile = useCallback(
-    async (updates: Partial<Omit<UserProfile, "id">>) => {
-      const data = await updateUserProfileRequest(updates);
-      setProfile(data);
-    },
-    []
-  );
+  const updateProfile = async (upd: Partial<Omit<UserProfileProps, "id">>) => {
+    if (!profile) throw new Error("Sesión vencida");
+    const { first_name, last_name, email } = upd;
+    const { data } = await axios.put<UserProfileProps>(
+      `${import.meta.env.VITE_API_URL}/users/${profile.id}`,
+      { first_name, last_name, email },
+      { headers: { Authorization: `Bearer ${authService.getToken()}` } }
+    );
+    authService.getCurrentUser(); 
+    window.dispatchEvent(new CustomEvent("userUpdated", { detail: data }));
+    await load();
+  };
 
   return { profile, loading, error, updateProfile };
 }
