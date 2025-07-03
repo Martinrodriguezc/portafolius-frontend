@@ -85,11 +85,6 @@ export default function StudentDashboard() {
       ? url
       : `https://${url}`;
 
-  const upcomingEvents = [
-    { title: "Webinar de Ultrasonido", date: "28 abr · 18:00" },
-    { title: "Mesa redonda de Anatomía", date: "30 abr · 16:00" },
-    { title: "Workshop interactivo", date: "02 may · 10:00" },
-  ];
 
   const hasMetrics =
     !!m && (m.topStudies.length > 0 || m.bottomStudies.length > 0);
@@ -133,11 +128,6 @@ export default function StudentDashboard() {
             {totalMaterials}
           </p>
           <p className="text-sm text-gray-500">Materiales</p>
-        </Card>
-        <Card className="flex flex-col items-center p-6">
-          <Calendar className="h-8 w-8 text-teal-500 mb-2" />
-          <p className="text-lg font-semibold text-gray-800">–</p>
-          <p className="text-sm text-gray-500">Próximos eventos</p>
         </Card>
       </div>
 
@@ -311,25 +301,6 @@ export default function StudentDashboard() {
         </Card>
       </section>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
-          <Calendar className="mr-2 text-gray-600" /> Próximos eventos
-        </h2>
-        <ul className="space-y-4">
-          {upcomingEvents.map((evt) => (
-            <li key={evt.title}>
-              <Card className="flex items-center p-4">
-                <Calendar className="h-6 w-6 text-blue-500 mr-4" />
-                <div>
-                  <h3 className="font-medium text-gray-800">{evt.title}</h3>
-                  <p className="text-sm text-gray-500">{evt.date}</p>
-                </div>
-                <Button className="ml-auto">Ir al evento</Button>
-              </Card>
-            </li>
-          ))}
-        </ul>
-      </section>
     </div>
   );
 }
