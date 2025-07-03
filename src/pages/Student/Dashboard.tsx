@@ -5,6 +5,7 @@ import {
   BookOpen,
   Calendar,
   FileText,
+  Play,
   Download,
   ExternalLink,
   Globe,
@@ -24,7 +25,7 @@ import StatisticsTable from "../../components/student/metrics/tables/StatisticsT
 export default function StudentDashboard() {
   const user = authService.getCurrentUser()!;
   const studentId = Number(user.id);
-  const { data: progress, isLoading: progLoading, error: progError } =
+  const { data: progress, loading: progLoading} =
     useProgressData(studentId);
   const { data: m, isLoading: mLoading, error: mError } =
     useDashboardMetrics(studentId);
