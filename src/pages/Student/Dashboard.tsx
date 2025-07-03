@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import {
-  MessageSquare,
   BarChart2,
   BookOpen,
   Calendar,
@@ -13,7 +12,7 @@ import {
 import Card from "../../components/common/Card/Card";
 import Button from "../../components/common/Button/Button";
 import { authService } from "../../hooks/auth/authServices";
-import { useRecentComments } from "../../hooks/student/RecentComments/useRecentComments";
+//import { useRecentComments } from "../../hooks/student/RecentComments/useRecentComments";
 import { useDashboardMetrics } from "../../hooks/student/dashboardMetrics/useDashboardMetrics";
 import { useStudentMaterials } from "../../hooks/student/Materials/useStudentMaterials";
 import { config } from "../../config/config";
@@ -24,8 +23,6 @@ import StatisticsTable from "../../components/student/metrics/tables/StatisticsT
 export default function StudentDashboard() {
   const user = authService.getCurrentUser()!;
   const studentId = Number(user.id);
-  const { comments, loading: commentsLoading, error: commentsError } =
-    useRecentComments(studentId);
   const { data: m, isLoading: mLoading, error: mError } =
     useDashboardMetrics(studentId);
   const { data: materials = [] } = useStudentMaterials(studentId);
@@ -106,13 +103,6 @@ export default function StudentDashboard() {
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="flex flex-col items-center p-6">
-          <MessageSquare className="h-8 w-8 text-indigo-500 mb-2" />
-          <p className="text-lg font-semibold text-gray-800">
-            {comments?.length ?? 0}
-          </p>
-          <p className="text-sm text-gray-500">Comentarios recientes</p>
-        </Card>
         <Card className="flex flex-col items-center p-6">
           <BarChart2 className="h-8 w-8 text-green-500 mb-2" />
           <p className="text-lg font-semibold text-gray-800">
@@ -269,37 +259,6 @@ export default function StudentDashboard() {
         )}
       </section>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
-          <MessageSquare className="mr-2 text-gray-600" /> Últimos comentarios
-        </h2>
-        <Card className="bg-gray-50 border border-gray-200 rounded-lg shadow-sm p-6">
-          {commentsLoading && <p className="text-gray-500">Cargando comentarios…</p>}
-          {commentsError && <p className="text-red-500">Error: {commentsError}</p>}
-          {!commentsLoading && !commentsError && comments.length === 0 && (
-            <div className="flex flex-col items-center py-12">
-              <MessageSquare className="h-10 w-10 text-gray-300 mb-4" />
-              <p className="text-gray-500">No hay comentarios recientes.</p>
-              <Link to="/student/studies">
-                <Button variant="outline" className="mt-4">
-                  Ver tus estudios
-                </Button>
-              </Link>
-            </div>
-          )}
-          <div className="space-y-4">
-            {comments.map(({ id, text, author, date }) => (
-              <div key={id} className="p-4 bg-white rounded-lg border hover:shadow">
-                <p className="text-gray-700 mb-2 leading-relaxed">{text}</p>
-                <div className="flex justify-between text-sm text-gray-500">
-                  <span className="font-medium">{author}</span>
-                  <span>{date}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </section>
 
     </div>
   );
