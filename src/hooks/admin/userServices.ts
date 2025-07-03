@@ -23,7 +23,7 @@ export const useUserServices = () => {
       return;
     }
     
-    // Otros errores
+
     setError('Error al conectar con el servidor');
   };
 
@@ -65,7 +65,9 @@ export const useUserServices = () => {
         newUser: newUser
       };
       
-      const response = await axios.post(`${config.SERVER_URL}/users/admin/create`, payload);
+      const response = await axios.post(`${config.SERVER_URL}/users/admin/create`, payload, {
+        headers: createAuthHeaders()
+      });
       const createdUser = response.data as User;
       
       if (newUser.role === 'estudiante') {
@@ -86,7 +88,17 @@ export const useUserServices = () => {
 
   const updateUser = async (id: string, userData: Partial<UserFormData>): Promise<ServiceResponse<User>> => {
     try {
-      const response = await axios.put(`${config.SERVER_URL}/users/${id}`, userData, {
+      const adminCheck = checkAdminStatus();
+      if (!adminCheck.isAdmin) {
+        return { success: false, error: adminCheck.error };
+      }
+      
+      const payload = {
+        user: adminCheck.currentUser,
+        updateData: userData
+      };
+      
+      const response = await axios.put(`${config.SERVER_URL}/users/admin/${id}`, payload, {
         headers: createAuthHeaders()
       });
       const updatedUser = response.data as User;

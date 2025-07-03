@@ -20,6 +20,12 @@ export interface Material {
   links:     LinkType[]      | null;
 }
 
+export interface GroupedMaterial extends Material {
+  _groupedMaterials: Material[];
+  _allStudentIds: number[];
+  _isGroup: boolean;
+}
+
 export interface CreateMaterialPayload {
   type:        MaterialType;
   title:       string;
