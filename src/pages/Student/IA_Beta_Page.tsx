@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { EvaluationInfoSection } from '../components/ai/EvaluationInfoSection';
-import { PromptPreview } from '../components/ai/PromptPreview';
-import AdditionalInfoInput from '../components/ai/AdditionalInfoInput';
-import MaterialSummary from '../components/ai/MaterialSummary';
-import MaterialObjectives from '../components/ai/MaterialObjectives';
-import MaterialResources from '../components/ai/MaterialResources';
-import InteractiveQuiz from '../components/ai/InteractiveQuiz';
-import { useAIMaterialGeneration } from '../hooks/ai/useAIMaterialGeneration';
-import ReturnButton from '../components/common/Button/ReturnButton';
+import { PromptPreview } from '../../components/ai/PromptPreview';
+import AdditionalInfoInput from '../../components/ai/AdditionalInfoInput';
+import MaterialSummary from '../../components/ai/MaterialSummary'; 
+import MaterialObjectives from '../../components/ai/MaterialObjectives';
+import MaterialResources from '../../components/ai/MaterialResources';
+import InteractiveQuiz from '../../components/ai/InteractiveQuiz';
+import { useAIMaterialGeneration } from '../../hooks/ai/useAIMaterialGeneration';
+import ReturnButton from '../../components/common/Button/ReturnButton';
+import { EvaluationInfoSection } from '../../components/ai/EvaluationInfoSection';
 
 const IA_Beta_Page: React.FC = () => {
     const { clipId } = useParams<{ clipId: string }>();

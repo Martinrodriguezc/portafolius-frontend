@@ -29,7 +29,7 @@ export default function HomePage() {
               <Button variant="primary" onClick={handleLogin}>
                 Iniciar sesión
               </Button>
-              <Button variant="outline" onClick={handleSignup}>
+              <Button variant="primary" onClick={handleSignup}>
                 Registrarse
               </Button>
             </div>
@@ -175,7 +175,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-12 sm:py-16 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+      <section className="py-12 sm:py-16 bg-[#4E81BD] text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">¿Estás listo para mejorar tus habilidades en ultrasonido?</h2>
           <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto mb-6 sm:mb-8">
@@ -186,7 +186,7 @@ export default function HomePage() {
           <div className="flex justify-center">
             <Button
               onClick={handleSignup}
-              className="px-6 py-3 rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition-colors max-w-xs sm:max-w-md"
+              className="px-6 py-3 rounded-lg max-w-xs sm:max-w-md bg-white !text-[#4E81BD] border border-[#4E81BD] font-semibold hover:bg-[#e6eef7] transition-colors"
             >
               Registrarse ahora
             </Button>

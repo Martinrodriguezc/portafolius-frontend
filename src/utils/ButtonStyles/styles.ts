@@ -9,7 +9,7 @@ export const variantStyles = {
   google:
     "border border-[#A0A0A0] flex items-center justify-center hover:bg-gray-200",
   outline:
-    "border border-[#A0A0A0] text-[#333333] flex items-center justify-center hover:bg-gray-100",
+    "border border-[#4E81BD] text-[#333333] flex items-center justify-center hover:bg-gray-100",
   ghost:
     "bg-transparent text-[#333333] hover:bg-gray-100 flex items-center justify-center",
 };
