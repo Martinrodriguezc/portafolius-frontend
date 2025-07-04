@@ -1,31 +1,31 @@
-import { FileUploadRowTeacher } from "../FileUploadRowTeacher";
-import { TeacherSelectionPayload } from "../../../../types/Props/Video/TeacherSelectionPayload";
-import { TeacherFeedbackCardProps } from "../../../../types/Props/Video/TeacherFeedbackCardProps";
+import { FileUploadRowTeacher } from "../FileUploadRowTeacher"
+import { TeacherFeedbackCardProps } from "../../../../types/Props/Video/TeacherFeedbackCardProps"
 
 export default function TeacherFeedbackCard({
   teacherSelection,
   setTeacherSelection,
-  loadWindows,
-  loadFindings,
-  loadDiagnoses,
-  loadSubdiagnoses,
-  loadSubSubs,
-  loadThirdOrders,
-  loadImageQualities,
-  loadFinalDiagnoses,
+  loadWindows: _lw,
+  loadFindings: _lf,
+  loadDiagnoses: _ld,
+  loadSubdiagnoses: _lsd,
+  loadSubSubs: _lss,
+  loadThirdOrders: _lto,
+  loadImageQualities: _liq,
+  loadFinalDiagnoses: _lfd,
   onSendInteraction,
 }: TeacherFeedbackCardProps) {
-  const canSend = Boolean(teacherSelection.protocolKey && teacherSelection.isReady);
+  const canSend =
+    Boolean(teacherSelection.protocolKey) && Boolean(teacherSelection.isReady)
 
   return (
     <div className="space-y-4">
       <FileUploadRowTeacher
         fileItem={teacherSelection}
         index={0}
-        removeFile={() => setTeacherSelection({} as TeacherSelectionPayload)}
-        updateFileProtocol={(protocolKey) => {
-          setTeacherSelection((prev) => ({
-            ...prev,
+        removeFile={() => setTeacherSelection({} as any)}
+        updateFileProtocol={(protocolKey) =>
+          setTeacherSelection((p) => ({
+            ...p,
             protocolKey,
             windowId: undefined,
             findingId: undefined,
@@ -33,104 +33,67 @@ export default function TeacherFeedbackCard({
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          }));
-          loadWindows(protocolKey);
-          loadImageQualities();
-          loadFinalDiagnoses();
-        }}
-        updateFileWindow={(windowId) => {
-          setTeacherSelection((prev) => ({
-            ...prev,
+          }))
+        }
+        updateFileWindow={(windowId) =>
+          setTeacherSelection((p) => ({
+            ...p,
             windowId,
             findingId: undefined,
             diagnosisId: undefined,
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          }));
-          if (teacherSelection.protocolKey) {
-            loadFindings(teacherSelection.protocolKey, windowId);
-          }
-        }}
-        updateFileFinding={(findingId) => {
-          setTeacherSelection((prev) => ({
-            ...prev,
+          }))
+        }
+        updateFileFinding={(findingId) =>
+          setTeacherSelection((p) => ({
+            ...p,
             findingId,
             diagnosisId: undefined,
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          }));
-          if (teacherSelection.protocolKey && teacherSelection.windowId != null) {
-            loadDiagnoses(
-              teacherSelection.protocolKey,
-              teacherSelection.windowId,
-              findingId
-            );
-          }
-        }}
-        updateFileDiagnosis={(diagnosisId) => {
-          setTeacherSelection((prev) => ({
-            ...prev,
+          }))
+        }
+        updateFileDiagnosis={(diagnosisId) =>
+          setTeacherSelection((p) => ({
+            ...p,
             diagnosisId,
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          }));
-          if (
-            teacherSelection.protocolKey &&
-            teacherSelection.windowId != null &&
-            teacherSelection.findingId != null
-          ) {
-            loadSubdiagnoses(teacherSelection.protocolKey, diagnosisId);
-          }
-        }}
-        updateFileSubdiagnosis={(subdiagnosisId) => {
-          setTeacherSelection((prev) => ({
-            ...prev,
+          }))
+        }
+        updateFileSubdiagnosis={(subdiagnosisId) =>
+          setTeacherSelection((p) => ({
+            ...p,
             subdiagnosisId,
             subSubId: undefined,
             thirdOrderId: undefined,
-          }));
-          if (
-            teacherSelection.protocolKey &&
-            teacherSelection.windowId != null &&
-            teacherSelection.findingId != null &&
-            teacherSelection.diagnosisId != null
-          ) {
-            loadSubSubs(teacherSelection.protocolKey, subdiagnosisId);
-          }
-        }}
-        updateFileSubSub={(subSubId) => {
-          setTeacherSelection((prev) => ({
-            ...prev,
+          }))
+        }
+        updateFileSubSub={(subSubId) =>
+          setTeacherSelection((p) => ({
+            ...p,
             subSubId,
             thirdOrderId: undefined,
-          }));
-          if (
-            teacherSelection.protocolKey &&
-            teacherSelection.windowId != null &&
-            teacherSelection.findingId != null &&
-            teacherSelection.diagnosisId != null &&
-            teacherSelection.subdiagnosisId != null
-          ) {
-            loadThirdOrders(teacherSelection.protocolKey, subSubId);
-          }
-        }}
+          }))
+        }
         updateFileThirdOrder={(thirdOrderId) =>
-          setTeacherSelection((prev) => ({ ...prev, thirdOrderId }))
+          setTeacherSelection((p) => ({ ...p, thirdOrderId }))
         }
         updateFileImageQuality={(imageQualityId) =>
-          setTeacherSelection((prev) => ({ ...prev, imageQualityId }))
+          setTeacherSelection((p) => ({ ...p, imageQualityId }))
         }
         updateFileFinalDiagnosis={(finalDiagnosisId) =>
-          setTeacherSelection((prev) => ({ ...prev, finalDiagnosisId }))
+          setTeacherSelection((p) => ({ ...p, finalDiagnosisId }))
         }
         updateFileComment={(comment) =>
-          setTeacherSelection((prev) => ({ ...prev, comment }))
+          setTeacherSelection((p) => ({ ...p, comment }))
         }
         updateFileReady={(isReady) =>
-          setTeacherSelection((prev) => ({ ...prev, isReady }))
+          setTeacherSelection((p) => ({ ...p, isReady }))
         }
       />
 
@@ -148,5 +111,5 @@ export default function TeacherFeedbackCard({
         </button>
       </div>
     </div>
-  );
+  )
 }

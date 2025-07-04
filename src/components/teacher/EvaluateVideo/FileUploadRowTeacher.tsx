@@ -4,17 +4,17 @@ import { FileVideo, Trash2 } from "lucide-react"
 import { useProtocolOptions } from "../../../hooks/student/protocols/useProtocolOptions"
 import { useProtocolFlow } from "../../../hooks/student/ProtocolFlow/useProtocolFlow"
 import { FileUploadRowTeacherProps } from "../../../types/Props/Video/FileUploadRowTeacherProps"
-import { ProtocolSelectorTeacher }       from "./SelectorPages/ProtocolSelectorTeacher"
-import { WindowSelectorTeacher }         from "./SelectorPages/WindowSelectorTeacher"
-import { FindingSelectorTeacher }        from "./SelectorPages/FindingSelectorTeacher"
-import { DiagnosisSelectorTeacher }      from "./SelectorPages/DiagnosisSelectorTeacher"
-import { SubdiagnosisSelectorTeacher }   from "./SelectorPages/SubdiagnosisSelectorTeacher"
-import { SubSubSelectorTeacher }         from "./SelectorPages/SubSubSelectorTeacher"
-import { ThirdOrderSelectorTeacher }     from "./SelectorPages/ThirdOrderSelectorTeacher"
-import { ImageQualitySelectorTeacher }   from "./SelectorPages/ImageQualitySelectorTeacher"
+import { ProtocolSelectorTeacher } from "./SelectorPages/ProtocolSelectorTeacher"
+import { WindowSelectorTeacher } from "./SelectorPages/WindowSelectorTeacher"
+import { FindingSelectorTeacher } from "./SelectorPages/FindingSelectorTeacher"
+import { DiagnosisSelectorTeacher } from "./SelectorPages/DiagnosisSelectorTeacher"
+import { SubdiagnosisSelectorTeacher } from "./SelectorPages/SubdiagnosisSelectorTeacher"
+import { SubSubSelectorTeacher } from "./SelectorPages/SubSubSelectorTeacher"
+import { ThirdOrderSelectorTeacher } from "./SelectorPages/ThirdOrderSelectorTeacher"
+import { ImageQualitySelectorTeacher } from "./SelectorPages/ImageQualitySelectorTeacher"
 import { FinalDiagnosisSelectorTeacher } from "./SelectorPages/FinalDiagnosisSelectorTeacher"
-import { CommentSectionTeacher }         from "./SelectorPages/CommentSectionTeacher"
-import { ReadyCheckboxTeacher }          from "./SelectorPages/ReadyCheckboxTeacher"
+import { CommentSectionTeacher } from "./SelectorPages/CommentSectionTeacher"
+import { ReadyCheckboxTeacher } from "./SelectorPages/ReadyCheckboxTeacher"
 
 export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
   fileItem,
@@ -72,7 +72,12 @@ export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
     )
       return
     loadDiagnoses(fileItem.protocolKey, fileItem.windowId, fileItem.findingId)
-  }, [fileItem.protocolKey, fileItem.windowId, fileItem.findingId, loadDiagnoses])
+  }, [
+    fileItem.protocolKey,
+    fileItem.windowId,
+    fileItem.findingId,
+    loadDiagnoses,
+  ])
 
   useEffect(() => {
     if (!fileItem.protocolKey || fileItem.diagnosisId == null) return
@@ -110,12 +115,7 @@ export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
           index={index}
           protocols={protocols}
           value={fileItem.protocolKey ?? ""}
-          onChange={(val) => {
-            updateFileProtocol(val)
-            loadWindows(val)
-            loadImageQualities()
-            loadFinalDiagnoses()
-          }}
+          onChange={updateFileProtocol}
         />
 
         {fileItem.protocolKey && (
@@ -124,71 +124,56 @@ export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
               index={index}
               options={windows}
               value={fileItem.windowId}
-              onChange={(win) => {
-                updateFileWindow(win)
-                loadFindings(fileItem.protocolKey!, win)
-              }}
+              onChange={updateFileWindow}
             />
 
             <FindingSelectorTeacher
               index={index}
               options={findings}
               value={fileItem.findingId}
-              onChange={(f) => {
-                updateFileFinding(f)
-                loadDiagnoses(fileItem.protocolKey!, fileItem.windowId!, f)
-              }}
+              onChange={updateFileFinding}
             />
 
             <DiagnosisSelectorTeacher
               index={index}
               options={diagnoses}
               value={fileItem.diagnosisId}
-              onChange={(d) => {
-                updateFileDiagnosis(d)
-                loadSubdiagnoses(fileItem.protocolKey!, d)
-              }}
+              onChange={updateFileDiagnosis}
             />
 
             <SubdiagnosisSelectorTeacher
               index={index}
               options={subdiagnoses}
               value={fileItem.subdiagnosisId}
-              onChange={(sd) => {
-                updateFileSubdiagnosis(sd)
-                loadSubSubs(fileItem.protocolKey!, sd)
-              }}
+              onChange={updateFileSubdiagnosis}
             />
 
             <SubSubSelectorTeacher
               index={index}
               options={subSubs}
               value={fileItem.subSubId}
-              onChange={(ss) => {
-                updateFileSubSub(ss)
-                loadThirdOrders(fileItem.protocolKey!, ss)
-              }}
+              onChange={updateFileSubSub}
             />
 
             <ThirdOrderSelectorTeacher
               index={index}
               options={thirdOrders}
               value={fileItem.thirdOrderId}
-              onChange={(to) => updateFileThirdOrder(to)}
+              onChange={updateFileThirdOrder}
             />
 
             <ImageQualitySelectorTeacher
               index={index}
               options={imageQualities}
               value={fileItem.imageQualityId}
-              onChange={(val) => updateFileImageQuality(val)}
+              onChange={updateFileImageQuality}
             />
 
             <FinalDiagnosisSelectorTeacher
               index={index}
               options={finalDiagnoses}
               value={fileItem.finalDiagnosisId}
-              onChange={(val) => updateFileFinalDiagnosis(val)}
+              onChange={updateFileFinalDiagnosis}
             />
           </>
         )}
@@ -196,13 +181,13 @@ export const FileUploadRowTeacher: React.FC<FileUploadRowTeacherProps> = ({
         <CommentSectionTeacher
           index={index}
           value={fileItem.comment ?? ""}
-          onChange={(val) => updateFileComment(val)}
+          onChange={updateFileComment}
         />
 
         <ReadyCheckboxTeacher
           index={index}
           checked={fileItem.isReady ?? false}
-          onChange={(val) => updateFileReady(val)}
+          onChange={updateFileReady}
         />
       </div>
     </div>
