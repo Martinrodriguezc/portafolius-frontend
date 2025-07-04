@@ -42,37 +42,55 @@ export const generateAIMaterial = async (
         throw new Error('IA Service URL no está configurado. Por favor, verifica la configuración.');
     }
 
-    const response = await fetch(`${config.IA_SERVICE_URL}/generate-material`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            feedback: feedback,
-            additionalInfo: additionalInfo,
-            clipId: clipId
-        }),
-    });
+    try {
+        const response = await fetch(`${config.IA_SERVICE_URL}/generate-material`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                feedback: feedback,
+                additionalInfo: additionalInfo,
+                clipId: clipId
+            }),
+        });
 
-    if (!response.ok) {
-        if (response.status === 0) {
-            throw new Error('No se puede conectar al servicio de IA. Verifica que el servidor esté ejecutándose.');
+        if (!response.ok) {
+            if (response.status === 0) {
+                throw new Error('No se puede conectar al servicio de IA. Verifica que el servidor esté ejecutándose.');
+            }
+            const errorData: ErrorResponse = await response.json();
+            throw new Error(errorData.detail || `Error del servidor: ${response.status}`);
         }
-        const errorData: ErrorResponse = await response.json();
-        throw new Error(errorData.detail || `Error del servidor: ${response.status}`);
-    }
 
-    const responseText = await response.text();
-    console.log('AI Service Response:', responseText);
-    
-    const material = extractJsonFromMarkdown(responseText);
-    
-    if (!material.summary || !material.objectives || !material.resources || !material.quiz) {
-        console.error('Invalid material structure:', material);
-        throw new Error('La respuesta del AI no contiene todos los campos requeridos');
-    }
+        const responseText = await response.text();
+        console.log('AI Service Response:', responseText);
+        
+        const material = extractJsonFromMarkdown(responseText);
+        
+        if (!material.summary || !material.objectives || !material.resources || !material.quiz) {
+            console.error('Invalid material structure:', material);
+            throw new Error('La respuesta del AI no contiene todos los campos requeridos');
+        }
 
-    return material;
+        return material;
+    } catch (error) {
+        // Handle SSL certificate errors specifically
+        if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+            if (config.IA_SERVICE_URL?.startsWith('https://')) {
+                throw new Error('Error de certificado SSL. El servidor de IA no tiene un certificado válido. Contacta al administrador.');
+            } else {
+                throw new Error('No se puede conectar al servicio de IA. Verifica que el servidor esté ejecutándose.');
+            }
+        }
+        
+        // Re-throw other errors
+        if (error instanceof Error) {
+            throw error;
+        }
+        
+        throw new Error('Error desconocido al generar material con IA');
+    }
 };
 
 export const getVideoInteractions = async (clipId: number): Promise<Interaction[]> => {
