@@ -20,6 +20,7 @@ import { PageHeader } from "./VideoPageHeader";
 
 export default function StudentVideoPage() {
   const { studyId } = useParams<{ studyId: string }>();
+  const { clipId } = useParams<{ clipId: string }>();
   const { videos } = useStudyVideos(studyId);
   const [evaluations, setEvaluations] = useState<Attempt[]>([]);
 
@@ -116,7 +117,7 @@ export default function StudentVideoPage() {
 
         <div className="w-full lg:w-1/3 sticky top-6">
           {/* Panel de Evaluaciones Recibidas */}
-          <EvaluationsReceivedPanel evaluations={evaluations} />
+          <EvaluationsReceivedPanel evaluations={evaluations} clipId={clipId!} />
         </div>
       </div>
     </div>
