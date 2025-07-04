@@ -35,7 +35,7 @@ export const createMaterial = async (materialData: Partial<Material>): Promise<M
   const token = checkAdminOrTeacherPermission();
   
   const response: AxiosResponse<{success: boolean, message: string, data: Material}> = await axios.post(
-    `${config.SERVER_URL}/material`,
+    `${config.SERVER_URL}/materials`,
     materialData,
     {
       headers: {
@@ -51,7 +51,7 @@ export const updateMaterial = async (id: number, materialData: Partial<Material>
   const token = checkAdminOrTeacherPermission();
   
   const response: AxiosResponse<{success: boolean, message: string, data: Material}> = await axios.put(
-    `${config.SERVER_URL}/material/${id}`,
+    `${config.SERVER_URL}/materials/${id}`,
     materialData,
     {
       headers: {
@@ -66,7 +66,7 @@ export const updateMaterial = async (id: number, materialData: Partial<Material>
 export const deleteMaterial = async (id: number): Promise<void> => {
   const token = checkAdminOrTeacherPermission();
   
-  await axios.delete(`${config.SERVER_URL}/material/${id}`, {
+  await axios.delete(`${config.SERVER_URL}/materials/${id}`, {
     headers: {
       'Authorization': `Bearer ${token}`
     }

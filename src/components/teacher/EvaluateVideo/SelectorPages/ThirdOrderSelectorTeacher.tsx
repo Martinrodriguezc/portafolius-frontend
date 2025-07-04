@@ -1,9 +1,9 @@
-import React from "react";
-import { Label } from "../../../common/Label/Label";
-import { Select, SelectValue } from "../../../common/Select/SelectBase";
-import { SelectTrigger, SelectContent } from "../../../common/Select/SelectInteraction";
-import { SelectItem } from "../../../common/Select/SelectItems";
-import { ThirdOrderProps } from "../../../../types/Props/Teacher/ThirdOrderProps";
+import React from "react"
+import { Label } from "../../../common/Label/Label"
+import { Select, SelectValue } from "../../../common/Select/SelectBase"
+import { SelectTrigger, SelectContent } from "../../../common/Select/SelectInteraction"
+import { SelectItem } from "../../../common/Select/SelectItems"
+import { ThirdOrderProps } from "../../../../types/Props/Teacher/ThirdOrderProps"
 
 export const ThirdOrderSelectorTeacher: React.FC<ThirdOrderProps> = ({
   index, options, value, onChange
@@ -11,11 +11,10 @@ export const ThirdOrderSelectorTeacher: React.FC<ThirdOrderProps> = ({
   <div>
     <Label htmlFor={`thirdorder-${index}`}>3er orden</Label>
     <Select
-      value={value != null ? String(value) : ''}
+      value={value != null ? String(value) : ""}
       onValueChange={v => onChange(Number(v))}
-      disabled={!options.length}
     >
-      <SelectTrigger id={`thirdorder-${index}`} className="w-full">
+      <SelectTrigger id={`thirdorder-${index}`} className="h-10 border-[#A0A0A0] rounded-[8px] bg-white">
         <SelectValue placeholder="Selecciona 3er orden" />
       </SelectTrigger>
       <SelectContent>
@@ -27,4 +26,4 @@ export const ThirdOrderSelectorTeacher: React.FC<ThirdOrderProps> = ({
       </SelectContent>
     </Select>
   </div>
-);
+)

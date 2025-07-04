@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { ClipboardList, PlusCircle, Upload, AlertCircle, Info } from "lucide-react"
+import { ClipboardList, PlusCircle, Upload, Info } from "lucide-react"
 import Button from "../../components/common/Button/Button"
 import Card from "../../components/common/Card/Card"
 import { Label } from "../../components/common/Label/Label"
@@ -7,14 +7,17 @@ import { Progress } from "../../components/common/Progress/Progress"
 import { Select, SelectValue } from "../../components/common/Select/SelectBase"
 import { SelectTrigger, SelectContent } from "../../components/common/Select/SelectInteraction"
 import { SelectItem } from "../../components/common/Select/SelectItems"
+import Loading from "../../components/common/Loading/Loading"
+import { ErrorDisplay } from "../../components/common/Error/Error"
 import { useUploadPage } from "../../hooks/upload/useUploadPage"
 import { UploadSection } from "../../components/student/upload/UploadSection"
+import VideoCarousel from "../../components/student/videos/VideoCarousel"
 
 export default function UploadPage() {
   const {
     studies,
     files,
-    uploadProgress, 
+    uploadProgress,
     isUploading,
     selectedStudy,
     setSelectedStudy,
@@ -55,18 +58,10 @@ export default function UploadPage() {
     return (
       <div className="p-8 md:p-10 max-w-3xl mx-auto">
         <PageHeader />
-        <Card className="rounded-[16px] shadow-sm border border-slate-200">
-          <div className="p-8 flex flex-col items-center justify-center min-h-[300px]">
-            <div className="relative">
-              <div className="absolute inset-0 bg-[#4E81BD]/5 rounded-full animate-ping"></div>
-              <div className="relative inline-block w-16 h-16 border-4 border-[#4E81BD]/20 border-t-[#4E81BD] rounded-full animate-spin mb-6"></div>
-            </div>
-            <p className="text-[18px] font-medium text-[#333333] mb-2">Cargando estudios</p>
-            <p className="text-[#666666] text-center max-w-md">
-              Estamos recuperando tus estudios disponibles. Esto tomará solo un momento.
-            </p>
-          </div>
-        </Card>
+        <Loading
+          title="Cargando estudios"
+          description="Estamos recuperando tus estudios disponibles. Esto tomará solo un momento."
+        />
       </div>
     )
   }
@@ -75,70 +70,15 @@ export default function UploadPage() {
     return (
       <div className="p-8 md:p-10 max-w-3xl mx-auto">
         <PageHeader />
-        <Card className="rounded-[16px] shadow-sm border border-slate-200">
-          <div className="p-8">
-            <div className="bg-red-50 border border-red-200 rounded-[12px] p-6 mb-6">
-              <div className="flex flex-col md:flex-row items-start gap-4">
-                <div className="bg-red-100 p-3 rounded-full shrink-0 self-center md:self-start">
-                  <AlertCircle className="h-7 w-7 text-red-600" />
-                </div>
-                <div className="flex-1 text-center md:text-left">
-                  <h2 className="text-[20px] font-semibold text-red-700 mb-3">No se pudieron cargar tus estudios</h2>
-                  <p className="text-[15px] text-red-600 mb-4 max-w-3xl">
-                    {error.toString() || "Ha ocurrido un error al obtener los datos de tus estudios."}
-                  </p>
-                  <div className="space-y-2 text-[15px] text-red-600 bg-red-100/50 p-4 rounded-lg inline-block md:block">
-                    <p className="font-medium">Esto puede deberse a:</p>
-                    <ul className="list-disc pl-5 space-y-2 text-left">
-                      <li>Problemas de conexión a internet</li>
-                      <li>El servidor no está disponible en este momento</li>
-                      <li>Tu sesión ha expirado</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-6 flex justify-center md:justify-start">
-                <button
-                  onClick={() => {
-                    window.location.reload()
-                  }}
-                  className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-[8px] flex items-center shadow-sm hover:shadow transition-all"
-                >
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Intentar nuevamente
-                </button>
-              </div>
-            </div>
-
-            <div className="flex justify-center">
-              <Link to="/student/create_study">
-                <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white px-6 py-3 rounded-[8px] flex items-center gap-2 shadow-sm hover:shadow transition-all">
-                  <PlusCircle className="h-5 w-5" />
-                  Crear nuevo estudio
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </Card>
+        <ErrorDisplay error={error.toString() || "Ha ocurrido un error al obtener los datos de tus estudios."} />
+        <div className="flex justify-center">
+          <Link to="/student/create_study">
+            <Button className="bg-[#4E81BD] hover:bg-[#4E81BD]/90 text-white px-6 py-3 rounded-[8px] flex items-center gap-2 shadow-sm hover:shadow transition-all">
+              <PlusCircle className="h-5 w-5" />
+              Crear nuevo estudio
+            </Button>
+          </Link>
+        </div>
       </div>
     )
   }
@@ -233,20 +173,28 @@ export default function UploadPage() {
           )}
 
           {selectedStudy && (
-            <UploadSection
-              files={files}
-              handleFileChange={handleFileChange}
-              removeFile={removeFile}
-              updateFileProtocol={updateFileProtocol}
-              updateFileWindow={updateFileWindow}
-              updateFileFinding={updateFileFinding}
-              updateFileDiagnosis={updateFileDiagnosis}
-              updateFileSubdiagnosis={updateFileSubdiagnosis}
-              updateFileSubSub={updateFileSubSub}
-              updateFileThirdOrder={updateFileThirdOrder}
-              updateFileComment={updateFileComment}
-              updateFileReady={updateFileReady}
-            />
+            <>
+              {files.length > 0 && (
+                <div className="mb-8 space-y-5">
+                  <Label className="text-[15px] font-medium text-[#333333] mb-2 mt-4 text-center">Vista previa de los videos</Label>
+                  <VideoCarousel files={files} />
+                </div>
+              )}
+              <UploadSection
+                files={files}
+                handleFileChange={handleFileChange}
+                removeFile={removeFile}
+                updateFileProtocol={updateFileProtocol}
+                updateFileWindow={updateFileWindow}
+                updateFileFinding={updateFileFinding}
+                updateFileDiagnosis={updateFileDiagnosis}
+                updateFileSubdiagnosis={updateFileSubdiagnosis}
+                updateFileSubSub={updateFileSubSub}
+                updateFileThirdOrder={updateFileThirdOrder}
+                updateFileComment={updateFileComment}
+                updateFileReady={updateFileReady}
+              />
+            </>
           )}
 
           {!selectedStudy && (

@@ -14,9 +14,14 @@ export function useTeacherAuthorization() {
       return;
     }
 
-    // Si el usuario no es profesor, redirigir a la página principal
+    // Permitir admin (sin restricciones adicionales) y profesores
     if (user.role !== "profesor" && user.role !== "admin") {
       navigate("/home");
+      return;
+    }
+
+    // Si es admin, permitir acceso completo a rutas de profesor
+    if (user.role === "admin") {
       return;
     }
 

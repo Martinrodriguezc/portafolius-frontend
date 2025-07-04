@@ -6,8 +6,16 @@ export interface UserProfile {
   role: "estudiante" | "profesor" | "admin" | "google_login";
 }
 
+export interface ProfileFormValues {
+  first_name: string;
+  last_name: string;
+  email: string;
+  current_password: string;
+  new_password: string;
+  confirm_password: string;
+}
 export interface UseProfileFormReturn {
-  form: Omit<UserProfile, "id">;
+  form: ProfileFormValues;
   busy: boolean;
   saved: boolean;
   error: string | null;
@@ -34,4 +42,5 @@ export interface UserProps {
 export interface AuthResponse {
   token: string;
   user: UserProps;
+  msg: string;
 }

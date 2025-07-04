@@ -1,38 +1,26 @@
-import { FileUploadRowTeacher } from '../FileUploadRowTeacher';
-import { TeacherSelectionPayload } from '../../../../types/Props/Video/TeacherSelectionPayload';
-
-interface Props {
-  teacherSelection: TeacherSelectionPayload;
-  setTeacherSelection: React.Dispatch<React.SetStateAction<TeacherSelectionPayload>>;
-  loadWindows: (protocolKey: string) => void;
-  loadFindings: (protocolKey: string, windowId: number) => void;
-  loadDiagnoses: (protocolKey: string, windowId: number, findingId: number) => void;
-  loadSubdiagnoses: (protocolKey: string, diagnosisId: number) => void;
-  loadSubSubs: (protocolKey: string, subId: number) => void;
-  loadThirdOrders: (protocolKey: string, subSubId: number) => void;
-  loadImageQualities: () => void;
-  loadFinalDiagnoses: () => void;
-}
+import { FileUploadRowTeacher } from "../FileUploadRowTeacher"
+import { TeacherFeedbackCardProps } from "../../../../types/Props/Video/TeacherFeedbackCardProps"
+import { TeacherSelectionPayload } from "../../../../types/Props/Video/TeacherSelectionPayload"
 
 export default function TeacherFeedbackCard({
   teacherSelection,
   setTeacherSelection,
-  loadWindows,
-  loadFindings,
-  loadDiagnoses,
-  loadSubdiagnoses,
-  loadSubSubs,
-  loadThirdOrders,
-}: Props) {
+  onSendInteraction,
+}: TeacherFeedbackCardProps) {
+  const canSend =
+    Boolean(teacherSelection.protocolKey) && Boolean(teacherSelection.isReady)
+
   return (
-    <FileUploadRowTeacher
-      fileItem={teacherSelection}
-      index={0}
-      removeFile={() => setTeacherSelection({})}
-      updateFileProtocol={(_, protocolKey) => {
-        setTeacherSelection(prev => {
-          const newSelection = {
-            ...prev,
+    <div className="space-y-4">
+      <FileUploadRowTeacher
+        fileItem={teacherSelection}
+        index={0}
+        removeFile={() =>
+          setTeacherSelection({} as TeacherSelectionPayload)
+        }
+        updateFileProtocol={(protocolKey) =>
+          setTeacherSelection((p) => ({
+            ...p,
             protocolKey,
             windowId: undefined,
             findingId: undefined,
@@ -40,148 +28,83 @@ export default function TeacherFeedbackCard({
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          };
-          // Cargar ventanas, calidades, diagnósticos finales (si aplica)
-          loadWindows(protocolKey);
-          return newSelection;
-        });
-      }}
-      updateFileWindow={(windowId) => {
-        setTeacherSelection(prev => {
-          const newSelection = {
-            ...prev,
+          }))
+        }
+        updateFileWindow={(windowId) =>
+          setTeacherSelection((p) => ({
+            ...p,
             windowId,
             findingId: undefined,
             diagnosisId: undefined,
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          };
-          if (newSelection.protocolKey) {
-            loadFindings(newSelection.protocolKey, windowId);
-          }
-          return newSelection;
-        });
-      }}
-      updateFileFinding={(findingId) => {
-        setTeacherSelection(prev => {
-          const newSelection = {
-            ...prev,
+          }))
+        }
+        updateFileFinding={(findingId) =>
+          setTeacherSelection((p) => ({
+            ...p,
             findingId,
             diagnosisId: undefined,
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          };
-          if (
-            newSelection.protocolKey &&
-            newSelection.windowId != null
-          ) {
-            loadDiagnoses(
-              newSelection.protocolKey,
-              newSelection.windowId,
-              findingId
-            );
-          }
-          return newSelection;
-        });
-      }}
-      updateFileDiagnosis={(_, diagnosisId) => {
-        setTeacherSelection(prev => {
-          const newSelection = {
-            ...prev,
+          }))
+        }
+        updateFileDiagnosis={(diagnosisId) =>
+          setTeacherSelection((p) => ({
+            ...p,
             diagnosisId,
             subdiagnosisId: undefined,
             subSubId: undefined,
             thirdOrderId: undefined,
-          };
-          if (
-            newSelection.protocolKey &&
-            newSelection.windowId != null &&
-            newSelection.findingId != null
-          ) {
-            loadSubdiagnoses(
-              newSelection.protocolKey,
-              diagnosisId
-            );
-          }
-          return newSelection;
-        });
-      }}
-      updateFileSubdiagnosis={(subdiagnosisId) => {
-        setTeacherSelection(prev => {
-          const newSelection = {
-            ...prev,
+          }))
+        }
+        updateFileSubdiagnosis={(subdiagnosisId) =>
+          setTeacherSelection((p) => ({
+            ...p,
             subdiagnosisId,
             subSubId: undefined,
             thirdOrderId: undefined,
-          };
-          if (
-            newSelection.protocolKey &&
-            newSelection.windowId != null &&
-            newSelection.findingId != null &&
-            newSelection.diagnosisId != null
-          ) {
-            loadSubSubs(
-              newSelection.protocolKey,
-              subdiagnosisId
-            );
-          }
-          return newSelection;
-        });
-      }}
-      updateFileSubSub={(subSubId) => {
-        setTeacherSelection(prev => {
-          const newSelection = {
-            ...prev,
+          }))
+        }
+        updateFileSubSub={(subSubId) =>
+          setTeacherSelection((p) => ({
+            ...p,
             subSubId,
             thirdOrderId: undefined,
-          };
-          if (
-            newSelection.protocolKey &&
-            newSelection.windowId != null &&
-            newSelection.findingId != null &&
-            newSelection.diagnosisId != null &&
-            newSelection.subdiagnosisId != null
-          ) {
-            loadThirdOrders(
-              newSelection.protocolKey,
-              subSubId
-            );
-          }
-          return newSelection;
-        });
-      }}
-      updateFileThirdOrder={(thirdOrderId) => {
-        setTeacherSelection(prev => ({
-          ...prev,
-          thirdOrderId,
-        }));
-      }}
-      updateFileImageQuality={(imageQualityId) => {
-        setTeacherSelection(prev => ({
-          ...prev,
-          imageQualityId,
-        }));
-      }}
-      updateFileFinalDiagnosis={(finalDiagnosisId) => {
-        setTeacherSelection(prev => ({
-          ...prev,
-          finalDiagnosisId,
-        }));
-      }}
-      updateFileComment={(_, comment) => {
-        setTeacherSelection(prev => ({
-          ...prev,
-          comment,
-        }));
-      }}
-      updateFileReady={(_, isReady) => {
-        setTeacherSelection(prev => ({
-          ...prev,
-          isReady,
-        }));
-      }}
-    />
-  );
+          }))
+        }
+        updateFileThirdOrder={(thirdOrderId) =>
+          setTeacherSelection((p) => ({ ...p, thirdOrderId }))
+        }
+        updateFileImageQuality={(imageQualityId) =>
+          setTeacherSelection((p) => ({ ...p, imageQualityId }))
+        }
+        updateFileFinalDiagnosis={(finalDiagnosisId) =>
+          setTeacherSelection((p) => ({ ...p, finalDiagnosisId }))
+        }
+        updateFileComment={(comment) =>
+          setTeacherSelection((p) => ({ ...p, comment }))
+        }
+        updateFileReady={(isReady) =>
+          setTeacherSelection((p) => ({ ...p, isReady }))
+        }
+      />
+
+      <div className="flex justify-end">
+        <button
+          onClick={onSendInteraction}
+          disabled={!canSend}
+          className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+            canSend
+              ? "bg-blue-600 hover:bg-blue-700 text-white"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
+        >
+          Enviar feedback al estudiante
+        </button>
+      </div>
+    </div>
+  )
 }

@@ -1,17 +1,17 @@
-import React from "react";
-import { Label } from "../../../common/Label/Label";
-import { Select, SelectValue } from "../../../common/Select/SelectBase";
-import { SelectTrigger, SelectContent } from "../../../common/Select/SelectInteraction";
-import { SelectItem } from "../../../common/Select/SelectItems";
-import { ProtocolSelectorProps } from "../../../../types/Props/Teacher/ProtocolSelectorProps";
+import React from "react"
+import { Label } from "../../../common/Label/Label"
+import { Select, SelectValue } from "../../../common/Select/SelectBase"
+import { SelectTrigger, SelectContent } from "../../../common/Select/SelectInteraction"
+import { SelectItem } from "../../../common/Select/SelectItems"
+import { ProtocolSelectorProps } from "../../../../types/Props/Teacher/ProtocolSelectorProps"
 
 export const ProtocolSelectorTeacher: React.FC<ProtocolSelectorProps> = ({
   index, protocols, value, onChange
 }) => (
   <div>
     <Label htmlFor={`protocol-${index}`}>Protocolo</Label>
-    <Select value={value || ''} onValueChange={onChange}>
-      <SelectTrigger id={`protocol-${index}`} className="w-full">
+    <Select value={value ?? ""} onValueChange={onChange}>
+      <SelectTrigger id={`protocol-${index}`} className="h-10 border-[#A0A0A0] rounded-[8px] bg-white">
         <SelectValue placeholder="Selecciona protocolo" />
       </SelectTrigger>
       <SelectContent>
@@ -23,4 +23,4 @@ export const ProtocolSelectorTeacher: React.FC<ProtocolSelectorProps> = ({
       </SelectContent>
     </Select>
   </div>
-);
+)

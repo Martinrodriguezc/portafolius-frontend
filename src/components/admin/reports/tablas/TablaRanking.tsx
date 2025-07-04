@@ -30,19 +30,18 @@ const TablaRanking: React.FC<TablaRankingProps> = ({ data }) => {
                 className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}
               >
                 <td className="py-2 pl-2 font-medium">
-                  {index + 1}
+                    <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center text-sky-700 font-bold mr-2">
+                      {index + 1}
+                    </div>
                 </td>
                 <td className="py-2">
                   <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center text-sky-700 font-bold mr-2">
-                      {profesor.nombre.charAt(0)}
-                    </div>
                     <span className="truncate">{profesor.nombre}</span>
                   </div>
                 </td>
                 <td className="py-2 pr-4">
-                  <div className="flex items-center justify-end">
-                    <span className="mr-2">{profesor.evaluaciones}</span>
+                  <div className="flex flex-col items-end">
+                    <span className="mb-1">{profesor.evaluaciones}</span>
                     <div className="h-2 bg-gray-200 rounded overflow-hidden w-24">
                       <div 
                         className="h-full bg-sky-500 rounded"

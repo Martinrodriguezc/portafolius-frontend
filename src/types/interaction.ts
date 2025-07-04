@@ -2,11 +2,11 @@ export interface StudentInteractionPayload {
   protocolKey: string;
   windowId?: number;
   findingId?: number;
-  diagnosisId?: number;
+  possibleDiagnosisId?: number;
   subdiagnosisId?: number;
   subSubId?: number;
   thirdOrderId?: number;
-  comment?: string;
+  studentComment?: string;
   isReady: boolean;
 }
 
@@ -18,7 +18,6 @@ export interface ProfessorInteractionPayload {
   subdiagnosisId?: number;
   subSubId?: number;
   thirdOrderId?: number;
-
   imageQualityId?: number;
   finalDiagnosisId?: number;
   professorComment?: string;

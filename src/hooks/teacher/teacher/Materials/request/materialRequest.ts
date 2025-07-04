@@ -27,19 +27,21 @@ export const createMaterialRequest = (
 export const createLinkRequest = (
   payload: CreateMaterialPayload
 ): Promise<AxiosResponse<{ material: Material }>> => {
-  const fd = new FormData();
-  fd.append("type", payload.type);
-  fd.append("title", payload.title);
-  fd.append("description", payload.description);
-  fd.append("url", payload.url);
-  fd.append("studentIds", JSON.stringify(payload.studentIds));
+  const requestPayload = {
+    type: payload.type,
+    title: payload.title,
+    description: payload.description,
+    url: payload.url,
+    studentIds: payload.studentIds
+  };
+  
   return axios.post<{ material: Material }>(
-    `${config.SERVER_URL}/materials`,
-    fd,
+    `${config.SERVER_URL}/materials/upload-url`,
+    requestPayload,
     {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     }
   );

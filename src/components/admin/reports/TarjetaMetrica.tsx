@@ -9,7 +9,7 @@ interface TarjetaMetricaProps {
 
 const TarjetaMetrica: React.FC<TarjetaMetricaProps> = ({ title, description, children, exportarCSV }) => {
   return (
-    <div className="rounded-lg border bg-white p-6 shadow-sm h-full flex flex-col">
+    <div className="rounded-lg border bg-white p-6 shadow-sm h-full flex flex-col min-w-[360px] w-full">
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-lg font-medium text-gray-900">{title}</h3>
         {exportarCSV && (

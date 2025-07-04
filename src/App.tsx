@@ -24,6 +24,7 @@ import StudentStudiesPage from "./pages/Student/Study/StudyPage";
 import StudentMultipleVideosPage from "./pages/Student/Study/VideosPage";
 import StudentVideoPage from "./pages/Student/Study/Video";
 import StudentSettingsPage from "./pages/Student/Settings";
+import EvaluationDetails from "./pages/Student/EvaluationDetails";
 
 import TeacherDashboardPage from "./pages/Teacher/Dashboard";
 import TeacherEvaluationsPage from "./pages/Teacher/allEvaluations";
@@ -79,6 +80,7 @@ function App() {
           <Route path="create_study" element={<StudentCreateStudyPage />} />
           <Route path="comments" element={<CommentsPage />} />
           <Route path="settings" element={<StudentSettingsPage />} />
+          <Route path="evaluation/:clipId/details" element={<EvaluationDetails />} />
 
           <Route
             path="/student/:studyId/videos/:clipId"
@@ -90,7 +92,7 @@ function App() {
             element={<StudentMultipleVideosPage />}
           />
         </Route>
-        <Route path="/ia_beta" element={<BetaPage />}/>
+        <Route path="/ia_beta/:clipId" element={<BetaPage />}/>
 
         <Route path="/teacher" element={<TeacherLayout />}>
           <Route index element={<TeacherDashboardPage />} />
@@ -125,6 +127,18 @@ function App() {
           <Route path="evaluations/:studyId/videos/:clipId/evaluate" element={<AdminEvaluateVideoPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="settings" element={<AdminSettingsPage />} />
+          
+          {/* Rutas de profesor disponibles para admin en modo profesor */}
+          <Route path="teacher" element={<TeacherDashboardPage />} />
+          <Route path="teacher/students" element={<TeacherStudentsPage />} />
+          <Route path="teacher/students/new" element={<NewStudentForm />} />
+          <Route path="teacher/students/:id" element={<StudentProfileTeacherPage />} />
+          <Route path="teacher/evaluations" element={<TeacherEvaluationsPage />} />
+          <Route path="teacher/evaluations/:id/videos" element={<TeacherMultipleVideosPage />} />
+          <Route path="teacher/evaluations/:studyId/videos/:clipId" element={<TeacherVideoPage />} />
+          <Route path="teacher/evaluations/:studyId/videos/:clipId/evaluate" element={<TeacherEvaluateVideoPage />} />
+          <Route path="teacher/settings" element={<TeacherSettingsPage />} />
+          <Route path="teacher/materials" element={<TeacherMaterialsPage />} />
         </Route>
       </Routes>
     </Router>

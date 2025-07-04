@@ -16,11 +16,13 @@ export const useLoginForm = (onSuccess?: () => void) => {
 
   const [generalError, setGeneralError] = useState<string>("");
   const [formIncompleteError, setFormIncompleteError] = useState<string>("");
+  const [unauthorizedTeacherMessage, setUnauthorizedTeacherMessage] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setGeneralError("");
     setFormIncompleteError("");
+    setUnauthorizedTeacherMessage("");
 
     const { isValid, errors } = validateLoginForm(formData);
 
@@ -37,7 +39,13 @@ export const useLoginForm = (onSuccess?: () => void) => {
     }
 
     try {
-      await authService.login(formData);
+      const result = await authService.login(formData);
+      // Verificar si es un profesor no autorizado
+      if (result.msg === "Tu cuenta aún no ha sido autorizada por el administrador.") {
+        setUnauthorizedTeacherMessage("Tu cuenta ha sido creada exitosamente, pero aún no ha sido autorizada por un administrador de la plataforma. Una vez que sea aprobada, podrás acceder a todas las funcionalidades del sistema.");
+        return;
+      }
+      
       if (onSuccess) onSuccess();
     } catch (error: unknown) {
       console.error("Error al iniciar sesión:", error);
@@ -57,6 +65,7 @@ export const useLoginForm = (onSuccess?: () => void) => {
     passwordError: formErrors.password,
     generalError,
     formIncompleteError,
+    unauthorizedTeacherMessage,
     handleInputChange,
     handleSubmit,
     handleGoogleLogin,

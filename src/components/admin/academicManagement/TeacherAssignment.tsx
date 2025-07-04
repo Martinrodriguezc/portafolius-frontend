@@ -24,7 +24,8 @@ const UserList: React.FC<UserListProps> = ({
   placeholder,
   label,
   multiSelect = false,
-  showAssignmentStatus = false
+  showAssignmentStatus = false,
+  onSearchChange
 }) => {
   const isUserSelected = (user: User) => {
     return selectedUsers.some(selected => selected.id === user.id);
@@ -53,11 +54,7 @@ const UserList: React.FC<UserListProps> = ({
         <input
           type="text"
           value={searchTerm}
-          onChange={() => {
-            if (onSelect && typeof onSelect === 'function') {
-              onSelect(null as unknown as User);
-            }
-          }}
+          onChange={(e) => onSearchChange(e.target.value)}
           placeholder={placeholder}
           className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         />
@@ -148,12 +145,21 @@ export const TeacherAssignment: React.FC = () => {
     }
 
     setIsAssigning(true);
+    setSuccessMessage('');
     try {
       let allSuccess = true;
+      const errorMessages: string[] = [];
+      
       for (const student of selectedStudents) {
-        const result = await assignTeacherToStudent(selectedTeacher.email, student.email);
-        if (!result.success) {
+        try {
+          const result = await assignTeacherToStudent(selectedTeacher.email, student.email);
+          if (!result.success) {
+            allSuccess = false;
+            errorMessages.push(`Error con ${student.first_name} ${student.last_name}: ${result.error || 'Error desconocido'}`);
+          }
+        } catch (err) {
           allSuccess = false;
+          errorMessages.push(`Error con ${student.first_name} ${student.last_name}: ${err instanceof Error ? err.message : 'Error desconocido'}`);
         }
       }
       
@@ -165,11 +171,16 @@ export const TeacherAssignment: React.FC = () => {
         setStudentSearch('');
         setTeacherSearch('');
         
-        await refreshList();
-        
+        try {
+          await refreshList();
+        } catch (refreshError) {
+          console.warn('Error al actualizar la lista:', refreshError);
+        }
+      } else {
+        console.error('Errores en asignación:', errorMessages);
       }
     } catch (error) {
-      console.error('Error en la asignación:', error);
+      console.error('Error general en la asignación:', error);
     } finally {
       setIsAssigning(false);
     }
@@ -204,10 +215,11 @@ export const TeacherAssignment: React.FC = () => {
             label="Estudiantes"
             multiSelect={true}
             showAssignmentStatus={true}
+            onSearchChange={setStudentSearch}
           />
 
           <UserList
-            users={teachers.filter(t => t.role === 'profesor')}
+            users={teachers.filter(t => t.role === 'profesor' || t.role === "admin")}
             searchTerm={teacherSearch}
             onSelect={(user) => {
               setSelectedTeacher(user);
@@ -218,6 +230,7 @@ export const TeacherAssignment: React.FC = () => {
             selectedUser={selectedTeacher}
             placeholder="Buscar profesor..."
             label="Profesor"
+            onSearchChange={setTeacherSearch}
           />
         </div>
 
