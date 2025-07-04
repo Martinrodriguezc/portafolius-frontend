@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from "react"
 import {
   ProtocolOption,
   WindowOption,
@@ -8,8 +8,8 @@ import {
   SubSubOption,
   ThirdOrderOption,
   ImageQualityOption,
-  FinalDiagnosisOption
-} from '../../../types/protocol'
+  FinalDiagnosisOption,
+} from "../../../types/protocol"
 import {
   fetchProtocols,
   fetchWindows,
@@ -20,7 +20,7 @@ import {
   fetchThirdOrders,
   fetchImageQualities,
   fetchFinalDiagnoses,
-} from './request/protocolRequests'
+} from "./request/protocolRequests"
 
 export function useProtocolFlow() {
   const [protocols, setProtocols] = useState<ProtocolOption[]>([])
@@ -31,20 +31,17 @@ export function useProtocolFlow() {
   const [subSubs, setSubSubs] = useState<SubSubOption[]>([])
   const [thirdOrders, setThirdOrders] = useState<ThirdOrderOption[]>([])
   const [imageQualities, setImageQualities] = useState<ImageQualityOption[]>([])
-  const [finalDiagnoses, setFinalDiagnoses] = useState<FinalDiagnosisOption[]>([])
+  const [finalDiagnoses, setFinalDiagnoses] = useState<FinalDiagnosisOption[]>(
+    []
+  )
 
   useEffect(() => {
     fetchProtocols()
-      .then(res => {
-        const data = res.data
-        setProtocols(Array.isArray(data) ? data : [])
-      })
-      .catch(err => {
-        console.error('Error fetching protocols:', err)
-      })
+      .then((r) => setProtocols(Array.isArray(r.data) ? r.data : []))
+      .catch((e) => console.error("Error fetching protocols:", e))
   }, [])
 
-  const loadWindows = (protocolKey: string) => {
+  const loadWindows = useCallback((protocolKey: string) => {
     setWindows([])
     setFindings([])
     setDiagnoses([])
@@ -52,106 +49,75 @@ export function useProtocolFlow() {
     setSubSubs([])
     setThirdOrders([])
     fetchWindows(protocolKey)
-      .then(res => {
-        const data = res.data
-        setWindows(Array.isArray(data) ? data : [])
-      })
-      .catch(err => {
-        console.error('Error fetching windows:', err)
-      })
-  }
+      .then((r) => setWindows(Array.isArray(r.data) ? r.data : []))
+      .catch((e) => console.error("Error fetching windows:", e))
+  }, [])
 
-  const loadFindings = (protocolKey: string, windowId: number) => {
+  const loadFindings = useCallback((protocolKey: string, windowId: number) => {
     setFindings([])
     setDiagnoses([])
     setSubdiagnoses([])
     setSubSubs([])
     setThirdOrders([])
     fetchFindings(protocolKey, windowId)
-      .then(res => {
-        const data = res.data
-        setFindings(Array.isArray(data) ? data : [])
-      })
-      .catch(err => {
-        console.error('Error fetching findings:', err)
-      })
-  }
+      .then((r) => setFindings(Array.isArray(r.data) ? r.data : []))
+      .catch((e) => console.error("Error fetching findings:", e))
+  }, [])
 
-  const loadDiagnoses = (protocolKey: string, windowId: number, findingId: number) => {
-    setDiagnoses([])
-    setSubdiagnoses([])
-    setSubSubs([])
-    setThirdOrders([])
-    fetchDiagnoses(protocolKey, windowId, findingId)
-      .then(res => {
-        const data = res.data
-        setDiagnoses(Array.isArray(data) ? data : [])
-      })
-      .catch(err => {
-        console.error('Error fetching diagnoses:', err)
-      })
-  }
+  const loadDiagnoses = useCallback(
+    (protocolKey: string, windowId: number, findingId: number) => {
+      setDiagnoses([])
+      setSubdiagnoses([])
+      setSubSubs([])
+      setThirdOrders([])
+      fetchDiagnoses(protocolKey, windowId, findingId)
+        .then((r) => setDiagnoses(Array.isArray(r.data) ? r.data : []))
+        .catch((e) => console.error("Error fetching diagnoses:", e))
+    },
+    []
+  )
 
-  const loadSubdiagnoses = (protocolKey: string, diagnosisId: number) => {
-    setSubdiagnoses([])
-    setSubSubs([])
-    setThirdOrders([])
-    fetchSubdiagnoses(protocolKey, diagnosisId)
-      .then(res => {
-        const data = res.data
-        setSubdiagnoses(Array.isArray(data) ? data : [])
-      })
-      .catch(err => {
-        console.error('Error fetching subdiagnoses:', err)
-      })
-  }
+  const loadSubdiagnoses = useCallback(
+    (protocolKey: string, diagnosisId: number) => {
+      setSubdiagnoses([])
+      setSubSubs([])
+      setThirdOrders([])
+      fetchSubdiagnoses(protocolKey, diagnosisId)
+        .then((r) => setSubdiagnoses(Array.isArray(r.data) ? r.data : []))
+        .catch((e) => console.error("Error fetching subdiagnoses:", e))
+    },
+    []
+  )
 
-  const loadSubSubs = (protocolKey: string, subId: number) => {
+  const loadSubSubs = useCallback((protocolKey: string, subId: number) => {
     setSubSubs([])
     setThirdOrders([])
     fetchSubSubs(protocolKey, subId)
-      .then(res => {
-        const data = res.data
-        setSubSubs(Array.isArray(data) ? data : [])
-      })
-      .catch(err => {
-        console.error('Error fetching sub-subs:', err)
-      })
-  }
+      .then((r) => setSubSubs(Array.isArray(r.data) ? r.data : []))
+      .catch((e) => console.error("Error fetching subSubs:", e))
+  }, [])
 
-  const loadThirdOrders = (protocolKey: string, subSubId: number) => {
-    setThirdOrders([])
-    fetchThirdOrders(protocolKey, subSubId)
-      .then(res => {
-        const data = res.data
-        setThirdOrders(Array.isArray(data) ? data : [])
-      })
-      .catch(err => {
-        console.error('Error fetching third orders:', err)
-      })
-  }
+  const loadThirdOrders = useCallback(
+    (protocolKey: string, subSubId: number) => {
+      setThirdOrders([])
+      fetchThirdOrders(protocolKey, subSubId)
+        .then((r) => setThirdOrders(Array.isArray(r.data) ? r.data : []))
+        .catch((e) => console.error("Error fetching third orders:", e))
+    },
+    []
+  )
 
-  const loadImageQualities = () => {
+  const loadImageQualities = useCallback(() => {
     fetchImageQualities()
-      .then(res => {
-        const data = res.data
-        setImageQualities(Array.isArray(data) ? data : [])
-      })
-      .catch(err => {
-        console.error('Error fetching image qualities:', err)
-      })
-  }
+      .then((r) => setImageQualities(Array.isArray(r.data) ? r.data : []))
+      .catch((e) => console.error("Error fetching image qualities:", e))
+  }, [])
 
-  const loadFinalDiagnoses = () => {
+  const loadFinalDiagnoses = useCallback(() => {
     fetchFinalDiagnoses()
-      .then(res => {
-        const data = res.data
-        setFinalDiagnoses(Array.isArray(data) ? data : [])
-      })
-      .catch(err => {
-        console.error('Error fetching final diagnoses:', err)
-      })
-  }
+      .then((r) => setFinalDiagnoses(Array.isArray(r.data) ? r.data : []))
+      .catch((e) => console.error("Error fetching final diagnoses:", e))
+  }, [])
 
   return {
     protocols,
