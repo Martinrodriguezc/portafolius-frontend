@@ -37,8 +37,8 @@ export default function TeacherDashboardPage() {
     <main className="p-8 md:p-10 max-w-7xl mx-auto space-y-8">
       <PageHeader lastName={lastName} />
       <StatsPanel
-        pendingCount={stats.pendingCount}
-        evaluatedToday={stats.evaluatedToday}
+        pendingCount={pending.length}
+        evaluatedToday={evaluated.length}
         studentCount={stats.studentCount}
       />
       <VideoTabsPanel
