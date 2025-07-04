@@ -1,17 +1,10 @@
 import { FileUploadRowTeacher } from "../FileUploadRowTeacher"
 import { TeacherFeedbackCardProps } from "../../../../types/Props/Video/TeacherFeedbackCardProps"
+import { TeacherSelectionPayload } from "../../../../types/Props/Video/TeacherSelectionPayload"
 
 export default function TeacherFeedbackCard({
   teacherSelection,
   setTeacherSelection,
-  loadWindows: _lw,
-  loadFindings: _lf,
-  loadDiagnoses: _ld,
-  loadSubdiagnoses: _lsd,
-  loadSubSubs: _lss,
-  loadThirdOrders: _lto,
-  loadImageQualities: _liq,
-  loadFinalDiagnoses: _lfd,
   onSendInteraction,
 }: TeacherFeedbackCardProps) {
   const canSend =
@@ -22,7 +15,9 @@ export default function TeacherFeedbackCard({
       <FileUploadRowTeacher
         fileItem={teacherSelection}
         index={0}
-        removeFile={() => setTeacherSelection({} as any)}
+        removeFile={() =>
+          setTeacherSelection({} as TeacherSelectionPayload)
+        }
         updateFileProtocol={(protocolKey) =>
           setTeacherSelection((p) => ({
             ...p,
