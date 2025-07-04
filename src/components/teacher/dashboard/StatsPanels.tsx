@@ -45,7 +45,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
     />
     <StatCard
       icon={<CheckCircle className="h-5 w-5 text-white" />}
-      label="Evaluados hoy"
+      label="Evaluados"
       value={evaluatedToday}
       from="green-50"
       to="green-100"
