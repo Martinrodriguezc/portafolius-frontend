@@ -11,9 +11,12 @@ import {
   Star,
   Eye,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import Button from '../../common/Button/Button';
 
 interface EvaluationsReceivedPanelProps {
   evaluations: Attempt[];
+  clipId: string;
 }
 
 function getScoreColor(score: number) {
@@ -35,11 +38,12 @@ function getScoreIcon(score: number) {
 }
 
 export default function EvaluationsReceivedPanel({
-  evaluations,
+  evaluations, 
+  clipId,
 }: EvaluationsReceivedPanelProps) {
   return (
-    <div className="w-full md:w-80 bg-white border-r border-gray-200 h-full flex flex-col">
-      <div className="p-4 border-b border-gray-200 bg-gray-50">
+    <div className="w-full lg:w-80 bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col h-fit max-h-[600px]">
+      <div className="p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
         <div className="flex items-center gap-2">
           <History className="w-5 h-5 text-gray-600" />
           <h3 className="font-semibold text-gray-900">Evaluaciones recibidas</h3>
@@ -92,23 +96,27 @@ export default function EvaluationsReceivedPanel({
                     </div>
                     <div className="flex items-center gap-2">
                       <User className="w-3 h-3" />
-                      <span>{evaluation.evaluator_name}</span>
+                      <span className="truncate">{evaluation.evaluator_name}</span>
                     </div>
                   </div>
                   {evaluation.comment && (
                     <div className="mt-2 bg-gray-50 rounded p-2">
                       <div className="flex items-start gap-2">
                         <MessageSquare className="w-3 h-3 text-gray-500 mt-0.5 flex-shrink-0" />
-                        <p className="text-xs text-gray-700">
+                        <p className="text-xs text-gray-700 line-clamp-2">
                           {evaluation.comment}
                         </p>
                       </div>
                     </div>
                   )}
-                  <button className="w-full mt-2 text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center justify-center gap-1">
-                    <Eye className="w-3 h-3" />
-                    Ver detalles
-                  </button>
+                  <div className="mt-3">
+                    <Link to={`/student/evaluation/${clipId}/details`} className="block">
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Eye className="w-3 h-3 mr-1" />
+                        Ver detalles
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               );
             })}

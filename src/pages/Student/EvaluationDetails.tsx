@@ -125,7 +125,7 @@ export default function EvaluationDetails() {
           <div className="w-full bg-slate-200 rounded-full h-3 mb-4">
             <div
               className="bg-[#4E81BD] h-3 rounded-full transition-all duration-500"
-              style={{ width: `${(evaluationData.evaluation!.score / 10) * 100}%` }}
+              style={{ width: `${Math.min((evaluationData.evaluation!.score / 10) * 100, 100)}%` }}
             ></div>
           </div>
 
