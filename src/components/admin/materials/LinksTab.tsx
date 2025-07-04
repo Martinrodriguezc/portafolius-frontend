@@ -1,8 +1,8 @@
-import { Link as LinkIcon, ExternalLink, Pencil, Trash2, User } from 'lucide-react';
+import { Link as LinkIcon, ExternalLink, Pencil, Trash2, User, Users } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 import Card from '../../common/Card/Card';
-import { Material } from '../../../types/material';
+import { Material, GroupedMaterial } from '../../../types/material';
 
 interface LinksTabProps {
   links: Material[];
@@ -10,8 +10,42 @@ interface LinksTabProps {
   onDelete: (id: number) => void;
 }
 
+const normalizeTitle = (title: string): string => {
+  return title.replace(/\s*\(\d+\/\d+\)\s*$/, '').trim();
+};
+
+const groupSimilarMaterials = (materials: Material[]): GroupedMaterial[] => {
+  const groups = new Map<string, Material[]>();
+  
+  materials.forEach(material => {
+    const key = `${normalizeTitle(material.title)}_${material.description}_${material.url}`;
+    
+    if (!groups.has(key)) {
+      groups.set(key, []);
+    }
+    groups.get(key)!.push(material);
+  });
+  
+  return Array.from(groups.values()).map(group => {
+    const representative = group[0];
+    const allStudentIds = group
+      .map(m => m.student_id)
+      .filter(id => id !== null) as number[];
+    
+    return {
+      ...representative,
+      title: normalizeTitle(representative.title),
+      _groupedMaterials: group,
+      _allStudentIds: allStudentIds,
+      _isGroup: group.length > 1
+    } as GroupedMaterial;
+  });
+};
+
 export default function LinksTab({ links, onEdit, onDelete }: LinksTabProps) {
-  if (links.length === 0) {
+  const groupedLinks = groupSimilarMaterials(links);
+
+  if (groupedLinks.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <div className="bg-slate-100 p-4 rounded-full mb-4">
@@ -47,13 +81,13 @@ export default function LinksTab({ links, onEdit, onDelete }: LinksTabProps) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {links.map((link) => {
+      {groupedLinks.map((link) => {
         const favicon = getLinkFavicon(link.url);
         const domain = getLinkDomain(link.url);
         
         return (
           <Card
-            key={link.id}
+            key={`group-${link.id}`}
             className="rounded-[12px] p-0 overflow-hidden border border-slate-200 hover:shadow-md transition-all h-full flex flex-col"
           >
             <div className="bg-purple-100 p-4 flex items-center justify-center">
@@ -84,38 +118,53 @@ export default function LinksTab({ links, onEdit, onDelete }: LinksTabProps) {
                 <span>{domain}</span>
               </div>
               
-              {link.student_id && (
-                <div className="flex items-center gap-2 mb-3 text-sm text-[#666666]">
-                  <User className="h-4 w-4" />
-                  <span>Asignado a estudiante ID: {link.student_id}</span>
-                </div>
-              )}
+              <div className="flex items-center gap-2 mb-3 text-sm text-[#666666]">
+                {link._allStudentIds.length === 0 ? (
+                  <>
+                    <Users className="h-4 w-4" />
+                    <span className="text-blue-600 font-medium">Material Global</span>
+                  </>
+                ) : link._isGroup ? (
+                  <>
+                    <Users className="h-4 w-4" />
+                    <span>Asignado a {link._allStudentIds.length} estudiantes</span>
+                  </>
+                ) : (
+                  <>
+                    <User className="h-4 w-4" />
+                    <span>Asignado a estudiante ID: {link.student_id}</span>
+                  </>
+                )}
+              </div>
               
               <div className="mt-auto">
-                {link.uploaded_at && (
-                  <div className="text-xs text-[#666666] mb-3">
+                <div className="text-xs text-[#666666] mb-3">
+                  {link.uploaded_at && (
                     <p>
                       Subido {formatDistanceToNow(new Date(link.uploaded_at), { 
                         addSuffix: true, 
                         locale: es 
                       })}
                     </p>
-                  </div>
-                )}
+                  )}
+                  {link._isGroup && (
+                    <p className="text-purple-600">📋 {link._groupedMaterials.length} copias</p>
+                  )}
+                </div>
                 
                 <div className="flex justify-between items-center pt-3 border-t border-slate-100">
                   <div className="flex gap-1">
                     <button
                       onClick={() => onEdit(link)}
                       className="p-2 rounded-md hover:bg-purple-100 text-purple-600 transition-colors"
-                      title="Editar"
+                      title={`Editar${link._isGroup ? ' (gestionar todas las copias)' : ''}`}
                     >
                       <Pencil className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => onDelete(link.id)}
                       className="p-2 rounded-md hover:bg-red-100 text-red-500 transition-colors"
-                      title="Eliminar"
+                      title={`Eliminar${link._isGroup ? ' (eliminará todas las copias)' : ''}`}
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>

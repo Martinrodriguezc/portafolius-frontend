@@ -1,25 +1,27 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useEffect, useState } from "react";
 import Card from "../../../components/common/Card/Card";
 import VideoPlayer from "../../../components/student/videos/VideoPlayer";
-import VideoEvaluation from "../../../components/student/videos/VideoEvaluation";
+import EvaluationsReceivedPanel from "../../../components/student/videos/EvaluationsReceivedPanel";
+import { attemptService } from "../../../hooks/teacher/attemptService/attemptService";
+import { Attempt } from "../../../types/attempt";
 import VideoProtocolTags from "../../../components/student/videos/VideoProtocolTags";
 import VideoComments from "../../../components/student/videos/VideoComments";
 import VideoDetails from "../../../components/student/videos/VideoDetails";
 import { useStudentVideoPage } from "../../../hooks/student/Videos/VideoPage/useStudentVideoPage";
 import { useStudentStudies } from "../../../hooks/student/Studies/useStudentStudies";
-import { useVideoEvaluation } from "../../../hooks/student/evaluations/useVideoEvaluation";
 import { authService } from "../../../hooks/auth/authServices";
 import { useParams } from "react-router-dom";
 import { useStudyVideos } from "../../../hooks/student/Videos/useStudyVideos";
 import VideoCarousel from "../../../components/common/Carousel/VideoCarousel";
-import { useEffect } from "react";
 import { useInteractions } from "../../../hooks/upload/useInteractions";
 import { PageHeader } from "./VideoPageHeader";
 
 export default function StudentVideoPage() {
   const { studyId } = useParams<{ studyId: string }>();
-  const { videos } = useStudyVideos(studyId)
+  const { videos } = useStudyVideos(studyId);
+  const [evaluations, setEvaluations] = useState<Attempt[]>([]);
 
   const {
     videoRef,
@@ -35,15 +37,24 @@ export default function StudentVideoPage() {
     toggleFullscreen,
   } = useStudentVideoPage();
 
-  const { evaluationData } = useVideoEvaluation(Number(meta?.id));
-
   const { interactions, loadInteractions } = useInteractions();
 
+  // carga de interacciones del estudiante
   useEffect(() => {
     if (meta?.id) {
       loadInteractions(meta.id);
     }
   }, [meta, loadInteractions]);
+
+  // carga de evaluaciones recibidas
+  useEffect(() => {
+    if (meta?.id) {
+      attemptService
+        .list(meta.id)
+        .then(setEvaluations)
+        .catch(console.error);
+    }
+  }, [meta?.id]);
 
   const { studies, loading: studiesLoading } = useStudentStudies();
   const study = studies.find((s) => s.id === meta?.study_id);
@@ -91,11 +102,10 @@ export default function StudentVideoPage() {
             <VideoCarousel videos={videos} studyId={studyId!} teacher={false} />
           )}
 
-          <VideoDetails 
-            meta={meta} 
-            study={study} 
-            studentName={studentName} 
-            hasEvaluation={evaluationData?.hasEvaluation} 
+          <VideoDetails
+            meta={meta}
+            study={study}
+            studentName={studentName}
           />
 
           <div className="space-y-6">
@@ -104,10 +114,13 @@ export default function StudentVideoPage() {
           </div>
         </div>
 
-        <div className="w-full lg:w-1/3">
-          <VideoEvaluation clipId={Number(meta?.id)} />
+        <div className="w-full lg:w-1/3 sticky top-6">
+          {/* Panel de Evaluaciones Recibidas */}
+          <EvaluationsReceivedPanel evaluations={evaluations} />
         </div>
       </div>
     </div>
   );
 }
+
+
